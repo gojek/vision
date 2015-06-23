@@ -1,0 +1,82 @@
+<%= form_for(@incident_report) do |f| %>
+  <% if @incident_report.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@incident_report.errors.count, "error") %> prohibited this incident_report from being saved:</h2>
+
+      <ul>
+      <% @incident_report.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group"><div class="field">
+    <%= f.label :service_impacted %><br>
+    <%= f.text_field :service_impact, class: 'form-control' %>
+  </div>
+  </div><div class="form-group"><div class="field">
+    <%= f.label :problem_details %><br>
+    <%= f.text_area :problem_details, class: 'form-control', :rows => "7" %>
+  </div>
+  </div><div class="form-group"><div class="field">
+    <%= f.label :how_was_the_problem_detected_? %><br>
+    <%= f.text_field :how_detected, class: 'form-control' %>
+  </div>
+   </div><div class="form-group"><div class="field">
+    <%= f.label :current_status %><br>
+    <%=f.select :current_status, options_for_select(IncidentReport::CURRENT_STATUS), {}, {class: 'form-control'} %>
+  </div>
+  </div><div class="form-group"><div class="field">
+    <%= f.label :occurrence_time %><br>
+    <%= f.datetime_select :occurrence_time, class: 'form-control' %>
+  </div>
+  </div><div class="form-group"><div class="field">
+    <%= f.label :detection_time %><br>
+    <%= f.datetime_select :detection_time, class: 'form-control' %>
+  </div>
+  </div><div class="form-group"><div class="field">
+    <%= f.label :recovery_time %><br>
+    <%= f.datetime_select :recovery_time, class: 'form-control' %>
+  </div>
+  </div><div class="form-group"><div class="field">
+    <%= f.label :source %><br>
+    <%=f.select :source, options_for_select(IncidentReport::SOURCE), {}, {class: 'form-control'} %>
+  </div>
+  </div><div class="form-group"><div class="field">
+    <%= f.label :rank %><br>
+    <%= f.number_field :rank, in:1..5, class: 'form-control' %>
+  </div>
+  </div><div class="form-group"><div class="field">
+    <%= f.label :loss_related_to_the_issue %><br>
+    <%= f.text_field :loss_related, class: 'form-control' %>
+  </div>
+  </div><div class="form-group"><div class="field">
+    <%= f.label :why_did_it_occured_? %><br>
+    <%= f.text_area :occurred_reason, class: 'form-control', :rows => "7" %>
+  </div>
+  </div><div class="form-group"><div class="field">
+    <%= f.label :why_was_it_overlooked_? %><br>
+    <%= f.text_area :overlooked_reason, class: 'form-control', :rows => "7" %>
+  </div>
+  </div><div class="form-group"><div class="field">
+    <%= f.label :action_for_recovery %><br>
+    <%= f.text_area :recovery_action, class: 'form-control', :rows => "7" %>
+  </div>
+  </div><div class="form-group"><div class="field">
+    <%= f.label :to_prevent_recurrence %><br>
+    <%= f.text_area :prevent_action, class: 'form-control', :rows => "7" %>
+  </div>
+  </div><div class="form-group"><div class="field">
+    <%= f.label :concern_of_recurrence %><br>
+     <%=f.select :recurrence_concern, options_for_select(IncidentReport::RECURRENCE_CONCERN), {}, {class: 'form-control'} %>
+  </div>
+  </div><div class="form-group"><div class="field">
+    <%= f.label :status_of_the_measurer %><br>
+     <%=f.select :measurer_status, options_for_select(IncidentReport::MEASURER_STATUS), {}, {class: 'form-control'} %>
+  </div></div>
+  </br>
+  <div class="actions">
+    <%= f.submit class:"btn btn-primary" %>
+  </div>
+<% end %>
