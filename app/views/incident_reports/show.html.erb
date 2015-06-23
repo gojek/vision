@@ -11,7 +11,9 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-8">
-
+                      <div class="panel panel-default">
+                        <div class="panel-footer">Issue and Recovery Report Summary</div>
+                        <div class="panel-body">
                       <p>
                         <strong>Service impact:</strong>
                         <%= @incident_report.service_impact %>
@@ -36,7 +38,8 @@
                         <strong>Detection time:</strong>
                         <%= @incident_report.detection_time %>
                       </p>
-
+                    
+                     
                       <p>
                         <strong>Recovery time:</strong>
                         <%= @incident_report.recovery_time %>
@@ -46,17 +49,20 @@
                         <strong>Source:</strong>
                         <%= @incident_report.source %>
                       </p>
-
+                      </div>
+                      <div class="panel-footer">Influence</div>
+                      <div class="panel-body">
                       <p>
                         <strong>Rank:</strong>
                         <%= @incident_report.rank %>
                       </p>
-
                       <p>
                         <strong>Loss related:</strong>
                         <%= @incident_report.loss_related %>
                       </p>
-
+                    </div>
+                    <div class="panel-footer">Cause of Issue</div>
+                        <div class="panel-body">
                       <p>
                         <strong>Occurred reason:</strong>
                         <%= @incident_report.occurred_reason %>
@@ -66,7 +72,9 @@
                         <strong>Overlooked reason:</strong>
                         <%= @incident_report.overlooked_reason %>
                       </p>
-
+                    </div>
+                     <div class="panel-footer">Recovery Measure</div>
+                        <div class="panel-body">
                       <p>
                         <strong>Recovery action:</strong>
                         <%= @incident_report.recovery_action %>
@@ -91,11 +99,15 @@
                         <strong>Measurer status:</strong>
                         <%= @incident_report.measurer_status %>
                       </p>
-
+                    </div>
+                     <div class="panel-footer">Reported</div>
+                        <div class="panel-body">
                       <p>
                         <strong>User:</strong>
                         <%= @incident_report.user.email %>
                       </p>
+                    </div>
+                    </div>
                           <%= link_to 'Back', :back %> 
                           <% if current_user == @incident_report.user || current_user.role == 'admin' %>|
                           <%= link_to 'Edit', edit_incident_report_path(@incident_report) %> 
