@@ -96,8 +96,9 @@
                         <strong>User:</strong>
                         <%= @incident_report.user.email %>
                       </p>
-                          <% if current_user == @incident_report.user || current_user.role == 'admin' %>
-                          <%= link_to 'Edit', edit_incident_report_path(@incident_report) %> |
+                          <%= link_to 'Back', :back %> 
+                          <% if current_user == @incident_report.user || current_user.role == 'admin' %>|
+                          <%= link_to 'Edit', edit_incident_report_path(@incident_report) %> 
                           <% end %>
                       </div>
                     <!-- /.col-lg-12 -->
