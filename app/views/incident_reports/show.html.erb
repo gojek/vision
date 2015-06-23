@@ -1,0 +1,110 @@
+ <!-- Page Content -->
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">Incident report</h1>
+                        
+                    </div>
+                    <br>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <div class="row">
+                    <div class="col-lg-8">
+
+                      <p>
+                        <strong>Service impact:</strong>
+                        <%= @incident_report.service_impact %>
+                      </p>
+
+                      <p>
+                        <strong>Problem details:</strong>
+                        <%= @incident_report.problem_details %>
+                      </p>
+
+                      <p>
+                        <strong>How detected:</strong>
+                        <%= @incident_report.how_detected %>
+                      </p>
+
+                      <p>
+                        <strong>Occurrence time:</strong>
+                        <%= @incident_report.occurrence_time %>
+                      </p>
+
+                      <p>
+                        <strong>Detection time:</strong>
+                        <%= @incident_report.detection_time %>
+                      </p>
+
+                      <p>
+                        <strong>Recovery time:</strong>
+                        <%= @incident_report.recovery_time %>
+                      </p>
+
+                      <p>
+                        <strong>Source:</strong>
+                        <%= @incident_report.source %>
+                      </p>
+
+                      <p>
+                        <strong>Rank:</strong>
+                        <%= @incident_report.rank %>
+                      </p>
+
+                      <p>
+                        <strong>Loss related:</strong>
+                        <%= @incident_report.loss_related %>
+                      </p>
+
+                      <p>
+                        <strong>Occurred reason:</strong>
+                        <%= @incident_report.occurred_reason %>
+                      </p>
+
+                      <p>
+                        <strong>Overlooked reason:</strong>
+                        <%= @incident_report.overlooked_reason %>
+                      </p>
+
+                      <p>
+                        <strong>Recovery action:</strong>
+                        <%= @incident_report.recovery_action %>
+                      </p>
+
+                      <p>
+                        <strong>Prevent action:</strong>
+                        <%= @incident_report.prevent_action %>
+                      </p>
+
+                      <p>
+                        <strong>Recurrence concern:</strong>
+                        <%= @incident_report.recurrence_concern %>
+                      </p>
+
+                      <p>
+                        <strong>Current status:</strong>
+                        <%= @incident_report.current_status %>
+                      </p>
+
+                      <p>
+                        <strong>Measurer status:</strong>
+                        <%= @incident_report.measurer_status %>
+                      </p>
+
+                      <p>
+                        <strong>User:</strong>
+                        <%= @incident_report.user.email %>
+                      </p>
+                          <% if current_user == @incident_report.user || current_user.role == 'admin' %>
+                          <%= link_to 'Edit', edit_incident_report_path(@incident_report) %> |
+                          <% end %>
+                      </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /#page-wrapper -->
