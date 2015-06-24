@@ -18,7 +18,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      flash[:registered_succesfully] = 'New user registered succesfully'
+      flash[:notice] = 'New user registered succesfully'
       redirect_to register_path
     else
       render :action => 'new'
@@ -33,14 +33,14 @@ class UsersController < ApplicationController
     @user = User.find params[:id]
     if(user_params[:password]=='')
       if @user.update(update_user_params)
-        flash[:updated_succesfully] = 'User updated succesfully'
+        flash[:notice] = 'User updated succesfully'
         redirect_to users_path
       else
         render :action => 'edit'
       end
     else
       if @user.update(user_params)
-        flash[:updated_succesfully] = 'User updated succesfully'
+        flash[:notice] = 'User updated succesfully'
         redirect_to users_path
       else
         render :action => 'edit'
@@ -51,18 +51,21 @@ class UsersController < ApplicationController
   def destroy
   	@user = User.find params[:id]
   	@user.destroy
+    flash[:notice] = 'User deleted succesfully'
   	redirect_to users_path
   end
 
   def lock_user
     @user = User.find params[:id]
     @user.update_attribute(:locked_at, Time.current)
+    flash[:notice] = 'User locked succesfully'
     redirect_to users_path
   end
 
   def unlock_user
     @user = User.find params[:id]
     @user.update_attribute(:locked_at, nil)
+    flash[:notice] = 'User unlocked succesfully'
     redirect_to users_path
   end
 
