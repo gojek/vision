@@ -3,7 +3,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header">Incident report</h1>
+                        <h1 class="page-heading">Incident report</h1>
                         
                     </div>
                     <br>
@@ -11,8 +11,8 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-8">
-                      <div class="panel panel-default">
-                        <div class="panel-footer">Issue and Recovery Report Summary</div>
+                      <div class="panel panel-primary">
+                        <div class="panel-heading">Issue and Recovery Report Summary</div>
                         <div class="panel-body">
                       <p>
                         <strong>Service impact:</strong>
@@ -50,7 +50,7 @@
                         <%= @incident_report.source %>
                       </p>
                       </div>
-                      <div class="panel-footer">Influence</div>
+                      <div class="panel-heading">Influence</div>
                       <div class="panel-body">
                       <p>
                         <strong>Rank:</strong>
@@ -61,7 +61,7 @@
                         <%= @incident_report.loss_related %>
                       </p>
                     </div>
-                    <div class="panel-footer">Cause of Issue</div>
+                    <div class="panel-heading">Cause of Issue</div>
                         <div class="panel-body">
                       <p>
                         <strong>Occurred reason:</strong>
@@ -73,7 +73,7 @@
                         <%= @incident_report.overlooked_reason %>
                       </p>
                     </div>
-                     <div class="panel-footer">Recovery Measure</div>
+                     <div class="panel-heading">Recovery Measure</div>
                         <div class="panel-body">
                       <p>
                         <strong>Recovery action:</strong>
@@ -100,7 +100,7 @@
                         <%= @incident_report.measurer_status %>
                       </p>
                     </div>
-                     <div class="panel-footer">Reported</div>
+                     <div class="panel-heading">Reported</div>
                         <div class="panel-body">
                       <p>
                         <strong>User:</strong>
