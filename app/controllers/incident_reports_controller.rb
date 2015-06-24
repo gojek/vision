@@ -7,7 +7,10 @@ class IncidentReportsController < ApplicationController
   def index
     @q = IncidentReport.ransack(params[:q])
     @incident_reports = @q.result(distinct: true).page(params[:page]).per(params[:per_page])
-
+    respond_to do |format|
+      format.html
+      format.xls{send_data(@incident_reports.to_xls)}
+    end
   end
 
   # GET /incident_reports/1
