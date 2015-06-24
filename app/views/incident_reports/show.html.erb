@@ -7,13 +7,21 @@
                         
                     </div>
                     <br>
-                    <!-- /.col-lg-12 -->
+                    
                 </div>
+                <% if flash[:notice] != nil %>
+                      <div class='alert alert-success' ><%= flash[:notice] %> </div>
+                    <% end %>
                 <div class="row">
                     <div class="col-lg-8">
                       <div class="panel panel-primary">
                         <div class="panel-heading">Issue and Recovery Report Summary</div>
                         <div class="panel-body">
+                      <p>
+                        <strong>Report ID:</strong>
+                        <%= @incident_report.id %>
+                      </p>
+
                       <p>
                         <strong>Service impact:</strong>
                         <%= @incident_report.service_impact %>
@@ -31,18 +39,18 @@
 
                       <p>
                         <strong>Occurrence time:</strong>
-                        <%= @incident_report.occurrence_time %>
+                        <%= @incident_report.occurrence_time.to_s(:db) %>
                       </p>
 
                       <p>
                         <strong>Detection time:</strong>
-                        <%= @incident_report.detection_time %>
+                        <%= @incident_report.detection_time.to_s(:db) %>
                       </p>
                     
                      
                       <p>
                         <strong>Recovery time:</strong>
-                        <%= @incident_report.recovery_time %>
+                        <%= @incident_report.recovery_time.to_s(:db) %>
                       </p>
 
                       <p>
