@@ -29,6 +29,7 @@ gem 'ransack'
 gem 'kaminari'
 gem 'bootstrap-kaminari-views'
 gem 'jquery-turbolinks'
+gem 'to_xls-rails'
 
 group :production do
 	gem 'pg'
