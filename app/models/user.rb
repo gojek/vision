@@ -1,21 +1,36 @@
+# a model representing user
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :lockable
+  devise :trackable, :lockable,
+         :omniauthable, omniauth_providers: [:google_oauth2]
   ROLES = %w(user admin)
-  validates :role, inclusion: { in: ROLES, message: "%{value} is not a valid role"}
+  validates :role, inclusion: { in: ROLES,
+                                message: '%{value} is not a valid role' }
   has_many :IncidentReports
+
   def account_active?
-      locked_at.nil?
+    locked_at.nil?
   end
 
   def active_for_authentication?
-      super && account_active?
+    super && account_active?
   end
 
   def inactive_message
-      account_active? ? super : :locked
+    account_active? ? super : :locked
   end
 
+  def self.from_omniauth(auth)
+    where(provider: auth[:provider], uid: auth[:uid]).first_or_create do |user|
+      user.name = auth[:info][:name]
+      user.email = auth[:info][:email]
+      user.role = 'user'
+      user.locked_at = Time.current
+    end
+  end
+
+  def self.find_version_author(version)
+    find(version.terminator)
+  end
 end
