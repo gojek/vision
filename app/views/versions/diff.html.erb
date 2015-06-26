@@ -1,0 +1,84 @@
+<div id='page-wrapper'>
+  <div class='col-sm-12'>
+    <h2><%= "Differences" %></h2>
+    <style><%= Diffy::CSS %></style>
+    <div class='well diff'>
+      
+      <p>
+        <strong>Service Impacted:</strong>
+        
+       
+         <%= diff(@version.reify.service_impact,  @incident_report.service_impact) %>
+       
+        
+      </p>
+       
+      <p>
+        <strong>Problem Details:</strong>
+        <%= diff(@version.reify.problem_details, @incident_report.problem_details) %>
+      </p>
+
+      <p>
+        <strong>How was the problem detected:</strong>
+        <%= diff(@version.reify.how_detected, @incident_report.how_detected ) %>
+      </p>
+      <p>
+        <strong>Current Status:</strong>
+        <%= diff(@version.reify.current_status, @incident_report.current_status) %>
+      </p>
+      <p>
+        <strong>Occurrence Time:</strong>
+        <%= diff(@version.reify.occurrence_time.to_s(:db), @incident_report.occurrence_time.to_s(:db)) %>
+      </p>
+      <p>
+        <strong>Detection Time:</strong>
+        <%= diff(@version.reify.detection_time.to_s(:db), @incident_report.detection_time.to_s(:db)) %>
+      </p>
+      <p>
+        <strong>Recovery Time:</strong>
+        <%= diff(@version.reify.recovery_time.to_s(:db), @incident_report.recovery_time.to_s(:db)) %>
+      </p>
+      <p>
+        <strong>Source:</strong>
+        <%= diff(@version.reify.source, @incident_report.source) %>
+      </p>
+      <p>
+        <strong>Rank:</strong>
+        <%= diff(@version.reify.rank, @incident_report.rank) %>
+      </p>
+      <p>
+        <strong>Loss related to the issue:</strong>
+        <%= diff(@version.reify.loss_related, @incident_report.loss_related) %>
+      </p>
+      <p>
+        <strong>Why did it occured?:</strong>
+        <%= diff(@version.reify.occurred_reason, @incident_report.occurred_reason) %>
+      </p>
+      <p>
+        <strong>Why was it overlooked:</strong>
+        <%= diff(@version.reify.overlooked_reason, @incident_report.overlooked_reason) %>
+      </p>
+      <p>
+        <strong>Action for recovery:</strong>
+        <%= diff(@version.reify.recovery_action, @incident_report.recovery_action) %>
+      </p>
+      <p>
+        <strong>To prevent recurrence:</strong>
+        <%= diff(@version.reify.prevent_action, @incident_report.prevent_action) %>
+      </p>
+      <p>
+        <strong>Concern of recurrence:</strong>
+        <%= diff(@version.reify.recurrence_concern, @incident_report.recurrence_concern) %>
+      </p>
+      <p>
+        <strong>Status of the measurer:</strong>
+        <%= diff(@version.reify.measurer_status, @incident_report.measurer_status) %>
+      </p>
+    </div>
+    <p>
+    <%= "Version authored by #{find_version_author_name(@version)} on #{@version.created_at} by '#{@version.event.humanize}'." %>
+    </p>
+  </div>
+  <%= link_to 'Back', edit_incident_report_path(@incident_report), class: 'btn btn-danger' %>
+  <%= link_to 'Rollback', rollback_incident_report_version_path(@incident_report, @version), class: 'btn btn-primary', method: 'PATCH' %>
+</div>

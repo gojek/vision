@@ -2,7 +2,8 @@ Rails.application.routes.draw do
  
 
   
-  resources :incident_reports
+    get 'signin' => 'pages#signin'
+
   get 'incident_reports/show'
 
   get 'incident_reports/index'
@@ -17,13 +18,34 @@ Rails.application.routes.draw do
   get 'register' => 'users#new'
   post 'users' => 'users#create'
   get 'users/edit/:id' => 'users#edit', :as => 'edit'
-  devise_for :users
+  devise_for :users, skip: [:sessions], controllers: { omniauth_callbacks: "users/omniauth_callbacks" } 
+  devise_scope :user do
+    get 'sign_in', :to => 'pages#signin', :as => :new_user_session
+    get 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
+  end 
   resources :pages
   resources :users
-  resources :incident_reports
+  resources :incident_reports do
+      collection do 
+          get :deleted # <= this
+      end
+  resources :versions, only: [:destroy] do
+    member do
+      get :diff, to: 'versions#diff'
+      patch :rollback, to: 'versions#rollback'
+    end
+  end
+end
+resources :versions, only: [] do
+    member do
+      patch :bringback  # <= and that
+    end
+  end
   root to: 'pages#index'
   put 'lock_user/:id' => 'users#lock_user', :as => 'lock_user'
   put 'unlock_user/:id' => 'users#unlock_user', :as => 'unlock_user'
+
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
