@@ -1,0 +1,26 @@
+<h2>Previous Versions</h2>
+
+<table class='table'>
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Author</th>
+      <th>Event</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%- document.versions.reverse.each do |version| %>
+      <tr>
+        <td><%= version.created_at.to_s(:long) %></td>
+        <td><%= find_version_author_name(version) %></td>
+        <td><%= version.event.humanize %></td>
+        <td><%= link_to 'Diff', diff_incident_report_version_path(@incident_report, version) %></td>
+        <td><%= link_to 'Rollback', rollback_incident_report_version_path(@incident_report, version), method: 'PATCH' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

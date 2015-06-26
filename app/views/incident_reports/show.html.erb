@@ -21,6 +21,10 @@
                         <strong>Report ID:</strong>
                         <%= @incident_report.id %>
                       </p>
+                      <p>
+                        <strong>Last Update:</strong>
+                        <%= @incident_report.updated_at.to_s(:long) %>
+                      </p>
 
                       <p>
                         <strong>Service impact:</strong>
@@ -122,6 +126,17 @@
                           <% end %>
                       </div>
                     <!-- /.col-lg-12 -->
+                     <div class="col-lg-4">
+            <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-clock-o fa-fw"></i> Timeline
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <%= render 'timeline', document: @incident_report %>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
                 </div>
                 
                 <!-- /.row -->

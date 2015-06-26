@@ -7,7 +7,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 
-                <%= link_to 'Veritrans', root_url, class: 'navbar-brand' %>
+                <%= link_to 'Vision', root_url, class: 'navbar-brand' %>
             </div>
             <!-- /.navbar-header -->
 
@@ -15,21 +15,17 @@
                 <!-- /.dropdown -->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <%= current_user.email %>
+                        <%= current_user.name %>
                         <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
                         <li>
                         </li>
-                        <li>
-                            <%= link_to edit_user_registration_url do %>
-                                <i class="fa fa-gear fa-fw"></i> Settings
-                            <% end %>
-                        </li>
+                        
                         <li class="divider">
                         </li>
                         <li>
-                            <%= link_to 'Logout', destroy_user_session_path, :method => :delete %>
+                            <%= link_to 'Logout', :destroy_user_session %>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -50,11 +46,7 @@
 
                          <a href ="#" > <i class="fa fa-users fa-fw"></i> User<span class="fa arrow"></span></a>
                          <ul class="nav nav-second-level">
-                        <li>
-                            <%= link_to register_path do %>
-                               <i class="fa fa-user-plus fa-fw"></i></i> Register User
-                            <% end %>
-                        </li>
+                        
                         <li>
                             <%= link_to users_path do %>
                                 <i class="fa fa-user fa-fw"></i> Manage Users 
