@@ -30,6 +30,9 @@ gem 'kaminari'
 gem 'bootstrap-kaminari-views'
 gem 'jquery-turbolinks'
 gem 'to_xls-rails'
+gem 'paper_trail', '~> 4.0.0.rc'
+gem 'omniauth-google-oauth2'
+gem 'diffy'
 
 group :production do
 	gem 'pg'
