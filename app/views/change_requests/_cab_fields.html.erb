@@ -1,19 +1,19 @@
-<div class= "nested-fields" >
+<div class= "nested-fields panel panel-default panel-body" >
 	<div class="field">
 		<%= f.label :name %>
-		<%= f.text_field :name %>
+		<%= f.text_field :name, class: 'form-control' %>
 	</div>
 	<div class="field">
 		<%= f.label :position %>
-		<%= f.text_field :position %>
+		<%= f.text_field :position, class: 'form-control' %>
 	</div>
 	<div class="field">
 		<%= f.label :approve %>
-		<%= f.check_box :approve %>
+		<%= f.check_box :approve, class: 'form-control' %>
 	</div>
 	<div class="field">
 		<%= f.label :reason %>
-		<%= f.text_area :reason %>
-	</div>
-	<%= link_to_remove_association "remove CAB", f %>
+		<%= f.text_area :reason, class: 'form-control' %>
+	</div><br>
+	<%= link_to_remove_association "remove CAB", f, class:"btn btn-danger" %>
 </div>

@@ -1,4 +1,8 @@
 <p id="notice"><%= notice %></p>
+  <h1 class="page-header">Incident Reports</h1>
+  <div class="panel panel-default">
+              <div class="panel-heading">Change requests </div>
+              <div class="panel-body">
 
 <h1>Listing Change Requests</h1>
 
@@ -30,7 +34,7 @@
         <td><%= change_request.business_justification %></td>
         <td><%= change_request.requestor_position %></td>
         <td><%= change_request.note %></td>
-        <td><%= change_request.created_at %></td>
+        <td><%= change_request.created_at.to_s(:long) %></td>
         <td><%= change_request.user.name %></td>
         <td><%= link_to 'Show', change_request %></td>
         <%if current_user==change_request.user || current_user.role == 'admin' %>
@@ -48,3 +52,5 @@
 <br>
 
 <%= link_to 'New Change request', new_change_request_path %>
+</div>
+</div>
