@@ -18,57 +18,74 @@
   <li role="presentation"><a href="#approval" data-toggle="tab">Approval</a></li>
   <li role="presentation"><a href="#implementation" data-toggle="tab">Implementation</a></li>
 </ul>
-<div class="tab-content">
+ <%= tinymce :theme => "modern", :skin => 'light'%>
+<div class="row">
+  <div class="col-lg-6">
+    <div class="tab-content">
   <div class="tab-pane fade in active" id="request">
     <div class="field form-group">
       <%= f.label :requestor_desc %><br>
-      <%= f.text_field :requestor_desc %>
-    </div>
-    <div class="field form-group">
-      <%= f.label :priority %><br>
-      <%= f.text_field :priority %>
-    </div>
-    <div class="field form-group">
-      <%= f.label :category %><br>
-      <%= f.text_field :category %>
-    </div>
-    <div class="field form-group">
-      <%= f.label :type %><br>
-      <%= f.text_field :cr_type %>
-    </div>
-    <div class="field form-group">
-      <%= f.label :change_requirement %><br>
-      <%= f.text_area :change_requirement %>
-    </div>
-    <div class="field form-group">
-      <%= f.label :business_justification %><br>
-      <%= f.text_area :business_justification %>
+      <%= f.text_field :requestor_desc, class: 'form-control' %>
     </div>
     <div class="field form-group">
       <%= f.label :requestor_position %><br>
-      <%= f.text_field :requestor_position %>
+      <%= f.text_field :requestor_position, class: 'form-control' %>
+    </div>
+    <div class="field form-group">
+      <%= f.label :priority %><br>
+      <%= f.text_field :priority, class: 'form-control' %>
+    </div>
+    <div class="field form-group">
+      <%= f.label :category %><br>
+      <%= f.text_field :category, class: 'form-control' %>
+    </div>
+    <div class="field form-group">
+      <%= f.label :type %><br>
+      <%= f.text_field :cr_type, class: 'form-control' %>
+    </div>
+    <div class="field form-group">
+      <%= f.label :change_requirement %><br>
+      <%= f.text_area :change_requirement, class: "tinymce", :cols => 50 %>
+    </div>
+    <div class="field form-group">
+      <%= f.label :business_justification %><br>
+      <%= f.text_area :business_justification, class: "tinymce" %>
+
     </div>
     <div class="field form-group">
       <%= f.label :note %><br>
-      <%= f.text_area :note %>
+      <%= f.text_area :note, class: "tinymce"%>
+    </div>
+    <h3>Dependency</h3>
+     <div class="field form-group">
+      <%= f.label :db %><br>
+      <%= f.text_area :db, class: 'form-control' %>
+    </div>
+     <div class="field form-group">
+      <%= f.label :os %><br>
+      <%= f.text_area :os, class: 'form-control' %>
+    </div>
+    <div class="field form-group">
+      <%= f.label :net %><br>
+      <%= f.text_area :net, class: 'form-control' %>
     </div>
   </div>
   <div class="tab-pane fade" id="analysis">
     <div class="field form-group">
       <%= f.label :analysis %><br>
-      <%= f.text_area :analysis %>
+      <%= f.text_area :analysis, class: "tinymce" %>
     </div>
     <div class="field form-group">
       <%= f.label :solution %><br>
-      <%= f.text_area :solution %>
+      <%= f.text_area :solution, class: "tinymce" %>
     </div>
     <div class="field form-group">
       <%= f.label :impact %><br>
-      <%= f.text_area :impact %>
+      <%= f.text_area :impact, class: "tinymce" %>
     </div>
     <div class="field form-group">
       <%= f.label :scope %><br>
-      <%= f.text_field :scope %>
+      <%= f.text_field :scope, class: 'form-control' %>
     </div>
     <h3>CAB</h3>
     <div id="cabs">
@@ -81,15 +98,15 @@
   <div class="tab-pane fade" id="design">
     <div class="field form-group">
       <%= f.label :design %><br>
-      <%= f.text_area :design %>
+      <%= f.text_area :design, class: "tinymce" %>
     </div>
     <div class="field form-group">
       <%= f.label :backup %><br>
-      <%= f.text_area :backup %>
+      <%= f.text_area :backup, class: "tinymce" %>
     </div>
     <div class="field form-group">
       <%= f.label :restore %><br>
-      <%= f.text_area :restore %>
+      <%= f.text_area :restore, class: "tinymce" %>
     </div>
   </div>
   <div class="tab-pane fade" id="testing">
@@ -99,11 +116,11 @@
     </div>
     <div class="field form-group">
       <%= f.label :testing_procedure %><br>
-      <%= f.text_area :testing_procedure %>
+      <%= f.text_area :testing_procedure, class: "tinymce" %>
     </div>
     <div class="field form-group">
       <%= f.label :testing_notes %><br>
-      <%= f.text_area :testing_notes %>
+      <%= f.text_area :testing_notes, class: "tinymce" %>
     </div>
     <h3>Tester</h3>
     <div id="testers">
@@ -141,11 +158,11 @@
     </div>
     <div class="field form-group">
       <%= f.label :implementation_notes %><br>
-      <%= f.text_area :implementation_notes %>
+      <%= f.text_area :implementation_notes, class: "tinymce" %>
     </div>
     <div class="field form-group">
       <%= f.label :grace_period_notes %><br>
-      <%= f.text_area :grace_period_notes %>
+      <%= f.text_area :grace_period_notes, class: "tinymce" %>
     </div>
     <h3>Implementer</h3>
     <div id="implementers">
@@ -156,10 +173,12 @@
     </div>
 
   </div>
-
+  </div>
+</div>
 </div>
 <br>
   <div class="actions">
     <%= f.submit class:"btn btn-primary" %>
   </div>
+
 <% end %>
