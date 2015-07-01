@@ -11,13 +11,16 @@
         <!-- Navigation -->
         <% if current_user!=nil%>
         <%= render 'pages/nav' %>
-        <% end %>
-        <!-- Page Content -->
-    <div id="page-wrapper">
+        <div id="page-wrapper">
+      
         <div class="container-fluid">
-		              <%= yield %>
+                  <%= yield %>
         </div>
     </div>
+        <% end %>
+        <!-- Page Content -->
+        <%= yield :login %>
+
 	</div>
 </body>
 </html>
