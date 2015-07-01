@@ -26,7 +26,6 @@ class User < ActiveRecord::Base
       user.email = auth[:info][:email]
       user.name = auth[:info][:name]
       user.role = 'user'
-      user.locked_at = Time.current
     end
   end
 
