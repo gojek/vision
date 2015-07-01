@@ -11,7 +11,71 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150625070012) do
+ActiveRecord::Schema.define(version: 20150701073401) do
+
+  create_table "approvers", force: :cascade do |t|
+    t.string   "name"
+    t.string   "position"
+    t.integer  "change_request_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "approvers", ["change_request_id"], name: "index_approvers_on_change_request_id"
+
+  create_table "cabs", force: :cascade do |t|
+    t.string   "name"
+    t.string   "position"
+    t.boolean  "approve"
+    t.text     "reason"
+    t.integer  "change_request_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "cabs", ["change_request_id"], name: "index_cabs_on_change_request_id"
+
+  create_table "change_requests", force: :cascade do |t|
+    t.string   "requestor_desc"
+    t.string   "priority"
+    t.string   "category"
+    t.string   "cr_type"
+    t.text     "change_requirement"
+    t.text     "business_justification"
+    t.string   "requestor_position"
+    t.text     "note"
+    t.text     "analysis"
+    t.text     "solution"
+    t.text     "impact"
+    t.string   "scope"
+    t.text     "design"
+    t.text     "backup"
+    t.text     "restore"
+    t.boolean  "testing_environment_available"
+    t.text     "testing_procedure"
+    t.text     "testing_notes"
+    t.datetime "schedule_change_date"
+    t.datetime "planned_completion"
+    t.datetime "grace_period_starts"
+    t.datetime "grace_period_end"
+    t.text     "implementation_notes"
+    t.text     "grace_period_notes"
+    t.integer  "user_id"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
+  add_index "change_requests", ["user_id"], name: "index_change_requests_on_user_id"
+
+  create_table "implementers", force: :cascade do |t|
+    t.string   "name"
+    t.string   "position"
+    t.integer  "change_request_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "implementers", ["change_request_id"], name: "index_implementers_on_change_request_id"
 
   create_table "incident_report_versions", force: :cascade do |t|
     t.string   "item_type",       null: false
@@ -50,6 +114,16 @@ ActiveRecord::Schema.define(version: 20150625070012) do
   end
 
   add_index "incident_reports", ["user_id"], name: "index_incident_reports_on_user_id"
+
+  create_table "testers", force: :cascade do |t|
+    t.string   "name"
+    t.string   "position"
+    t.integer  "change_request_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "testers", ["change_request_id"], name: "index_testers_on_change_request_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "email",              default: "", null: false

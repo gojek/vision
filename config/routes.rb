@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
  
 
-  
+  resources :change_requests
     get 'signin' => 'pages#signin'
 
   get 'incident_reports/show'

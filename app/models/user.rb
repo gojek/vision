@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
   validates :role, inclusion: { in: ROLES,
                                 message: '%{value} is not a valid role' }
   has_many :IncidentReports
+  has_many :ChangeRequests
 
   def account_active?
     locked_at.nil?
