@@ -14,7 +14,7 @@
       <th>Requestor position</th>
       <th>Note</th>
       <th>Request Date</th>
-      <th>User</th>
+      <th>Requestor</th>
       <th colspan="3">Action</th>
     </tr>
   </thead>
@@ -33,9 +33,14 @@
         <td><%= change_request.created_at %></td>
         <td><%= change_request.user.name %></td>
         <td><%= link_to 'Show', change_request %></td>
+        <%if current_user==change_request.user || current_user.role == 'admin' %>
         <td><%= link_to 'Edit', edit_change_request_path(change_request) %></td>
         <td><%= link_to 'Destroy', change_request, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+         <% else %>
+        <td></td>
+        <td></td>
+        <% end %>
+    </tr>
     <% end %>
   </tbody>
 </table>
