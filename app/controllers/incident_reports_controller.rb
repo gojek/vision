@@ -68,7 +68,8 @@ class IncidentReportsController < ApplicationController
   end
 
   def deleted
-    @incident_reports = IncidentReportVersion.where(event: 'destroy').page(params[:page]).per(params[:per_page])
+    @incident_reports = IncidentReportVersion.where(event: 'destroy')
+                        .page(params[:page]).per(params[:per_page])
   end
 
   private
@@ -79,16 +80,15 @@ class IncidentReportsController < ApplicationController
 
   def incident_report_params
     params.require(:incident_report)
-    .permit(:service_impact, :problem_details, :how_detected,
-            :occurrence_time, :detection_time, :recovery_time,
-            :source, :rank, :loss_related, :occurred_reason,
-            :overlooked_reason, :recovery_action, :prevent_action,
-            :recurrence_concern, :current_status, :measurer_status)
+      .permit(:service_impact, :problem_details, :how_detected,
+              :occurrence_time, :detection_time, :recovery_time,
+              :source, :rank, :loss_related, :occurred_reason,
+              :overlooked_reason, :recovery_action, :prevent_action,
+              :recurrence_concern, :current_status, :measurer_status)
   end
 
   def owner_required
-    if current_user != @incident_report.user && current_user.role != 'admin'
-      redirect_to incident_reports_url
-    end
+    redirect_to incident_reports_url if
+    current_user != @incident_report.user && current_user.role != 'admin'
   end
 end
