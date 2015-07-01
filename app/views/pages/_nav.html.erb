@@ -58,7 +58,7 @@
                         <% end %>
                          
                         <li>
-                           <a href ="#" > <i class="fa fa-pencil-square-o fa-fw"></i>  Incident report <span class="fa arrow"></span></a>
+                           <a href ="#" > <i class="fa fa-pencil-square-o fa-fw"></i>  Incident Report <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                             <li>
                                  <%= link_to incident_reports_url do %>
@@ -68,6 +68,22 @@
                             <li>
                                <%= link_to new_incident_report_path do %>
                                 <i class="fa fa-plus fa-fw"></i> Create Incident Report
+                            <% end %>
+                            </li>
+                            </ul>
+                        </li>
+
+                        <li>
+                           <a href ="#" > <i class="fa fa-pencil-square-o fa-fw"></i>  Change Request <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                            <li>
+                                 <%= link_to change_requests_url do %>
+                                <i class="fa fa-search fa-fw"></i> View Change Requests
+                            <% end %>
+                            </li>
+                            <li>
+                               <%= link_to new_change_request_path do %>
+                                <i class="fa fa-plus fa-fw"></i> Create Change Requests
                             <% end %>
                             </li>
                             </ul>

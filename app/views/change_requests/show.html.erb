@@ -1,0 +1,130 @@
+<p id="notice"><%= notice %></p>
+<p>
+  <strong>Requestor:</strong>
+  <%= @change_request.user.name %>
+</p>
+<p>
+  <strong>Requestor desc:</strong>
+  <%= @change_request.requestor_desc %>
+</p>
+
+<p>
+  <strong>Requestor position:</strong>
+  <%= @change_request.requestor_position %>
+</p>
+
+
+<p>
+  <strong>Priority:</strong>
+  <%= @change_request.priority %>
+</p>
+
+<p>
+  <strong>Category:</strong>
+  <%= @change_request.category %>
+</p>
+
+<p>
+  <strong>Type:</strong>
+  <%= @change_request.cr_type %>
+</p>
+
+<p>
+  <strong>Change requirement:</strong>
+  <%= @change_request.change_requirement %>
+</p>
+
+<p>
+  <strong>Business justification:</strong>
+  <%= @change_request.business_justification %>
+</p>
+
+<p>
+  <strong>Note:</strong>
+  <%= @change_request.note %>
+</p>
+
+<p>
+  <strong>Analysis:</strong>
+  <%= @change_request.analysis %>
+</p>
+
+<p>
+  <strong>Solution:</strong>
+  <%= @change_request.solution %>
+</p>
+
+<p>
+  <strong>Impact:</strong>
+  <%= @change_request.impact %>
+</p>
+
+<p>
+  <strong>Scope:</strong>
+  <%= @change_request.scope %>
+</p>
+
+<p>
+  <strong>Design:</strong>
+  <%= @change_request.design %>
+</p>
+
+<p>
+  <strong>Backup:</strong>
+  <%= @change_request.backup %>
+</p>
+
+<p>
+  <strong>Restore:</strong>
+  <%= @change_request.restore %>
+</p>
+
+<p>
+  <strong>Testing environment available:</strong>
+  <%= @change_request.testing_environment_available %>
+</p>
+
+<p>
+  <strong>Testing procedure:</strong>
+  <%= @change_request.testing_procedure %>
+</p>
+
+<p>
+  <strong>Testing notes:</strong>
+  <%= @change_request.testing_notes %>
+</p>
+
+<p>
+  <strong>Schedule change date:</strong>
+  <%= @change_request.schedule_change_date %>
+</p>
+
+<p>
+  <strong>Planned completion:</strong>
+  <%= @change_request.planned_completion %>
+</p>
+
+<p>
+  <strong>Grace period starts:</strong>
+  <%= @change_request.grace_period_starts %>
+</p>
+
+<p>
+  <strong>Grace period end:</strong>
+  <%= @change_request.grace_period_end %>
+</p>
+
+<p>
+  <strong>Implementation notes:</strong>
+  <%= @change_request.implementation_notes %>
+</p>
+
+<p>
+  <strong>Grace period notes:</strong>
+  <%= @change_request.grace_period_notes %>
+</p>
+
+
+
+<%= link_to 'Edit', edit_change_request_path(@change_request) %> |
+<%= link_to 'Back', change_requests_path %>

@@ -12,7 +12,12 @@
         <% if current_user!=nil%>
         <%= render 'pages/nav' %>
         <% end %>
-		<%= yield %>
+        <!-- Page Content -->
+    <div id="page-wrapper">
+        <div class="container-fluid">
+		              <%= yield %>
+        </div>
+    </div>
 	</div>
 </body>
 </html>

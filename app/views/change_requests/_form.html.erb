@@ -1,0 +1,165 @@
+<%= form_for(@change_request) do |f| %>
+  <% if @change_request.errors.any? %>
+    <div id="error_explanation">
+      <h3><%= pluralize(@change_request.errors.count, "error") %> prohibited this change_request from being saved:</h3>
+
+      <ul>
+      <% @change_request.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+<ul class="nav nav-tabs">
+  <li class="active" ><a href="#request" data-toggle="tab">Request</a></li>
+  <li role="presentation" ><a href="#analysis" data-toggle="tab">Analysis Impact Solution</a></li>
+  <li role="presentation"><a href="#design" data-toggle="tab" >Design and Backup Plan</a></li>
+  <li role="presentation"><a href="#testing" data-toggle="tab">Testing</a></li>
+  <li role="presentation"><a href="#approval" data-toggle="tab">Approval</a></li>
+  <li role="presentation"><a href="#implementation" data-toggle="tab">Implementation</a></li>
+</ul>
+<div class="tab-content">
+  <div class="tab-pane fade in active" id="request">
+    <div class="field form-group">
+      <%= f.label :requestor_desc %><br>
+      <%= f.text_field :requestor_desc %>
+    </div>
+    <div class="field form-group">
+      <%= f.label :priority %><br>
+      <%= f.text_field :priority %>
+    </div>
+    <div class="field form-group">
+      <%= f.label :category %><br>
+      <%= f.text_field :category %>
+    </div>
+    <div class="field form-group">
+      <%= f.label :type %><br>
+      <%= f.text_field :cr_type %>
+    </div>
+    <div class="field form-group">
+      <%= f.label :change_requirement %><br>
+      <%= f.text_area :change_requirement %>
+    </div>
+    <div class="field form-group">
+      <%= f.label :business_justification %><br>
+      <%= f.text_area :business_justification %>
+    </div>
+    <div class="field form-group">
+      <%= f.label :requestor_position %><br>
+      <%= f.text_field :requestor_position %>
+    </div>
+    <div class="field form-group">
+      <%= f.label :note %><br>
+      <%= f.text_area :note %>
+    </div>
+  </div>
+  <div class="tab-pane fade" id="analysis">
+    <div class="field form-group">
+      <%= f.label :analysis %><br>
+      <%= f.text_area :analysis %>
+    </div>
+    <div class="field form-group">
+      <%= f.label :solution %><br>
+      <%= f.text_area :solution %>
+    </div>
+    <div class="field form-group">
+      <%= f.label :impact %><br>
+      <%= f.text_area :impact %>
+    </div>
+    <div class="field form-group">
+      <%= f.label :scope %><br>
+      <%= f.text_field :scope %>
+    </div>
+    <h3>CAB</h3>
+    <div id="cabs">
+      <%= f.fields_for :cabs do |cab| %>
+        <%= render 'cab_fields', :f => cab %>
+      <% end %>
+      <%= link_to_add_association 'add cab', f, :cabs %>
+    </div>
+  </div>
+  <div class="tab-pane fade" id="design">
+    <div class="field form-group">
+      <%= f.label :design %><br>
+      <%= f.text_area :design %>
+    </div>
+    <div class="field form-group">
+      <%= f.label :backup %><br>
+      <%= f.text_area :backup %>
+    </div>
+    <div class="field form-group">
+      <%= f.label :restore %><br>
+      <%= f.text_area :restore %>
+    </div>
+  </div>
+  <div class="tab-pane fade" id="testing">
+    <div class="field form-group">
+      <%= f.label :testing_environment_available %><br>
+      <%= f.check_box :testing_environment_available %>
+    </div>
+    <div class="field form-group">
+      <%= f.label :testing_procedure %><br>
+      <%= f.text_area :testing_procedure %>
+    </div>
+    <div class="field form-group">
+      <%= f.label :testing_notes %><br>
+      <%= f.text_area :testing_notes %>
+    </div>
+    <h3>Tester</h3>
+    <div id="testers">
+      <%= f.fields_for :testers do |tes| %>
+       <%= render 'tester_fields', :f => tes %>
+      <% end %>
+      <%= link_to_add_association 'add tester', f, :testers %>
+    </div>
+  </div>
+  <div class="tab-pane fade" id="approval">
+    <h3>Approval</h3>
+    <div id="approvals">
+      <%= f.fields_for :approvers do |app| %>
+        <%= render 'approver_fields', :f => app %>
+      <% end %>
+      <%= link_to_add_association 'add approver', f, :approvers %>
+    </div>
+  </div>
+  <div class="tab-pane fade" id="implementation">
+    <div class="field form-group">
+      <%= f.label :schedule_change_date %><br>
+      <%= f.datetime_select :schedule_change_date %>
+    </div>
+    <div class="field form-group">
+      <%= f.label :planned_completion %><br>
+      <%= f.datetime_select :planned_completion %>
+    </div>
+    <div class="field form-group">
+      <%= f.label :grace_period_starts %><br>
+      <%= f.datetime_select :grace_period_starts %>
+    </div>
+    <div class="field form-group">
+      <%= f.label :grace_period_end %><br>
+      <%= f.datetime_select :grace_period_end %>
+    </div>
+    <div class="field form-group">
+      <%= f.label :implementation_notes %><br>
+      <%= f.text_area :implementation_notes %>
+    </div>
+    <div class="field form-group">
+      <%= f.label :grace_period_notes %><br>
+      <%= f.text_area :grace_period_notes %>
+    </div>
+    <h3>Implementer</h3>
+    <div id="implementers">
+      <%= f.fields_for :implementers do |imp| %>
+        <%= render 'implementer_fields', :f => imp %>
+      <% end %>
+      <%= link_to_add_association 'add implementer', f, :implementers %>
+    </div>
+
+  </div>
+
+</div>
+<br>
+  <div class="actions">
+    <%= f.submit class:"btn btn-primary" %>
+  </div>
+<% end %>
