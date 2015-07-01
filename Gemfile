@@ -34,6 +34,7 @@ gem 'paper_trail', '~> 4.0.0.rc'
 gem 'omniauth-google-oauth2'
 gem 'diffy'
 gem "cocoon"
+gem 'tinymce-rails'
 
 group :production do
 	gem 'pg'

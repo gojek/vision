@@ -70,7 +70,7 @@ class ChangeRequestsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def change_request_params
-      params.require(:change_request).permit(:requestor_desc, :priority, :category, :cr_type, :change_requirement, :business_justification, :requestor_position, :note, :analysis, :solution, :impact, :scope, :design, :backup, :restore, :testing_environment_available, :testing_procedure, :testing_notes, :schedule_change_date, :planned_completion, :grace_period_starts, :grace_period_end, :implementation_notes, :grace_period_notes, 
+      params.require(:change_request).permit(:requestor_desc, :priority, :db, :os, :net, :category, :cr_type, :change_requirement, :business_justification, :requestor_position, :note, :analysis, :solution, :impact, :scope, :design, :backup, :restore, :testing_environment_available, :testing_procedure, :testing_notes, :schedule_change_date, :planned_completion, :grace_period_starts, :grace_period_end, :implementation_notes, :grace_period_notes, 
         implementers_attributes: [ :name, :position ], testers_attributes: [ :name, :position], cabs_attributes: [:name, :position, :reason, :approve], approvals_attributes: [:name, :position])
     end
 
