@@ -3,8 +3,7 @@ class IncidentReportsController < ApplicationController
   before_action :set_incident_report, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
   before_action :owner_required, only: [:edit, :update, :destroy]
-  # GET /incident_reports
-  # GET /incident_reports.json
+
   def index
     @q = IncidentReport.ransack(params[:q])
     @incident_reports = @q.result(distinct: true).page(params[:page]).per(params[:per_page])
@@ -14,22 +13,16 @@ class IncidentReportsController < ApplicationController
     end
   end
 
-  # GET /incident_reports/1
-  # GET /incident_reports/1.json
   def show
   end
 
-  # GET /incident_reports/new
   def new
     @incident_report = IncidentReport.new
   end
 
-  # GET /incident_reports/1/edit
   def edit
   end
 
-  # POST /incident_reports
-  # POST /incident_reports.json
   def create
     @incident_report = current_user.IncidentReports.build(incident_report_params)
     respond_to do |format|
@@ -43,8 +36,6 @@ class IncidentReportsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /incident_reports/1
-  # PATCH/PUT /incident_reports/1.json
   def update
     respond_to do |format|
       if @incident_report.update(incident_report_params)
@@ -57,8 +48,6 @@ class IncidentReportsController < ApplicationController
     end
   end
 
-  # DELETE /incident_reports/1
-  # DELETE /incident_reports/1.json
   def destroy
     @incident_report.destroy
     respond_to do |format|
