@@ -4,13 +4,10 @@ class ChangeRequest < ActiveRecord::Base
   has_many :implementers
   has_many :cabs
   has_many :approvers
-  accepts_nested_attributes_for :implementers,
-                                    reject_if: proc { |attributes| attributes['name'].blank? || attributes['position'].blank?}
-  accepts_nested_attributes_for :testers,
-                                    reject_if: proc { |attributes| attributes['name'].blank? || attributes['position'].blank?}
-  accepts_nested_attributes_for :cabs,
-                                    reject_if: proc { |attributes| attributes['name'].blank? || attributes['position'].blank?}
-  accepts_nested_attributes_for :approvers,
-                                    reject_if: proc { |attributes| attributes['name'].blank? || attributes['position'].blank?}
-  validates :requestor_desc, :priority, :category, :cr_type, :change_requirement, :business_justification, :requestor_position, presence: true
+  accepts_nested_attributes_for :implementers
+  accepts_nested_attributes_for :testers
+  accepts_nested_attributes_for :cabs
+  accepts_nested_attributes_for :approvers
+  validates :change_summary, :priority, :category, :cr_type, :change_requirement, :business_justification, :requestor_position, presence: true
 end
+

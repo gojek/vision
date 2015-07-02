@@ -4,12 +4,12 @@
               <div class="panel-heading">Change requests </div>
               <div class="panel-body">
 
-<h1>Listing Change Requests</h1>
+<h1>Change Request List</h1>
 
 <table class='table table-striped'>
   <thead>
     <tr>
-      <th>Requestor desc</th>
+      <th>Change Summary</th>
       <th>Priority</th>
       <th>Category</th>
       <th>Type</th>
@@ -26,16 +26,16 @@
   <tbody>
     <% @change_requests.each do |change_request| %>
       <tr>
-        <td><%= change_request.requestor_desc %></td>
-        <td><%= change_request.priority %></td>
-        <td><%= change_request.category %></td>
-        <td><%= change_request.cr_type %></td>
-        <td><%= change_request.change_requirement %></td>
-        <td><%= change_request.business_justification %></td>
-        <td><%= change_request.requestor_position %></td>
-        <td><%= change_request.note %></td>
-        <td><%= change_request.created_at.to_s(:long) %></td>
-        <td><%= change_request.user.name %></td>
+        <td><%=raw change_request.change_summary %></td>
+        <td><%=raw change_request.priority %></td>
+        <td><%=raw change_request.category %></td>
+        <td><%=raw change_request.cr_type %></td>
+        <td><%=raw change_request.change_requirement %></td>
+        <td><%=raw change_request.business_justification %></td>
+        <td><%=raw change_request.requestor_position %></td>
+        <td><%=raw change_request.note %></td>
+        <td><%=raw change_request.created_at.to_s(:long) %></td>
+        <td><%=raw change_request.user.name %></td>
         <td><%= link_to 'Show', change_request %></td>
         <%if current_user==change_request.user || current_user.role == 'admin' %>
         <td><%= link_to 'Edit', edit_change_request_path(change_request) %></td>
@@ -48,7 +48,7 @@
     <% end %>
   </tbody>
 </table>
-
+  <%= paginate @change_requests, :theme => 'twitter-bootstrap-3' %>
 <br>
 
 <%= link_to 'New Change request', new_change_request_path %>
