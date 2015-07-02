@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150701105047) do
+ActiveRecord::Schema.define(version: 20150702080853) do
 
   create_table "approvers", force: :cascade do |t|
     t.string   "name"
@@ -65,9 +65,21 @@ ActiveRecord::Schema.define(version: 20150701105047) do
     t.text     "net"
     t.text     "db"
     t.text     "os"
+    t.string   "requestor_name"
   end
 
   add_index "change_requests", ["user_id"], name: "index_change_requests_on_user_id"
+
+  create_table "comments", force: :cascade do |t|
+    t.text     "body"
+    t.integer  "change_request_id"
+    t.integer  "user_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "comments", ["change_request_id"], name: "index_comments_on_change_request_id"
+  add_index "comments", ["user_id"], name: "index_comments_on_user_id"
 
   create_table "implementers", force: :cascade do |t|
     t.string   "name"
