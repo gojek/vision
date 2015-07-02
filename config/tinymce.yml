@@ -1,9 +1,3 @@
-theme_modern_toolbar_location: top
-theme_modern_toolbar_align: left
 theme_modern_statusbar_location: bottom
 theme_modern_buttons3_add:
-  - tablecontrols
-  - fullscreen
-plugins:
-  - table
   - fullscreen

@@ -18,14 +18,14 @@
   <li role="presentation"><a href="#approval" data-toggle="tab">Approval</a></li>
   <li role="presentation"><a href="#implementation" data-toggle="tab">Implementation</a></li>
 </ul>
- <%= tinymce :theme => "modern", :skin => 'light'%>
+ <%= tinymce :theme => "modern", :skin => 'light', menubar: "false"%>
 <div class="row">
   <div class="col-lg-6">
     <div class="tab-content">
   <div class="tab-pane fade in active" id="request">
     <div class="field form-group">
-      <%= f.label :requestor_desc %><br>
-      <%= f.text_field :requestor_desc, class: 'form-control' %>
+      <%= f.label :change_summary %><br>
+      <%= f.text_field :change_summary, class: 'form-control' %>
     </div>
     <div class="field form-group">
       <%= f.label :requestor_position %><br>
@@ -33,19 +33,52 @@
     </div>
     <div class="field form-group">
       <%= f.label :priority %><br>
-      <%= f.text_field :priority, class: 'form-control' %>
+      <div class="row">
+        <div class="col-lg-6">
+          <%= f.select :priority, options_for_select(%w[Critical Urgent High Normal Low]), {include_blank: true}, {class: 'form-control'} %>
+        </div>
+      </div>
     </div>
     <div class="field form-group">
       <%= f.label :category %><br>
-      <%= f.text_field :category, class: 'form-control' %>
+      <div class="row">
+        <div class="col-lg-6">
+          <select class="form-control" id="category-picker" name="picker">
+             <option value=""></option>
+             <option value="Application">Application</option>
+             <option value="Server">Server</option>
+             <option value="Network Equpment">Network Equipment</option>
+             <option value="User Access">User Access</option>
+             <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="col-lg-6">
+          <%= f.text_field :category, "data-depends-on" => "#category-picker", "data-depends-on-value" => "Other", class: 'form-control' %>
+        </div>
+      </div>
     </div>
     <div class="field form-group">
       <%= f.label :type %><br>
-      <%= f.text_field :cr_type, class: 'form-control' %>
+      <div class="row">
+      <div class="col-lg-6">
+        <select class='form-control' id="type_picker" name="picker">
+           <option value=""></option>
+           <option value="Security">Security</option>
+           <option value="Update">Update</option>
+           <option value="Install/Uninstall">Install/Uninstall</option>
+           <option value="Configuration Change">Configuration Change</option>
+           <option value="Emergency Change">Emergency Change</option>
+           <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="col-lg-6">
+        <%= f.text_field :cr_type, "data-depends-on" => "#type_picker", "data-depends-on-value" => "Other", class: 'form-control' %>
+      </div>
+    </div>
     </div>
     <div class="field form-group">
       <%= f.label :change_requirement %><br>
-      <%= f.text_area :change_requirement, class: "tinymce", :cols => 50 %>
+      <%= f.text_area :change_requirement, class: "tinymce" %>
     </div>
     <div class="field form-group">
       <%= f.label :business_justification %><br>
@@ -58,15 +91,15 @@
     </div>
     <h3>Dependency</h3>
      <div class="field form-group">
-      <%= f.label :os %><br>
+      <%= f.label :operating_system %><br>
       <%= f.text_area :os, class: 'form-control' %>
     </div>
     <div class="field form-group">
-      <%= f.label :db %><br>
+      <%= f.label :data_base %><br>
       <%= f.text_area :db, class: 'form-control' %>
     </div>
     <div class="field form-group">
-      <%= f.label :net %><br>
+      <%= f.label :network %><br>
       <%= f.text_area :net, class: 'form-control' %>
     </div>
   </div>
@@ -104,10 +137,6 @@
       <%= f.label :backup %><br>
       <%= f.text_area :backup, class: "tinymce" %>
     </div>
-    <div class="field form-group">
-      <%= f.label :restore %><br>
-      <%= f.text_area :restore, class: "tinymce" %>
-    </div>
   </div>
   <div class="tab-pane fade" id="testing">
     <div class="field form-group">
@@ -142,19 +171,19 @@
   <div class="tab-pane fade" id="implementation">
     <div class="field form-group">
       <%= f.label :schedule_change_date %><br>
-      <%= f.datetime_select :schedule_change_date %>
+      <%= f.datetime_select :schedule_change_date, :include_blank => true %>
     </div>
     <div class="field form-group">
       <%= f.label :planned_completion %><br>
-      <%= f.datetime_select :planned_completion %>
+      <%= f.datetime_select :planned_completion, :include_blank => true %>
     </div>
     <div class="field form-group">
       <%= f.label :grace_period_starts %><br>
-      <%= f.datetime_select :grace_period_starts %>
+      <%= f.datetime_select :grace_period_starts, :include_blank => true %>
     </div>
     <div class="field form-group">
       <%= f.label :grace_period_end %><br>
-      <%= f.datetime_select :grace_period_end %>
+      <%= f.datetime_select :grace_period_end, :include_blank => true %>
     </div>
     <div class="field form-group">
       <%= f.label :implementation_notes %><br>
