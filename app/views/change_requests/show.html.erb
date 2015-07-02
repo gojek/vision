@@ -1,17 +1,19 @@
 <p id="notice"><%= notice %></p>
 <p>
   <strong>Requestor:</strong>
-  <%= @change_request.user.name %>
-</p>
-<p>
-  <strong>Requestor desc:</strong>
-  <%= @change_request.change_summary %>
+  <%= @change_request.requestor_name %>
 </p>
 
 <p>
   <strong>Requestor position:</strong>
   <%= @change_request.requestor_position %>
 </p>
+
+<p>
+  <strong>Requestor desc:</strong>
+  <%= @change_request.change_summary %>
+</p>
+
 
 
 <p>
@@ -123,3 +125,27 @@
 
 <%= link_to 'Edit', edit_change_request_path(@change_request) %> |
 <%= link_to 'Back', change_requests_path %>
+<h2>Comments</h2>
+<ul>
+<% @change_request.comments.each do |c| %>
+<li><%= c.body %> <%= c.user.name %>
+<%= link_to 'Destroy Comment', [c.change_request, c],
+               method: :delete,
+               data: { confirm: 'Are you sure?' } %></li>
+<% end %>
+</ul>
+
+<h2>Add comment:</h2>
+<%= form_for ([@change_request, @change_request.comments.build]) do |f| %>
+<%= f.label :comment %>
+<%= f.text_area :body %>
+<%= f.submit %>
+<% end %>
+
+
+
+
+
+
+
+

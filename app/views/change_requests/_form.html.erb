@@ -23,14 +23,18 @@
 <div class="row">
   <div class="col-lg-6">
     <div class="tab-content">
-  <div class="tab-pane fade in active" id="request">
+  <div class="tab-pane fade in active" id="request">   
     <div class="field form-group">
-      <%= f.label :change_summary %><br>
-      <%= f.text_field :change_summary, class: 'form-control' %>
+      <%= f.label :requestor_name %><br>
+      <%= f.text_field :requestor_name, class: 'form-control' %>
     </div>
     <div class="field form-group">
       <%= f.label :requestor_position %><br>
       <%= f.text_field :requestor_position, class: 'form-control' %>
+    </div>
+    <div class="field form-group">
+      <%= f.label :change_summary %><br>
+      <%= f.text_field :change_summary, class: 'form-control' %>
     </div>
     <div class="field form-group">
       <%= f.label :priority %><br>
