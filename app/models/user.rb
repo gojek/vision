@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
                                 message: '%{value} is not a valid role' }
   has_many :IncidentReports
   has_many :ChangeRequests
+  has_many :comments
 
   def account_active?
     locked_at.nil?

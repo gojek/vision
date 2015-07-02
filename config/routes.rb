@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
  
 
-  resources :change_requests
+  resources :comments
+  resources :change_requests do
+    resources :comments 
+  end
     get 'signin' => 'pages#signin'
 
   get 'incident_reports/show'
