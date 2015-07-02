@@ -5,7 +5,7 @@
 </p>
 <p>
   <strong>Requestor desc:</strong>
-  <%= @change_request.requestor_desc %>
+  <%= @change_request.change_summary %>
 </p>
 
 <p>
@@ -72,11 +72,6 @@
 <p>
   <strong>Backup:</strong>
   <%=raw @change_request.backup %>
-</p>
-
-<p>
-  <strong>Restore:</strong>
-  <%=raw @change_request.restore %>
 </p>
 
 <p>

@@ -3,28 +3,20 @@ class ChangeRequestsController < ApplicationController
   before_action :authenticate_user!
   before_action :owner_required, only: [:edit, :update, :destroy]
 
-  # GET /change_requests
-  # GET /change_requests.json
   def index
-    @change_requests = ChangeRequest.all
+    @change_requests = ChangeRequest.order(created_at: :desc).page(params[:page]).per(params[:per_page])
   end
 
-  # GET /change_requests/1
-  # GET /change_requests/1.json
   def show
   end
 
-  # GET /change_requests/new
   def new
     @change_request = ChangeRequest.new
   end
 
-  # GET /change_requests/1/edit
   def edit
   end
 
-  # POST /change_requests
-  # POST /change_requests.json
   def create
     @change_request = current_user.ChangeRequests.build(change_request_params)
     respond_to do |format|
@@ -38,8 +30,6 @@ class ChangeRequestsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /change_requests/1
-  # PATCH/PUT /change_requests/1.json
   def update
     respond_to do |format|
       if @change_request.update(change_request_params)
@@ -52,8 +42,6 @@ class ChangeRequestsController < ApplicationController
     end
   end
 
-  # DELETE /change_requests/1
-  # DELETE /change_requests/1.json
   def destroy
     @change_request.destroy
     respond_to do |format|
@@ -63,14 +51,12 @@ class ChangeRequestsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_change_request
       @change_request = ChangeRequest.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def change_request_params
-      params.require(:change_request).permit(:requestor_desc, :priority, :db, :os, :net, :category, :cr_type, :change_requirement, :business_justification, :requestor_position, :note, :analysis, :solution, :impact, :scope, :design, :backup, :restore, :testing_environment_available, :testing_procedure, :testing_notes, :schedule_change_date, :planned_completion, :grace_period_starts, :grace_period_end, :implementation_notes, :grace_period_notes, 
+      params.require(:change_request).permit(:change_summary, :priority, :db, :os, :net, :category, :cr_type, :change_requirement, :business_justification, :requestor_position, :note, :analysis, :solution, :impact, :scope, :design, :backup,:testing_environment_available, :testing_procedure, :testing_notes, :schedule_change_date, :planned_completion, :grace_period_starts, :grace_period_end, :implementation_notes, :grace_period_notes, 
         implementers_attributes: [ :name, :position ], testers_attributes: [ :name, :position], cabs_attributes: [:name, :position, :reason, :approve], approvals_attributes: [:name, :position])
     end
 
