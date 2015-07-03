@@ -5,10 +5,10 @@ class ChangeRequest < ActiveRecord::Base
   has_many :cabs
   has_many :approvers
   has_many :comments
-  accepts_nested_attributes_for :implementers
-  accepts_nested_attributes_for :testers
-  accepts_nested_attributes_for :cabs
-  accepts_nested_attributes_for :approvers
+  accepts_nested_attributes_for :implementers, :allow_destroy => true
+  accepts_nested_attributes_for :testers, :allow_destroy => true
+  accepts_nested_attributes_for :cabs, :allow_destroy => true
+  accepts_nested_attributes_for :approvers, :allow_destroy => true
   validates :change_summary, :priority, :category, :cr_type, :change_requirement, :business_justification, :requestor_position, :requestor_name, presence: true
 end
 

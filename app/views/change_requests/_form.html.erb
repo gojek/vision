@@ -40,7 +40,7 @@
       <%= f.label :priority %><br>
       <div class="row">
         <div class="col-lg-6">
-          <%= f.select :priority, options_for_select(%w[Critical Urgent High Normal Low]), {include_blank: true}, {class: 'form-control'} %>
+          <%= f.select :priority, options_for_select(%w[Critical Urgent High Normal Low], @change_request.priority), {include_blank: true}, {class: 'form-control'} %>
         </div>
       </div>
     </div>
@@ -48,17 +48,10 @@
       <%= f.label :category %><br>
       <div class="row">
         <div class="col-lg-6">
-          <select class="form-control" id="category-picker" name="picker">
-             <option value=""></option>
-             <option value="Application">Application</option>
-             <option value="Server">Server</option>
-             <option value="Network Equpment">Network Equipment</option>
-             <option value="User Access">User Access</option>
-             <option value="Other">Other</option>
-          </select>
+          <%= select_tag(:category_picker, options_for_select(%w[Application Server Network\ Equipment User\ Access Other], @change_request.category), {include_blank: true, class: 'form-control'} ) %>
         </div>
         <div class="col-lg-6">
-          <%= f.text_field :category, "data-depends-on" => "#category-picker", "data-depends-on-value" => "Other", class: 'form-control' %>
+          <%= f.text_field :category, "data-depends-on" => "#category_picker", "data-depends-on-value" => "Other", class: 'form-control' %>
         </div>
       </div>
     </div>
@@ -66,15 +59,7 @@
       <%= f.label :type %><br>
       <div class="row">
       <div class="col-lg-6">
-        <select class='form-control' id="type_picker" name="picker">
-           <option value=""></option>
-           <option value="Security">Security</option>
-           <option value="Update">Update</option>
-           <option value="Install/Uninstall">Install/Uninstall</option>
-           <option value="Configuration Change">Configuration Change</option>
-           <option value="Emergency Change">Emergency Change</option>
-           <option value="Other">Other</option>
-        </select>
+        <%= select_tag(:type_picker, options_for_select(%w[Security Update Install/Uninstall Configuration\ Change Emergency\ Change Other], @change_request.cr_type), {include_blank: true, class: 'form-control'} ) %>
       </div>
       <div class="col-lg-6">
         <%= f.text_field :cr_type, "data-depends-on" => "#type_picker", "data-depends-on-value" => "Other", class: 'form-control' %>
@@ -166,6 +151,7 @@
   </div>
   <div class="tab-pane fade" id="approval">
     <h3>Approval</h3>
+
     <div id="approvals">
       <%= f.fields_for :approvers do |app| %>
         <%= render 'approver_fields', :f => app %>
