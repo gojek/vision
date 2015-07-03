@@ -12,12 +12,14 @@ class ChangeRequestsController < ApplicationController
 
   def new
     @change_request = ChangeRequest.new
+    @users = User.all
   end
 
   def edit
   end
 
   def create
+    @users = User.all
     @change_request = current_user.ChangeRequests.build(change_request_params)
     respond_to do |format|
       if @change_request.save
@@ -31,6 +33,7 @@ class ChangeRequestsController < ApplicationController
   end
 
   def update
+    @users = User.all
     respond_to do |format|
       if @change_request.update(change_request_params)
         format.html { redirect_to @change_request, notice: 'Change request was successfully updated.' }
@@ -57,7 +60,7 @@ class ChangeRequestsController < ApplicationController
 
     def change_request_params
       params.require(:change_request).permit(:change_summary, :priority, :db, :os, :net, :category, :cr_type, :change_requirement, :business_justification, :requestor_position, :note, :analysis, :solution, :impact, :scope, :design, :backup,:testing_environment_available, :testing_procedure, :testing_notes, :schedule_change_date, :planned_completion, :grace_period_starts, :grace_period_end, :implementation_notes, :grace_period_notes, :requestor_name,
-        implementers_attributes: [ :name, :position ], testers_attributes: [ :name, :position], cabs_attributes: [:name, :position, :reason, :approve], approvals_attributes: [:name, :position])
+        implementers_attributes: [:id, :name, :position, :_destroy], testers_attributes: [:id, :name, :position, :_destroy], cabs_attributes: [:id, :name, :position, :reason, :approve, :_destroy], approvers_attributes: [:id, :user_id, :position, :_destroy])
     end
 
     def owner_required
