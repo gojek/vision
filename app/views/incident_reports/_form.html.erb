@@ -13,6 +13,7 @@
     <%= f.label :service_impacted %><br>
     <%= f.text_field :service_impact, class: 'form-control' %>
   </div>
+  
   </div><div class="form-group"><div class="field">
     <%= f.label :problem_details %><br>
     <%= f.text_area :problem_details, class: 'form-control', :rows => "7" %>
@@ -23,7 +24,7 @@
   </div>
    </div><div class="form-group"><div class="field">
     <%= f.label :current_status %><br>
-    <%=f.select :current_status, options_for_select(IncidentReport::CURRENT_STATUS), {}, {class: 'form-control'} %>
+    <%=f.select :current_status, options_for_select(IncidentReport::CURRENT_STATUS, @incident_report.current_status), {}, {class: 'form-control'} %>
   </div>
   </div><div class="form-group"><div class="field">
     <%= f.label :occurrence_time %><br>
@@ -39,7 +40,7 @@
   </div>
   </div><div class="form-group"><div class="field">
     <%= f.label :source %><br>
-    <%=f.select :source, options_for_select(IncidentReport::SOURCE), {}, {class: 'form-control'} %>
+    <%=f.select :source, options_for_select(IncidentReport::SOURCE, @incident_report.source), {}, {class: 'form-control'} %>
   </div>
   </div><div class="form-group"><div class="field">
     <%= f.label :rank %><br>
@@ -67,11 +68,11 @@
   </div>
   </div><div class="form-group"><div class="field">
     <%= f.label :concern_of_recurrence %><br>
-     <%=f.select :recurrence_concern, options_for_select(IncidentReport::RECURRENCE_CONCERN), {}, {class: 'form-control'} %>
+     <%=f.select :recurrence_concern, options_for_select(IncidentReport::RECURRENCE_CONCERN, @incident_report.recurrence_concern), {}, {class: 'form-control'} %>
   </div>
   </div><div class="form-group"><div class="field">
     <%= f.label :status_of_the_measurer %><br>
-     <%=f.select :measurer_status, options_for_select(IncidentReport::MEASURER_STATUS), {}, {class: 'form-control'} %>
+     <%=f.select :measurer_status, options_for_select(IncidentReport::MEASURER_STATUS, @incident_report.measurer_status), {}, {class: 'form-control'} %>
   </div></div>
   </br>
   <div class="actions">
