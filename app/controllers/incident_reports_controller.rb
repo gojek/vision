@@ -78,6 +78,6 @@ class IncidentReportsController < ApplicationController
 
   def owner_required
     redirect_to incident_reports_url if
-    current_user != @incident_report.user && current_user.role != 'admin'
+    current_user != @incident_report.user && !current_user.is_admin
   end
 end

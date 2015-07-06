@@ -119,7 +119,7 @@
                     </div>
                     </div>
                           <%= link_to 'Back', :back %> 
-                          <% if current_user == @incident_report.user || current_user.role == 'admin' %>|
+                          <% if current_user == @incident_report.user || current_user.is_admin %>|
                           <%= link_to 'Edit', edit_incident_report_path(@incident_report) %> 
                           <% end %>
                       </div>
