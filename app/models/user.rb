@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :trackable, :lockable,
          :omniauthable, omniauth_providers: [:google_oauth2]
-  ROLES = %w(requestor approver release_manager admin)
+  ROLES = %w(requestor approver release_manager)
   validates :role, inclusion: { in: ROLES,
                                 message: '%{value} is not a valid role' }
   has_many :IncidentReports
@@ -28,6 +28,7 @@ class User < ActiveRecord::Base
       user.email = auth[:info][:email]
       user.name = auth[:info][:name]
       user.role = 'requestor'
+      user.is_admin = false
     end
   end
 
