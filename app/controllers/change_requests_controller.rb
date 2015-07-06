@@ -4,7 +4,14 @@ class ChangeRequestsController < ApplicationController
   before_action :owner_required, only: [:edit, :update, :destroy]
 
   def index
-    @change_requests = ChangeRequest.order(created_at: :desc).page(params[:page]).per(params[:per_page])
+    if(current_user.role=='requestor')
+      @change_requests = ChangeRequest.where(user_id: current_user.id).order(created_at: :desc).page(params[:page]).per(params[:per_page])
+    elsif(current_user.role=='approver')
+      @change_requests = ChangeRequest.joins(:approvers).where(approvers: {user_id: current_user.id}).order(created_at: :desc).page(params[:page]).per(params[:per_page])
+    else
+      @change_requests = ChangeRequest.order(created_at: :desc).page(params[:page]).per(params[:per_page])
+    end
+
   end
 
   def show
@@ -12,14 +19,12 @@ class ChangeRequestsController < ApplicationController
 
   def new
     @change_request = ChangeRequest.new
-    @users = User.all
   end
 
   def edit
   end
 
   def create
-    @users = User.all
     @change_request = current_user.ChangeRequests.build(change_request_params)
     respond_to do |format|
       if @change_request.save
@@ -33,7 +38,6 @@ class ChangeRequestsController < ApplicationController
   end
 
   def update
-    @users = User.all
     respond_to do |format|
       if @change_request.update(change_request_params)
         format.html { redirect_to @change_request, notice: 'Change request was successfully updated.' }
