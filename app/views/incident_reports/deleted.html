@@ -44,7 +44,7 @@
                     <td><%= incident_report.recovery_time.to_s(:long) %></td>
                     <td><%= incident_report.source %></td>
                     <td><%= incident_report.rank %></td>
-                    <td><%= incident_report.user.name %></td>
+                   
                     <td><%= incident_report.updated_at.to_s(:long) %></td>
                    <td><%= link_to 'Bringback', bringback_version_path(document_version), method: 'PATCH' %></td>
                   </tr>
