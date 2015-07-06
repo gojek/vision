@@ -54,7 +54,7 @@
                     <td><%= incident_report.user.name %></td>
                     <td><%= incident_report.updated_at.to_s(:long) %></td>
                     <td><%= link_to 'Show', incident_report %></td>
-                    <%if current_user==incident_report.user || current_user.role == 'admin' %>
+                    <%if current_user==incident_report.user || current_user.is_admin %>
                     <td><%= link_to 'Edit', edit_incident_report_path(incident_report) %></td>
                     <td><%= link_to 'Delete', incident_report, method: :delete, data: { confirm: 'Are you sure?' } %></td>
                     <% else %>
