@@ -70,6 +70,6 @@ class ChangeRequestsController < ApplicationController
 
     def owner_required
       redirect_to change_requests_url if
-      current_user != @change_request.user && current_user.role != 'admin'
+      current_user != @change_request.user && !current_user.is_admin
   end
 end

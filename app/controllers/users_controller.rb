@@ -61,7 +61,7 @@ class UsersController < ApplicationController
   private
 
   def admin_required
-    (current_user.role == 'admin') || (redirect_to root_path)
+    current_user.is_admin || (redirect_to root_path)
   end
 
   def update_user_params
