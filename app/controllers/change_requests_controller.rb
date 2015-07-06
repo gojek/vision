@@ -53,6 +53,11 @@ class ChangeRequestsController < ApplicationController
     end
   end
 
+  def deleted
+    @change_requests = ChangeRequestVersion.where(event: 'destroy')
+                        .page(params[:page]).per(params[:per_page])
+  end
+
   private
     def set_change_request
       @change_request = ChangeRequest.find(params[:id])
