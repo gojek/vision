@@ -110,13 +110,7 @@
       <%= f.label :scope %><br>
       <%= f.text_field :scope, class: 'form-control' %>
     </div>
-    <h3>CAB</h3>
-    <div id="cabs">
-      <%= f.fields_for :cabs do |cab| %>
-        <%= render 'cab_fields', :f => cab %>
-      <% end %>
-      <%= link_to_add_association 'add cab', f, :cabs %>
-    </div>
+    
   </div>
   <div class="tab-pane fade" id="design">
     <div class="field form-group">
