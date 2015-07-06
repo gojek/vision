@@ -5,10 +5,15 @@ class ChangeRequest < ActiveRecord::Base
   has_many :cabs
   has_many :approvers
   has_many :comments
+  has_paper_trail class_name: 'ChangeRequestVersion'
   accepts_nested_attributes_for :implementers, :allow_destroy => true
   accepts_nested_attributes_for :testers, :allow_destroy => true
   accepts_nested_attributes_for :cabs, :allow_destroy => true
   accepts_nested_attributes_for :approvers, :allow_destroy => true
   validates :change_summary, :priority, :category, :cr_type, :change_requirement, :business_justification, :requestor_position, :requestor_name, presence: true
+  def user_name
+    user ? user.name : ''
+  end
+
 end
 

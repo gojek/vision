@@ -1,0 +1,26 @@
+<h2>Previous Versions</h2>
+
+<table class='table'>
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Author</th>
+      <th>Event</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%- document.versions.reverse.each do |version| %>
+      <tr>
+        <td><%= version.created_at.to_s(:long) %></td>
+        <td><%= find_version_author_name(version) %></td>
+        <td><%= version.event.humanize %></td>
+        
+       
+      </tr>
+    <% end %>
+  </tbody>
+</table>

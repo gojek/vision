@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150703090214) do
+ActiveRecord::Schema.define(version: 20150706035158) do
 
   create_table "approvers", force: :cascade do |t|
     t.string   "name"
@@ -36,6 +36,18 @@ ActiveRecord::Schema.define(version: 20150703090214) do
   end
 
   add_index "cabs", ["change_request_id"], name: "index_cabs_on_change_request_id"
+
+  create_table "change_request_versions", force: :cascade do |t|
+    t.string   "item_type",       null: false
+    t.integer  "item_id",         null: false
+    t.string   "event",           null: false
+    t.string   "whodunnit"
+    t.text     "object"
+    t.datetime "created_at"
+    t.string   "author_username"
+  end
+
+  add_index "change_request_versions", ["item_type", "item_id"], name: "index_change_request_versions_on_item_type_and_item_id"
 
   create_table "change_requests", force: :cascade do |t|
     t.string   "change_summary"

@@ -4,8 +4,24 @@ Rails.application.routes.draw do
   resources :comments
   resources :change_requests do
     resources :comments 
+    collection do 
+          get :deleted # <= this
+    end
+    resources :cr_versions, only: [:destroy] do
+      member do
+        get :diff, to: 'cr_versions#diff'
+        patch :rollback, to: 'cr_versions#rollback'
+      end
+    end
   end
-    get 'signin' => 'pages#signin'
+  resources :cr_versions, only: [] do
+    member do
+      patch :bringback  # <= and that
+    end
+  end
+
+
+  get 'signin' => 'pages#signin'
 
   get 'incident_reports/show'
 
@@ -32,13 +48,13 @@ Rails.application.routes.draw do
       collection do 
           get :deleted # <= this
       end
-  resources :versions, only: [:destroy] do
-    member do
-      get :diff, to: 'versions#diff'
-      patch :rollback, to: 'versions#rollback'
-    end
+      resources :versions, only: [:destroy] do
+        member do
+          get :diff, to: 'versions#diff'
+          patch :rollback, to: 'versions#rollback'
+        end
+      end
   end
-end
 resources :versions, only: [] do
     member do
       patch :bringback  # <= and that
