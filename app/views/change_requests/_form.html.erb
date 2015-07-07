@@ -15,7 +15,6 @@
   <li role="presentation" ><a href="#analysis" data-toggle="tab">Analysis Impact Solution</a></li>
   <li role="presentation"><a href="#design" data-toggle="tab" >Design and Backup Plan</a></li>
   <li role="presentation"><a href="#testing" data-toggle="tab">Testing</a></li>
-  <li role="presentation"><a href="#approval" data-toggle="tab">Approval</a></li>
   <li role="presentation"><a href="#implementation" data-toggle="tab">Implementation</a></li>
 </ul>
  <%= tinymce :theme => "modern", menubar: "false"%>
@@ -25,7 +24,8 @@
     <div class="tab-content">
   <div class="tab-pane fade in active" id="request">   
       <div class="field form-group">
-    <%= f.autocomplete_field :tag_list, autocomplete_tag_name_change_requests_path, :"data-delimiter" => ', ' %>
+        <label>Tag</label><br>
+    <%= f.autocomplete_field :tag_list, autocomplete_tag_name_change_requests_path, :"data-delimiter" => '#' %>
      </div>
     <div class="field form-group">
       <%= f.label :requestor_name %><br>
@@ -147,16 +147,6 @@
        <%= render 'tester_fields', :f => tes %>
       <% end %>
       <%= link_to_add_association 'add tester', f, :testers %>
-    </div>
-  </div>
-  <div class="tab-pane fade" id="approval">
-    <h3>Approval</h3>
-
-    <div id="approvals">
-      <%= f.fields_for :approvers do |app| %>
-        <%= render 'approver_fields', :f => app %>
-      <% end %>
-      <%= link_to_add_association 'add approver', f, :approvers %>
     </div>
   </div>
   <div class="tab-pane fade" id="implementation">
