@@ -35,7 +35,9 @@ gem 'omniauth-google-oauth2'
 gem 'diffy'
 gem "cocoon"
 gem 'tinymce-rails'
-
+gem 'acts-as-taggable-on'
+gem 'rails4-autocomplete'
+gem 'jquery-ui-rails'
 group :production do
 	gem 'pg'
 	gem 'rails_12factor'
