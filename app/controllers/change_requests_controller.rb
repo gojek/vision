@@ -18,11 +18,11 @@ class ChangeRequestsController < ApplicationController
   end
 
   def show
-
-    approve = Approver.where(change_request_id: @change_request.id).where(user_id: current_user.id).where(approve: true)
-    @approved = false
-    if current_user.role == 'approver'&& !approve.empty?
-      @approved = true
+    approve = Approver.where(change_request_id: @change_request.id).where(user_id: current_user.id).first
+    if(approve == nil) 
+      @approved = nil
+    else
+      @approved = approve.approve
     end
   end
 
@@ -103,10 +103,9 @@ class ChangeRequestsController < ApplicationController
     def set_change_request
       if params[:tag]
       @achange_requests = ChangeRequest.tagged_with(params[:tag])
-    else
-      @change_request = ChangeRequest.find(params[:id])
-    end
-
+      else
+        @change_request = ChangeRequest.find(params[:id])
+      end
     end
 
     def change_request_params
@@ -117,5 +116,7 @@ class ChangeRequestsController < ApplicationController
     def owner_required
       redirect_to change_requests_url if
       current_user != @change_request.user && !current_user.is_admin
-  end
+    end
+
+
 end

@@ -16,7 +16,7 @@
   <% end %>
   <div class="field">
     <%=f.label :role %><br />
-    <%=f.select :role, options_for_select(User::ROLES), {}, {class: 'form-control'} %><br/>
+    <%=f.select :role, options_for_select(User::ROLES,@user.role), {}, {class: 'form-control'} %><br/>
   </div>
   <div class="actions">
     <%= f.submit "Submit", class: 'btn btn-primary'%>

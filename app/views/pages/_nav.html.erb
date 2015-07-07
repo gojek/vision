@@ -41,7 +41,7 @@
                             
                             <!-- /input-group -->
                       
-                        <% if current_user.is_admin %>
+                        <% if current_user.is_admin || is_release_manager %>
                         <li>
 
                          <a href ="#" > <i class="fa fa-users fa-fw"></i> User<span class="fa arrow"></span></a>
