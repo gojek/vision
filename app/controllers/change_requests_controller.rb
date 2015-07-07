@@ -37,6 +37,13 @@ class ChangeRequestsController < ApplicationController
     @change_request = current_user.ChangeRequests.build(change_request_params)
     respond_to do |format|
       if @change_request.save
+        @approvers = User.where(role: "approver")
+        @approvers.each do |approver|
+          @approval = Approver.new
+          @approval.user_id = approver.id
+          @approval.change_request_id = @change_request.id
+          @approval.save
+        end
         format.html { redirect_to @change_request, notice: 'Change request was successfully created.' }
         format.json { render :show, status: :created, location: @change_request }
       else
@@ -104,7 +111,7 @@ class ChangeRequestsController < ApplicationController
 
     def change_request_params
       params.require(:change_request).permit(:tag_list, :change_summary, :priority, :db, :os, :net, :category, :cr_type, :change_requirement, :business_justification, :requestor_position, :note, :analysis, :solution, :impact, :scope, :design, :backup,:testing_environment_available, :testing_procedure, :testing_notes, :schedule_change_date, :planned_completion, :grace_period_starts, :grace_period_end, :implementation_notes, :grace_period_notes, :requestor_name,
-        implementers_attributes: [:id, :name, :position, :_destroy], testers_attributes: [:id, :name, :position, :_destroy], cabs_attributes: [:id, :name, :position, :reason, :approve, :_destroy], approvers_attributes: [:id, :user_id, :position, :_destroy])
+        implementers_attributes: [:id, :name, :position, :_destroy], testers_attributes: [:id, :name, :position, :_destroy])
     end
 
     def owner_required
