@@ -13,8 +13,8 @@
                     <div class="panel-body">
                         <div class = "col-lg-4 form-group" >
                              <%= search_form_for @q, html: {class: "form-inline"} do |f| %>
-                                <%= f.label :email %>
-                                <%= f.search_field :email, class: 'form-control' %>
+                                <%= f.label :name_cont %>
+                                <%= f.search_field :name_cont, class: 'form-control' %>
                                 <%= f.submit class: 'btn btn-primary'%>
                             <% end %>
                         </div>
@@ -24,31 +24,31 @@
                         <table class="table table-striped" id="dataTables-example">
                         <thead>
                             <tr>
-                                <th><%= sort_link(@q, :email) %></th>
+                                <th><%= sort_link(@q, :name) %></th>
+                                <th>Role</th>
                             </tr>
                         </thead>
                         <tbody>  <% @users.each do |user| %> 
                           
                              <tr>
 
-                                <td><%= user.email %></td>
+                                <td><%= user.name %></td>
+                                <td><%= user.role%></td>
                                 <td>
-                                <% if user != current_user %>
-                                <%= link_to user, data: { method: :delete, confirm: 'Are you sure you want to delete this user?' }, class: 'btn btn-danger' do %>
-                                    <i class="fa fa-times fa-fw"></i>Delete
-                                <%end%>
-
-                               
-                                <% if user.account_active? %>
-                                    <%= link_to  lock_user_path(user.id), data: { method: :put, confirm: 'Are you sure you want to lock this user?' }, class: 'btn btn-warning'  do %>
-                                    <i class="fa fa-lock fa-fw"></i>Lock 
-                                <%end %> 
-                                 <% else %>
-                                    <%= link_to unlock_user_path(user.id), data: { method: :put, confirm: 'Are you sure you want to unlock this user?' }, class: 'btn btn-success'  do %> 
-                                        <i class="fa fa-unlock fa-fw"></i>Unlock
+                                <% if user != current_user && current_user.role == 'admin' %>
+                                    <%= link_to user, data: { method: :delete, confirm: 'Are you sure you want to delete this user?' }, class: 'btn btn-danger' do %>
+                                        <i class="fa fa-times fa-fw"></i>Delete
                                     <%end%>
-                                <% end %>
-                                 <%end%>
+                                    <% if user.account_active? %>
+                                        <%= link_to  lock_user_path(user.id), data: { method: :put, confirm: 'Are you sure you want to lock this user?' }, class: 'btn btn-warning'  do %>
+                                             <i class="fa fa-lock fa-fw"></i>Lock 
+                                        <%end %> 
+                                    <% else %>
+                                        <%= link_to unlock_user_path(user.id), data: { method: :put, confirm: 'Are you sure you want to unlock this user?' }, class: 'btn btn-success'  do %> 
+                                            <i class="fa fa-unlock fa-fw"></i>Unlock
+                                        <%end%>
+                                    <% end %>
+                                <%end%>
                                 <%= link_to edit_path(user), class: 'btn btn-primary' do %>
                                     <i class="fa fa-pencil-square-o fa-fw"></i> Edit
                                 <%end%>

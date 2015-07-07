@@ -1,7 +1,8 @@
 #
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :admin_required
+  before_action :admin_required 
+  skip_before_action :admin_required, only:[:approver]
 
   def index
     @q = User.ransack(params[:q])
@@ -61,7 +62,7 @@ class UsersController < ApplicationController
   private
 
   def admin_required
-    current_user.is_admin || (redirect_to root_path)
+    current_user.is_admin || current_user.role = 'release_manager' || (redirect_to root_path)
   end
 
   def update_user_params
