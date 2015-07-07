@@ -24,6 +24,9 @@
   <div class="col-lg-6">
     <div class="tab-content">
   <div class="tab-pane fade in active" id="request">   
+      <div class="field form-group">
+    <%= f.autocomplete_field :tag_list, autocomplete_tag_name_change_requests_path, :"data-delimiter" => ', ' %>
+     </div>
     <div class="field form-group">
       <%= f.label :requestor_name %><br>
       <%= f.text_field :requestor_name, class: 'form-control' %>
@@ -108,7 +111,7 @@
     </div>
     <div class="field form-group">
       <%= f.label :scope %><br>
-      <%= f.text_field :scope, class: 'form-control' %>
+       <%=f.select :scope, options_for_select(ChangeRequest::SCOPE), {:include_blank => true}, {class: 'form-control'} %><br/>
     </div>
     
   </div>
@@ -124,8 +127,10 @@
   </div>
   <div class="tab-pane fade" id="testing">
     <div class="field form-group">
-      <%= f.label :testing_environment_available %><br>
-      <%= f.check_box :testing_environment_available %>
+      <%= f.radio_button :testing_environment_available, "true"%>
+      <%= label_tag(:testing_environment_available, "YES") %>
+      <%= f.radio_button :testing_environment_available, "false"%>
+      <%= label_tag(:testing_environment_available, "NO") %>
     </div>
     <div class="field form-group">
       <%= f.label :testing_procedure %><br>

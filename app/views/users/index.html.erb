@@ -28,11 +28,15 @@
                             </tr>
                         </thead>
                         <tbody>  <% @users.each do |user| %> 
-                            <% if current_user != user %>
+                          
                              <tr>
+
                                 <td><%= user.email %></td>
+
+                                <% if user != current_user %>
                                 <td><%= link_to user, data: { method: :delete, confirm: 'Are you sure you want to delete this user?' }, class: 'btn btn-danger' do %>
                                     <i class="fa fa-times fa-fw"></i>Delete
+                                <%end%>
                                 <%end%>
                                 <% if user.account_active? %>
                                     <%= link_to  lock_user_path(user.id), data: { method: :put, confirm: 'Are you sure you want to lock this user?' }, class: 'btn btn-warning'  do %>
@@ -49,7 +53,7 @@
                                </td>
                             <% end %>
                             </tr>
-                        <% end %>
+                       
                         </tbody>
                     </table>
                     <%= paginate @users, :theme => 'twitter-bootstrap-3'%>
