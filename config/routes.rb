@@ -23,8 +23,6 @@ Rails.application.routes.draw do
       patch :bringback  # <= and that
     end
   end
-
-
   get 'signin' => 'pages#signin'
 
   get 'incident_reports/show'
