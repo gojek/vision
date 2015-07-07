@@ -10,15 +10,11 @@
   <thead>
     <tr>
       <th>Change Summary</th>
+      <th>Request Date</th>
+      <th>Bussines Justification</th>
       <th>Priority</th>
       <th>Category</th>
       <th>Type</th>
-      <th>Change requirement</th>
-      <th>Business justification</th>
-      <th>Note</th>
-      <th>Request Date</th>
-      <th>Requestor</th>
-      <th>Requestor position</th>
       <th colspan="3">Action</th>
     </tr>
   </thead>
@@ -27,15 +23,11 @@
     <% @change_requests.each do |change_request| %>
       <tr>
         <td><%=raw change_request.change_summary %></td>
-        <td><%=raw change_request.priority %></td>
+        <td><%=raw change_request.created_at.to_s(:long) %></td>
+         <td><%=raw change_request.business_justification %></td>
+        <td><%=raw change_request.priority%></td>
         <td><%=raw change_request.category %></td>
         <td><%=raw change_request.cr_type %></td>
-        <td><%=raw change_request.change_requirement %></td>
-        <td><%=raw change_request.business_justification %></td>
-        <td><%=raw change_request.note %></td>
-        <td><%=raw change_request.created_at.to_s(:long) %></td>
-        <td><%=raw change_request.requestor_name %></td>
-        <td><%=raw change_request.requestor_position %></td>
         <td><%= link_to 'Show', change_request %></td>
         <%if current_user==change_request.user || current_user.is_admin %>
         <td><%= link_to 'Edit', edit_change_request_path(change_request) %></td>
