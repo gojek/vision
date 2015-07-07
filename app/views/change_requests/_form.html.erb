@@ -24,8 +24,8 @@
     <div class="tab-content">
   <div class="tab-pane fade in active" id="request">   
       <div class="field form-group">
-        <label>Tag</label><br>
-    <%= f.autocomplete_field :tag_list, autocomplete_tag_name_change_requests_path, :"data-delimiter" => '#' %>
+        <label>Tag (Separated by Comma)</label><br>
+    <%= f.autocomplete_field :tag_list, autocomplete_tag_name_change_requests_path, :"data-delimiter" => ',' %>
      </div>
     <div class="field form-group">
       <%= f.label :requestor_name %><br>
