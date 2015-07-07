@@ -2,10 +2,14 @@ Rails.application.routes.draw do
  
 
   resources :comments
+  get 'tags/:tag', to: 'change_requests#index', as: :tag
   resources :change_requests do
     resources :comments 
     collection do 
           get :deleted # <= this
+    end
+    collection do
+      get :autocomplete_tag_name
     end
     resources :cr_versions, only: [:destroy] do
       member do
@@ -63,6 +67,8 @@ resources :versions, only: [] do
   root to: 'pages#index'
   put 'lock_user/:id' => 'users#lock_user', :as => 'lock_user'
   put 'unlock_user/:id' => 'users#unlock_user', :as => 'unlock_user'
+  put  'approve/:id' => 'change_requests#approve', :as =>'approve'
+  put  'reject/:id' => 'change_requests#reject', :as =>'reject'
 
 
 

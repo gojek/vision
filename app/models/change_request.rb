@@ -5,7 +5,9 @@ class ChangeRequest < ActiveRecord::Base
   has_many :cabs
   has_many :approvers
   has_many :comments
+  acts_as_taggable
   has_paper_trail class_name: 'ChangeRequestVersion'
+  SCOPE = %w(Major Minor)
   accepts_nested_attributes_for :implementers, :allow_destroy => true
   accepts_nested_attributes_for :testers, :allow_destroy => true
   accepts_nested_attributes_for :cabs, :allow_destroy => true
