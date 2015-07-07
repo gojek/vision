@@ -1,10 +1,13 @@
 class ChangeRequestsController < ApplicationController
-  before_action :set_change_request, only: [:show, :edit, :update, :destroy]
+  before_action :set_change_request, only: [:show, :edit, :update, :destroy, :approve, :reject]
   before_action :authenticate_user!
   before_action :owner_required, only: [:edit, :update, :destroy]
+  autocomplete :tag, :name, :class_name => 'ActsAsTaggableOn::Tag'
 
   def index
-    if(current_user.role=='requestor')
+    if params[:tag]
+      @change_requests = ChangeRequest.tagged_with(params[:tag]).order(created_at: :desc).page(params[:page]).per(params[:per_page])
+    elsif(current_user.role=='requestor')
       @change_requests = ChangeRequest.where(user_id: current_user.id).order(created_at: :desc).page(params[:page]).per(params[:per_page])
     elsif(current_user.role=='approver')
       @change_requests = ChangeRequest.joins(:approvers).where(approvers: {user_id: current_user.id}).order(created_at: :desc).page(params[:page]).per(params[:per_page])
@@ -15,6 +18,12 @@ class ChangeRequestsController < ApplicationController
   end
 
   def show
+
+    approve = Approver.where(change_request_id: @change_request.id).where(user_id: current_user.id).where(approve: true)
+    @approved = false
+    if current_user.role == 'approver'&& !approve.empty?
+      @approved = true
+    end
   end
 
   def new
@@ -61,14 +70,40 @@ class ChangeRequestsController < ApplicationController
     @change_requests = ChangeRequestVersion.where(event: 'destroy')
                         .page(params[:page]).per(params[:per_page])
   end
+  def approve
+    approver = Approver.where(change_request_id: @change_request.id).where(user_id: current_user.id)
+    approver.update_all(:approve => true)
+    if approver.empty?
+      flash[:notice] = 'You are not eligible to approve this Change Request'
+    else
+      flash[:notice] = 'Change Request Approved'
+    end
+    redirect_to @change_request
+  end
+
+  def reject
+    approver = Approver.where(change_request_id: @change_request.id).where(user_id: current_user.id)
+    approver.update_all(:approve => false)
+    if approver.empty?
+      flash[:notice] = 'You are not eligible to reject this Change Request'
+    else
+      flash[:notice] = 'Change Request Rejected'
+    end
+    redirect_to @change_request
+  end
 
   private
     def set_change_request
+      if params[:tag]
+      @achange_requests = ChangeRequest.tagged_with(params[:tag])
+    else
       @change_request = ChangeRequest.find(params[:id])
     end
 
+    end
+
     def change_request_params
-      params.require(:change_request).permit(:change_summary, :priority, :db, :os, :net, :category, :cr_type, :change_requirement, :business_justification, :requestor_position, :note, :analysis, :solution, :impact, :scope, :design, :backup,:testing_environment_available, :testing_procedure, :testing_notes, :schedule_change_date, :planned_completion, :grace_period_starts, :grace_period_end, :implementation_notes, :grace_period_notes, :requestor_name,
+      params.require(:change_request).permit(:tag_list, :change_summary, :priority, :db, :os, :net, :category, :cr_type, :change_requirement, :business_justification, :requestor_position, :note, :analysis, :solution, :impact, :scope, :design, :backup,:testing_environment_available, :testing_procedure, :testing_notes, :schedule_change_date, :planned_completion, :grace_period_starts, :grace_period_end, :implementation_notes, :grace_period_notes, :requestor_name,
         implementers_attributes: [:id, :name, :position, :_destroy], testers_attributes: [:id, :name, :position, :_destroy], cabs_attributes: [:id, :name, :position, :reason, :approve, :_destroy], approvers_attributes: [:id, :user_id, :position, :_destroy])
     end
 
