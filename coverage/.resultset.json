@@ -1,0 +1,143 @@
+{
+  "RSpec": {
+    "coverage": {
+      "/Users/padawan/newtask/vision/app/models/user.rb": [
+        null,
+        1,
+        null,
+        null,
+        1,
+        null,
+        1,
+        1,
+        null,
+        1,
+        1,
+        1,
+        null,
+        1,
+        0,
+        null,
+        null,
+        1,
+        0,
+        null,
+        null,
+        1,
+        0,
+        null,
+        null,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        null,
+        null,
+        null,
+        1,
+        0,
+        null,
+        null,
+        null
+      ],
+      "/Users/padawan/newtask/vision/app/helpers/application_helper.rb": [
+        1,
+        1,
+        0,
+        null,
+        1,
+        0,
+        null,
+        1,
+        0,
+        null,
+        null
+      ],
+      "/Users/padawan/newtask/vision/app/helpers/cabs_helper.rb": [
+        1,
+        null
+      ],
+      "/Users/padawan/newtask/vision/app/helpers/change_requests_helper.rb": [
+        1,
+        null
+      ],
+      "/Users/padawan/newtask/vision/app/helpers/cobas_helper.rb": [
+        1,
+        null
+      ],
+      "/Users/padawan/newtask/vision/app/helpers/comments_helper.rb": [
+        1,
+        null
+      ],
+      "/Users/padawan/newtask/vision/app/helpers/configs_helper.rb": [
+        1,
+        null
+      ],
+      "/Users/padawan/newtask/vision/app/helpers/implementers_helper.rb": [
+        1,
+        null
+      ],
+      "/Users/padawan/newtask/vision/app/helpers/incident_reports_helper.rb": [
+        1,
+        1,
+        0,
+        0,
+        null,
+        null,
+        1,
+        0,
+        null,
+        null,
+        0,
+        null,
+        null,
+        null
+      ],
+      "/Users/padawan/newtask/vision/app/helpers/pages_helper.rb": [
+        1,
+        null
+      ],
+      "/Users/padawan/newtask/vision/app/helpers/testers_helper.rb": [
+        1,
+        null
+      ],
+      "/Users/padawan/newtask/vision/app/helpers/users_helper.rb": [
+        1,
+        null
+      ],
+      "/Users/padawan/newtask/vision/app/controllers/cobas_controller.rb": [
+        1,
+        1,
+        null,
+        null
+      ],
+      "/Users/padawan/newtask/vision/app/controllers/application_controller.rb": [
+        null,
+        1,
+        null,
+        null,
+        1,
+        null,
+        1,
+        1,
+        null,
+        null,
+        1,
+        0,
+        null,
+        null,
+        1,
+        0,
+        null,
+        null
+      ],
+      "/Users/padawan/newtask/vision/app/models/coba.rb": [
+        1,
+        null
+      ]
+    },
+    "timestamp": 1436342835
+  }
+}

@@ -18,6 +18,10 @@
     <%=f.label :role %><br />
     <%=f.select :role, options_for_select(User::ROLES,@user.role), {}, {class: 'form-control'} %><br/>
   </div>
+  <div class="field">
+    <%=f.label :position %><br />
+    <%=f.text_field :position,class: 'form-control' %><br/>
+  </div>
   <div class="actions">
     <%= f.submit "Submit", class: 'btn btn-primary'%>
   </div>
