@@ -1,0 +1,42 @@
+<% if is_submitted %>
+	 <%= link_to  schedule_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
+        <i class="fa fa-check fa-fw"></i>Schedule <%end %> 
+      <%= link_to  close_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
+      <i class="fa fa-check fa-fw"></i>Close <%end %> 
+       <%= link_to  final_reject_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
+      <i class="fa fa-check fa-fw"></i>Reject <%end %> 
+<% elsif is_scheduled%>
+	 <%= link_to  close_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
+                                      <i class="fa fa-check fa-fw"></i>close
+                                  <%end %> 
+      <%= link_to  deploy_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
+                                      <i class="fa fa-check fa-fw"></i>Deploy
+                                  <%end %>     
+     <%= link_to  rollback_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
+                                      <i class="fa fa-check fa-fw"></i>Rollback
+       <%= link_to  cancel_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
+                                      <i class="fa fa-check fa-fw"></i>Cancel
+                                  <%end %>                            <%end %> 
+<% elsif is_deployed %>
+	<%= link_to  close_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
+                                      <i class="fa fa-check fa-fw"></i>Close
+                                  <%end %> 
+     <%= link_to  rollback_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
+                                      <i class="fa fa-check fa-fw"></i>Rollback
+                                  <%end %> 
+<%elsif is_rollbacked %>
+	<%= link_to  close_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
+                                      <i class="fa fa-check fa-fw"></i>Close
+                                  <%end %> 
+<% elsif is_cancelled%>
+	<%= link_to  close_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
+                                      <i class="fa fa-check fa-fw"></i>Close
+                                  <%end %> 
+     <%= link_to  submit_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
+                                      <i class="fa fa-check fa-fw"></i>Submit
+                                  <%end %>    
+<% elsif is_rejected %>
+	<%= link_to  close_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
+                                      <i class="fa fa-check fa-fw"></i>Close
+                                  <%end %>                           
+<% end %>

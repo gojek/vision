@@ -75,6 +75,9 @@ resources :versions, only: [] do
   put 'rollback/:id' => 'change_requests#rollback', :as =>'rollback'
   put 'cancel/:id' => 'change_requests#cancel', :as =>'cancel'
   put 'close/:id' => 'change_requests#close', :as => 'close'
+  put 'final_reject/:id' => 'change_requests#final_reject', :as => 'final_reject'
+  put 'schedule/:id' => 'change_requests#schedule', :as => 'schedule'
+  put 'submit/:id' => 'change_requests#submit', :as => 'submit'
 
 
 
