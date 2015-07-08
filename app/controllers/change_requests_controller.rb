@@ -1,5 +1,5 @@
 class ChangeRequestsController < ApplicationController
-  before_action :set_change_request, only: [:show, :edit, :update, :destroy, :approve, :reject, :edit_grace_period_notes, :schedule, :deploy, :rollback, :cancell, :close]
+  before_action :set_change_request, only: [:show, :edit, :update, :destroy, :approve, :reject, :edit_grace_period_notes, :schedule, :deploy, :rollback, :cancel, :close, :submit, :final_reject]
   before_action :authenticate_user!
   before_action :owner_required, only: [:edit, :update, :destroy]
   before_action :submitted_required, only: [:edit]
@@ -105,18 +105,22 @@ class ChangeRequestsController < ApplicationController
     redirect_to @change_request
   end
   def schedule
+    redirect_to @change_request if @change_request.status != 'Submitted' 
     @change_request.update_attribute(:status, 'Scheduled')
     redirect_to @change_request
   end
   def deploy
+    redirect_to @change_request if @change_request.status != 'Scheduled'
     @change_request.update_attribute(:status, 'Deployed')
     redirect_to @change_request
   end
   def rollback
+    redirect_to @change_request if (@change_request.status != 'Scheduled' && @change_request.status != 'Deployed')
     @change_request.update_attribute(:status, 'Rollback')
     redirect_to @change_request
   end
   def cancel
+    redirect_to @change_request if @change_request.status != 'Scheduled' 
     @change_request.update_attribute(:status, 'Cancelled')
     redirect_to @change_request
   end
@@ -124,6 +128,16 @@ class ChangeRequestsController < ApplicationController
     @change_request.update_attribute(:status, 'Closed')
     redirect_to @change_request
   end  
+  def final_reject
+    redirect_to @change_request if @change_request.status != 'Submitted'
+    @change_request.update_attribute(:status, 'Rejected')
+    redirect_to @change_request
+  end
+  def submit
+    redirect_to @change_request if @change_request.status != "Cancelled"
+    @change_request.update_attribute(:status, 'Submitted')
+    redirect_to @change_request
+  end
   private
     def set_change_request
       if params[:tag]
@@ -146,7 +160,7 @@ class ChangeRequestsController < ApplicationController
     end
     def release_manager_required
       redirect_to change_request_path if 
-      !current_user.is_release_manager
+      current_user.role != 'release_manager'
     end
 
     def submitted_required
