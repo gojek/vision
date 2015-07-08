@@ -20,21 +20,7 @@
       <% end %>
     </div>
     <% end %>
-    <% if false %>
-     <%= link_to  deploy_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
-                                      <i class="fa fa-check fa-fw"></i>Deploy
-                                  <%end %> 
-      <%= link_to  rollback_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
-                                      <i class="fa fa-check fa-fw"></i>Rollback
-                                  <%end %> 
-       <%= link_to  cancel_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
-                                      <i class="fa fa-check fa-fw"></i>Cancel
-                                  <%end %> 
-       <%= link_to  close_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
-                                      <i class="fa fa-check fa-fw"></i>Closed
-                                  <%end %> 
-    <% end %>
-  <div class="row">
+    <%= render 'status' %>
     <div class="col-md-8">
       <div class="panel panel-primary">
         <div class="panel-heading">
