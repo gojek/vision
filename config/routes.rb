@@ -1,8 +1,11 @@
 Rails.application.routes.draw do
  
 
+  get 'cobas/new'
+
   resources :comments
   get 'tags/:tag', to: 'change_requests#index', as: :tag
+  get 'change_requests/:id/graceperiod' => 'change_requests#edit_grace_period_notes', :as => 'graceperiod'
   resources :change_requests do
     resources :comments 
     collection do 
@@ -23,6 +26,7 @@ Rails.application.routes.draw do
       patch :bringback  # <= and that
     end
   end
+
   get 'signin' => 'pages#signin'
 
   get 'incident_reports/show'
@@ -65,8 +69,12 @@ resources :versions, only: [] do
   root to: 'pages#index'
   put 'lock_user/:id' => 'users#lock_user', :as => 'lock_user'
   put 'unlock_user/:id' => 'users#unlock_user', :as => 'unlock_user'
-  put  'approve/:id' => 'change_requests#approve', :as =>'approve'
-  put  'reject/:id' => 'change_requests#reject', :as =>'reject'
+  put 'approve/:id' => 'change_requests#approve', :as =>'approve'
+  put 'reject/:id' => 'change_requests#reject', :as =>'reject'
+  put 'deploy/:id' => 'change_requests#deploy', :as =>'deploy'
+  put 'rollback/:id' => 'change_requests#rollback', :as =>'rollback'
+  put 'cancel/:id' => 'change_requests#cancel', :as =>'cancel'
+  put 'close/:id' => 'change_requests#close', :as => 'close'
 
 
 

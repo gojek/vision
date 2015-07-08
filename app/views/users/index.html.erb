@@ -12,9 +12,15 @@
                     <!-- /.panel-heading -->
                     <div class="panel-body">
                         <div class = "col-lg-4 form-group" >
-                             <%= search_form_for @q, html: {class: "form-inline"} do |f| %>
-                                <%= f.label :name_cont %>
-                                <%= f.search_field :name_cont, class: 'form-control' %>
+                            <%= search_form_for @q, html: {class: "form-inline"} do |f| %>
+                                <div class="field form-group">
+                                    <%= f.label :name_cont %>
+                                    <%= f.search_field :name_cont, class: 'form-control' %>
+                                </div>
+                                <div class="field form-group">
+                                    <%= f.label :role %>
+                                    <%= f.select :role_cont, options_for_select(User::ROLES), {}, {class: 'form-control'} %><br>
+                                </div>
                                 <%= f.submit class: 'btn btn-primary'%>
                             <% end %>
                         </div>
