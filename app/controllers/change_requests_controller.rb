@@ -1,9 +1,11 @@
 class ChangeRequestsController < ApplicationController
-  before_action :set_change_request, only: [:show, :edit, :update, :destroy, :approve, :reject]
+  before_action :set_change_request, only: [:show, :edit, :update, :destroy, :approve, :reject, :edit_grace_period_notes, :schedule, :deploy, :rollback, :cancell, :close]
   before_action :authenticate_user!
   before_action :owner_required, only: [:edit, :update, :destroy]
+  before_action :submitted_required, only: [:edit]
+  before_action :release_manager_required, only: [:schedule, :deploy, :rollback, :cancel, :close]
   autocomplete :tag, :name, :class_name => 'ActsAsTaggableOn::Tag'
-
+  QUOROM_APPROVERS = 2
   def index
     if params[:tag]
       @change_requests = ChangeRequest.tagged_with(params[:tag]).order(created_at: :desc).page(params[:page]).per(params[:per_page])
@@ -33,8 +35,12 @@ class ChangeRequestsController < ApplicationController
   def edit
   end
 
+  def edit_grace_period_notes
+  end
+
   def create
     @change_request = current_user.ChangeRequests.build(change_request_params)
+    @change_request.status = "Submitted"
     respond_to do |format|
       if @change_request.save
         @approvers = User.where(role: "approver")
@@ -98,11 +104,32 @@ class ChangeRequestsController < ApplicationController
     end
     redirect_to @change_request
   end
-
+  def schedule
+    @change_request.update_attribute(:status, 'Scheduled')
+    redirect_to @change_request
+  end
+  def deploy
+    @change_request.update_attribute(:status, 'Deployed')
+    redirect_to @change_request
+  end
+  def rollback
+    @change_request.update_attribute(:status, 'Rollback')
+    redirect_to @change_request
+  end
+  def cancel
+    @change_request.update_attribute(:status, 'Cancelled')
+    redirect_to @change_request
+  end
+  def close
+    @change_request.update_attribute(:status, 'Closed')
+    redirect_to @change_request
+  end  
   private
     def set_change_request
       if params[:tag]
-      @achange_requests = ChangeRequest.tagged_with(params[:tag])
+        @change_requests = ChangeRequest.tagged_with(params[:tag])
+      elsif params[:change_request_id]
+        @change_request = ChangeRequest.find(params[:change_request_id])
       else
         @change_request = ChangeRequest.find(params[:id])
       end
@@ -116,6 +143,14 @@ class ChangeRequestsController < ApplicationController
     def owner_required
       redirect_to change_requests_url if
       current_user != @change_request.user && !current_user.is_admin
+    end
+    def release_manager_required
+      redirect_to change_request_path if 
+      !current_user.is_release_manager
+    end
+
+    def submitted_required
+      redirect_to graceperiod_path if @change_request.status!='Submitted'    
     end
 
 

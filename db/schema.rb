@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150706081113) do
+ActiveRecord::Schema.define(version: 20150708081120) do
 
   create_table "approvers", force: :cascade do |t|
     t.string   "name"
@@ -81,6 +81,7 @@ ActiveRecord::Schema.define(version: 20150706081113) do
     t.text     "db"
     t.text     "os"
     t.string   "requestor_name"
+    t.string   "status"
   end
 
   add_index "change_requests", ["user_id"], name: "index_change_requests_on_user_id"
@@ -191,6 +192,7 @@ ActiveRecord::Schema.define(version: 20150706081113) do
     t.string   "uid"
     t.string   "provider"
     t.boolean  "is_admin"
+    t.string   "position"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
