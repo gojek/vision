@@ -13,8 +13,16 @@
 //= require jquery
 //= require jquery.turbolinks
 //= require jquery_ujs
+//= require turbolinks
 //= require jquery-ui
 //= require autocomplete-rails
 //= require_tree .
 //= require cocoon
 //= require tinymce
+
+$(document).ready(function(){
+	tinymce.remove();
+	tinyMCE.init({
+	selector: "textarea.tinymce"
+	});
+});
