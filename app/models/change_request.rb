@@ -20,6 +20,65 @@ class ChangeRequest < ActiveRecord::Base
   def user_name
     user ? user.name : ''
   end
-
+  def schedule
+    if submitted?
+      self.status = 'Scheduled'
+      self.save
+    end
+  end
+  def deploy
+   if schedulled?
+      self.status = 'Deployed'
+      self.save
+    end
+  end
+  def rollback
+  end
+  def cancel
+    if schedulled?
+      self.status = 'Cancelled'
+      self.save
+    end
+  end
+  def close
+    self.status = 'Closed'
+    self.save
+  end  
+  def final_reject
+    if submitted?
+      self.status = 'Reject'
+      self.save
+    end
+  end
+  def submit
+    if cancelled?
+      self.status = 'Submitted'
+      self.save
+    end
+  end
+  def submitted?
+    self.status == 'Submitted'
+  end
+  def schedulled?
+    self.status == 'Scheduled'
+  end
+  def closed?
+    self.status == 'Closed'
+  end
+  def rejected?
+    self.status == 'Rejected'
+  end
+  def deployed?
+    self.status == 'Deployed'
+  end
+  def rollback?
+    self.status == 'Rollback'
+  end
+  def cancelled?
+    self.status == "Cancelled"
+  end
+  def closed?
+    self.status == 'Closed'
+  end
 end
 

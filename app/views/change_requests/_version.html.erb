@@ -18,9 +18,7 @@
         <td><%= version.created_at.to_s(:long) %></td>
         <td><%= find_version_author_name(version) %></td>
         <td><%= version.event.humanize %></td>
-        
-        
-       
+        <td><pre><%= version.object_changes %></pre></td>
       </tr>
     <% end %>
   </tbody>
