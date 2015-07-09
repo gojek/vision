@@ -3,6 +3,15 @@
   <div class="panel panel-default">
               <div class="panel-heading"></div>
               <div class="panel-body">
+                  <div class = "col-lg-4 form-group" >
+                    <%= search_form_for @q do |f| %>
+                      <div class="form-group">
+                        <%= f.label :status %>
+                        <%= f.select :status_cont, options_for_select([['Any','']] + ChangeRequest::STATUS), {}, {class: 'form-control'} %>
+                      </div>
+                  <%= f.submit %>
+                  <% end %>
+                </div>
                 <table class='table table-striped'>
                   <thead>
                     <tr>
@@ -42,6 +51,7 @@
                 </table>
                   <%= paginate @change_requests, :theme => 'twitter-bootstrap-3' %>
 <br>
+
 
 <%= link_to 'New Change request', new_change_request_path %>
 <br>

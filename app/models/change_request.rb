@@ -8,6 +8,7 @@ class ChangeRequest < ActiveRecord::Base
   acts_as_taggable
   has_paper_trail class_name: 'ChangeRequestVersion'
   SCOPE = %w(Major Minor)
+  STATUS = %w(Submitted Scheduled Rejected Deployed Rollback Cancelled Closed)
   #validates :requestor_name, :requestor_position, :change_summary, :priority, :category, :cr_type, :change_requirement, :business_justification, :note, :analysis, :solution, :impact, :scope, :design,
            # :backup, :testing_environment_avaible, :testing_procedure, :testing_notes, :schedule_change_date, :planned_completion, :grace_period_starts, :grace_period_end, :implementation_notes, :grace_period_notes,
           #  :user_id, :net, :db, :os, presence: true
