@@ -1,42 +1,149 @@
 <% if is_submitted %>
 	 <%= link_to  schedule_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
         <i class="fa fa-check fa-fw"></i>Schedule <%end %> 
-      <%= link_to  close_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
-      <i class="fa fa-check fa-fw"></i>Close <%end %> 
-       <%= link_to  final_reject_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
-      <i class="fa fa-check fa-fw"></i>Reject <%end %> 
+     <button class="btn btn-primary" data-toggle="modal" data-target="#closeModalLabel">
+                                Close Change Request
+                            </button>
+       <button class="btn btn-primary" data-toggle="modal" data-target="#RejectModalLabel">
+                                Reject Change Request
+                            </button>
+	   
 <% elsif is_scheduled%>
-	 <%= link_to  close_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
-                                      <i class="fa fa-check fa-fw"></i>close
-                                  <%end %> 
+	 <button class="btn btn-primary" data-toggle="modal" data-target="#closeModalLabel">
+                                Close Change Request
+                            </button>
       <%= link_to  deploy_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
                                       <i class="fa fa-check fa-fw"></i>Deploy
                                   <%end %>     
-     <%= link_to  rollback_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
-                                      <i class="fa fa-check fa-fw"></i>Rollback
-       <%= link_to  cancel_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
-                                      <i class="fa fa-check fa-fw"></i>Cancel
-                                  <%end %>                            <%end %> 
+  		<button class="btn btn-primary" data-toggle="modal" data-target="#RollbackModalLabel">
+	       Rollback Change Request
+	    </button>
+      <button class="btn btn-primary" data-toggle="modal" data-target="#cancelModalLabel">
+                                Cancel Change Request
+                            </button>                      
 <% elsif is_deployed %>
-	<%= link_to  close_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
-                                      <i class="fa fa-check fa-fw"></i>Close
-                                  <%end %> 
-     <%= link_to  rollback_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
-                                      <i class="fa fa-check fa-fw"></i>Rollback
-                                  <%end %> 
+	 <button class="btn btn-primary" data-toggle="modal" data-target="#RejectModalLabel">
+                                Close Change Request
+                            </button>
+    <button class="btn btn-primary" data-toggle="modal" data-target="#RollbackModalLabel">
+	       Rollback Change Request
+	    </button>
 <%elsif is_rollbacked %>
-	<%= link_to  close_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
-                                      <i class="fa fa-check fa-fw"></i>Close
-                                  <%end %> 
+	 <button class="btn btn-primary" data-toggle="modal" data-target="#closeModalLabel">
+                                Close Change Request
+                            </button>
 <% elsif is_cancelled%>
-	<%= link_to  close_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
-                                      <i class="fa fa-check fa-fw"></i>Close
-                                  <%end %> 
+	 <button class="btn btn-primary" data-toggle="modal" data-target="#closeModalLabel">
+                                Close Change Request
+                            </button>
      <%= link_to  submit_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
                                       <i class="fa fa-check fa-fw"></i>Submit
                                   <%end %>    
 <% elsif is_rejected %>
-	<%= link_to  close_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
-                                      <i class="fa fa-check fa-fw"></i>Close
-                                  <%end %>                           
+	 <button class="btn btn-primary" data-toggle="modal" data-target="#closeModalLabel">
+                                Close Change Request
+                            </button> 
+
 <% end %>
+<div class="modal fade" id="RejectModalLabel" tabindex="-1" role="dialog" aria-labelledby="RejectModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">Reject Change Request </h4>
+            </div>
+            <div class="modal-body">
+                <%= form_for(@change_request, url: final_reject_path) do |f| %>
+                <%= f.text_field :reject_note, class: 'form-control' %>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <%= f.submit %>
+ 
+                <% end %>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<div class="modal fade" id="RollbackModalLabel" tabindex="-1" role="dialog" aria-labelledby="RollbackModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">Rollback Change Request </h4>
+            </div>
+            <div class="modal-body">
+                <%= form_for(@change_request, url: rollback_path) do |f| %>
+                <%= f.text_field :rollback_note, class: 'form-control' %>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <%= f.submit %>
+ 
+                <% end %>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="closeModalLabel" tabindex="-1" role="dialog" aria-labelledby="RollbackModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">Rollback Change Request </h4>
+            </div>
+            <div class="modal-body">
+                <%= form_for(@change_request, url: close_path) do |f| %>
+                <%= f.text_field :close_note, class: 'form-control' %>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <%= f.submit %>
+ 
+                <% end %>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="cancelModalLabel" tabindex="-1" role="dialog" aria-labelledby="RollbackModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">Rollback Change Request </h4>
+            </div>
+            <div class="modal-body">
+                <%= form_for(@change_request, url: cancel_path) do |f| %>
+                <%= f.text_field :cancel_note, class: 'form-control' %>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <%= f.submit %>
+ 
+                <% end %>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
