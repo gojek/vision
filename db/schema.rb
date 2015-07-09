@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150708081120) do
+ActiveRecord::Schema.define(version: 20150709043935) do
 
   create_table "approvers", force: :cascade do |t|
     t.string   "name"
@@ -82,6 +82,10 @@ ActiveRecord::Schema.define(version: 20150708081120) do
     t.text     "os"
     t.string   "requestor_name"
     t.string   "status"
+    t.text     "rollback_note"
+    t.text     "reject_note"
+    t.text     "close_note"
+    t.text     "cancel_note"
   end
 
   add_index "change_requests", ["user_id"], name: "index_change_requests_on_user_id"
