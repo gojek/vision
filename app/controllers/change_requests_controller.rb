@@ -8,7 +8,8 @@ class ChangeRequestsController < ApplicationController
   QUOROM_APPROVERS = 2
   def index
     if params[:tag]
-      @change_requests = ChangeRequest.tagged_with(params[:tag]).order(created_at: :desc).page(params[:page]).per(params[:per_page])
+      @q = ChangeRequest.ransack(params[:q])
+      @change_requests = @q.result(distinct: true).tagged_with(params[:tag]).order(created_at: :desc).page(params[:page]).per(params[:per_page])
     elsif(current_user.role=='requestor')
       @q = ChangeRequest.ransack(params[:q])
       @change_requests = @q.result(distinct: true).where(user_id: current_user.id).order(created_at: :desc).page(params[:page]).per(params[:per_page])
@@ -16,13 +17,13 @@ class ChangeRequestsController < ApplicationController
       @q = ChangeRequest.ransack(params[:q])
       @change_requests = @q.result(distinct: true).joins(:approvers).where(approvers: {user_id: current_user.id}).order(created_at: :desc).page(params[:page]).per(params[:per_page])
     else
-       @q = ChangeRequest.ransack(params[:q])
+      @q = ChangeRequest.ransack(params[:q])
       @change_requests = @q.result(distinct: true).order(created_at: :desc).page(params[:page]).per(params[:per_page])
     end
-
   end
 
   def show
+    @version = @change_request.versions
     approve = Approver.where(change_request_id: @change_request.id).where(user_id: current_user.id).first
     if(approve == nil) 
       @approved = nil
@@ -108,41 +109,35 @@ class ChangeRequestsController < ApplicationController
     redirect_to @change_request
   end
   def schedule
-    redirect_to @change_request if @change_request.status != 'Submitted' 
-    @change_request.update_attribute(:status, 'Scheduled')
+    @change_request.schedule
     redirect_to @change_request
   end
   def deploy
-    redirect_to @change_request if @change_request.status != 'Scheduled'
-    @change_request.update_attribute(:status, 'Deployed')
+    @change_request.deploy
     redirect_to @change_request
   end
   def rollback
-    redirect_to @change_request if (@change_request.status != 'Scheduled' && @change_request.status != 'Deployed')
+    @change_request.rollback
     @change_request.update(rollback_note_param)
-    @change_request.update_attribute(:status, 'Rollback')
     redirect_to @change_request
   end
   def cancel
-    redirect_to @change_request if @change_request.status != 'Scheduled' 
+    @change_request.cancel
     @change_request.update(cancel_note_param)
-    @change_request.update_attribute(:status, 'Cancelled')
     redirect_to @change_request
   end
   def close
-    @change_request.update_attribute(:status, 'Closed')
+   @change_request.close
     @change_request.update(close_note_param)
     redirect_to @change_request
   end  
   def final_reject
-    redirect_to @change_request if @change_request.status != 'Submitted'
+    @change_request.final_reject
     @change_request.update(reject_note_param)
-    @change_request.update_attribute(:status, 'Rejected')
     redirect_to @change_request
   end
   def submit
-    redirect_to @change_request if @change_request.status != "Cancelled"
-    @change_request.update_attribute(:status, 'Submitted')
+    @change_request.submit
     redirect_to @change_request
   end
   private
@@ -169,14 +164,13 @@ class ChangeRequestsController < ApplicationController
       redirect_to change_request_path if 
       current_user.role != 'release_manager'
     end
-
     def submitted_required
       redirect_to graceperiod_path if @change_request.status!='Submitted'    
     end
     def reject_note_param
       params.require(:change_request).permit(:reject_note)
     end
-     def rollback_note_param
+    def rollback_note_param
       params.require(:change_request).permit(:rollback_note)
     end
     def cancel_note_param
@@ -185,5 +179,4 @@ class ChangeRequestsController < ApplicationController
     def close_note_param
       params.require(:change_request).permit(:close_note)
     end
-
 end
