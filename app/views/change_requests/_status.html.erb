@@ -1,4 +1,4 @@
-<% if is_submitted %>
+<% if @change_request.submitted? %>
 	 <%= link_to  schedule_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
         <i class="fa fa-check fa-fw"></i>Schedule <%end %> 
      <button class="btn btn-primary" data-toggle="modal" data-target="#closeModalLabel">
@@ -8,7 +8,7 @@
                                 Reject Change Request
                             </button>
 	   
-<% elsif is_scheduled%>
+<% elsif @change_request.scheduled?%>
 	 <button class="btn btn-primary" data-toggle="modal" data-target="#closeModalLabel">
                                 Close Change Request
                             </button>
@@ -21,25 +21,25 @@
       <button class="btn btn-primary" data-toggle="modal" data-target="#cancelModalLabel">
                                 Cancel Change Request
                             </button>                      
-<% elsif is_deployed %>
+<% elsif @change_request.deployed? %>
 	 <button class="btn btn-primary" data-toggle="modal" data-target="#closeModalLabel">
                                 Close Change Request
                             </button>
     <button class="btn btn-primary" data-toggle="modal" data-target="#RollbackModalLabel">
 	       Rollback Change Request
 	    </button>
-<%elsif is_rollbacked %>
+<%elsif @change_request.rollbacked? %>
 	 <button class="btn btn-primary" data-toggle="modal" data-target="#closeModalLabel">
                                 Close Change Request
                             </button>
-<% elsif is_cancelled%>
+<% elsif @change_request.cancelled?%>
 	 <button class="btn btn-primary" data-toggle="modal" data-target="#closeModalLabel">
                                 Close Change Request
                             </button>
      <%= link_to  submit_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
                                       <i class="fa fa-check fa-fw"></i>Submit
                                   <%end %>    
-<% elsif is_rejected %>
+<% elsif @change_request.rejected? %>
 	 <button class="btn btn-primary" data-toggle="modal" data-target="#closeModalLabel">
                                 Close Change Request
                             </button> 
