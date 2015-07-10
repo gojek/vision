@@ -9,7 +9,7 @@ class ChangeRequestStatusesController < ApplicationController
     redirect_to @change_request
   end
   def deploy
-  	@status = @change_request.change_request_statuses.new(change_request_status_params)
+  	@status = @change_request.change_request_statuses.new
   	@status.status = 'deployed'
   	if @status.save
       @change_request.deploy!
