@@ -1,0 +1,19 @@
+defaults: &defaults
+  minimum_approval: 1
+
+development:
+  <<: *defaults
+  minimum_approval: 1
+  something: "tes"
+
+test:
+  <<: *defaults
+  something: "tes"
+
+staging:
+  <<: *defaults
+  something: "tes"
+
+production:
+  <<: *defaults
+  something: "tes2"

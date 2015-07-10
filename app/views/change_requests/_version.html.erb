@@ -23,3 +23,24 @@
     <% end %>
   </tbody>
 </table>
+<table class='table'>
+  <thead>
+    <tr>
+      <th>Action</th>
+      <th>Reason</th>
+      <th>Date</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%- @change_request.change_request_statuses.reverse.each do |cr_status| %>
+      <tr>
+        <td><%= cr_status.status%></td>
+        <td><%= cr_status.reason %></td>
+        <td><%=cr_status.created_at.to_s(:long) %></td>
+        <td></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
