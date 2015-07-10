@@ -49,5 +49,8 @@ class ChangeRequest < ActiveRecord::Base
       transitions :form => :cancelled, :to => :submitted 
     end
   end
+  def approvers_count
+    self.approvers.where(approve: true).count
+  end
 end
 
