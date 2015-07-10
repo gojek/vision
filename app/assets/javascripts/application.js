@@ -11,11 +11,9 @@
 // about supported directives.
 //
 //= require jquery
-//= require jquery.turbolinks
 //= require jquery_ujs
 //= require jquery-ui
 //= require autocomplete-rails
 //= require_tree .
 //= require cocoon
 //= require tinymce
-
