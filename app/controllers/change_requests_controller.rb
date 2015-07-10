@@ -109,35 +109,37 @@ class ChangeRequestsController < ApplicationController
     redirect_to @change_request
   end
   def schedule
-    @change_request.schedule
+    @change_request.schedule!
+
     redirect_to @change_request
   end
   def deploy
-    @change_request.deploy
+    @change_request.deploy!
     redirect_to @change_request
   end
   def rollback
-    @change_request.rollback
-    @change_request.update(rollback_note_param)
+    @change_request.rollback!
+    @change_request.update(rollback_params)
     redirect_to @change_request
   end
   def cancel
-    @change_request.cancel
-    @change_request.update(cancel_note_param)
+    @change_request.cancel!
+    @change_request.update(cancel_params)
     redirect_to @change_request
   end
   def close
-   @change_request.close
-    @change_request.update(close_note_param)
+   @change_request.close!
+    @change_request.update(close_params)
     redirect_to @change_request
   end  
   def final_reject
-    @change_request.final_reject
-    @change_request.update(reject_note_param)
+    @change_request.reject!
+    @change_request.update(reject_params)
     redirect_to @change_request
   end
   def submit
-    @change_request.submit
+    @change_request.submit!
+
     redirect_to @change_request
   end
   private
@@ -167,16 +169,16 @@ class ChangeRequestsController < ApplicationController
     def submitted_required
       redirect_to graceperiod_path if @change_request.status!='Submitted'    
     end
-    def reject_note_param
+    def reject_params
       params.require(:change_request).permit(:reject_note)
     end
-    def rollback_note_param
+    def rollback_params
       params.require(:change_request).permit(:rollback_note)
     end
-    def cancel_note_param
+    def cancel_params
       params.require(:change_request).permit(:cancel_note)
     end
-    def close_note_param
+    def close_params
       params.require(:change_request).permit(:close_note)
     end
 end
