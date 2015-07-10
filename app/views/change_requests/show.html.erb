@@ -3,7 +3,7 @@
   <h1 class="page-header">Change Request</h1>
     <%= link_to 'Edit', edit_change_request_path(@change_request) %> |
     <%= link_to 'Back', change_requests_path %> <br>
-    <%= @change_request.status %>
+    <%= @change_request.aasm_state %>
     <% if current_user.role=='approver' %>
     <div class='approve-status form-group'>
       <% if @approved == nil %>
