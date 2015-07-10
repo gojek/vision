@@ -6,7 +6,15 @@ Rails.application.routes.draw do
   resources :comments
   get 'tags/:tag', to: 'change_requests#index', as: :tag
   get 'change_requests/:id/graceperiod' => 'change_requests#edit_grace_period_notes', :as => 'graceperiod'
+  post 'change_requests/:id/deploy' => 'change_request_statuses#deploy', :as => 'deploy'
+  post 'change_requests/:id/rollback' => 'change_request_statuses#rollback', :as =>'rollback'
+  post 'change_requests/:id/cancel' => 'change_request_statuses#cancel', :as =>'cancel'
+  post 'change_requests/:id/close' => 'change_request_statuses#close', :as => 'close'
+  post 'change_requests/:id/final_reject' => 'change_request_statuses#final_reject', :as => 'final_reject'
+  post 'change_requests/:id/schedule' => 'change_request_statuses#schedule', :as => 'schedule'
+  post 'change_requests/:id/submit' => 'change_request_statuses#submit', :as => 'submit'
   resources :change_requests do
+    
     resources :comments 
     collection do 
           get :deleted # <= this
@@ -71,17 +79,8 @@ resources :versions, only: [] do
   put 'unlock_user/:id' => 'users#unlock_user', :as => 'unlock_user'
   put 'approve/:id' => 'change_requests#approve', :as =>'approve'
   put 'reject/:id' => 'change_requests#reject', :as =>'reject'
-  put 'deploy/:id' => 'change_requests#deploy', :as =>'deploy'
-  put 'rollback/:id' => 'change_requests#rollback', :as =>'rollback'
-  patch 'rollback/:id' => 'change_requests#rollback'
-  put 'cancel/:id' => 'change_requests#cancel', :as =>'cancel'
-  patch 'cancel/:id' => 'change_requests#cancel'
-  put 'close/:id' => 'change_requests#close', :as => 'close'
-  patch 'close/:id' => 'change_requests#close'
-  put 'final_reject/:id' => 'change_requests#final_reject', :as => 'final_reject'
-  patch 'final_reject/:id' => 'change_requests#final_reject'
-  put 'schedule/:id' => 'change_requests#schedule', :as => 'schedule'
-  put 'submit/:id' => 'change_requests#submit', :as => 'submit'
+  
+ 
 
 
 

@@ -24,6 +24,7 @@ class ChangeRequestsController < ApplicationController
 
   def show
     @version = @change_request.versions
+    @change_request_status = ChangeRequestStatus.new
     approve = Approver.where(change_request_id: @change_request.id).where(user_id: current_user.id).first
     if(approve == nil) 
       @approved = nil
@@ -44,7 +45,6 @@ class ChangeRequestsController < ApplicationController
 
   def create
     @change_request = current_user.ChangeRequests.build(change_request_params)
-    @change_request.status = "Submitted"
     respond_to do |format|
       if @change_request.save
         @approvers = User.where(role: "approver")
@@ -167,7 +167,7 @@ class ChangeRequestsController < ApplicationController
       current_user.role != 'release_manager'
     end
     def submitted_required
-      redirect_to graceperiod_path if @change_request.status!='Submitted'    
+      redirect_to graceperiod_path if !@change_request.submitted?
     end
     def reject_params
       params.require(:change_request).permit(:reject_note)
