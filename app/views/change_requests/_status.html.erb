@@ -1,5 +1,16 @@
+<% if @change_request_status.errors.any? %>
+    <div id="error_explanation">
+      <h3><%= pluralize(@change_request_status.errors.count, "error") %> prohibited this change_request from being saved:</h3>
+
+      <ul>
+      <% @change_request_status.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+<% end %>
 <% if @change_request.submitted? %>
-	 <%= link_to  schedule_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
+	 <%= link_to  schedule_path(@change_request.id), data: { method: :post, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
         <i class="fa fa-check fa-fw"></i>Schedule <%end %> 
      <button class="btn btn-primary" data-toggle="modal" data-target="#closeModalLabel">
                                 Close Change Request
@@ -12,7 +23,7 @@
 	 <button class="btn btn-primary" data-toggle="modal" data-target="#closeModalLabel">
                                 Close Change Request
                             </button>
-      <%= link_to  deploy_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
+      <%= link_to  deploy_path(@change_request.id), data: { method: :post, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
                                       <i class="fa fa-check fa-fw"></i>Deploy
                                   <%end %>     
   		<button class="btn btn-primary" data-toggle="modal" data-target="#RollbackModalLabel">
@@ -36,7 +47,7 @@
 	 <button class="btn btn-primary" data-toggle="modal" data-target="#closeModalLabel">
                                 Close Change Request
                             </button>
-     <%= link_to  submit_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
+     <%= link_to  submit_path(@change_request.id), data: { method: :post, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
                                       <i class="fa fa-check fa-fw"></i>Submit
                                   <%end %>    
 <% elsif @change_request.rejected? %>
@@ -53,8 +64,8 @@
                 <h4 class="modal-title" id="myModalLabel">Reject Change Request </h4>
             </div>
             <div class="modal-body">
-                <%= form_for(@change_request, url: final_reject_path) do |f| %>
-                <%= f.text_field :reject_note, class: 'form-control' %>
+                <%= form_for(@change_request_status, url: final_reject_path) do |f| %>
+                <%= f.text_field :reason, class: 'form-control' %>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -76,8 +87,8 @@
                 <h4 class="modal-title" id="myModalLabel">Rollback Change Request </h4>
             </div>
             <div class="modal-body">
-                <%= form_for(@change_request, url: rollback_path) do |f| %>
-                <%= f.text_field :rollback_note, class: 'form-control' %>
+                <%= form_for(@change_request_status, url: rollback_path) do |f| %>
+                <%= f.text_field :reason, class: 'form-control' %>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -98,8 +109,8 @@
                 <h4 class="modal-title" id="myModalLabel">Rollback Change Request </h4>
             </div>
             <div class="modal-body">
-                <%= form_for(@change_request, url: close_path) do |f| %>
-                <%= f.text_field :close_note, class: 'form-control' %>
+                <%= form_for(@change_request_status, url: close_path) do |f| %>
+                <%= f.text_field :reason, class: 'form-control' %>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -120,8 +131,8 @@
                 <h4 class="modal-title" id="myModalLabel">Rollback Change Request </h4>
             </div>
             <div class="modal-body">
-                <%= form_for(@change_request, url: cancel_path) do |f| %>
-                <%= f.text_field :cancel_note, class: 'form-control' %>
+                <%= form_for(@change_request_status, url: cancel_path) do |f| %>
+                <%= f.text_field :reason, class: 'form-control' %>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

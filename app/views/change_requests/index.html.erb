@@ -22,6 +22,9 @@
                       <th>Category</th>
                       <th>Type</th>
                       <th>Status</th>
+                       <th>Approvers</th>
+                       <th>Approve</th>
+                       <th>Reject</th>
                       <th colspan="3">Action</th>
                     </tr>
                   </thead>
@@ -35,7 +38,9 @@
                         <td><%=raw change_request.priority%></td>
                         <td><%=raw change_request.category %></td>
                         <td><%=raw change_request.cr_type %></td>
-                        <td><%= change_request.status %></td>
+                        <td><%= change_request.aasm_state %></td>
+                        <td><%= change_request.approvers.count %></td>
+                         <td><%= change_request.approvers_count %></td>
                         <td></td>
                         <td><%= link_to 'Show', change_request %></td>
                         <%if current_user==change_request.user || current_user.is_admin %>
