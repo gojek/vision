@@ -28,7 +28,7 @@ class ChangeRequest < ActiveRecord::Base
     state :closed
     state :rejected
     event :schedule do 
-      transitions :from => :submitted, :to => :scheduled
+      transitions :from => :submitted, :to => :scheduled, :guard => :approvable?
     end
     event :reject do 
       transitions :from => :submitted, :to => :rejected
@@ -50,7 +50,10 @@ class ChangeRequest < ActiveRecord::Base
     end
   end
   def approvers_count
-    self.approvers.where(approve: true).count
+    self.approvers.where(approve: true).count 
+  end
+  def approvable?
+    self.approvers.where(approve: true).count >= CONFIG[:minimum_approval]
   end
 end
 
