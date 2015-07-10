@@ -29,6 +29,8 @@ class ChangeRequestsController < ApplicationController
     if(approve == nil) 
       @approved = nil
     else
+
+      CONFIG[:minimum_approval]
       @approved = approve.approve
     end
   end
