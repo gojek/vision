@@ -30,7 +30,7 @@ class ChangeRequestsController < ApplicationController
       @approved = nil
     else
 
-      CONFIG[:minimum_approval]
+      
       @approved = approve.approve
     end
   end
@@ -169,7 +169,11 @@ class ChangeRequestsController < ApplicationController
       current_user.role != 'release_manager'
     end
     def submitted_required
-      redirect_to graceperiod_path if !@change_request.submitted?
+      if @change_request.closed?
+        redirect_to change_requests_path
+      else
+        redirect_to graceperiod_path if !@change_request.submitted?
+      end
     end
     def reject_params
       params.require(:change_request).permit(:reject_note)
