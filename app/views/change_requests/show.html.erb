@@ -1,9 +1,9 @@
   <p id="notice"><%= notice %></p>
-
-  <h1 class="page-header">Change Request</h1>
-    <%= link_to 'Edit', edit_change_request_path(@change_request) %> |
+  <div class="page-header">
+  <div class= "pull-right label label-primary" ><h4><%=@change_request.aasm_state%></h4></div>
+  <h1>Change Request</h1>
+  </div>
     <%= link_to 'Back', change_requests_path %> <br>
-    <%= @change_request.aasm_state %>
     <% if current_user.role=='approver' %>
     <div class='approve-status form-group'>
       <% if @approved == nil %>
@@ -14,17 +14,19 @@
                                       <i class="fa fa-times fa-fw"></i>Reject
                                   <%end %> 
       <% elsif @approved %>
-        Approved
+        <div class="label label-primary"> Approved by you </div>
       <% else %>
-        Rejected
+        <div class="label label-primary"> Rejected by you </div>
       <% end %>
     </div>
     <% end %>
+      <% unless @change_request.closed? || current_user.role!='release_manager'%>
     <div class="panel panel-default">
         <div class="panel-heading">
             Actions
         </div>
         <!-- /.panel-heading -->
+      
         <div class="panel-body">
             <!-- Button trigger modal -->
             <!-- Modal -->
@@ -33,6 +35,7 @@
         </div>
         <!-- .panel-body -->
     </div>
+    <% end %>
     <div class="col-md-8">
       <div class="panel panel-primary">
         <div class="panel-heading">

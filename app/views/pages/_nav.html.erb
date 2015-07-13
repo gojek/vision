@@ -35,13 +35,17 @@
                         <i class="fa fa-bell fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-alerts">
-                        <% if is_approver %>
+                        <% if is_approver && count!=0 %>
                         <li>
                              <%= link_to change_requests_path do %>
                                      <i class="fa fa-file-text-o fa-fw"></i> <%= count %> New Change Requests
                                 <%end%>
                         </li>
                         <li class="divider"></li>
+                        <% else %>
+                            <li>
+                            <a>Nothing Here</a>
+                            </li>
                         <% end %>
                     </ul>
                     <!-- /.dropdown-alerts -->
