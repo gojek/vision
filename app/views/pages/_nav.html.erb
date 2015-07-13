@@ -70,7 +70,24 @@
 
                         </li>
                         </ul>
-                     </li>
+                        </li>
+
+                        <li>
+                            <a href="#"><i class="fa fa-users fa-fw"></i> CAB <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <%= link_to cabs_url do %>
+                                    <i class="fa fa-search fa-fw"></i> View CAB
+                                    <% end %>
+                                </li>
+                                <li>
+                                    <%= link_to new_cab_path do %>
+                                    <i class="fa fa-plus fa-fw"></i> Create CAB
+                                    <% end %>
+                                </li>
+                            </ul>
+                        </li>
+
                         <% end %>
                          
                         <li>
