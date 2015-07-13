@@ -19,11 +19,8 @@
                         <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li>
-                        </li>
+                
                         
-                        <li class="divider">
-                        </li>
                         <li>
                             <%= link_to 'Logout', :destroy_user_session %>
                         </li>
@@ -41,7 +38,6 @@
                                      <i class="fa fa-file-text-o fa-fw"></i> <%= count %> New Change Requests
                                 <%end%>
                         </li>
-                        <li class="divider"></li>
                         <% else %>
                             <li>
                             <a>Nothing Here</a>

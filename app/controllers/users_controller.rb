@@ -18,6 +18,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       flash[:notice] = 'New user registered succesfully'
+      
       redirect_to register_path
     else
       render action: 'new'
@@ -32,6 +33,7 @@ class UsersController < ApplicationController
     @user = User.find params[:id]
     if @user.update(update_user_params)
       flash[:notice] = 'User updated succesfully'
+      UserMailer.notif_email(@user).deliver
       redirect_to users_path
     else
       render action: 'edit'
@@ -62,7 +64,7 @@ class UsersController < ApplicationController
   private
 
   def admin_required
-    current_user.is_admin || current_user.role = 'release_manager' || (redirect_to root_path)
+    current_user.is_admin || current_user.role == 'release_manager' || (redirect_to root_path)
   end
 
   def update_user_params

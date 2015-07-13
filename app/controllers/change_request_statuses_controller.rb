@@ -3,10 +3,11 @@ class ChangeRequestStatusesController < ApplicationController
 	before_action :release_manager?, only:[:schedule, :deploy, :rollback, :cancel, :close, :final_reject, :submit]
   def schedule
     if @change_request.may_schedule?
-      @status = @change_request.change_request_statuses.new
+      @status = @change_request.change_request_statuses.new(change_request_status_params)
       @status.status = 'scheduled'
       if @status.save
         @change_request.schedule!
+        UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
       end
     end
     redirect_to @change_request
@@ -14,10 +15,11 @@ class ChangeRequestStatusesController < ApplicationController
 
   def deploy
     if @change_request.may_deploy?
-    	@status = @change_request.change_request_statuses.new
+    	@status = @change_request.change_request_statuses.new(change_request_status_params)
     	@status.status = 'deployed'
     	if @status.save
         @change_request.deploy!
+UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
       end
     end
     redirect_to @change_request
@@ -29,6 +31,7 @@ class ChangeRequestStatusesController < ApplicationController
       @status.status = 'rollbacked'
       if @status.save
         @change_request.rollback!
+         UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
       end
     end
     redirect_to @change_request
@@ -40,6 +43,7 @@ class ChangeRequestStatusesController < ApplicationController
       @status.status = 'cancelled'
       if @status.save
         @change_request.cancel!
+        UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
       end
     end
     redirect_to @change_request
@@ -50,6 +54,7 @@ class ChangeRequestStatusesController < ApplicationController
       @status = @change_request.change_request_statuses.new(change_request_status_params)
       @status.status = 'closed'
       if @status.save
+     UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
         @change_request.close!
       end
     end
@@ -62,6 +67,7 @@ class ChangeRequestStatusesController < ApplicationController
       @status.status = 'rejected'
       if @status.save
         @change_request.reject!
+         UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
       end
     end
     redirect_to @change_request
@@ -69,10 +75,11 @@ class ChangeRequestStatusesController < ApplicationController
 
   def submit
     if @change_request.may_submit?
-      @status = @change_request.change_request_statuses.new
+      @status = @change_request.change_request_statuses.new(change_request_status_params)
       @status.status = 'submitted'
       if @status.save
         @change_request.submit!
+        UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
       end
     end
     redirect_to @change_request
