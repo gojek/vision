@@ -6,17 +6,17 @@ class ChangeRequest < ActiveRecord::Base
   has_many :change_request_statuses
   has_many :approvers
   has_many :comments
-  has_many :cabs
+  belongs_to :cab
+  scope :cab_free, -> {where(cab_id: nil)}
   acts_as_taggable
   has_paper_trail class_name: 'ChangeRequestVersion'
   SCOPE = %w(Major Minor)
-  STATUS = %w(submitted Scheduled Rejected Deployed Rollback Cancelled Closed)
+  STATUS = %w(submitted scheduled rejected deployed rollback cancelled closed)
   #validates :requestor_name, :requestor_position, :change_summary, :priority, :category, :cr_type, :change_requirement, :business_justification, :note, :analysis, :solution, :impact, :scope, :design,
            # :backup, :testing_environment_avaible, :testing_procedure, :testing_notes, :schedule_change_date, :planned_completion, :grace_period_starts, :grace_period_end, :implementation_notes, :grace_period_notes,
           #  :user_id, :net, :db, :os, presence: true
   accepts_nested_attributes_for :implementers, :allow_destroy => true
   accepts_nested_attributes_for :testers, :allow_destroy => true
-  accepts_nested_attributes_for :cabs, :allow_destroy => true
   accepts_nested_attributes_for :approvers, :allow_destroy => true
   #validates :change_summary, :priority, :category, :cr_type, :change_requirement, :business_justification, :requestor_position, :requestor_name, presence: true
   aasm do 

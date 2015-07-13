@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150710041142) do
+ActiveRecord::Schema.define(version: 20150713064456) do
 
   create_table "approvers", force: :cascade do |t|
     t.string   "name"
@@ -27,16 +27,12 @@ ActiveRecord::Schema.define(version: 20150710041142) do
   add_index "approvers", ["user_id"], name: "index_approvers_on_user_id"
 
   create_table "cabs", force: :cascade do |t|
-    t.string   "name"
-    t.string   "position"
-    t.boolean  "approve"
-    t.text     "reason"
-    t.integer  "change_request_id"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "meet_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  add_index "cabs", ["change_request_id"], name: "index_cabs_on_change_request_id"
+  add_index "cabs", ["meet_date"], name: "index_cabs_on_meet_date", unique: true
 
   create_table "change_request_statuses", force: :cascade do |t|
     t.string   "status"
@@ -99,8 +95,10 @@ ActiveRecord::Schema.define(version: 20150710041142) do
     t.text     "cancel_note"
     t.string   "state"
     t.string   "aasm_state"
+    t.integer  "cab_id"
   end
 
+  add_index "change_requests", ["cab_id"], name: "index_change_requests_on_cab_id"
   add_index "change_requests", ["user_id"], name: "index_change_requests_on_user_id"
 
   create_table "comments", force: :cascade do |t|
