@@ -1,0 +1,83 @@
+<h1 class='page-header'>Create CAB</h1>
+
+<%= form_for(@cab) do |f| %>
+ 	<%= f.label :meet_date %><br>
+    <%= f.datetime_select :meet_date, :include_blank => true %>
+	<div class='row'>
+		<div class='col-lg-6'>
+			<div class = 'panel panel-default'>
+				<div class= 'panel-heading'>
+				</div>
+				<div class= 'panel-body'>
+					<div id="cab-list" class="list-group">
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class='col-lg-6'>
+			<div class='panel panel-default'>
+				<div class='panel-heading'></div>
+				<div class='panel-body'>
+					<div id="all-list" class="list-group">
+					<% @change_requests.each do |change_request| %>
+						<div data-id=<%= change_request.id %> class='list-group-item'>
+						<h4 class="list-group-item-heading">List group item heading</h4>
+					    <p class="list-group-item-text"><%= change_request.change_summary %></p>
+						</div>
+					<% end %>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<%= text_field_tag 'cr_list' %>
+	<%= text_field_tag 'all_cr_list' %>
+	<%= f.submit class:"btn btn-primary" %>
+<% end %>
+<style>
+.list-group {
+  min-height: 20px;
+}
+#cr_list {
+  display: none;
+}
+#all_cr_list {
+  display: none;
+}
+</style>
+
+<script>
+console.log('hai');
+var el = document.getElementById('all-list');
+var sortable = Sortable.create(el, {
+	group:'cab', 
+	onAdd: function (evt) {
+        // + indexes from onEnd
+        var cr_list = document.getElementById('all_cr_list');
+        cr_list.value = sortable.toArray();
+    },
+    onRemove: function (evt) {
+		console.log('hai2');
+        // + indexes from onEnd
+        var cr_list = document.getElementById('all_cr_list');
+        cr_list.value = sortable.toArray();
+    }
+	
+});
+var el2 = document.getElementById('cab-list');
+var sortable2 = Sortable.create(el2, {
+	group: 'cab',
+	onAdd: function (evt) {
+        // + indexes from onEnd
+        var cr_list = document.getElementById('cr_list');
+        cr_list.value = sortable2.toArray();
+    },
+    onRemove: function (evt) {
+		console.log('hai2');
+        // + indexes from onEnd
+        var cr_list = document.getElementById('cr_list');
+        cr_list.value = sortable2.toArray();
+    }
+});
+</script>

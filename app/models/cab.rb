@@ -1,3 +1,3 @@
 class Cab < ActiveRecord::Base
-  belongs_to :change_request
+	has_many :change_requests
 end

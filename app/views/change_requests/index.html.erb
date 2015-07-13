@@ -7,7 +7,7 @@
                     <%= search_form_for @q do |f| %>
                       <div class="form-group">
                         <%= f.label :status %>
-                        <%= f.select :status_cont, options_for_select([['Any','']] + ChangeRequest::STATUS), {}, {class: 'form-control'} %>
+                        <%= f.select :aasm_state_cont, options_for_select([['Any','']] + ChangeRequest::STATUS), {}, {class: 'form-control'} %>
                       </div>
                   <%= f.submit %>
                   <% end %>
