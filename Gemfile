@@ -39,7 +39,7 @@ gem 'acts-as-taggable-on'
 gem 'rails4-autocomplete'
 gem 'jquery-ui-rails'
 gem 'aasm'
-
+gem "figaro"
 group :production do
 	gem 'pg'
 	gem 'rails_12factor'
