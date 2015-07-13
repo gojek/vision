@@ -1,7 +1,12 @@
 class CabsController < ApplicationController
-	before_action :set_cab, only: [:edit, :update, :show]
+	before_action :set_cab, only: [:edit, :update, :show, :destroy]
   
-	def new 
+  def index
+    @q = Cab.ransack(params[:q])
+    @cabs = @q.result(distinct: true).order(meet_date: :desc).page(params[:page]).per(params[:per_page])
+  end
+	
+  def new 
 		@change_requests =ChangeRequest.cab_free
 		@cab = Cab.new
 	end
@@ -13,6 +18,11 @@ class CabsController < ApplicationController
 		ChangeRequest.where(:id => @cr_list).update_all(:cab_id => @cab.id)
 		redirect_to @cab
 	end
+
+  def destroy
+    @cab.destroy
+    redirect_to cabs_url
+  end
 
 	def edit
 		@change_requests = ChangeRequest.cab_free
