@@ -33,7 +33,6 @@ class UsersController < ApplicationController
     @user = User.find params[:id]
     if @user.update(update_user_params)
       flash[:notice] = 'User updated succesfully'
-      UserMailer.notif_email(@user).deliver
       redirect_to users_path
     else
       render action: 'edit'
