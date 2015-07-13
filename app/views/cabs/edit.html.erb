@@ -1,12 +1,16 @@
 <h1 class='page-header'>Edit CAB</h1>
 
-<%= form_for(@cab) do |f| %>
+	<div class="form-group">
+	<%= form_for(@cab) do |f| %>
  	<%= f.label :meet_date %><br>
     <%= f.datetime_select :meet_date, :include_blank => true %>
+	</div>
+	
 	<div class='row'>
 		<div class='col-lg-6'>
 			<div class = 'panel panel-default'>
 				<div class= 'panel-heading'>
+					CAB Meeting
 				</div>
 				<div class= 'panel-body'>
 					<div id="cab-list" class="list-group">
@@ -22,7 +26,9 @@
 		</div>
 		<div class='col-lg-6'>
 			<div class='panel panel-default'>
-				<div class='panel-heading'></div>
+				<div class='panel-heading'>
+					Available Change Requests
+				</div>
 				<div class='panel-body'>
 					<div id="all-list" class="list-group">
 					<% @change_requests.each do |change_request| %>
