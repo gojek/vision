@@ -3,7 +3,7 @@
 	<div class="form-group">
 	<%= form_for(@cab) do |f| %>
  	<%= f.label :meet_date %><br>
-    <%= f.datetime_select :meet_date, :include_blank => true %>
+    <%= f.datetime_select :meet_date, start_year: 2015, :include_blank => true %>
 	</div>
 	
 	<div class='row'>
@@ -16,8 +16,8 @@
 					<div id="cab-list" class="list-group">
 					<% @current_change_requests.each do |current_change_request| %>
 						<div data-id=<%= current_change_request.id %> class='list-group-item'>
-						<h4 class="list-group-item-heading">List group item heading</h4>
-					    <p class="list-group-item-text"><%= current_change_request.change_summary %></p>
+						<h4 class="list-group-item-heading"><%= current_change_request.change_summary %></h4>
+					    <p class="list-group-item-text"></p>
 						</div>
 					<% end %>
 					</div>
@@ -33,8 +33,8 @@
 					<div id="all-list" class="list-group">
 					<% @change_requests.each do |change_request| %>
 						<div data-id=<%= change_request.id %> class='list-group-item'>
-						<h4 class="list-group-item-heading">List group item heading</h4>
-					    <p class="list-group-item-text"><%= change_request.change_summary %></p>
+						<h4 class="list-group-item-heading"><%= change_request.change_summary %></h4>
+					    <p class="list-group-item-text"></p>
 						</div>
 					<% end %>
 					</div>
