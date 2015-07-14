@@ -43,7 +43,7 @@ class ChangeRequest < ActiveRecord::Base
       transitions :from => :scheduled, :to => :cancelled
     end
     event :close do 
-      transitions :from => [:submitted, :rejected, :deployed, :rollbacked, :cancelled], :to => :closed
+      transitions :from => [:submitted, :rejected, :deployed, :rollbacked, :cancelled, :scheduled], :to => :closed
     end
     event :submit do 
       transitions :form => :cancelled, :to => :submitted 
