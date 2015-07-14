@@ -77,7 +77,7 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
   config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.default_url_options = { host: 'www.vt-vision.herokuapp.com'}
+  config.action_mailer.default_url_options = { host: 'vt-vision.herokuapp.com'}
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
     address: "smtp.gmail.com",
@@ -85,9 +85,9 @@ Rails.application.configure do
     domain: "gmail.com",
     authentication: "plain",
     enable_startttls_auto: true,
-    #user_name:'narendra.hanif@veritrans.co.id',
-    #password: 'veritrans'
-    user_name: ENV['GMAIL_USERNAME_DEV'],
-    password: ENV['GMAIL_PASSWORD_DEV']
+    user_name:'narendra.hanif@veritrans.co.id',
+    password: 'veritrans'
+    #user_name: ENV['GMAIL_USERNAME_DEV'],
+    #password: ENV['GMAIL_PASSWORD_DEV']
   }
 end

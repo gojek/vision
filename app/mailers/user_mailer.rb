@@ -8,7 +8,13 @@ class UserMailer < ApplicationMailer
 		@url = change_request_url(@change_request)
 		@state = @status.status
 		@reason = @status.reason
-		mail(to: @user.email, subject:'Change Request Status Changed')
+		@recepients = User.where(:role => ['approver','release_manager'])
+		if @recepients.count > 1
+			approvers = @recepients.collect(&:email).join(",")
+		else
+			approvers = @recepients.collect(&:email)
+		end
+		mail(to: [@user.email,approvers], subject:'Change Request Status Changed')
 	end
 
 
