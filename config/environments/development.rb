@@ -48,6 +48,7 @@ Rails.application.configure do
     enable_startttls_auto: true,
     user_name: "narendra.hanif@veritrans.co.id",
     password: "veritrans"
+
   }
 
 end
