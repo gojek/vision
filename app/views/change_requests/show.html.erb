@@ -5,7 +5,7 @@
   <% end %>
  
   <div class="page-header">
-    <% if @change_request.aasm_state == 'cancelled' || @change_request.aasm_state == 'rollbacked' %>
+    <% if @change_request.aasm_state == 'cancelled' || @change_request.aasm_state == 'rollbacked' || @change_request.aasm_state == 'rejected' %>
       <div class= "pull-right label label-danger" >
     <% elsif @change_request.aasm_state == 'deployed' %>
       <div class= "pull-right label label-success" >
