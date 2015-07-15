@@ -153,19 +153,19 @@
   <div class="tab-pane fade" id="implementation">
     <div class="field form-group">
       <%= f.label :schedule_change_date %><br>
-      <%= f.datetime_select :schedule_change_date, :include_blank => true %>
+      <%= f.datetime_select :schedule_change_date %>
     </div>
     <div class="field form-group">
       <%= f.label :planned_completion %><br>
-      <%= f.datetime_select :planned_completion, :include_blank => true %>
+      <%= f.datetime_select :planned_completion, :default => Time.now %>
     </div>
     <div class="field form-group">
       <%= f.label :grace_period_starts %><br>
-      <%= f.datetime_select :grace_period_starts, :include_blank => true %>
+      <%= f.datetime_select :grace_period_starts %>
     </div>
     <div class="field form-group">
       <%= f.label :grace_period_end %><br>
-      <%= f.datetime_select :grace_period_end, :include_blank => true %>
+      <%= f.datetime_select :grace_period_end%>
     </div>
     <div class="field form-group">
       <%= f.label :implementation_notes %><br>
