@@ -1,4 +1,13 @@
 <h1 class='page-header'>Create CAB</h1>
+	<% if @cab.errors.any? %>
+	    <div id="error_explanation" class="alert alert-danger">
+	      <ul>
+	      <% @cab.errors.full_messages.each do |message| %>
+	        <li><%= message %></li>
+	      <% end %>
+	      </ul>
+	    </div>
+	  <% end %>
 	<div class="form-group">
 	<%= form_for(@cab) do |f| %>
  	<%= f.label :meet_date %><br>
@@ -27,8 +36,8 @@
 					<div id="all-list" class="list-group">
 					<% @change_requests.each do |change_request| %>
 						<div data-id=<%= change_request.id %> class='list-group-item'>
-						<h4 class="list-group-item-heading">List group item heading</h4>
-					    <p class="list-group-item-text"><%= change_request.change_summary %></p>
+						<h4 class="list-group-item-heading"><%= change_request.change_summary %></h4>
+					    <p class="list-group-item-text"></p>
 						</div>
 					<% end %>
 					</div>
