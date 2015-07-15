@@ -14,14 +14,18 @@ class CabsController < ApplicationController
 	def create
 		@cab = Cab.new(cab_params)
 		@cr_list = params[:cr_list].split(",")
-		@cab.save
-		ChangeRequest.where(:id => @cr_list).update_all(:cab_id => @cab.id)
-		redirect_to @cab
+		if @cab.save
+		  ChangeRequest.where(:id => @cr_list).update_all(:cab_id => @cab.id)
+		  redirect_to @cab, notice: 'CAB successfully arranged'
+    else
+      @change_requests =ChangeRequest.cab_free
+      render :new
+    end
 	end
 
   def destroy
     @cab.destroy
-    redirect_to cabs_url
+    redirect_to cabs_url, notice: 'CAB successfully destroyed'
   end
 
 	def edit
@@ -30,12 +34,17 @@ class CabsController < ApplicationController
 	end
 
 	def update
-    @cab.update(cab_params)
     @cr_list = params[:cr_list].split(",")
     @all_cr_list = params[:all_cr_list].split(",")
-    ChangeRequest.where(:id => @cr_list).update_all(:cab_id => @cab.id)
-    ChangeRequest.where(:id => @all_cr_list).update_all(:cab_id => nil)
-    redirect_to @cab
+    if @cab.update(cab_params)
+      ChangeRequest.where(:id => @cr_list).update_all(:cab_id => @cab.id)
+      ChangeRequest.where(:id => @all_cr_list).update_all(:cab_id => nil)
+      redirect_to @cab, notice: 'CAB successfully edited'
+    else
+      @change_requests = ChangeRequest.cab_free
+      @current_change_requests = ChangeRequest.where(:cab_id => @cab.id)
+      render :edit
+    end
 	end
 
   def show
