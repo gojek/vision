@@ -5,7 +5,7 @@ class ChangeRequestStatus < ActiveRecord::Base
 	private
   
   def reason_needed?
-    self.status=='rollbacked' || self.status=='cancelled'
+    self.status=='rollbacked' || self.status=='cancelled' || self.status=='rejected'
   end
 
 end
