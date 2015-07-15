@@ -5,7 +5,11 @@
 </h1>
 <p>
 Your Change Request has been <%= @state %><br>
+Change Request Summary: <%= @summary %><br>
+Deploy Date: <%= @deploy %><br>
+<% if @reason != nil %>
 Reason : <%= @reason %> <br>
+<% end %>
 Change Request URL : <%= @url %>
 
 </p>

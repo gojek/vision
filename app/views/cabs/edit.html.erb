@@ -12,6 +12,10 @@
 	<%= form_for(@cab) do |f| %>
  	<%= f.label :meet_date %><br>
     <%= f.datetime_select :meet_date, start_year: 2015, :include_blank => true %>
+    <%= f.label :room %>
+    <%= f.text_field :room %>
+    <% f.label :notes %>
+    <%= f.text_area :notes %>
 	</div>
 	
 	<div class='row'>
