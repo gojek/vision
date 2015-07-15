@@ -1,11 +1,11 @@
 class ChangeRequest < ActiveRecord::Base
   include AASM
   belongs_to :user
-  has_many :testers
-  has_many :implementers
-  has_many :change_request_statuses
-  has_many :approvers
-  has_many :comments
+  has_many :testers, dependent: :destroy
+  has_many :implementers, dependent: :destroy
+  has_many :change_request_statuses, dependent: :destroy
+  has_many :approvers, dependent: :destroy
+  has_many :comments, dependent: :destroy
   belongs_to :cab
   scope :cab_free, -> {where(cab_id: nil)}
   acts_as_taggable

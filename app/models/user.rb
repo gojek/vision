@@ -7,9 +7,13 @@ class User < ActiveRecord::Base
   ROLES = %w(requestor approver release_manager)
   validates :role, inclusion: { in: ROLES,
                                 message: '%{value} is not a valid role' }
+  validates :email, presence: true
   has_many :IncidentReports
   has_many :ChangeRequests
   has_many :comments
+  validates :email, format: { with: /\b[A-Z0-9._%a-z\-]+@veritrans\.co\.id\z/,
+                  message: "must be a veritrans account" }
+  validates :email, uniqueness: true
 
   def account_active?
     locked_at.nil?
@@ -17,10 +21,6 @@ class User < ActiveRecord::Base
 
   def active_for_authentication?
     super && account_active?
-  end
-
-  def inactive_message
-    account_active? ? super : :locked
   end
 
   def self.from_omniauth(auth)

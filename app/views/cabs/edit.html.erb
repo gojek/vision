@@ -1,5 +1,13 @@
 <h1 class='page-header'>Edit CAB</h1>
-
+	<% if @cab.errors.any? %>
+	    <div id="error_explanation" class="alert alert-danger">
+	      <ul>
+	      <% @cab.errors.full_messages.each do |message| %>
+	        <li><%= message %></li>
+	      <% end %>
+	      </ul>
+	    </div>
+	  <% end %>
 	<div class="form-group">
 	<%= form_for(@cab) do |f| %>
  	<%= f.label :meet_date %><br>
