@@ -9,6 +9,8 @@ class ChangeRequestStatusesController < ApplicationController
         @change_request.schedule!
         UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
       end
+    else
+      flash[:change_status_notice] = 'Sorry, this CR didnt reach approval limit by Approver'
     end
     redirect_to @change_request
   end
@@ -19,7 +21,7 @@ class ChangeRequestStatusesController < ApplicationController
     	@status.status = 'deployed'
     	if @status.save
         @change_request.deploy!
-UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
+        UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
       end
     end
     redirect_to @change_request
@@ -32,6 +34,8 @@ UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
       if @status.save
         @change_request.rollback!
          UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
+      else
+        flash[:change_status_notice] = 'Reason must be filled to Rollback CR'
       end
     end
     redirect_to @change_request
@@ -44,6 +48,8 @@ UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
       if @status.save
         @change_request.cancel!
         UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
+      else
+        flash[:change_status_notice] = 'Reason must be filled Cancel CR'        
       end
     end
     redirect_to @change_request

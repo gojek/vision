@@ -1,6 +1,18 @@
-  <p id="notice"><%= notice %></p>
+  <% if notice %>
+    <div class='alert alert-success'>
+       <p id="notice"><%= notice %></p>
+    </div>
+  <% end %>
+ 
   <div class="page-header">
-  <div class= "pull-right label label-primary" ><h4><%=@change_request.aasm_state%></h4></div>
+    <% if @change_request.aasm_state == 'cancelled' || @change_request.aasm_state == 'rollbacked' %>
+      <div class= "pull-right label label-danger" >
+    <% elsif @change_request.aasm_state == 'deployed' %>
+      <div class= "pull-right label label-success" >
+    <% else %>
+      <div class= "pull-right label label-primary" >
+    <% end %>
+      <h4><%=@change_request.aasm_state%></h4></div>
   <h1>Change Request</h1>
   </div>
     <% if current_user.role=='approver' %>

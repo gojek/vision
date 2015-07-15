@@ -43,7 +43,7 @@
                          <td><%= change_request.approvers_count %></td>
                         <td></td>
                         <td><%= link_to 'Show', change_request %></td>
-                        <%if current_user==change_request.user || current_user.is_admin %>
+                        <%if (current_user==change_request.user || current_user.is_admin || is_release_manager )&& !change_request.closed? %>
                         <td><%= link_to 'Edit', edit_change_request_path(change_request) %></td>
                         <td><%= link_to 'Destroy', change_request, method: :delete, data: { confirm: 'Are you sure?' } %></td>
                          <% else %>
