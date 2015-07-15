@@ -1,14 +1,21 @@
 <h1 class='page-header'>CAB</h1>
+<%if notice != nil %>
+<div class='alert alert-success'>
+	<p id="notice"><%= notice %></p>
+</div>
+<% end %>
 <div class='row'>
 	<div class='col-lg-6'>
 		<div class='panel panel-default'>
-			<div class='panel-heading'></div>
+			<div class='panel-heading'>
+				<%= @cab.meet_date.to_s(:long) %>
+			</div>
 			<div class='panel-body'>
 				<div id="all-list" class="list-group">
 				<% @current_change_requests.each do |change_request| %>
 					<div data-id=<%= change_request.id %> class='list-group-item'>
-					<h4 class="list-group-item-heading">List group item heading</h4>
-				    <p class="list-group-item-text"><%= change_request.change_summary %></p>
+					<h4 class="list-group-item-heading"><%= change_request.change_summary %></h4>
+				    <p class="list-group-item-text"></p>
 					</div>
 				<% end %>
 				</div>
