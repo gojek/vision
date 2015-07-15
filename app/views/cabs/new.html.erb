@@ -8,16 +8,31 @@
 	      </ul>
 	    </div>
 	  <% end %>
-	<div class="form-group">
-	<%= form_for(@cab) do |f| %>
- 	<%= f.label :meet_date %><br>
-    <%= f.datetime_select :meet_date,start_year: 2015,:include_blank => true %>
-    <%= f.label :room %>
-    <%= f.text_field :room %>
-    <% f.label :notes %>
-    <%= f.text_area :notes %>
+	  <%= tinymce :theme => "modern", menubar: "false"%>
+	  <div class='row'>
+		 <div class = 'col-lg-6'>
+		 	<div class = "panel panel-default">
+		 		<div class = 'panel-heading'>
+		 			CAB Details 
+		 		</div>
+		 		<div class ='panel-body'>
+					<div class="field form-group">
+					<%= form_for(@cab) do |f| %>
+				 	<%= f.label :meet_date %><br>
+				    <%= f.datetime_select :meet_date,start_year: 2015,:include_blank => true %>
+				</div>
+				    <div class="field form-group">
+				    <%= f.label :room %><br>
+				    <%= f.text_field :room %>
+				</div>
+				    <div class="field form-group">
+				    <%= f.label :notes %><br>
+				    <%= f.text_area :notes,class: "tinymce" %>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
-
 	<div class='row'>
 		<div class='col-lg-6'>
 			<div class = 'panel panel-default'>
