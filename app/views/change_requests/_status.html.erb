@@ -60,7 +60,8 @@
             </div>
             <div class="modal-body">
                 <%= form_for(@change_request_status, url: schedule_path) do |f| %>
-                <%= f.text_field :reason, class: 'form-control' %>
+                <%= f.label :reason %>
+                <%= f.text_area :reason, class: 'form-control' %>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -83,7 +84,8 @@
             </div>
             <div class="modal-body">
                 <%= form_for(@change_request_status, url: deploy_path) do |f| %>
-                <%= f.text_field :reason, class: 'form-control' %>
+                 <%= f.label :reason %>
+                <%= f.text_area :reason, class: 'form-control' %>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -105,7 +107,8 @@
             </div>
             <div class="modal-body">
                 <%= form_for(@change_request_status, url: submit_path) do |f| %>
-                <%= f.text_field :reason, class: 'form-control' %>
+                 <%= f.label :reason %>
+                <%= f.text_area :reason, class: 'form-control' %>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -128,7 +131,8 @@
             </div>
             <div class="modal-body">
                 <%= form_for(@change_request_status, url: final_reject_path) do |f| %>
-                <%= f.text_field :reason, class: 'form-control' %>
+                 <%= f.label :reason %>
+                <%= f.text_area :reason, class: 'form-control' %>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -151,7 +155,8 @@
             </div>
             <div class="modal-body">
                 <%= form_for(@change_request_status, url: rollback_path) do |f| %>
-                <%= f.text_field :reason, class: 'form-control' %>
+                 <%= f.label :reason %>
+                <%= f.text_area :reason, class: 'form-control' %>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -173,7 +178,8 @@
             </div>
             <div class="modal-body">
                 <%= form_for(@change_request_status, url: close_path) do |f| %>
-                <%= f.text_field :reason, class: 'form-control' %>
+                 <%= f.label :reason %>
+                <%= f.text_area :reason, class: 'form-control' %>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -194,7 +200,8 @@
             </div>
             <div class="modal-body">
                 <%= form_for(@change_request_status, url: cancel_path) do |f| %>
-                <%= f.text_field :reason, class: 'form-control' %>
+                 <%= f.label :reason %>
+                <%= f.text_area :reason, class: 'form-control' %>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
