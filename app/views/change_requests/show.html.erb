@@ -269,7 +269,9 @@
                 <tr>
                   <th>Name</th>
 
-                  <th>position</th>
+                  <th>Position</th>
+
+                  <th>Status </th>
                 </tr>
               </thead>
 
@@ -280,6 +282,17 @@
                   <td><%= app.user.name %></td>
 
                   <td><%= app.user.position %></td>
+                  <td><%if  app.approve == nil  %>
+                    waiting for approval
+                    <%elsif app.approve %>
+                    approved
+                    <%else%>
+                    rejected
+                    <%end %>
+
+
+
+                  </td>
                 </tr><%end %>
               </tbody>
             </table>
