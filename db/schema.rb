@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150713064456) do
+ActiveRecord::Schema.define(version: 20150715061236) do
 
   create_table "approvers", force: :cascade do |t|
     t.string   "name"
@@ -30,6 +30,8 @@ ActiveRecord::Schema.define(version: 20150713064456) do
     t.datetime "meet_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string   "room"
+    t.text     "notes"
   end
 
   add_index "cabs", ["meet_date"], name: "index_cabs_on_meet_date", unique: true

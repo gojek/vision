@@ -50,11 +50,14 @@ class ChangeRequestsController < ApplicationController
     respond_to do |format|
       if @change_request.save
         @approvers = User.where(role: "approver")
+        @status = @change_request.change_request_statuses.new(:status => 'submitted')
+        @status.save
         @approvers.each do |approver|
           @approval = Approver.new
           @approval.user_id = approver.id
           @approval.change_request_id = @change_request.id
           @approval.save
+        UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
         end
         format.html { redirect_to @change_request, notice: 'Change request was successfully created.' }
         format.json { render :show, status: :created, location: @change_request }
@@ -110,40 +113,7 @@ class ChangeRequestsController < ApplicationController
     end
     redirect_to @change_request
   end
-  def schedule
-    @change_request.schedule!
 
-    redirect_to @change_request
-  end
-  def deploy
-    @change_request.deploy!
-    redirect_to @change_request
-  end
-  def rollback
-    @change_request.rollback!
-    @change_request.update(rollback_params)
-    redirect_to @change_request
-  end
-  def cancel
-    @change_request.cancel!
-    @change_request.update(cancel_params)
-    redirect_to @change_request
-  end
-  def close
-   @change_request.close!
-    @change_request.update(close_params)
-    redirect_to @change_request
-  end  
-  def final_reject
-    @change_request.reject!
-    @change_request.update(reject_params)
-    redirect_to @change_request
-  end
-  def submit
-    @change_request.submit!
-
-    redirect_to @change_request
-  end
   private
     def set_change_request
       if params[:tag]
@@ -174,17 +144,5 @@ class ChangeRequestsController < ApplicationController
       else
         redirect_to graceperiod_path if !@change_request.submitted?
       end
-    end
-    def reject_params
-      params.require(:change_request).permit(:reject_note)
-    end
-    def rollback_params
-      params.require(:change_request).permit(:rollback_note)
-    end
-    def cancel_params
-      params.require(:change_request).permit(:cancel_note)
-    end
-    def close_params
-      params.require(:change_request).permit(:close_note)
     end
 end
