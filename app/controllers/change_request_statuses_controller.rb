@@ -74,6 +74,8 @@ class ChangeRequestStatusesController < ApplicationController
       if @status.save
         @change_request.reject!
          UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
+      else
+        flash[:change_status_notice] = 'Reason must be filled to Reject CR'
       end
     end
     redirect_to @change_request
