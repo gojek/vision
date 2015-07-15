@@ -16,6 +16,7 @@ class CabsController < ApplicationController
 		@cr_list = params[:cr_list].split(",")
 		if @cab.save
 		  ChangeRequest.where(:id => @cr_list).update_all(:cab_id => @cab.id)
+      UserMailer.cab_email(@cab).deliver
 		  redirect_to @cab, notice: 'CAB successfully arranged'
     else
       @change_requests =ChangeRequest.cab_free
@@ -54,7 +55,7 @@ class CabsController < ApplicationController
 	private
 
 	def cab_params
-		params.require(:cab).permit(:meet_date, :cr_list, :all_cr_list)
+		params.require(:cab).permit(:meet_date, :cr_list, :all_cr_list, :room, :notes)
 	end
 
   def set_cab
