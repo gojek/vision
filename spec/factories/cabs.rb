@@ -2,6 +2,6 @@
 
 FactoryGirl.define do
   factory :cab do
-    meet_date "2015-07-13 13:43:29"
+    meet_date {Time.now}
   end
 end
