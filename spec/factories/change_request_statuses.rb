@@ -2,7 +2,7 @@
 
 FactoryGirl.define do
   factory :change_request_status do
-    status "MyString"
-    reason "MyText"
+    status "Scheduled"
+    reason "reason"
   end
 end

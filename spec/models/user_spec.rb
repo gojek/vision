@@ -47,7 +47,7 @@ describe User do
 			item_type: 'IncidentReport',
 			item_id: 1,
 			event: 'update',
-			whodunnit: 1)
+			whodunnit: user.id)
 		expect(User.find_version_author(version)).to eq user
 	end
 
