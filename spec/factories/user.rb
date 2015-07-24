@@ -9,6 +9,5 @@ FactoryGirl.define do
     is_admin false
     name 'patrick star'
     locked_at nil
-    id 1
   end
 end

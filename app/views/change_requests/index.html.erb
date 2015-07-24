@@ -9,7 +9,7 @@
                         <%= f.label :status %>
                         <%= f.select :aasm_state_cont, options_for_select([['Any','']] + ChangeRequest::STATUS), {}, {class: 'form-control'} %>
                       </div>
-                  <%= f.submit %>
+                  <%= f.submit class: 'btn btn-default' %>
                   <% end %>
                 </div>
                 <table class='table table-striped'>

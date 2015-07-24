@@ -2,6 +2,10 @@
 
 FactoryGirl.define do
   factory :cab do
-    meet_date {Time.now}
+    meet_date {Time.now + 3600}
+  end
+
+  factory :invalid_cab do
+  	meet_date {Time.now - 3600}
   end
 end
