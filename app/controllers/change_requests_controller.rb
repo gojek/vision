@@ -4,7 +4,6 @@ class ChangeRequestsController < ApplicationController
   before_action :owner_required, only: [:edit, :update, :destroy]
   before_action :submitted_required, only: [:edit]
   autocomplete :tag, :name, :class_name => 'ActsAsTaggableOn::Tag'
-  QUOROM_APPROVERS = 2
   def index
     if params[:tag]
       @q = ChangeRequest.ransack(params[:q])
@@ -129,10 +128,6 @@ class ChangeRequestsController < ApplicationController
     def owner_required
       redirect_to change_requests_url if
       current_user != @change_request.user && !current_user.is_admin
-    end
-    def release_manager_required
-      redirect_to change_request_path if 
-      current_user.role != 'release_manager'
     end
     def submitted_required
       if @change_request.closed?
