@@ -7,8 +7,8 @@ describe UserMailer do
   		@user = FactoryGirl.create(:user)
   		@change_request = FactoryGirl.create(:change_request)
   		@status = FactoryGirl.create(:change_request_status)
-  		FactoryGirl.create(:user, email: 'squidward@***REMOVED***', id: 2, role: 'release_manager')
-  		FactoryGirl.create(:user, email: 'crab@***REMOVED***', id: 3, role: 'approver')
+  		FactoryGirl.create(:user, email: 'squidward@***REMOVED***', role: 'release_manager')
+  		FactoryGirl.create(:user, email: 'crab@***REMOVED***', role: 'approver')
   		@recipients = [@user.email, 'squidward@***REMOVED***', 'crab@***REMOVED***']
   	end
 
