@@ -21,7 +21,7 @@ describe CabsController do
 		end
 	end
 
-	describe 'GET#index' do
+	describe 'GET #index' do
 		it 'populates an array of all cabs' do
 			cab = FactoryGirl.create(:cab)
 			other_cab = FactoryGirl.create(:cab)
@@ -71,11 +71,66 @@ describe CabsController do
 
 	describe 'POST #create' do
 		context "with valid attributes" do
+			before :each do
+				user = FactoryGirl.create(:user)
+				cr = FactoryGirl.create(:change_request, user: user)
+				@cr_list = [cr.id]
+			end
+
+			it 'saves the new cab in the database' do
+				expect{
+					post :create, cab: FactoryGirl.attributes_for(:cab), cr_list: @cr_list
+				}.to change(Cab, :count).by(1)
+			end
 		end
 
 		context "with invalid attributes" do
+			it 'doesnt save the new cab in the database' do
+				expect{
+					post :create, cab: FactoryGirl.attributes_for(:invalid_cab)
+				}.to_not change(Cab, :count)
+			end
+		end
+	end
+
+	describe 'PATCH #update' do
+		before :each do
+			@cab = FactoryGirl.create(:cab)
 		end
 
-		
+		context 'valid attributes' do
+			it "changes @cab's attributes" do
+				time = Time.now + 7200
+				patch :update, id: @cab,
+				  cab: FactoryGirl.attributes_for(:cab, meet_date: time),
+				  cr_list: [], all_cr_list: []
+				@cab.reload
+				expect(@cab.meet_date.to_i).to eq(time.to_i)
+			end
+		end
+
+		context 'invalid attributes' do
+			it "doesnt change the @cab's attributes" do
+				time = Time.now - 3600
+				patch :update, id: @cab,
+				  cab: FactoryGirl.attributes_for(:cab, meet_date: time),
+				  cr_list: [], all_cr_list: []
+				@cab.reload
+				expect(@cab.meet_date.to_i).to_not eq(time.to_i)
+			end
+		end
 	end
+
+	describe 'DELETE #destroy' do
+		before :each do
+      @cab = FactoryGirl.create(:cab)
+    end
+
+    it "deletes the cab" do
+      expect{
+        delete :destroy, id: @cab
+      }.to change(Cab, :count).by(-1)
+    end
+  end
+  
 end
