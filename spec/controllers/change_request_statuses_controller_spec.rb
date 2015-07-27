@@ -21,15 +21,15 @@ describe ChangeRequestStatusesController do
       end
       expect(cr.approvers_count).to eq CONFIG[:minimum_approval]
       post :schedule, id: cr, change_request_status: {:status => 'scheduled'}
-      changed_cr = ChangeRequest.find(cr.id)
-      expect(changed_cr.aasm_state).to eq 'scheduled'
+      cr.reload
+      expect(cr.aasm_state).to eq 'scheduled'
     end
 
     it 'wont able to change the state to scheduled if hasnt reached approval limit' do
       cr = FactoryGirl.create(:submitted_change_request)
       post :schedule, id: cr, change_request_status: {:status => 'scheduled'}
-      changed_cr = ChangeRequest.find(cr.id)
-      expect(changed_cr.aasm_state).to eq 'submitted'
+      cr.reload
+      expect(cr.aasm_state).to eq 'submitted'
     end
   end
 
@@ -38,8 +38,8 @@ describe ChangeRequestStatusesController do
       user = FactoryGirl.create(:user)
       cr = FactoryGirl.create(:scheduled_change_request,user: user)
       post :deploy , id: cr, change_request_status:{:status => 'deployed'}
-      changed_cr = ChangeRequest.find(cr.id)
-      expect(changed_cr.aasm_state).to eq 'deployed'
+      cr.reload
+      expect(cr.aasm_state).to eq 'deployed'
     end
   end
 
@@ -48,29 +48,29 @@ describe ChangeRequestStatusesController do
       user = FactoryGirl.create(:user)
       cr = FactoryGirl.create(:scheduled_change_request, user: user)
       post :rollback , id: cr, change_request_status:{:status => 'rollbacked',:reason =>'reason'}
-      changed_cr = ChangeRequest.find(cr.id)
-      expect(changed_cr.aasm_state).to eq 'rollbacked'
+      cr.reload
+      expect(cr.aasm_state).to eq 'rollbacked'
     end
     it 'will able to change the state to rollback if current state is deployed and reason is filled' do
       user = FactoryGirl.create(:user)
       cr = FactoryGirl.create(:deployed_change_request,user: user)
       post :rollback , id: cr, change_request_status:{:status => 'rollbacked', :reason =>'reason'}
-      changed_cr = ChangeRequest.find(cr.id)
-      expect(changed_cr.aasm_state).to eq 'rollbacked'
+      cr.reload
+      expect(cr.aasm_state).to eq 'rollbacked'
     end
     it 'wont able to change  the state to rollbacked if current state rejected' do 
        user = FactoryGirl.create(:user)
       cr = FactoryGirl.create(:rejected_change_request,user: user)
       post :rollback , id: cr, change_request_status:{:status => 'rollbacked', :reason =>'reason'}
-      changed_cr = ChangeRequest.find(cr.id)
-      expect(changed_cr.aasm_state).to eq 'rejected'
+      cr.reload
+      expect(cr.aasm_state).to eq 'rejected'
     end
     it 'wont able to change the state to rollbacked if reason is not filled' do 
       user = FactoryGirl.create(:user)
       cr = FactoryGirl.create(:deployed_change_request,user: user)
       post :rollback , id: cr, change_request_status:{:status => 'rollbacked'}
-      changed_cr = ChangeRequest.find(cr.id)
-      expect(changed_cr.aasm_state).to eq 'deployed'
+      cr.reload
+      expect(cr.aasm_state).to eq 'deployed'
     end
 
   end
@@ -80,15 +80,15 @@ describe ChangeRequestStatusesController do
       user = FactoryGirl.create(:user)
       cr = FactoryGirl.create(:scheduled_change_request,user: user)
       post :cancel , id: cr, change_request_status:{:status => 'cancelled', :reason =>'reason'}
-      changed_cr = ChangeRequest.find(cr.id)
-      expect(changed_cr.aasm_state).to eq 'cancelled'
+      cr.reload
+      expect(cr.aasm_state).to eq 'cancelled'
     end
     it 'wont able to change the state to cancelled if reason is not filled' do
       user = FactoryGirl.create(:user)
       cr = FactoryGirl.create(:scheduled_change_request,user: user)
       post :cancel , id: cr, change_request_status:{:status => 'cancelled'}
-      changed_cr = ChangeRequest.find(cr.id)
-      expect(changed_cr.aasm_state).to eq 'scheduled'
+      cr.reload
+      expect(cr.aasm_state).to eq 'scheduled'
     end
   end
 
@@ -97,43 +97,43 @@ describe ChangeRequestStatusesController do
       user = FactoryGirl.create(:user)
       cr = FactoryGirl.create(:scheduled_change_request,user: user)
       post :close , id: cr, change_request_status:{:status => 'closed'}
-      changed_cr = ChangeRequest.find(cr.id)
-      expect(changed_cr.aasm_state).to eq 'closed'
+      cr.reload
+      expect(cr.aasm_state).to eq 'closed'
     end
      it 'will able to change the state to close if current state is submitted' do
       user = FactoryGirl.create(:user)
       cr = FactoryGirl.create(:submitted_change_request, aasm_state: 'submitted',user: user)
       post :close , id: cr, change_request_status:{:status => 'closed'}
-      changed_cr = ChangeRequest.find(cr.id)
-      expect(changed_cr.aasm_state).to eq 'closed'
+      cr.reload
+      expect(cr.aasm_state).to eq 'closed'
     end
      it 'will able to change the state to close if current state is rejected' do
       user = FactoryGirl.create(:user)
       cr = FactoryGirl.create(:rejected_change_request, user: user)
       post :close , id: cr, change_request_status:{:status => 'closed'}
-      changed_cr = ChangeRequest.find(cr.id)
-      expect(changed_cr.aasm_state).to eq 'closed'
+      cr.reload
+      expect(cr.aasm_state).to eq 'closed'
     end
      it 'will able to change the state to close if current state is deployed' do
       user = FactoryGirl.create(:user)
       cr = FactoryGirl.create(:deployed_change_request ,user: user)
       post :close , id: cr, change_request_status:{:status => 'closed'}
-      changed_cr = ChangeRequest.find(cr.id)
-      expect(changed_cr.aasm_state).to eq 'closed'
+      cr.reload
+      expect(cr.aasm_state).to eq 'closed'
     end
      it 'will able to change the state to close if current state is rollbacked' do
       user = FactoryGirl.create(:user)
       cr = FactoryGirl.create(:rollbacked_change_request, user: user)
       post :close , id: cr, change_request_status:{:status => 'closed'}
-      changed_cr = ChangeRequest.find(cr.id)
-      expect(changed_cr.aasm_state).to eq 'closed'
+      cr.reload
+      expect(cr.aasm_state).to eq 'closed'
     end
      it 'will able to change the state to close if current state is cancelled' do
       user = FactoryGirl.create(:user)
       cr = FactoryGirl.create(:cancelled_change_request, user: user)
       post :close , id: cr, change_request_status:{:status => 'closed'}
-      changed_cr = ChangeRequest.find(cr.id)
-      expect(changed_cr.aasm_state).to eq 'closed'
+      cr.reload
+      expect(cr.aasm_state).to eq 'closed'
     end
   end
 
@@ -142,15 +142,15 @@ describe ChangeRequestStatusesController do
       user = FactoryGirl.create(:user)
       cr = FactoryGirl.create(:submitted_change_request, aasm_state: 'submitted',user: user)
       post :final_reject , id: cr, change_request_status:{:status => 'rejected', :reason =>'reason'}
-      changed_cr = ChangeRequest.find(cr.id)
-      expect(changed_cr.aasm_state).to eq 'rejected'
+      cr.reload
+      expect(cr.aasm_state).to eq 'rejected'
     end
     it 'wont able to change the state to rejected if reason is not filled' do
       user = FactoryGirl.create(:user)
       cr = FactoryGirl.create(:submitted_change_request, aasm_state: 'submitted',user: user)
       post :final_reject , id: cr, change_request_status:{:status => 'rejected'}
-      changed_cr = ChangeRequest.find(cr.id)
-      expect(changed_cr.aasm_state).to eq 'submitted'
+      cr.reload
+      expect(cr.aasm_state).to eq 'submitted'
     end
   end
 
@@ -159,8 +159,8 @@ describe ChangeRequestStatusesController do
       user = FactoryGirl.create(:user)
       cr = FactoryGirl.create(:cancelled_change_request,user: user)
       post :submit , id: cr, change_request_status:{:status => 'submitted'}
-      changed_cr = ChangeRequest.find(cr.id)
-      expect(changed_cr.aasm_state).to eq 'submitted'
+      cr.reload
+      expect(cr.aasm_state).to eq 'submitted'
     end
 
   end
