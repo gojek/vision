@@ -13,8 +13,8 @@ class CabsController < ApplicationController
 	
 	def create
 		@cab = Cab.new(cab_params)
-		@cr_list = params[:cr_list].split(",")
 		if @cab.save
+      @cr_list = params[:cr_list].split(",")
 		  ChangeRequest.where(:id => @cr_list).update_all(:cab_id => @cab.id)
       UserMailer.cab_email(@cab).deliver
 		  redirect_to @cab, notice: 'CAB successfully arranged'
@@ -35,9 +35,9 @@ class CabsController < ApplicationController
 	end
 
 	def update
-    @cr_list = params[:cr_list].split(",")
-    @all_cr_list = params[:all_cr_list].split(",")
     if @cab.update(cab_params)
+      @cr_list = params[:cr_list].split(",")
+      @all_cr_list = params[:all_cr_list].split(",")
       ChangeRequest.where(:id => @cr_list).update_all(:cab_id => @cab.id)
       ChangeRequest.where(:id => @all_cr_list).update_all(:cab_id => nil)
       redirect_to @cab, notice: 'CAB successfully edited'
