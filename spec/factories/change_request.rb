@@ -55,5 +55,9 @@ FactoryGirl.define do
     factory :closed_change_request do
         aasm_state 'closed'
     end
+
+    factory :invalid_change_request do
+        scope "Scope"
+    end
   end
 end
