@@ -1,6 +1,7 @@
 class ChangeRequestStatusesController < ApplicationController
 	before_action :set_change_request, only:[:schedule, :deploy, :rollback, :cancel, :close, :final_reject, :submit]
 	before_action :release_manager?, only:[:schedule, :deploy, :rollback, :cancel, :close, :final_reject, :submit]
+  
   def schedule
     if @change_request.may_schedule?
       @status = @change_request.change_request_statuses.new(change_request_status_params)
