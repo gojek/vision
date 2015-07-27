@@ -1,9 +1,8 @@
 class ChangeRequestsController < ApplicationController
-  before_action :set_change_request, only: [:show, :edit, :update, :destroy, :approve, :reject, :edit_grace_period_notes, :schedule, :deploy, :rollback, :cancel, :close, :submit, :final_reject]
+  before_action :set_change_request, only: [:show, :edit, :update, :destroy, :approve, :reject, :edit_grace_period_notes]
   before_action :authenticate_user!
   before_action :owner_required, only: [:edit, :update, :destroy]
   before_action :submitted_required, only: [:edit]
-  before_action :release_manager_required, only: [:schedule, :deploy, :rollback, :cancel, :close]
   autocomplete :tag, :name, :class_name => 'ActsAsTaggableOn::Tag'
   QUOROM_APPROVERS = 2
   def index
@@ -17,6 +16,7 @@ class ChangeRequestsController < ApplicationController
       @q = ChangeRequest.ransack(params[:q])
       @change_requests = @q.result(distinct: true).joins(:approvers).where(approvers: {user_id: current_user.id}).order(created_at: :desc).page(params[:page]).per(params[:per_page])
     else
+      #populate all CR if release_manager
       @q = ChangeRequest.ransack(params[:q])
       @change_requests = @q.result(distinct: true).order(created_at: :desc).page(params[:page]).per(params[:per_page])
     end
@@ -29,8 +29,6 @@ class ChangeRequestsController < ApplicationController
     if(approve == nil) 
       @approved = nil
     else
-
-      
       @approved = approve.approve
     end
   end
@@ -57,8 +55,8 @@ class ChangeRequestsController < ApplicationController
           @approval.user_id = approver.id
           @approval.change_request_id = @change_request.id
           @approval.save
-        UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
         end
+        UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
         format.html { redirect_to @change_request, notice: 'Change request was successfully created.' }
         format.json { render :show, status: :created, location: @change_request }
       else
@@ -116,9 +114,7 @@ class ChangeRequestsController < ApplicationController
 
   private
     def set_change_request
-      if params[:tag]
-        @change_requests = ChangeRequest.tagged_with(params[:tag])
-      elsif params[:change_request_id]
+      if params[:change_request_id]
         @change_request = ChangeRequest.find(params[:change_request_id])
       else
         @change_request = ChangeRequest.find(params[:id])

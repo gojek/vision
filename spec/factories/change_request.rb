@@ -27,5 +27,33 @@ FactoryGirl.define do
     grace_period_end {Time.now}
     implementation_notes "Implementation Notes"
     grace_period_notes "Grace Period Notes"
+
+    factory :submitted_change_request do
+      aasm_state 'submitted'
+    end
+
+    factory :scheduled_change_request do
+        aasm_state 'scheduled'
+    end
+
+    factory :rejected_change_request do
+        aasm_state 'rejected'
+    end
+
+    factory :deployed_change_request do
+        aasm_state 'deployed'
+    end
+
+    factory :rollbacked_change_request do
+        aasm_state 'rollbacked'
+    end
+
+    factory :cancelled_change_request do
+        aasm_state 'cancelled'
+    end
+
+    factory :closed_change_request do
+        aasm_state 'closed'
+    end
   end
 end

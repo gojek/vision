@@ -22,8 +22,8 @@ describe User do
 		expect(user).to have(2).errors_on(:email)
 	end
 	it "is invalid with a duplicate email address" do
-		user = FactoryGirl.create(:user)
-		other_user = FactoryGirl.build(:user)
+		user = FactoryGirl.create(:user, email: 'patrick@veritrans.co.id')
+		other_user = FactoryGirl.build(:user, email: 'patrick@veritrans.co.id')
 		expect(other_user).to have(1).errors_on(:email)
 	end
 	it "is invalid with a non-veritrans email" do
