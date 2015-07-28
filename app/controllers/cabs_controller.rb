@@ -56,7 +56,7 @@ class CabsController < ApplicationController
 	private
 
   def release_manager_required
-    redirect_to root_path unless current_user.role == 'release_manager'
+    redirect_to root_path unless current_user.role == 'release_manager' || current_user.is_admin
   end
 
 	def cab_params
