@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150715061236) do
+ActiveRecord::Schema.define(version: 20150728065633) do
 
   create_table "approvers", force: :cascade do |t|
     t.string   "name"
@@ -98,6 +98,19 @@ ActiveRecord::Schema.define(version: 20150715061236) do
     t.string   "state"
     t.string   "aasm_state"
     t.integer  "cab_id"
+    t.text     "definition_of_success"
+    t.text     "definition_of_failed"
+    t.boolean  "category_application"
+    t.boolean  "category_network_equipment"
+    t.boolean  "category_server"
+    t.boolean  "category_user_access"
+    t.string   "category_other"
+    t.boolean  "type_security"
+    t.boolean  "type_update"
+    t.boolean  "type_install_uninstall"
+    t.boolean  "type_configuration_change"
+    t.boolean  "type_emergency_change"
+    t.string   "type_other"
   end
 
   add_index "change_requests", ["cab_id"], name: "index_change_requests_on_cab_id"
