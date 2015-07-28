@@ -1,5 +1,6 @@
 class CabsController < ApplicationController
 	before_action :set_cab, only: [:edit, :update, :show, :destroy]
+  before_action :release_manager_required
   
   def index
     @q = Cab.ransack(params[:q])
@@ -53,6 +54,10 @@ class CabsController < ApplicationController
   end
 
 	private
+
+  def release_manager_required
+    redirect_to root_path unless current_user.role == 'release_manager'
+  end
 
 	def cab_params
 		params.require(:cab).permit(:meet_date, :cr_list, :all_cr_list, :room, :notes)
