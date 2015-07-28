@@ -49,26 +49,36 @@
       </div>
     </div>
     <div class="field form-group">
-      <%= f.label :category %><br>
       <div class="row">
         <div class="col-lg-6">
-          <%= select_tag(:category_picker, options_for_select(%w[Application Server Network\ Equipment User\ Access Other], @change_request.category), {include_blank: true, class: 'form-control'} ) %>
+          <%= f.label :category %><br>
+          <%= f.check_box :category_application %>
+          <%= f.label :application %><br>
+          <%= f.check_box :category_network_equipment %>
+          <%= f.label :network_equipment %><br>
+          <%= f.check_box :category_server %>
+          <%= f.label :server %><br>
+          <%= f.check_box :category_user_access %>
+          <%= f.label :user_access %><br>
+          <%= f.text_field :category_other %>
+          <%= f.label :other %>
         </div>
         <div class="col-lg-6">
-          <%= f.text_field :category, "data-depends-on" => "#category_picker", "data-depends-on-value" => "Other", class: 'form-control' %>
+          <%= f.label :type %><br>
+          <%= f.check_box :type_security %>
+          <%= f.label :security %><br>
+          <%= f.check_box :type_update %>
+          <%= f.label :update %><br>
+          <%= f.check_box :type_install_uninstall %>
+          <%= f.label :install_uninstall %><br>
+          <%= f.check_box :type_configuration_change %>
+          <%= f.label :configuration_change %><br>
+          <%= f.check_box :type_emergency_change %>
+          <%= f.label :emergency_change %><br>
+          <%= f.text_field :type_other %>
+          <%= f.label :other %>
         </div>
       </div>
-    </div>
-    <div class="field form-group">
-      <%= f.label :type %><br>
-      <div class="row">
-      <div class="col-lg-6">
-        <%= select_tag(:type_picker, options_for_select(%w[Security Update Install/Uninstall Configuration\ Change Emergency\ Change Other], @change_request.cr_type), {include_blank: true, class: 'form-control'} ) %>
-      </div>
-      <div class="col-lg-6">
-        <%= f.text_field :cr_type, "data-depends-on" => "#type_picker", "data-depends-on-value" => "Other", class: 'form-control' %>
-      </div>
-    </div>
     </div>
     <div class="field form-group">
       <%= f.label :change_requirement %><br>
@@ -124,6 +134,14 @@
     <div class="field form-group">
       <%= f.label :backup %><br>
       <%= f.text_area :backup, class: "tinymce" %>
+    </div>
+     <div class="field form-group">
+      <%= f.label :definition_of_success %><br>
+      <%= f.text_area :definition_of_success, class: "tinymce" %>
+    </div>
+     <div class="field form-group">
+      <%= f.label :definition_of_failed %><br>
+      <%= f.text_area :definition_of_failed, class: "tinymce" %>
     </div>
   </div>
   <div class="tab-pane fade" id="testing">
