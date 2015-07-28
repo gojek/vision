@@ -200,6 +200,36 @@
               </tbody>
             </table>
           </div>
+           <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th><strong>Definition of success:</strong></th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td><%=raw @change_request.definition_of_success %></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+           <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th><strong>Definition of failed:</strong></th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td><%=raw @change_request.definition_of_failed %></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
           <p><strong>Testing environment available:</strong>
           <%= @change_request.testing_environment_available %></p>
