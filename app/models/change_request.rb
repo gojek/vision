@@ -60,5 +60,25 @@ class ChangeRequest < ActiveRecord::Base
     self.approvers.where(approve: true).count >= CONFIG[:minimum_approval]
   end
 
+  def all_type
+    type_array = []
+    self.category_application ? type_array.push('Application') : nil
+    self.category_network_equipment ? type_array.push('Network Equipment') : nil
+    self.category_server ? type_array.push('Server') : nil
+    self.category_user_access ? type_array.push('User Access') : nil
+    self.category_other.blank? ? nil : type_array.push(self.category_other)
+    type_array.join(', ')
+  end
+
+  def all_category
+    category_array = []
+    self.type_security_update ? category_array.push('Security Update') : nil
+    self.type_install_uninstall ? category_array.push('Install Uninstall') : nil
+    self.type_configuration_change ? category_array.push('Configuration Change') : nil
+    self.type_emergency_change ? category_array.push('Emergency Change') : nil
+    self.type_other.blank? ? nil : category_array.push(self.type_other)
+    category_array.join(', ')
+  end
+
 end
 
