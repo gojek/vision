@@ -7,8 +7,7 @@ class AddAttributesToChangeRequest < ActiveRecord::Migration
     add_column :change_requests, :category_server, :boolean
     add_column :change_requests, :category_user_access, :boolean
     add_column :change_requests, :category_other, :string
-    add_column :change_requests, :type_security, :boolean
-    add_column :change_requests, :type_update, :boolean
+    add_column :change_requests, :type_security_update, :boolean
     add_column :change_requests, :type_install_uninstall, :boolean
     add_column :change_requests, :type_configuration_change, :boolean
     add_column :change_requests, :type_emergency_change, :boolean
