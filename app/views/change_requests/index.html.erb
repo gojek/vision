@@ -36,8 +36,8 @@
                         <td><%=raw change_request.created_at.to_s(:long) %></td>
                          <td><%=raw change_request.business_justification %></td>
                         <td><%=raw change_request.priority%></td>
-                        <td><%=raw change_request.category %></td>
-                        <td><%=raw change_request.cr_type %></td>
+                        <td><%=raw change_request.all_category %></td>
+                        <td><%=raw change_request.all_type %></td>
                         <td><%= change_request.aasm_state %></td>
                         <td><%= change_request.approvers.count %></td>
                          <td><%= change_request.approvers_count %></td>
