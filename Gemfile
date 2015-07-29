@@ -24,7 +24,6 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'devise'
 gem 'font-awesome-rails'
-
 gem 'ransack'
 gem 'kaminari'
 gem 'bootstrap-kaminari-views'
@@ -40,7 +39,6 @@ gem 'rails4-autocomplete'
 gem 'jquery-ui-rails'
 gem 'aasm'
 gem "figaro"
-gem 'adminlte-rails'
 group :production do
 	gem 'pg'
 	gem 'rails_12factor'
