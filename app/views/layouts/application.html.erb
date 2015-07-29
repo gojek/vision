@@ -2,25 +2,10 @@
 <html>
 <head>
   <title>Vision</title>
+   <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
-<body>
-	<div id="wrapper">
-        <!-- Navigation -->
-        <% if current_user!=nil%>
-        <%= render 'pages/nav' %>
-        <div id="page-wrapper">
-      
-        <div class="container-fluid">
-                  <%= yield %>
-        </div>
-    </div>
-        <% end %>
-        <!-- Page Content -->
-        <%= yield :login %>
-
-	</div>
-</body>
+<%= yield %>
 </html>
