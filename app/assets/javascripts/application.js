@@ -17,3 +17,5 @@
 //= require_tree .
 //= require cocoon
 //= require tinymce
+//= require admin-lte/bootstrap/js/bootstrap
+//= require admin-lte

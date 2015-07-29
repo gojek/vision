@@ -36,6 +36,7 @@ Rails.application.routes.draw do
   end
   resources :cabs
   get 'signin' => 'pages#signin'
+  get 'blank' => 'pages#blank'
 
   get 'incident_reports/show'
 

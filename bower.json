@@ -1,0 +1,19 @@
+{
+  "name": "vision",
+  "version": "0.0.0",
+  "authors": [
+    "Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "vendor/assets/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "admin-lte": "~2.2.0"
+  }
+}
