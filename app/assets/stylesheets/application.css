@@ -12,6 +12,8 @@
  *
  *= require_tree .
  *= require_self
- *= require font-awesome
  *= require jquery-ui/autocomplete
+ *= require admin-lte/bootstrap/css/bootstrap
+ *= require font-awesome
+ *= require admin-lte
  */
