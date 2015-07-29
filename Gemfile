@@ -40,6 +40,7 @@ gem 'rails4-autocomplete'
 gem 'jquery-ui-rails'
 gem 'aasm'
 gem "figaro"
+gem 'adminlte-rails'
 group :production do
 	gem 'pg'
 	gem 'rails_12factor'

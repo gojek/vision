@@ -8,6 +8,8 @@ class PagesController < ApplicationController
     @implemented = IncidentReport.where(measurer_status: 'Implemented').count
     @development = IncidentReport.where(measurer_status: 'Development').count
   end
+  def blank
+  end
 
   def signin
     redirect_to root_path if user_signed_in?
