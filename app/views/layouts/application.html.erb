@@ -6,15 +6,17 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
     <%= csrf_meta_tags %>
   </head>
-  <body class="skin-blue sidebar-mini">
-  	<div class="wrapper">
-      <% if current_user!=nil%>
-        <%= render 'pages/nav' %>
-      <% end %>
-      <div class="content-wrapper">
-        <%= yield %>
+  <% if current_user!=nil%>
+    <body class="skin-blue sidebar-mini">
+    	<div class="wrapper">
+        
+          <%= render 'pages/nav' %>
+        
+        <div class="content-wrapper">
+          <%= yield %>
+        </div>
       </div>
-    </div>
-    <%= yield :login %>
-  </body>
+    </body>
+  <% end %>
+   <%= yield :login %>
 </html>
