@@ -42,7 +42,7 @@
       <table class="table">
         <tr>
           <th style="width:50%">Problem Detail:</th>
-          <td> <%= @incident_report.problem_details %></td>
+          <td> <%=raw @incident_report.problem_details %></td>
         </tr>
         <tr>
           <th>How was problem Detected</th>
@@ -58,25 +58,25 @@
 
   <div class="row">
     <!-- accepted payments column -->
-    <div class="col-xs-6">
+    <div class="col-xs-12 col-lg-6">
       <label> <strong>Why did it occur?:</strong></label>
-      <p class=" well well-sm no-shadow" style="margin-top: 10px;">
-        <%= @incident_report.occurred_reason %>
-      </p>
+      <div class=" well well-sm no-shadow" style="margin-top: 10px;">
+        <%=raw @incident_report.occurred_reason %>
+      </div>
       <label> <strong>Why was it overlooked?:</strong></label>
-      <p class=" well well-sm no-shadow" style="margin-top: 10px;">
-         <%= @incident_report.overlooked_reason %>
-      </p>
+      <div class=" well well-sm no-shadow" style="margin-top: 10px;">
+         <%=raw @incident_report.overlooked_reason %>
+      </div>
     </div><!-- /.col -->
-    <div class="col-xs-6">
+    <div class="col-xs-12 col-lg-6">
       <label>  <strong>Action for Recovery:</strong></label>
-       <p class="well well-sm no-shadow" style="margin-top: 10px;">
-         <%= @incident_report.recovery_action %>
-      </p>
+       <div class="well well-sm no-shadow" style="margin-top: 10px;">
+         <%=raw @incident_report.recovery_action %>
+      </div>
       <label> <strong>To prevent recurrence:</strong></label>
-      <p class="well well-sm no-shadow" style="margin-top: 10px;">
-         <%= @incident_report.prevent_action %>
-      </p>
+      <div class="well well-sm no-shadow" style="margin-top: 10px;">
+         <%=raw @incident_report.prevent_action %>
+      </div>
     </div><!-- /.col -->
   </div><!-- /.row -->
 
