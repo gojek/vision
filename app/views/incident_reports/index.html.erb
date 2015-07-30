@@ -1,4 +1,11 @@
-<section class="content-header">
+<script type="text/javascript">
+$(function(){
+  $('.datetimepicker').datetimepicker({
+    format: "yyyy-mm-dd"
+  });
+});
+ </script>
+ <section class="content-header">
   <h1>
     Incident Report
     <%= link_to  new_incident_report_path, class: 'btn btn-flat btn-primary pull-right'  do %>
@@ -35,7 +42,7 @@
                       <tr>
                         <td><%= incident_report.id %></td>
                         <td><%= incident_report.service_impact %></td>
-                        <td><%= incident_report.problem_details %></td>
+                        <td><%=raw incident_report.problem_details %></td>
                         <td><%= incident_report.how_detected %></td>
                         <td><%= incident_report.current_status %></td>
                         <td><%= incident_report.occurrence_time.to_s(:long) %></td>
