@@ -1,86 +1,89 @@
-
-      <div class="row">
-          <div class="col-lg-12">
-
-              <h1 class="page-header">Incident report</h1>
-               <% if flash[:notice] != nil %>
-            <div class='alert alert-success' ><%= flash[:notice] %> </div>
-              <% end %>
-              
-          </div>
-          <br>
-          <!-- /.col-lg-12 -->
-      </div>
-      <div class="row">
-          <div class="col-lg-8">
-            <div class="panel panel-default">
-              <div class="panel-heading">Incident reports </div>
-              <div class="panel-body">
-
-            <table class='table table-striped'>
-              <%= link_to 'Excel Download', incident_reports_path(params.merge(format: "xls")) %>
-              <thead>
+<script type="text/javascript">
+$(function(){
+  $('.datetimepicker').datetimepicker({
+    format: "yyyy-mm-dd"
+  });
+});
+ </script>
+ <section class="content-header">
+  <h1>
+    Incident Report
+    <%= link_to  new_incident_report_path, class: 'btn btn-flat btn-primary pull-right'  do %>
+         <i class="fa fa-plus"></i> <strong>New Incident Report</strong>
+    <%end %> 
+    </h1>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Incident Report List</h3>
+            </div><!-- /.box-header -->
+            <div class="box-body table-responsive">
+              <table class="table table-hover">
                 <tr>
-                  <th>Report ID</th>
-                  <th>Service impacted</th>
-                  <th>Problem details</th>
-                  <th>How was the problem detected</th>
-                  <th>Current Status</th>
-                  <th><%= sort_link(@q, :occurrence_time) %></th>
-                  <th><%= sort_link(@q, :detection_time) %></th>
-                  <th><%= sort_link(@q, :recovery_time) %></th>
-                  <th>Source</th>
-                  <th><%= sort_link(@q, :rank) %></th>
-                  <th>Reported by</th>
-                  <th>last edited</th>
-                  <th colspan="3"></th>
+                     <th>Report ID</th>
+                      <th>Service impacted</th>
+                      <th>Problem details</th>
+                      <th>How was the problem detected</th>
+                      <th>Current Status</th>
+                      <th><%= sort_link(@q, :occurrence_time) %></th>
+                      <th><%= sort_link(@q, :detection_time) %></th>
+                      <th><%= sort_link(@q, :recovery_time) %></th>
+                      <th>Source</th>
+                      <th><%= sort_link(@q, :rank) %></th>
+                      <th>Reported by</th>
+                      <th>last edited</th>
+                      <th colspan="3"></th>
 
                 </tr>
-              </thead>
-
-              <tbody>
                 <% @incident_reports.each do |incident_report| %>
-                  <tr>
-                    <td><%= incident_report.id %></td>
-                    <td><%= incident_report.service_impact %></td>
-                    <td><%= incident_report.problem_details %></td>
-                    <td><%= incident_report.how_detected %></td>
-                    <td><%= incident_report.current_status %></td>
-                    <td><%= incident_report.occurrence_time.to_s(:long) %></td>
-                    <td><%= incident_report.detection_time.to_s(:long) %></td>
-                    <td><%= incident_report.recovery_time.to_s(:long) %></td>
-                    <td><%= incident_report.source %></td>
-                    <td><%= incident_report.rank %></td>
-                    <td><%= incident_report.user.name %></td>
-                    <td><%= incident_report.updated_at.to_s(:long) %></td>
-                    <td><%= link_to 'Show', incident_report %></td>
-                    <%if current_user==incident_report.user || current_user.is_admin %>
-                    <td><%= link_to 'Edit', edit_incident_report_path(incident_report) %></td>
-                    <td><%= link_to 'Delete', incident_report, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-                    <% else %>
-                    <td></td>
-                    <td></td>
-                    <% end %>
-                  </tr>
+                      <tr>
+                        <td><%= incident_report.id %></td>
+                        <td><%= incident_report.service_impact %></td>
+                        <td><%= incident_report.problem_details %></td>
+                        <td><%= incident_report.how_detected %></td>
+                        <td><%= incident_report.current_status %></td>
+                        <td><%= incident_report.occurrence_time.to_s(:long) %></td>
+                        <td><%= incident_report.detection_time.to_s(:long) %></td>
+                        <td><%= incident_report.recovery_time.to_s(:long) %></td>
+                        <td><%= incident_report.source %></td>
+                        <td><%= incident_report.rank %></td>
+                        <td><%= incident_report.user.name %></td>
+                        <td><%= incident_report.updated_at.to_s(:long) %></td>
+                        <td><%= link_to 'Show', incident_report %></td>
+                        <%if current_user==incident_report.user || current_user.is_admin %>
+                        <td><%= link_to 'Edit', edit_incident_report_path(incident_report) %></td>
+                        <td><%= link_to 'Delete', incident_report, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                        <% else %>
+                        <td></td>
+                        <td></td>
+                        <% end %>
+                      </tr>
 
-                <% end %>
-              </tbody>
-            </table>
-              <%= paginate @incident_reports, :theme => 'twitter-bootstrap-3' %>
-            <br>
-            <%= link_to new_incident_report_path, class: "btn btn-primary" do %>
-                <i class="fa fa-plus fa-fw"></i> New Incident Report
-            <% end %>
-          </div>
-          </div>
-          <%= link_to 'See Deleted Documents', deleted_incident_reports_path %>
+                    <% end %>
+              </table>
+            </div><!-- /.box-body -->
+            <div class="box-footer clearfix">
+                <%= paginate @incident_reports, :theme => 'twitter-bootstrap-3'%>
+                 <%= link_to 'See Deleted Documents', deleted_incident_reports_path %>
+            </div>
+          </div><!-- /.box -->
         </div>
-          <!-- /.col-lg-8 -->
-          <div class="col-lg-4">
-            <div class="panel panel-default">
-              <div class="panel-heading">Filter </div>
-              <div class="panel-body">
-              <%= search_form_for @q do |f| %>
+    </div>
+</section>
+ <aside class="control-sidebar control-sidebar-light">                
+        <!-- Create the tabs -->
+    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+      <li class><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <!-- Home tab content -->
+      <div class="tab-pane active" id="control-sidebar-home-tab">
+        <h3 class="control-sidebar-heading">Recent Activity</h3>
+         <%= search_form_for @q do |f| %>
               <div class="form-group">
               <%= f.label :service_impact %>
               <%= f.search_field :service_impact_cont, class: 'form-control'%>
@@ -120,11 +123,11 @@
               </div>
               <div class="form-group">
               <%= f.label :source %>
-              <%= f.select :source_eq, options_for_select([['Any','']] + IncidentReport::SOURCE ), {}, {class: 'form-control'} %>
+              <%= f.select :source_eq, options_for_select([['Any','']] + IncidentReport::SOURCE ), {}, {class: 'form-control select2'} %>
               </div>
               <div class="form-group">
               <%= f.label :current_status%>
-              <%= f.select :current_status_eq, options_for_select([['Any','']] + IncidentReport::CURRENT_STATUS), {}, {class: 'form-control'} %>
+              <%= f.select :current_status_eq, options_for_select([['Any','']] + IncidentReport::CURRENT_STATUS), {}, {class: 'form-control select2'} %>
             </div>
             </br>
               <%= f.submit class: 'btn btn-primary' %>
@@ -134,8 +137,17 @@
               <%= search_form_for @q do |f| %>
                <%= f.submit 'Reset', class: 'btn btn-primary' %>
               <% end %>
-            </div>
-          </div>
-        </div>
-      </div>
-      
+        <ul class='control-sidebar-menu'>
+
+        </ul><!-- /.control-sidebar-menu -->
+
+        </div><!-- /.tab-pane -->
+      <!-- Stats tab content -->
+    </div>
+</aside><!-- /.control-sidebar -->
+    <!-- Add the sidebar's background. This div must be placed
+       immediately after the control sidebar -->
+<div class='control-sidebar-bg'></div>
+
+
+
