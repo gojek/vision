@@ -1,17 +1,15 @@
  <section class="content-header">
   <h1>
     Change Requests
-    <%= link_to  new_change_request_path, class: 'btn btn-flat btn-primary pull-right'  do %>
-         <i class="fa fa-plus"></i> <strong>New Change Request</strong>
-    <%end %> 
-    </h1>
+    <small>it all starts here</small>
+  </h1>
 </section>
 <section class="content">
  <div class="row">
     <div class="col-xs-12">
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">Change Request List</h3>
+          <h3 class="box-title">User List</h3>
           <div class="box-tools">
             <%= search_form_for @q, html: {class: "form-inline"} do |f| %>
                 <div class="input-group">
