@@ -39,6 +39,7 @@ gem 'rails4-autocomplete'
 gem 'jquery-ui-rails'
 gem 'aasm'
 gem "figaro"
+gem 'bootstrap-sass', '~> 3.3.5'
 group :production do
 	gem 'pg'
 	gem 'rails_12factor'
