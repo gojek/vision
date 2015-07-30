@@ -16,7 +16,9 @@
 //= require jquery-ui
 //= require autocomplete-rails
 //= require admin-lte/plugins/select2/select2
-//= require_tree .
+//= require moment/min/moment.min
+
+//= require eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min
 //= require cocoon
 //= require tinymce
 //= require admin-lte
