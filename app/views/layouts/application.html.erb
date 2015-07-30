@@ -1,11 +1,20 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Vision</title>
-   <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= csrf_meta_tags %>
-</head>
-<%= yield %>
+  <head>
+    <title>Vision</title>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body class="skin-blue sidebar-mini">
+  	<div id="wrapper">
+      <% if current_user!=nil%>
+        <%= render 'pages/nav' %>
+      <% end %>
+      <div class="content-wrapper">
+        <%= yield %>
+      </div>
+    </div>
+    <%= yield :login %>
+  </body>
 </html>

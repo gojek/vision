@@ -1,129 +1,52 @@
-<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                
-                <%= link_to 'Vision', root_url, class: 'navbar-brand' %>
-            </div>
-            <!-- /.navbar-header -->
+<!-- header menu -->
+<header class="main-header">
+  <!-- Logo -->
+  <a href="../../index2.html" class="logo">
+    <!-- mini logo for sidebar mini 50x50 pixels -->
+    <span class="logo-mini"><b>V</b></span>
+    <!-- logo for regular state and mobile devices -->
+    <span class="logo-lg"><b>V</b>ision</span>
+  </a>
+  <!-- Header Navbar: style can be found in header.less -->
+  <nav class="navbar navbar-static-top" role="navigation">
+    <!-- Sidebar toggle button-->
+    <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </a>
+    </div>
+  </nav>
+</header>
+<!-- sidebar menu -->
+<aside class="main-sidebar">
+  <section class="sidebar">
+    <ul class="sidebar-menu">
+       <% if current_user.is_admin || is_release_manager %>
+       <li>
+          <%= link_to users_path do %>
+            <i class="fa fa-user"></i><span> Users </span>
+          <% end %>
+        </li>
+         <li>
+            <%= link_to cabs_url do %>
+            <i class="fa fa-users"></i> <span>CAB</span>
+            <% end %>
+        </li>
+        <%end%>
+        <li>
+          <%= link_to incident_reports_url do %>
+            <i class="fa fa-pencil-square-o"></i><span>Incident Reports</span>
+          <% end %>
+        </li>
+         <li>
+          <%= link_to change_requests_url do %>
+            <i class="fa fa-pencil-square-o"></i> <span>Change Requests</span>
+          <% end %>
+      </li>
 
-            <ul class="nav navbar-top-links navbar-right">
-                <!-- /.dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <%= current_user.name %>
-                        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                
-                        
-                        <li>
-                            <%= link_to 'Logout', :destroy_user_session %>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-user -->
-                </li>
-                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-bell fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-alerts">
-                        <% if is_approver && unapproved_count!=0 %>
-                        <li>
-                             <%= link_to change_requests_path do %>
-                                     <i class="fa fa-file-text-o fa-fw"></i> <%= unapproved_count %> New Change Requests
-                                <%end%>
-                        </li>
-                        <% else %>
-                            <li>
-                            <a>Nothing Here</a>
-                            </li>
-                        <% end %>
-                    </ul>
-                    <!-- /.dropdown-alerts -->
-                </li>
-                <!-- /.dropdown -->
-            </ul>
-            <!-- /.navbar-top-links -->
-
-            <div class="navbar-default sidebar" role="navigation">
-                <div class="sidebar-nav navbar-collapse">
-                    <ul class="nav" id="side-menu">
-                    
-                            
-                            <!-- /input-group -->
-                      
-                        <% if current_user.is_admin || is_release_manager %>
-                        <li>
-
-                         <a href ="#" > <i class="fa fa-users fa-fw"></i> User<span class="fa arrow"></span></a>
-                         <ul class="nav nav-second-level">
-                        
-                        <li>
-                            <%= link_to users_path do %>
-                                <i class="fa fa-user fa-fw"></i> Manage Users 
-                            <% end %>
-
-                        </li>
-                        </ul>
-                        </li>
-
-                        <li>
-                            <a href="#"><i class="fa fa-users fa-fw"></i> CAB <span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <%= link_to cabs_url do %>
-                                    <i class="fa fa-search fa-fw"></i> View CAB
-                                    <% end %>
-                                </li>
-                                <li>
-                                    <%= link_to new_cab_path do %>
-                                    <i class="fa fa-plus fa-fw"></i> Create CAB
-                                    <% end %>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <% end %>
-                         
-                        <li>
-                           <a href ="#" > <i class="fa fa-pencil-square-o fa-fw"></i>  Incident Report <span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                            <li>
-                                 <%= link_to incident_reports_url do %>
-                                <i class="fa fa-search fa-fw"></i> View Incident Reports
-                            <% end %>
-                            </li>
-                            <li>
-                               <%= link_to new_incident_report_path do %>
-                                <i class="fa fa-plus fa-fw"></i> Create Incident Report
-                            <% end %>
-                            </li>
-                            </ul>
-                        </li>
-
-                        <li>
-                           <a href ="#" > <i class="fa fa-pencil-square-o fa-fw"></i>  Change Request <span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                            <li>
-                                 <%= link_to change_requests_url do %>
-                                <i class="fa fa-search fa-fw"></i> View Change Requests
-                            <% end %>
-                            </li>
-                            <li>
-                               <%= link_to new_change_request_path do %>
-                                <i class="fa fa-plus fa-fw"></i> Create Change Requests
-                            <% end %>
-                            </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-                <!-- /.sidebar-collapse -->
-            </div>
-            <!-- /.navbar-static-side -->
-</nav>
+    </ul>
+  </section>
+        <!-- /.sidebar -->
+</aside>

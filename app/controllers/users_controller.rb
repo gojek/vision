@@ -9,22 +9,7 @@ class UsersController < ApplicationController
     @users = @q.result(distinct: true).page(params[:page])
              .per(params[:per_page])
   end
-
-  def new
-    @user = User.new
-  end
-
-  def create
-    @user = User.new(user_params)
-    if @user.save
-      flash[:notice] = 'New user registered succesfully'
-      
-      redirect_to register_path
-    else
-      render action: 'new'
-    end
-  end
-
+  
   def edit
     @user = User.find params[:id]
   end

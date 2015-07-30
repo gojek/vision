@@ -11,11 +11,18 @@
 // about supported directives.
 //
 //= require jquery
+//= require jquery.turbolinks
 //= require jquery_ujs
 //= require jquery-ui
 //= require autocomplete-rails
+//= require admin-lte/plugins/select2/select2
 //= require_tree .
 //= require cocoon
 //= require tinymce
-//= require admin-lte/bootstrap/js/bootstrap
 //= require admin-lte
+//= require admin-lte/bootstrap/js/bootstrap
+
+//= require turbolinks
+$(function(){
+  $(".select2").select2();
+});
