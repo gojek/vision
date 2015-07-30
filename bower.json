@@ -14,6 +14,7 @@
     "tests"
   ],
   "dependencies": {
-    "admin-lte": "~2.2.0"
+    "admin-lte": "~2.2.0",
+    "eonasdan-bootstrap-datetimepicker": "~4.15.35"
   }
 }
