@@ -18,7 +18,10 @@
     </a>
     <div class="navbar-custom-menu">
       <ul class="nav navbar-nav">
-        <li> <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a></li>
+      <% if current_page?(incident_reports_path)|| current_page?(change_requests_path) %>
+        <li> <a href="#" data-toggle="control-sidebar"><i class="fa fa-filter"></i><span><strong> Filter</strong></span></a></li>
+        <% end %>
+        
       </ul>
     </div>
   </nav>
@@ -31,30 +34,29 @@
 <aside class="main-sidebar">
   <section class="sidebar">
     <ul class="sidebar-menu">
-       <% if current_user.is_admin || is_release_manager %>
-       <li>
-          <%= link_to users_path do %>
-            <i class="fa fa-user"></i><span> Users </span>
-          <% end %>
-        </li>
-         <li>
-            <%= link_to cabs_url do %>
-            <i class="fa fa-users"></i> <span>CAB</span>
-            <% end %>
-        </li>
-        <%end%>
-        <li>
-          <%= link_to incident_reports_url do %>
-            <i class="fa fa-pencil-square-o"></i><span>Incident Reports</span>
-          <% end %>
-        </li>
-         <li>
-          <%= link_to change_requests_url do %>
-            <i class="fa fa-pencil-square-o"></i> <span>Change Requests</span>
-          <% end %>
+      <% if current_user.is_admin || is_release_manager %>
+      <li>
+        <%= link_to users_path do %>
+          <i class="fa fa-user"></i><span> Users </span>
+        <% end %>
       </li>
-
+      <li>
+        <%= link_to cabs_url do %>
+          <i class="fa fa-users"></i> <span>CAB</span>
+        <% end %>
+      </li>
+      <%end%>
+      <li>
+        <%= link_to incident_reports_url do %>
+          <i class="fa fa-pencil-square-o"></i><span>Incident Reports</span>
+        <% end %>
+      </li>
+      <li>
+        <%= link_to change_requests_url do %>
+          <i class="fa fa-pencil-square-o"></i> <span>Change Requests</span>
+        <% end %>
+      </li>
     </ul>
   </section>
-        <!-- /.sidebar -->
+  <!-- /.sidebar -->
 </aside>
