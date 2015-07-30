@@ -22,8 +22,7 @@
 //= require cocoon
 //= require tinymce
 //= require admin-lte
-//= require admin-lte/bootstrap/js/bootstrap
-
+//= require bootstrap-sprockets
 //= require turbolinks
 $(function(){
   $(".select2").select2();
