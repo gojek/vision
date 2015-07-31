@@ -71,7 +71,6 @@
 </style>
 
 <script>
-console.log('hai');
 var el = document.getElementById('all-list');
 var sortable = Sortable.create(el, {
 	group:'cab', 
@@ -81,7 +80,6 @@ var sortable = Sortable.create(el, {
         cr_list.value = sortable.toArray();
     },
     onRemove: function (evt) {
-		console.log('hai2');
         // + indexes from onEnd
         var cr_list = document.getElementById('all_cr_list');
         cr_list.value = sortable.toArray();
@@ -97,7 +95,6 @@ var sortable2 = Sortable.create(el2, {
         cr_list.value = sortable2.toArray();
     },
     onRemove: function (evt) {
-		console.log('hai2');
         // + indexes from onEnd
         var cr_list = document.getElementById('cr_list');
         cr_list.value = sortable2.toArray();
