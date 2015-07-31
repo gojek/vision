@@ -9,13 +9,13 @@
 //
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
-//= require Sortable
-//= require depends_on
 //= require jquery
 //= require jquery.turbolinks
 //= require jquery_ujs
 //= require jquery-ui
 //= require autocomplete-rails
+//= require Sortable
+//= require depends_on
 //= require admin-lte/plugins/select2/select2.full
 //= require moment/min/moment.min
 //= require admin-lte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min
