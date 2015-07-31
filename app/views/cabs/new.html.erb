@@ -1,73 +1,92 @@
-<h1 class='page-header'>Create CAB</h1>
-	<% if @cab.errors.any? %>
-	    <div id="error_explanation" class="alert alert-danger">
-	      <ul>
-	      <% @cab.errors.full_messages.each do |message| %>
-	        <li><%= message %></li>
-	      <% end %>
-	      </ul>
-	    </div>
+<section class="content-header">
+  <h1>
+    Create CAB
+  </h1>
+</section>
+<section class="content">
+<% if @cab.errors.any? %>
+	<div id="error_explanation" class="alert alert-danger">
+	  <ul>
+	  <% @cab.errors.full_messages.each do |message| %>
+	    <li><%= message %></li>
 	  <% end %>
-	  <%= tinymce :theme => "modern", menubar: "false"%>
-	  <div class='row'>
-		 <div class = 'col-lg-6'>
-		 	<div class = "panel panel-default">
-		 		<div class = 'panel-heading'>
-		 			CAB Details 
-		 		</div>
-		 		<div class ='panel-body'>
-					<div class="field form-group">
-					<%= form_for(@cab) do |f| %>
-				 	<%= f.label :meet_date %><br>
-				    <%= f.datetime_select :meet_date,start_year: 2015,:include_blank => true %>
-				</div>
-				    <div class="field form-group">
-				    <%= f.label :room %><br>
-				    <%= f.text_field :room %>
-				</div>
-				    <div class="field form-group">
-				    <%= f.label :notes %><br>
-				    <%= f.text_area :notes,class: "tinymce" %>
-					</div>
-				</div>
-			</div>
-		</div>
+	  </ul>
 	</div>
-	<div class='row'>
-		<div class='col-lg-6'>
-			<div class = 'panel panel-default'>
-				<div class= 'panel-heading'>
-					CAB Meeting
-				</div>
-				<div class= 'panel-body'>
-					<div id="cab-list" class="list-group">
-						
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class='col-lg-6'>
-			<div class='panel panel-default'>
-				<div class='panel-heading'>
-					Available Change Requests
-				</div>
-				<div class='panel-body'>
-					<div id="all-list" class="list-group">
-					<% @change_requests.each do |change_request| %>
-						<div data-id=<%= change_request.id %> class='list-group-item'>
-						<h4 class="list-group-item-heading"><%= change_request.change_summary %></h4>
-					    <p class="list-group-item-text"></p>
-						</div>
-					<% end %>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<%= text_field_tag 'cr_list' %>
-	<%= text_field_tag 'all_cr_list' %>
-	<%= f.submit class:"btn btn-primary" %>
 <% end %>
+<%= form_for(@cab) do |f| %>
+<div class='row'>
+ 	<div class = 'col-lg-12'>
+ 		<div class="box">
+ 			<div class="box-header with-border">
+              	<h3 class="box-title">CAB Details</h3>
+            </div><!-- /.box-header -->
+		 	<div class="box-body">
+				<div class="field form-group">
+			 	<%= f.label :meet_date %><br>
+			    <%= f.datetime_select :meet_date,start_year: 2015,:include_blank => true %>
+				</div>
+			    <div class="field form-group">
+			    <%= f.label :room %><br>
+			    <%= f.text_field :room, class: 'form-control' %>
+				</div>
+			    <div class="field form-group">
+			    <%= f.label :notes %><br>
+			    <%= f.text_area :notes, class: "form-control textarea" %>
+				</div>
+		 	</div>
+		</div>
+	</div>
+</div>
+<div class='row'>
+	<div class='col-lg-6'>
+		<div class = 'box'>
+			<div class= 'box-header with-border'>
+				<h3 class="box-title">CAB Meeting</h3>
+			</div>
+			<div class= 'box-body'>
+				<div id="cab-list" class="list-group">
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class='col-lg-6'>
+		<div class='box'>
+			<div class='box-header with-border'>
+				<h3 class='box-title'>Available Change Requests</h3>
+			</div>
+			<div class='box-body'>
+				<div id="all-list" class="box-group list-group">
+				<% @change_requests.each do |change_request| %>
+					<div data-id=<%= change_request.id %> class='list-group-item panel box box-solid'>
+						<div class='box-header with-border'>
+							<h4 class="list-group-item-heading box-title">
+								<a data-toggle="collapse" data-parent="#accordion" href="#collapse<%= change_request.id%>">
+								<%= change_request.change_summary %></a>
+							</h4>
+						</div>
+						<div id="collapse<%= change_request.id%>" class="panel-collapse collapse">
+					    	<div class='box-body'>
+					    	<p class="list-group-item-text">
+					    		<%= change_request.business_justification %>
+					    	</p>
+					    	</div>
+						</div>
+					</div>
+				<% end %>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<%= text_field_tag 'cr_list' %>
+<%= text_field_tag 'all_cr_list' %>
+<div class="actions">
+        <%= f.submit class:"btn btn-primary" %>
+      </div>
+<% end %>
+
+</section>
 <style>
 .list-group {
   min-height: 20px;
@@ -81,7 +100,6 @@
 </style>
 
 <script>
-console.log('hai');
 var el = document.getElementById('all-list');
 var sortable = Sortable.create(el, {
 	group:'cab', 
@@ -91,7 +109,6 @@ var sortable = Sortable.create(el, {
         cr_list.value = sortable.toArray();
     },
     onRemove: function (evt) {
-		console.log('hai2');
         // + indexes from onEnd
         var cr_list = document.getElementById('all_cr_list');
         cr_list.value = sortable.toArray();
@@ -107,7 +124,6 @@ var sortable2 = Sortable.create(el2, {
         cr_list.value = sortable2.toArray();
     },
     onRemove: function (evt) {
-		console.log('hai2');
         // + indexes from onEnd
         var cr_list = document.getElementById('cr_list');
         cr_list.value = sortable2.toArray();

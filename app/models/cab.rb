@@ -4,6 +4,6 @@ class Cab < ActiveRecord::Base
 	validate :validate_meet_date
 
 	def validate_meet_date
-		errors.add("Meet date", "is invalid.") unless meet_date > Time.now
+		errors.add("Meet date", "is invalid.") unless meet_date!=nil && meet_date > Time.now
 	end
 end
