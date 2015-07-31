@@ -1,32 +1,38 @@
-<h1 class='page-header'>CAB</h1>
+<section class="content-header">
+  <h1>
+  CAB
+   
+  </h1>
+</section>
 <%if notice != nil %>
 <div class='alert alert-success'>
 	<p id="notice"><%= notice %></p>
 </div>
 <% end %>
-<div class='row'>
-	<div class='col-lg-6'>
-		<div class='panel panel-default'>
-			<div class='panel-heading'>
-				<%= @cab.meet_date.to_s(:long) %>
-
-			</div>
-			<div class='panel-body'>
-				<label> Room: </label>
-				<%= @cab.room %><br>
-				<label>Notes: </label>
-				<%= @cab.notes %>
-				<div id="all-list" class="list-group">
-				<% @current_change_requests.each do |change_request| %>
-					<div data-id=<%= change_request.id %> class='list-group-item'>
-					<h4 class="list-group-item-heading"><%= change_request.change_summary %></h4>
-				    <p class="list-group-item-text"></p>
-				    <%= link_to 'Edit', edit_change_request_path(change_request) %> |
-				     <%= link_to 'Show', change_request_path(change_request) %>
+<section class='content'>
+	<div class='row'>
+		<div class='col-lg-6'>
+			<div class='box box-default'>
+				<div class='box-header with-border'>
+					<h3 class='box-title'><%= @cab.meet_date.to_s(:long) %></h3>
+				</div>
+				<div class='box-body'>
+					<label> Room: </label>
+					<%= @cab.room %><br>
+					<label>Notes: </label>
+					<%= @cab.notes %>
+					<div id="all-list" class="list-group">
+					<% @current_change_requests.each do |change_request| %>
+						<div data-id=<%= change_request.id %> class='list-group-item'>
+						<h4 class="list-group-item-heading"><%= change_request.change_summary %></h4>
+					    <p class="list-group-item-text"></p>
+					    <%= link_to 'Edit', edit_change_request_path(change_request) %> |
+					     <%= link_to 'Show', change_request_path(change_request) %>
+						</div>
+					<% end %>
 					</div>
-				<% end %>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
+</section>
