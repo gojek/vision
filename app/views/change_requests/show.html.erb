@@ -7,7 +7,6 @@
 <section class="content-header">
   <h1>
   Change Request 
-    <small>Preview</small>
     <% if @change_request.aasm_state == 'cancelled' || @change_request.aasm_state == 'rollbacked' || @change_request.aasm_state == 'rejected' %>
       <div class= "pull-right label label-danger" >
     <% elsif @change_request.aasm_state == 'deployed' %>
