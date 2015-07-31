@@ -15,8 +15,8 @@
     </div>
   <% end %>
   <!-- form start -->
+  <%= form_for @user do |f| %>
     <div class="box-body">
-      <%= form_for @user  do |f| %>
       <div class="form-group">
        <label>Role</label>
         <%=f.select :role, options_for_select(User::ROLES,@user.role), {}, {class: 'form-control select2'} %>
