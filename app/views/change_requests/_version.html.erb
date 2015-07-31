@@ -1,45 +1,56 @@
-<h2>Previous Versions</h2>
+<div class='box box-default'>
+  <div class='box-header with-border'>
+    <h3 class='box-title'>Status History<h3>
+  </div>
+  <div class='box-boody'>
+    <table class='table'>
+        <thead>
+          <tr>
+            <th>Action</th>
+            <th>Reason</th>
+            <th>Date</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <%- @change_request.change_request_statuses.reverse.each do |cr_status| %>
+            <tr>
+              <td><%= cr_status.status%></td>
+              <td><%= cr_status.reason %></td>
+              <td><%=cr_status.created_at.to_s(:long) %></td>
+              <td></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+  </div>
+</div>
+<div class='box box-default'>
+  <div class='box-header with-border'>
+    <h3 class='box-title'>Previous Version<h3>
+  </div>
+  <div class='box-boody'>
+    <table class='table'>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Author</th>
+            <th>Event</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
 
-<table class='table'>
-  <thead>
-    <tr>
-      <th>Date</th>
-      <th>Author</th>
-      <th>Event</th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <%- document.versions.reverse.each do |version| %>
-      <tr>
-        <td><%= version.created_at.to_s(:long) %></td>
-        <td><%= find_version_author_name(version) %></td>
-        <td><%= version.event.humanize %></td>
-        <td></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-<table class='table'>
-  <thead>
-    <tr>
-      <th>Action</th>
-      <th>Reason</th>
-      <th>Date</th>
-      <th></th>
-    </tr>
-  </thead>
-<h2>Status History</h2>
-  <tbody>
-    <%- @change_request.change_request_statuses.reverse.each do |cr_status| %>
-      <tr>
-        <td><%= cr_status.status%></td>
-        <td><%= cr_status.reason %></td>
-        <td><%=cr_status.created_at.to_s(:long) %></td>
-        <td></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+        <tbody>
+          <%- document.versions.reverse.each do |version| %>
+            <tr>
+              <td><%= version.created_at.to_s(:long) %></td>
+              <td><%= find_version_author_name(version) %></td>
+              <td><%= version.event.humanize %></td>
+              <td></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+  </div>
+</div>
