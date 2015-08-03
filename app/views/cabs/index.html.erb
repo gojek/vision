@@ -8,6 +8,13 @@
 </section>
 <section class="content">
  <div class="row">
+    <div class='col-lg-6'>
+      <%if flash[:destroy_cab_notice] != nil %>
+      <div class='alert alert-danger'>
+        <p id="notice"><%= flash[:destroy_cab_notice]  %></p>
+      </div>
+        <% end %>
+    </div>
     <div class="col-xs-12">
       <div class="box">
         <div class="box-header with-border">
