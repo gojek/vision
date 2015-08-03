@@ -1,17 +1,22 @@
 <section class="content-header">
-  <h1>
-  CAB
-   
-  </h1>
+  	<h1>
+  	CAB
+  	</h1>
+ 	
 </section>
-<%if notice != nil %>
-<div class='alert alert-success'>
-	<p id="notice"><%= notice %></p>
-</div>
-<% end %>
 <section class='content'>
 	<div class='row'>
 		<div class='col-lg-6'>
+			<%if flash[:create_cab_notice] != nil %>
+			<div class='alert alert-success'>
+				<p id="notice"><%= flash[:create_cab_notice]  %></p>
+			</div>
+		   	<% end %>
+		   	<%if flash[:update_cab_notice] != nil %>
+			<div class='alert alert-success'>
+				<p id="notice"><%= flash[:edit_cab_notice]  %></p>
+			</div>
+		   	<% end %>
 			<div class='box box-default'>
 				<div class='box-header with-border'>
 					<h3 class='box-title'><%= @cab.meet_date.to_s(:long) %></h3>
