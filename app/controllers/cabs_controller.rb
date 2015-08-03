@@ -18,7 +18,8 @@ class CabsController < ApplicationController
       @cr_list = params[:cr_list].split(",")
 		  ChangeRequest.where(:id => @cr_list).update_all(:cab_id => @cab.id)
       UserMailer.cab_email(@cab).deliver
-		  redirect_to @cab, notice: 'CAB successfully arranged'
+      flash[:create_cab_notice] = 'CAB successfully arranged'
+		  redirect_to @cab
     else
       @change_requests =ChangeRequest.cab_free
       render :new
@@ -27,7 +28,8 @@ class CabsController < ApplicationController
 
   def destroy
     @cab.destroy
-    redirect_to cabs_url, notice: 'CAB successfully destroyed'
+    flash[:destroy_cab_notice] = 'CAB successfully destroyed'
+    redirect_to cabs_url
   end
 
 	def edit
@@ -41,7 +43,8 @@ class CabsController < ApplicationController
       @all_cr_list = params[:all_cr_list].split(",")
       ChangeRequest.where(:id => @cr_list).update_all(:cab_id => @cab.id)
       ChangeRequest.where(:id => @all_cr_list).update_all(:cab_id => nil)
-      redirect_to @cab, notice: 'CAB successfully edited'
+      flash[:update_cab_notice] = 'CAB successfully edited'
+      redirect_to @cab
     else
       @change_requests = ChangeRequest.cab_free
       @current_change_requests = ChangeRequest.where(:cab_id => @cab.id)
