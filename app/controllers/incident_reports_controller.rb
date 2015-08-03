@@ -27,7 +27,8 @@ class IncidentReportsController < ApplicationController
     @incident_report = current_user.IncidentReports.build(incident_report_params)
     respond_to do |format|
       if @incident_report.save
-        format.html { redirect_to @incident_report, notice: 'Incident report was successfully created.' }
+        flash[:create_incident_report_notice] = 'Incident report was successfully created.'
+        format.html { redirect_to @incident_report }
         format.json { render :show, status: :created, location: @incident_report }
       else
         format.html { render :new }
@@ -39,7 +40,8 @@ class IncidentReportsController < ApplicationController
   def update
     respond_to do |format|
       if @incident_report.update(incident_report_params)
-        format.html { redirect_to @incident_report, notice: 'Incident report was successfully updated.' }
+        flash[:update_incident_report_notice] = 'Incident report was successfully updated.' 
+        format.html { redirect_to @incident_report }
         format.json { render :show, status: :ok, location: @incident_report }
       else
         format.html { render :edit }
@@ -51,7 +53,8 @@ class IncidentReportsController < ApplicationController
   def destroy
     @incident_report.destroy
     respond_to do |format|
-      format.html { redirect_to incident_reports_url, notice: 'Incident report was successfully destroyed.' }
+      flash[:destroy_incident_report_notice] = 'Incident report was successfully destroyed.'
+      format.html { redirect_to incident_reports_url }
       format.json { head :no_content }
     end
   end
