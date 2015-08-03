@@ -144,6 +144,6 @@ class ChangeRequestsController < ApplicationController
       end
     end
     def not_closed_required
-      redirect_to change_requests_path unless @change_request.closed?
+      redirect_to change_requests_path unless !@change_request.closed?
     end
 end
