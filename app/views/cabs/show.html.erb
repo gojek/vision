@@ -25,7 +25,7 @@
 					<label> Room: </label>
 					<%= @cab.room %><br>
 					<label>Notes: </label>
-					<%= @cab.notes %>
+					<%=raw @cab.notes %>
 					<div id="all-list" class="list-group">
 					<% @current_change_requests.each do |change_request| %>
 						<div data-id=<%= change_request.id %> class='list-group-item'>
