@@ -6,6 +6,16 @@
 </section>
 <!-- Main content -->
 <section class="invoice">
+  <%if flash[:create_incident_report_notice] != nil %>
+    <div class='alert alert-success'>
+      <p id="notice"><%= flash[:create_incident_report_notice]  %></p>
+    </div>
+    <% end %>
+    <%if flash[:update_incident_report_notice] != nil %>
+    <div class='alert alert-success'>
+      <p id="notice"><%= flash[:update_incident_report_notice]  %></p>
+    </div>
+    <% end %>
   <!-- title row -->
   <div class="row">
     <div class="col-xs-12">
