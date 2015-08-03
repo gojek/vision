@@ -17,8 +17,8 @@ class CabsController < ApplicationController
 		if @cab.save
       @cr_list = params[:cr_list].split(",")
 		  ChangeRequest.where(:id => @cr_list).update_all(:cab_id => @cab.id)
-      #UserMailer.cab_email(@cab).deliver_later
-      SendCabEmailJob.set(wait: 20.seconds).perform_later(@cab)
+      UserMailer.cab_email(@cab).deliver_later
+      #SendCabEmailJob.set(wait: 20.seconds).perform_later(@cab)
       flash[:create_cab_notice] = 'CAB successfully arranged'
 		  redirect_to @cab
     else

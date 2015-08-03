@@ -39,7 +39,6 @@ gem 'jquery-ui-rails'
 gem 'aasm'
 gem "figaro"
 gem 'bootstrap-sass', '~> 3.3.5'
-gem 'delayed_job_active_record'
 group :production do
 	gem 'pg'
 	gem 'rails_12factor'
