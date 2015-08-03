@@ -90,4 +90,7 @@ Rails.application.configure do
     #user_name: ENV['GMAIL_USERNAME_DEV'],
     #password: ENV['GMAIL_PASSWORD_DEV']
   }
+
+  config.active_job.queue_adapter = :delayed_job
+
 end
