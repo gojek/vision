@@ -2,6 +2,7 @@ class ChangeRequestsController < ApplicationController
   before_action :set_change_request, only: [:show, :edit, :update, :destroy, :approve, :reject, :edit_grace_period_notes]
   before_action :authenticate_user!
   before_action :owner_required, only: [:edit, :update, :destroy]
+  before_action :not_closed_required, only: [:destroy]
   before_action :submitted_required, only: [:edit]
   autocomplete :tag, :name, :class_name => 'ActsAsTaggableOn::Tag'
   def index
@@ -140,5 +141,8 @@ class ChangeRequestsController < ApplicationController
       else
         redirect_to graceperiod_path if !@change_request.submitted?
       end
+    end
+    def not_closed_required
+      redirect_to change_requests_path unless @change_request.closed?
     end
 end
