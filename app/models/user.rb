@@ -10,7 +10,8 @@ class User < ActiveRecord::Base
   validates :email, presence: true
   has_many :IncidentReports
   has_many :ChangeRequests
-  has_many :comments
+  has_many :Comments
+  has_many :Approvers, :dependent => :destroy
   validates :email, format: { with: /\b[A-Z0-9._%a-z\-]+@veritrans\.co\.id\z/,
                   message: "must be a veritrans account" }
   validates :email, uniqueness: true
