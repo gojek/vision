@@ -18,6 +18,26 @@
     </a>
     <div class="navbar-custom-menu">
       <ul class="nav navbar-nav">
+        <li class='dropdown user user-menu'>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <span class='hidden-xs'><%= current_user.name %></span>
+          </a>
+          <ul class='dropdown-menu'>
+            <li class="user-header">
+              <p>
+                <%= current_user.name %>
+                <small><%= current_user.role %></small>
+              </p>
+            </li>
+            <li class='user-footer'>
+              <div class="pull-right">
+                <%= link_to destroy_user_session_path, :method => :delete, class: "btn btn-default btn-flat" do  %>
+                  <i class="fa fa-sign-out"></i> <span>Sign Out</span>
+                <% end -%>  
+              </div>
+            </li>
+          </ul>
+        </li>
       <% if current_page?(incident_reports_path)|| current_page?(change_requests_path) %>
         <li> <a href="#" data-toggle="control-sidebar"><i class="fa fa-filter"></i><span><strong> Filter</strong></span></a></li>
         <% end %>
