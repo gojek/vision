@@ -18,6 +18,26 @@
   </h1>
 </section>
 <section class="content">
+    <%if flash[:create_cr_notice] != nil %>
+    <div class='alert alert-success'>
+      <p id="notice"><%= flash[:create_cr_notice]  %></p>
+    </div>
+    <% end %>
+    <%if flash[:update_cr_notice] != nil %>
+    <div class='alert alert-success'>
+      <p id="notice"><%= flash[:update_cr_notice]  %></p>
+    </div>
+    <% end %>
+    <%if flash[:status_changed_notice] != nil %>
+    <div class='alert alert-success'>
+      <p id="notice"><%= flash[:status_changed_notice]  %></p>
+    </div>
+    <% end %>
+    <%if flash[:not_eligible_notice] != nil %>
+    <div class='alert alert-danger'>
+      <p id="notice"><%= flash[:not_eligible_notice]  %></p>
+    </div>
+    <% end %>
     <% if current_user.role=='approver' %>
     <div class='approve-status form-group'>
       <% if @approved == nil %>
@@ -45,7 +65,7 @@
     </div>
     <% end %>
     <div class='row'>
-      <div class='col-lg-6 col-xs-12'>
+      <div class='col-lg-6 col-xs-12'>        
         <div class="box box-default">
           <div class="box-header with-border">
             <h3 class="box-title">Change Summary</h3>
@@ -347,25 +367,25 @@
                   <tr>
                     <td><strong>Schedule Change</strong></td>
 
-                    <td colspan="2"><%= @change_request.schedule_change_date %></td>
+                    <td colspan="2"><%= @change_request.schedule_change_date.to_s(:db) %></td>
                   </tr>
 
                   <tr>
                     <td><strong>Planned Complation</strong></td>
 
-                    <td colspan="2"><%= @change_request.planned_completion %></td>
+                    <td colspan="2"><%= @change_request.planned_completion.to_s(:db) %></td>
                   </tr>
 
                   <tr>
                     <td><strong>Grace Period Starts</strong></td>
 
-                    <td colspan="2"><%= @change_request.grace_period_starts %></td>
+                    <td colspan="2"><%= @change_request.grace_period_starts.to_s(:db) %></td>
                   </tr>
 
                   <tr>
                     <td><strong>Grace Preiod Ends</strong></td>
 
-                    <td colspan="2"><%= @change_request.grace_period_end %></td>
+                    <td colspan="2"><%= @change_request.grace_period_end.to_s(:db) %></td>
                   </tr>
                 </tbody>
               </table>

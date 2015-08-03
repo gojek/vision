@@ -56,7 +56,8 @@ class ChangeRequestsController < ApplicationController
           @approval.save
         end
         UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
-        format.html { redirect_to @change_request, notice: 'Change request was successfully created.' }
+        flash[:create_cr_notice] = 'Change request was successfully created.'
+        format.html { redirect_to @change_request }
         format.json { render :show, status: :created, location: @change_request }
       else
         format.html { render :new }
@@ -68,7 +69,8 @@ class ChangeRequestsController < ApplicationController
   def update
     respond_to do |format|
       if @change_request.update(change_request_params)
-        format.html { redirect_to @change_request, notice: 'Change request was successfully updated.' }
+        flash[:update_cr_notice] = 'Change request was successfully updated.'
+        format.html { redirect_to @change_request }
         format.json { render :show, status: :ok, location: @change_request }
       else
         format.html { render :edit }
@@ -80,7 +82,8 @@ class ChangeRequestsController < ApplicationController
   def destroy
     @change_request.destroy
     respond_to do |format|
-      format.html { redirect_to change_requests_url, notice: 'Change request was successfully destroyed.' }
+      flash[:destroy_cr_notice] = 'Change request was successfully destroyed.'
+      format.html { redirect_to change_requests_url }
       format.json { head :no_content }
     end
   end
@@ -93,9 +96,9 @@ class ChangeRequestsController < ApplicationController
     approver = Approver.where(change_request_id: @change_request.id).where(user_id: current_user.id)
     approver.update_all(:approve => true)
     if approver.empty?
-      flash[:notice] = 'You are not eligible to approve this Change Request'
+      flash[:not_eligible_notice] = 'You are not eligible to approve this Change Request'
     else
-      flash[:notice] = 'Change Request Approved'
+      flash[:status_changed_notice] = 'Change Request Approved'
     end
     redirect_to @change_request
   end
@@ -104,9 +107,9 @@ class ChangeRequestsController < ApplicationController
     approver = Approver.where(change_request_id: @change_request.id).where(user_id: current_user.id)
     approver.update_all(:approve => false)
     if approver.empty?
-      flash[:notice] = 'You are not eligible to reject this Change Request'
+      flash[:not_eligible_notice] = 'You are not eligible to reject this Change Request'
     else
-      flash[:notice] = 'Change Request Rejected'
+      flash[:status_changed_notice] = 'Change Request Rejected'
     end
     redirect_to @change_request
   end
