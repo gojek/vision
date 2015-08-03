@@ -42,7 +42,7 @@
               <div class="col-md-6">
                 <div class="field form-group">
                   <%= f.label :priority %>
-                  <%= f.select :priority, options_for_select(%w[Critical Urgent High Normal Low], @change_request.priority), {include_blank: true}, {class: 'form-control select2'} %>
+                  <%= f.select :priority, options_for_select(ChangeRequest::PRIORITY, @change_request.priority), {include_blank: true}, {class: 'form-control select2'} %>
                 </div>
                 <div class="field form-group">
                   <label>Tag (Separated by Comma)</label><br>

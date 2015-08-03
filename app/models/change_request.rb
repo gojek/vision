@@ -14,6 +14,7 @@ class ChangeRequest < ActiveRecord::Base
   validates :scope,
             inclusion: { in: SCOPE, message: '%{ value } is not a valid scope' }
   STATUS = %w(submitted scheduled rollbacked cancelled rejected deployed closed)
+  PRIORITY = %w(Critical Urgent High Normal Low)
   #validates :requestor_name, :requestor_position, :change_summary, :priority, :category, :cr_type, :change_requirement, :business_justification, :note, :analysis, :solution, :impact, :scope, :design,
            # :backup, :testing_environment_avaible, :testing_procedure, :testing_notes, :schedule_change_date, :planned_completion, :grace_period_starts, :grace_period_end, :implementation_notes, :grace_period_notes,
           #  :user_id, :net, :db, :os, presence: true
