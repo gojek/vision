@@ -23,6 +23,8 @@
 //= require cocoon
 //= require admin-lte
 //= require bootstrap-sprockets
+//= require moment
+//= require fullcalendar
 //= require turbolinks
 $(function(){
   $(".select2").select2();
@@ -35,3 +37,4 @@ $(function(){
     format: "yyyy-mm-dd"
   });
 });
+
