@@ -90,7 +90,7 @@ Rails.application.configure do
     #user_name: ENV['GMAIL_USERNAME_DEV'],
     #password: ENV['GMAIL_PASSWORD_DEV']
   }
-   Rails.application.config.middleware.use ExceptionNotification::Rack,
+  Rails.application.config.middleware.use ExceptionNotification::Rack,
   :email => {
     :email_prefix => "[VISION] ",
     :sender_address => %{"vision-notifier" <narendra.hanif@veritrans.co.id>},
