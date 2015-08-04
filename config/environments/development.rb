@@ -50,10 +50,5 @@ Rails.application.configure do
     password: "veritrans"
 
   }
-  Rails.application.config.middleware.use ExceptionNotification::Rack,
-  :email => {
-    :sender_address => %{"vision-notifier" <narendra.hanif@***REMOVED***>},
-    :exception_recipients => %w{muhammad.idham@***REMOVED***}
-  }
 
 end

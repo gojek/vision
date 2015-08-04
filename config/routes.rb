@@ -34,7 +34,10 @@ Rails.application.routes.draw do
       patch :bringback  # <= and that
     end
   end
-  resources :cabs
+  resources :cabs do
+    get :get_cabs, on: :collection
+  end
+  
   get 'signin' => 'pages#signin'
   get 'blank' => 'pages#blank'
 
