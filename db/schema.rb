@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150728065633) do
+ActiveRecord::Schema.define(version: 20150804065001) do
 
   create_table "approvers", force: :cascade do |t|
     t.string   "name"
@@ -62,8 +62,6 @@ ActiveRecord::Schema.define(version: 20150728065633) do
   create_table "change_requests", force: :cascade do |t|
     t.string   "change_summary"
     t.string   "priority"
-    t.string   "category"
-    t.string   "cr_type"
     t.text     "change_requirement"
     t.text     "business_justification"
     t.string   "requestor_position"
