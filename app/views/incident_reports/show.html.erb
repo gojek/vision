@@ -1,7 +1,6 @@
 <section class="content-header">
   <h1>
-    Incident Report
-    <small><%= @incident_report.id %></small>
+    Incident Report #<%= @incident_report.id %>
   </h1>
 </section>
 <!-- Main content -->
@@ -51,8 +50,11 @@
     <div class="col-xs-6 table-responsive">
       <table class="table">
         <tr>
+          require "html_truncator"
+
           <th style="width:50%">Problem Detail:</th>
-          <td> <%=raw @incident_report.problem_details %></td>
+
+          <td> HTML_Truncator.truncate(<%=raw @incident_report.problem_details %>, 12 )</td>
         </tr>
         <tr>
           <th>How was problem Detected</th>
