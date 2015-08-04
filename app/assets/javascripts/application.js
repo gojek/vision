@@ -26,7 +26,11 @@
 //= require turbolinks
 $(function(){
   $(".select2").select2();
-  $('.textarea').wysihtml5();
+  $('.textarea').wysihtml5({
+  	  toolbar: {
+    "html": true, //Button which allows you to edit the generated HTML. Default false
+  }
+  });
   $('.datetimepicker').datetimepicker({
     format: "yyyy-mm-dd"
   });

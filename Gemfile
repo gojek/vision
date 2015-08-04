@@ -38,7 +38,10 @@ gem 'rails4-autocomplete'
 gem 'jquery-ui-rails'
 gem 'aasm'
 gem "figaro"
+gem "simple_calendar", "~> 1.1.0"
 gem 'bootstrap-sass', '~> 3.3.5'
+gem "html_truncator", "~>0.2"
+
 group :production do
 	gem 'pg'
 	gem 'rails_12factor'

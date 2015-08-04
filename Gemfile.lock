@@ -104,6 +104,8 @@ GEM
     globalid (0.3.5)
       activesupport (>= 4.1.0)
     hashie (3.4.2)
+    html_truncator (0.4.1)
+      nokogiri (~> 1.5)
     i18n (0.7.0)
     jbuilder (2.3.0)
       activesupport (>= 3.0.0, < 5)
@@ -233,6 +235,8 @@ GEM
       multi_json (~> 1.0)
       rubyzip (~> 1.0)
       websocket (~> 1.0)
+    simple_calendar (1.1.10)
+      rails (>= 3.0)
     simplecov (0.10.0)
       docile (~> 1.1.0)
       json (~> 1.8)
@@ -292,6 +296,7 @@ DEPENDENCIES
   faker
   figaro
   font-awesome-rails
+  html_truncator (~> 0.2)
   jbuilder (~> 2.0)
   jquery-rails
   jquery-turbolinks
@@ -309,6 +314,7 @@ DEPENDENCIES
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   selenium-webdriver
+  simple_calendar (~> 1.1.0)
   simplecov
   simplecov-rcov
   spring
