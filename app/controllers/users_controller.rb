@@ -23,14 +23,7 @@ class UsersController < ApplicationController
       render action: 'edit'
     end
   end
-
-  def destroy
-    @user = User.find params[:id]
-    @user.destroy
-    flash[:user_notice] = 'User deleted succesfully'
-    redirect_to users_path
-  end
-
+  
   def lock_user
     @user = User.find params[:id]
     @user.update_attribute(:locked_at, Time.current)
