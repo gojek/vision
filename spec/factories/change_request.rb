@@ -2,8 +2,8 @@ FactoryGirl.define do
   factory :change_request do
     change_summary "Change Summary"
     priority "Low"
-    category "Other"
-    cr_type "Other"
+    type_install_uninstall true
+    category_server true
     change_requirement "Change Requirement"
     business_justification "Business Justification"
     requestor_name "Patrick"
