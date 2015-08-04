@@ -50,8 +50,11 @@ Rails.application.configure do
     password: "veritrans"
 
   }
-
-  config.active_job.queue_adapter = :delayed_job
-
+  Rails.application.config.middleware.use ExceptionNotification::Rack,
+  :email => {
+    :email_prefix => "[VISION] ",
+    :sender_address => %{"vision-admin" <narendra.hanif@***REMOVED***>},
+    :exception_recipients => %w{muhammad.idham@***REMOVED***}
+  }
 
 end
