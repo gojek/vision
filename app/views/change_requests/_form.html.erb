@@ -30,35 +30,11 @@
             </div>
             <div class="box-body">
               <div class="col-md-6">
-                <div class="field form-group">
-                  <%= f.label :requestor_name %><br>
-                  <%= f.text_field :requestor_name, class: 'form-control' %>
+                 <div class="field form-group">
+                    <%= f.label :change_summary %><br>
+                    <%= f.text_field :change_summary, class: 'form-control' %>
                 </div>
-                <div class="field form-group">
-                  <%= f.label :requestor_position %><br>
-                  <%= f.text_field :requestor_position, class: 'form-control' %>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="field form-group">
-                  <%= f.label :priority %>
-                  <%= f.select :priority, options_for_select(ChangeRequest::PRIORITY, @change_request.priority), {include_blank: true}, {class: 'form-control select2'} %>
-                </div>
-                <div class="field form-group">
-                  <label>Tag (Separated by Comma)</label><br>
-                  <%= f.autocomplete_field :tag_list, autocomplete_tag_name_change_requests_path,:"data-delimiter" => ',' %>
-               </div>
-              </div>
-            </div>
-          </div> 
-
-          <div class='box box-primary'>
-            <div class="box-header with-border">
-              <h3 class="box-title">Category & Type</h3>
-            </div>
-            <div class='box-body'>
-              <div class='row'>
-                <div class='col-md-6'>
+                <div class='col-md-6 form-group' style='padding-left:0'>
                   <%= f.label :category %><br>
                   <%= f.check_box :category_application %>
                   <%= f.label :application %><br>
@@ -68,17 +44,13 @@
                   <%= f.label :server %><br>
                   <%= f.check_box :category_user_access %>
                   <%= f.label :user_access %><br>
-                  <div class='row'>
-                    <div class='col-lg-3'>
-                      <div class='input-group'>
-                        <span class='input-group-addon'>Other
-                        </span>
-                        <%= f.text_field :category_other, class: 'form-control'%>
-                      </div>
-                    </div>
+                  <div class='input-group'>
+                    <span class='input-group-addon'>Other
+                    </span>
+                    <%= f.text_field :category_other, class: 'form-control'%>
                   </div>
                 </div>
-                <div class='col-md-6'>
+                <div class='col-md-6 form-group' style='padding-right:0'>
                   <%= f.label :type %><br>
                   <%= f.check_box :type_security_update %>
                   <%= f.label :security_update %><br>
@@ -88,30 +60,42 @@
                   <%= f.label :configuration_change %><br>
                   <%= f.check_box :type_emergency_change %>
                   <%= f.label :emergency_change %><br>
-                  <div class='row'>
-                    <div class='col-lg-3'>
-                      <div class='input-group'>
-                        <span class='input-group-addon'>Other
-                        </span>
-                        <%= f.text_field :type_other, class: 'form-control'%>
-                      </div>
-                    </div>
+                  <div class='input-group'>
+                    <span class='input-group-addon'>Other
+                    </span>
+                    <%= f.text_field :type_other, class: 'form-control'%>
                   </div>
                 </div>
+                <div class="field form-group">
+                  <%= f.label :priority %>
+                  <%= f.select :priority, options_for_select(ChangeRequest::PRIORITY, @change_request.priority), {include_blank: true}, {class: 'form-control select2'} %>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="field form-group">
+                  <%= f.label :requestor_name %><br>
+                  <%= f.text_field :requestor_name, class: 'form-control' %>
+                </div>
+                <div class="field form-group">
+                  <%= f.label :requestor_position %><br>
+                  <%= f.text_field :requestor_position, class: 'form-control' %>
+                </div>
+                <div class="field form-group">
+                  <label>Tag (Separated by Comma)</label><br>
+                  <%= f.autocomplete_field :tag_list, autocomplete_tag_name_change_requests_path,:"data-delimiter" => ',' %>
+               </div>
               </div>
             </div>
-          </div>
+          </div> 
+
           <div class='row'>
             <div class='col-md-6'>
               <div class="box box-default">
                 <div class="box-header">
-                  <h3 class="box-title">Input masks</h3>
+                  <h3 class="box-title">Request's Detail</h3>
                 </div>
                 <div class="box-body">
-                  <div class="field form-group">
-                    <%= f.label :change_summary %><br>
-                    <%= f.text_field :change_summary, class: 'form-control' %>
-                  </div>
+                 
                   <div class="field form-group">
                     <%= f.label :change_requirement %><br>
                     <%= f.text_area :change_requirement, class: "form-control textarea" %>
@@ -139,7 +123,7 @@
                   <%= f.text_area :os, class: 'form-control textarea' %>
                 </div>
                 <div class="field form-group">
-                  <%= f.label :data_base %><br>
+                  <%= f.label :database %><br>
                   <%= f.text_area :db, class: 'form-control textarea' %>
                 </div>
                 <div class="field form-group">
@@ -200,7 +184,7 @@
                     <%= f.text_area :definition_of_success, class: "form-control textarea" %>
                 </div>
                 <div class="field form-group">
-                  <%= f.label :definition_of_failed %><br>
+                  <%= f.label :definition_of_failure %><br>
                   <%= f.text_area :definition_of_failed, class: "form-control textarea" %>
                 </div>
               </div>
