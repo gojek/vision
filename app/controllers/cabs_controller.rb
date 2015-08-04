@@ -1,6 +1,8 @@
 class CabsController < ApplicationController
+  before_action :authenticate_user!
 	before_action :set_cab, only: [:edit, :update, :show, :destroy]
   before_action :release_manager_required
+
   
   def index
     @q = Cab.ransack(params[:q])
@@ -55,6 +57,17 @@ class CabsController < ApplicationController
 
   def show
     @current_change_requests = ChangeRequest.where(:cab_id => @cab.id)
+  end
+
+  respond_to :json
+  def get_cabs
+    @cabs = Cab.all
+    events = []
+    @cabs.each do |cab|
+      events << {:id => cab.id, :title => "CAB #{cab.id}", :start => "#{cab.meet_date.to_time.iso8601}", :end => "#{cab.meet_date.to_time.iso8601}",
+                 :url => "#{url_for(cab)}"}      
+    end
+    render :text => events.to_json
   end
 
 	private

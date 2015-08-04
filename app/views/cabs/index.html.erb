@@ -7,7 +7,7 @@
     </h1>
 </section>
 <section class="content">
- <div class="row">
+  <div class='row'>
     <div class='col-lg-6'>
       <%if flash[:destroy_cab_notice] != nil %>
       <div class='alert alert-danger'>
@@ -15,7 +15,9 @@
       </div>
         <% end %>
     </div>
-    <div class="col-xs-12">
+  </div>
+  <div class="row">    
+    <div class="col-lg-6 col-xs-12">
       <div class="box">
         <div class="box-header with-border">
           <h3 class="box-title">CAB List</h3>
@@ -41,6 +43,30 @@
         </div>
       </div><!-- /.box -->
     </div>
+    <div class='col-lg-6'>
+      <div class='box'>
+        <div class='box box-body'>
+          <div id='calendar'>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
+
+<script>
+$(document).ready(function() {
+   $("#calendar").fullCalendar({
+     defaultView: "month",
+     events: "/cabs/get_cabs.json",
+     dragOpacity: "0.5",
+     eventClick: function(event) {
+        if (event.url) {
+            window.location.href(event.url);
+            return false;
+        }
+    }
+  });
+});
+</script>

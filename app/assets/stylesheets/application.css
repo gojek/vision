@@ -19,4 +19,5 @@
  *= require admin-lte
  *= require font-awesome
  *= require admin-lte/dist/css/skins/skin-blue
+ *= require fullcalendar
  */
