@@ -9,7 +9,9 @@ class UserMailer < ApplicationMailer
 		@state = @status.status
 		@reason = @status.reason
 		@summary = change_request.change_summary
-		@deploy  = change_request.schedule_change_date.to_s(:long)
+		unless change_request.schedule_change_date.nil?
+			@deploy  = change_request.schedule_change_date.to_s(:long)
+		end
 
 		@recepients = User.where(:role => ['approver','release_manager'])
 		if @recepients.count > 1

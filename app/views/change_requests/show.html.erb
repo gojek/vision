@@ -6,7 +6,7 @@
   <% end %>
 <section class="content-header">
   <h1>
-  Change Request 
+  Change Request #<%= @change_request.id %>  
     <% if @change_request.aasm_state == 'cancelled' || @change_request.aasm_state == 'rollbacked' || @change_request.aasm_state == 'rejected' %>
       <div class= "pull-right label label-danger" >
     <% elsif @change_request.aasm_state == 'deployed' %>
@@ -367,25 +367,30 @@
                   <tr>
                     <td><strong>Schedule Change</strong></td>
 
-                    <td colspan="2"><%= @change_request.schedule_change_date.to_s(:db) %></td>
+                    <% if @change_request.schedule_change_date != nil %>
+                    <td colspan="2"><%= @change_request.schedule_change_date.to_s(:long) %></td>
+                    <% end%>
                   </tr>
 
                   <tr>
                     <td><strong>Planned Complation</strong></td>
-
-                    <td colspan="2"><%= @change_request.planned_completion.to_s(:db) %></td>
+                    <% if @change_request.planned_completion != nil %>
+                    <td colspan="2"><%= @change_request.planned_completion.to_s(:long)%></td>
+                    <% end %>
                   </tr>
 
                   <tr>
                     <td><strong>Grace Period Starts</strong></td>
-
-                    <td colspan="2"><%= @change_request.grace_period_starts.to_s(:db) %></td>
+                    <% if @change_request.grace_period_starts != nil %>
+                    <td colspan="2"><%= @change_request.grace_period_starts.to_s(:long) %></td>
+                    <% end %>
                   </tr>
 
                   <tr>
                     <td><strong>Grace Preiod Ends</strong></td>
-
-                    <td colspan="2"><%= @change_request.grace_period_end.to_s(:db) %></td>
+                    <% if @change_request.grace_period_end != nil %>
+                    <td colspan="2"><%= @change_request.grace_period_end.to_s(:long) %></td>
+                    <% end %>
                   </tr>
                 </tbody>
               </table>
@@ -494,6 +499,7 @@
         </div>
       </div>
       <div class="col-lg-6 col-xs-12">
+        
         <%= render 'version', document: @change_request %>
       </div>
     </div>

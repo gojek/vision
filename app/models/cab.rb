@@ -1,4 +1,5 @@
 class Cab < ActiveRecord::Base
+	extend SimpleCalendar
 	has_many :change_requests, dependent: :nullify
 	validates :meet_date, presence:true, uniqueness:true
 	validate :validate_meet_date
