@@ -1,6 +1,6 @@
 class CabsController < ApplicationController
   before_action :authenticate_user!
-	before_action :set_cab, only: [:edit, :update, :show, :destroy]
+	before_action :set_cab, only: [:edit, :update, :show, :destroy, :get_change_requests]
   before_action :release_manager_required
 
   
@@ -66,6 +66,16 @@ class CabsController < ApplicationController
     @cabs.each do |cab|
       events << {:id => cab.id, :title => "CAB #{cab.id}", :start => "#{cab.meet_date.to_time.iso8601}", :end => "#{cab.meet_date.to_time.iso8601}",
                  :url => "#{url_for(cab)}"}      
+    end
+    render :text => events.to_json
+  end
+
+  respond_to :json
+  def get_change_requests
+    @change_requests = @cab.change_requests
+    events =[]
+    @change_requests.each do |change_request|
+      events << {:id => change_request.id, :title => change_request.change_summary, :start => "#{change_request.schedule_change_date.to_time.iso8601}", :end => "#{change_request.planned_completion.to_time.iso8601}"}
     end
     render :text => events.to_json
   end
