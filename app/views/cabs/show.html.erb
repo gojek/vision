@@ -44,6 +44,14 @@
 				<div class='box-body'>
 					<div id='cr_calendar'>
 					</div>
+					<%= form_tag(update_cr_path) do  %>
+						<% @current_change_requests.each do |change_request| %>
+						<%= hidden_field_tag 'start'+change_request.id.to_s, change_request.schedule_change_date.to_time.iso8601  %>
+						<%= hidden_field_tag 'end'+change_request.id.to_s, change_request.planned_completion.to_time.iso8601  %>
+						<% end %>
+						<br>
+						<%= submit_tag "Save", class:"btn btn-primary"%>
+					<% end %>
 				</div>
 			</div>
 		</div>
@@ -53,20 +61,43 @@
 <script>
 $(document).on('ready page:load', function () {
    $("#cr_calendar").fullCalendar({
-     defaultView: "agendaWeek",
-     header: {
-			left: 'prev,next today',
-			center: 'title',
-			right: 'month,agendaWeek,agendaDay'
-		},
-     events: "<%=@cab.id%>/get_change_requests.json",
-     dragOpacity: "0.5",
-     eventClick: function(event) {
-        if (event.url) {
-            window.location.href(event.url);
-            return false;
-        }
-    }
+    defaultView: "agendaWeek",
+    editable: true,
+    allDaySlot: false,
+    header: {
+		left: 'prev,next today',
+		center: 'title',
+		right: 'month,agendaWeek,agendaDay'
+	},
+    events: "<%=@cab.id%>/get_change_requests.json",
+    dragOpacity: "0.5",
+    eventClick: function(event) {
+	    if (event.url) {
+	        window.location.href(event.url);
+	        return false;
+	    }
+    }, 
+    eventDrop: function(event, delta, revertFunc) {
+    	var start_id = 'start'+event.id;
+    	var end_id = 'end'+event.id;
+    	var start_field = document.getElementById(start_id);
+    	var end_field = document.getElementById(end_id);
+    	start_field.value = event.start.format();
+    	end_field.value = event.end.format();
+        //alert(event.title + " was dropped on " + event.start.format() + "end" + event.end.format());
+    },
+	eventResize: function(event, delta, revertFunc) {
+		var start_id = 'start'+event.id;
+    	var end_id = 'end'+event.id;
+    	var start_field = document.getElementById(start_id);
+    	var end_field = document.getElementById(end_id);
+    	start_field.value = event.start.format();
+    	end_field.value = event.end.format();
+	}
   });
 });
 </script>
+<style type="text/css">
+.fc-content {
+    font-size: 12pt;
+}</style>

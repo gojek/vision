@@ -1,6 +1,6 @@
 class CabsController < ApplicationController
   before_action :authenticate_user!
-	before_action :set_cab, only: [:edit, :update, :show, :destroy, :get_change_requests]
+	before_action :set_cab, only: [:edit, :update, :show, :destroy, :get_change_requests, :update_change_requests]
   before_action :release_manager_required
 
   
@@ -58,6 +58,18 @@ class CabsController < ApplicationController
   def show
     @current_change_requests = ChangeRequest.where(:cab_id => @cab.id)
   end
+  def update_change_requests
+    change_requests = @cab.change_requests
+    change_requests.each do |change_request|
+      start_date = params['start'+change_request.id.to_s]
+      end_date = params['end'+change_request.id.to_s]
+      change_request.planned_completion = end_date
+      change_request.schedule_change_date = start_date
+      change_request.save
+    end
+    redirect_to @cab
+
+  end
 
   respond_to :json
   def get_cabs
@@ -75,7 +87,8 @@ class CabsController < ApplicationController
     @change_requests = @cab.change_requests
     events =[]
     @change_requests.each do |change_request|
-      events << {:id => change_request.id, :title => change_request.change_summary, :start => "#{change_request.schedule_change_date.to_time.iso8601}", :end => "#{change_request.planned_completion.to_time.iso8601}"}
+      events << {:id => change_request.id, :title => change_request.change_summary, :start => "#{change_request.schedule_change_date.to_time.iso8601}", 
+                 :end => "#{change_request.planned_completion.to_time.iso8601}", :url => "#{url_for(change_request)}"}
     end
     render :text => events.to_json
   end
