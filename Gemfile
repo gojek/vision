@@ -44,6 +44,7 @@ gem "html_truncator", "~>0.2"
 gem 'exception_notification'
 gem 'fullcalendar-rails'
 gem 'momentjs-rails'
+gem 'pry'
 
 group :production do
 	gem 'pg'

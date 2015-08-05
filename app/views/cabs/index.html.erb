@@ -46,7 +46,7 @@
     <div class='col-lg-6'>
       <div class='box'>
         <div class='box box-body'>
-          <div id='calendar'>
+          <div id='cab_calendar'>
           </div>
         </div>
       </div>
@@ -56,8 +56,8 @@
 
 
 <script>
-$(document).ready(function() {
-   $("#calendar").fullCalendar({
+$(document).on('ready page:load', function (){
+   $("#cab_calendar").fullCalendar({
      defaultView: "month",
      events: "/cabs/get_cabs.json",
      dragOpacity: "0.5",
