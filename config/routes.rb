@@ -50,6 +50,7 @@ Rails.application.routes.draw do
   get 'incident_reports/edit'
 
   get 'users/show'
+  post 'cabs/:id'=> 'cabs#update_change_requests', :as => 'update_cr'
 
   get 'users/index'
   get 'register' => 'users#new'
