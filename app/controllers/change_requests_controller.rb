@@ -133,8 +133,8 @@ class ChangeRequestsController < ApplicationController
     end
 
     def owner_required
-      redirect_to change_requests_url if
-      current_user != @change_request.user && !current_user.is_admin
+      redirect_to change_requests_url unless
+      current_user == @change_request.user || current_user.is_admin || (current_user.role == 'release_manager')
     end
     def submitted_required
       if @change_request.closed?

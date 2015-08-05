@@ -37,7 +37,7 @@ Rails.application.routes.draw do
   resources :cabs do
     get :get_cabs, on: :collection
   end
-  
+  get 'cabs/:id/get_change_requests' => 'cabs#get_change_requests'
   get 'signin' => 'pages#signin'
   get 'blank' => 'pages#blank'
 

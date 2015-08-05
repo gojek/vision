@@ -14,7 +14,7 @@
 		   	<% end %>
 		   	<%if flash[:update_cab_notice] != nil %>
 			<div class='alert alert-success'>
-				<p id="notice"><%= flash[:edit_cab_notice]  %></p>
+				<p id="notice"><%= flash[:update_cab_notice]  %></p>
 			</div>
 		   	<% end %>
 			<div class='box box-default'>
@@ -29,7 +29,7 @@
 					<div id="all-list" class="list-group">
 					<% @current_change_requests.each do |change_request| %>
 						<div data-id=<%= change_request.id %> class='list-group-item'>
-						<h4 class="list-group-item-heading"><%= change_request.change_summary %></h4>
+						<h4 class="list-group-item-heading"><%=raw change_request.change_summary %></h4>
 					    <p class="list-group-item-text"></p>
 					    <%= link_to 'Edit', edit_change_request_path(change_request) %> |
 					     <%= link_to 'Show', change_request_path(change_request) %>
@@ -39,5 +39,34 @@
 				</div>
 			</div>
 		</div>
+		<div class='col-lg-6'>
+			<div class='box box-default'>
+				<div class='box-body'>
+					<div id='cr_calendar'>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </section>
+
+<script>
+$(document).on('ready page:load', function () {
+   $("#cr_calendar").fullCalendar({
+     defaultView: "agendaWeek",
+     header: {
+			left: 'prev,next today',
+			center: 'title',
+			right: 'month,agendaWeek,agendaDay'
+		},
+     events: "<%=@cab.id%>/get_change_requests.json",
+     dragOpacity: "0.5",
+     eventClick: function(event) {
+        if (event.url) {
+            window.location.href(event.url);
+            return false;
+        }
+    }
+  });
+});
+</script>
