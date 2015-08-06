@@ -1,3 +1,6 @@
+require 'net/http'
+require 'json'
+
 # a model representing user
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
@@ -36,5 +39,35 @@ class User < ActiveRecord::Base
   def self.find_version_author(version)
     find(version.terminator)
   end
+
+  def token_to_params
+    {'refresh_token' => refresh_token,
+    'client_id' => ENV['GOOGLE_API_KEY'],
+    'client_secret' => ENV['GOOGLE_API_SECRET'],
+    'grant_type' => 'refresh_token'}
+  end
+
+  def request_token_from_google
+    url = URI('https://accounts.google.com/o/oauth2/token')
+    Net::HTTP.post_form(url, self.token_to_params)
+  end
+
+  def refresh!
+    response = request_token_from_google
+    data = JSON.parse(response.body)
+    update_attributes(
+      token: data['access_token'],
+      expired_at: Time.now + (data['expires_in'].to_i).seconds)
+  end
+
+  def expired?
+    expired_at < Time.now
+  end
+
+  def fresh_token
+    refresh! if expired?
+    token
+  end
+
 end
  
