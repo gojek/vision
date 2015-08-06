@@ -1,7 +1,9 @@
 # 'config/initializers/omniauth.rb'
 Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :google_oauth2, '***REMOVED***', '***REMOVED***', {
-  	:prompt => '',
-  	:hd => '***REMOVED***'
+  provider :google_oauth2, ENV['GOOGLE_API_KEY'], ENV['GOOGLE_API_SECRET'], {
+  	:prompt => 'consent',
+  	:hd => '***REMOVED***',
+  	:access_type => 'offline',
+  	:scope => 'profile,email,calendar'
   }
 end
