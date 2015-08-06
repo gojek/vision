@@ -5,7 +5,7 @@ require 'json'
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :trackable, :lockable,
+  devise :trackable, :lockable, :timeoutable,  
          :omniauthable, omniauth_providers: [:google_oauth2]
   ROLES = %w(requestor approver release_manager)
   validates :role, inclusion: { in: ROLES,
@@ -26,6 +26,11 @@ class User < ActiveRecord::Base
   def active_for_authentication?
     super && account_active?
   end
+
+  def timeout_in
+    1.day
+  end
+
 
   def self.from_omniauth(auth)
     where(provider: auth[:provider], uid: auth[:uid]).first_or_create do |user|
