@@ -3,6 +3,7 @@
     Create CAB
   </h1>
 </section>
+<%= tinymce %>
 <section class="content">
 <% if @cab.errors.any? %>
 	<div id="error_explanation" class="alert alert-danger">
@@ -31,7 +32,7 @@
 				</div>
 			    <div class="field form-group">
 			    <%= f.label :notes %><br>
-			    <%= f.text_area :notes, class: "form-control textarea" %>
+			    <%= f.text_area :notes, class: "form-control tinymce" %>
 				</div>
 		 	</div>
 		</div>

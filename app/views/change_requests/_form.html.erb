@@ -1,4 +1,7 @@
-
+<script>
+    tinymce.remove();
+</script>
+<%= tinymce %>
 <%= form_for(@change_request) do |f| %>
   <% if @change_request.errors.any? %>
     <div id="error_explanation">
@@ -98,15 +101,15 @@
                  
                   <div class="field form-group">
                     <%= f.label :change_requirement %><br>
-                    <%= f.text_area :change_requirement, class: "form-control textarea" %>
+                    <%= f.text_area :change_requirement, :class => "form-control tinymce" %>
                   </div>
                   <div class="field form-group">
                     <%= f.label :business_justification %><br>
-                    <%= f.text_area :business_justification, class: "form-control textarea" %>
+                    <%= f.text_area :business_justification, class: "form-control tinymce" %>
                   </div>
                   <div class="field form-group">
                     <%= f.label :note %><br>
-                    <%= f.text_area :note, class: "form-control textarea"%>
+                    <%= f.text_area :note, class: "form-control tinymce"%>
                   </div>
                 </div><!-- /.box-body -->
               </div><!-- /.box -->
@@ -120,15 +123,15 @@
                 <div class="box-body">
                  <div class="field form-group">
                   <%= f.label :operating_system %><br>
-                  <%= f.text_area :os, class: 'form-control textarea' %>
+                  <%= f.text_area :os, class: 'form-control tinymce' %>
                 </div>
                 <div class="field form-group">
                   <%= f.label :database %><br>
-                  <%= f.text_area :db, class: 'form-control textarea' %>
+                  <%= f.text_area :db, class: 'form-control tinymce' %>
                 </div>
                 <div class="field form-group">
                   <%= f.label :network %><br>
-                  <%= f.text_area :net, class: 'form-control textarea' %>
+                  <%= f.text_area :net, class: 'form-control tinymce' %>
                 </div>
                 </div><!-- /.box-body -->
               </div><!-- /.box -->
@@ -143,17 +146,17 @@
               <div class="col-md-6">
                 <div class="field form-group">
                   <%= f.label :analysis %><br>
-                  <%= f.text_area :analysis, class: "form-control textarea" %>
+                  <%= f.text_area :analysis, class: "form-control tinymce" %>
                 </div>
                 <div class="field form-group">
                   <%= f.label :solution %><br>
-                  <%= f.text_area :solution, class: "form-control textarea" %>
+                  <%= f.text_area :solution, class: "form-control tinymce" %>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="field form-group">
                   <%= f.label :impact %><br>
-                  <%= f.text_area :impact, class: "form-control textarea" %>
+                  <%= f.text_area :impact, class: "form-control tinymce" %>
                 </div>
                 <div class="field form-group">
                   <%= f.label :scope %><br>
@@ -171,21 +174,21 @@
               <div class="col-md-6">
                 <div class="field form-group">
                   <%= f.label :design %><br>
-                  <%= f.text_area :design, class: "form-control textarea" %>
+                  <%= f.text_area :design, class: "form-control tinymce" %>
                 </div>
                 <div class="field form-group">
                   <%= f.label :backup %><br>
-                  <%= f.text_area :backup, class: "form-control textarea" %>
+                  <%= f.text_area :backup, class: "form-control tinymce" %>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="field form-group">
                     <%= f.label :definition_of_success %><br>
-                    <%= f.text_area :definition_of_success, class: "form-control textarea" %>
+                    <%= f.text_area :definition_of_success, class: "form-control tinymce" %>
                 </div>
                 <div class="field form-group">
                   <%= f.label :definition_of_failure %><br>
-                  <%= f.text_area :definition_of_failed, class: "form-control textarea" %>
+                  <%= f.text_area :definition_of_failed, class: "form-control tinymce" %>
                 </div>
               </div>
             </div>
@@ -206,11 +209,11 @@
               <div class='col-md-6'>
                  <div class="field form-group">
                   <%= f.label :testing_procedure %><br>
-                  <%= f.text_area :testing_procedure, class: "form-control textarea" %>
+                  <%= f.text_area :testing_procedure, class: "form-control tinymce" %>
                 </div>
                 <div class="field form-group">
                   <%= f.label :testing_notes %><br>
-                  <%= f.text_area :testing_notes, class: "form-control textarea" %>
+                  <%= f.text_area :testing_notes, class: "form-control tinymce" %>
                 </div>
               </div>
               <div class='col-md-6'>
@@ -246,7 +249,7 @@
                   </div>
                    <div class="field form-group">
                     <%= f.label :implementation_notes %><br>
-                    <%= f.text_area :implementation_notes, class: "form-control textarea" %>
+                    <%= f.text_area :implementation_notes, class: "form-control tinymce" %>
                   </div>
                 </div>
               </div>
@@ -267,7 +270,7 @@
                  
                   <div class="field form-group">
                     <%= f.label :grace_period_notes %><br>
-                    <%= f.text_area :grace_period_notes, class: "form-control textarea" %>
+                    <%= f.text_area :grace_period_notes, class: "form-control tinymce" %>
                   </div>
                 </div>
               </div>
