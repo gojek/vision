@@ -18,7 +18,7 @@
 //= require depends_on
 //= require admin-lte/plugins/select2/select2.full
 //= require moment/min/moment.min
-//= require admin-lte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min
+//= require tinymce
 //= require eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min
 //= require cocoon
 //= require admin-lte
@@ -28,13 +28,7 @@
 //= require turbolinks
 $(function(){
   $(".select2").select2();
-  $('.textarea').wysihtml5({
-  	  toolbar: {
-    "html": true, //Button which allows you to edit the generated HTML. Default false
-  }
-  });
   $('.datetimepicker').datetimepicker({
     format: "yyyy-mm-dd"
   });
 });
-

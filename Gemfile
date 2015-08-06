@@ -11,6 +11,7 @@ gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.1.0'
+gem 'bootstrap-wysihtml5-rails'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
@@ -45,6 +46,9 @@ gem 'exception_notification'
 gem 'fullcalendar-rails'
 gem 'momentjs-rails'
 gem 'pry'
+gem 'google-api-client', :require => 'google/api_client'
+gem 'omniauth'
+gem 'tinymce-rails', :git => 'https://github.com/spohlenz/tinymce-rails.git'
 
 group :production do
 	gem 'pg'
