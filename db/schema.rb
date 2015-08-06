@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150804065001) do
+ActiveRecord::Schema.define(version: 20150805074251) do
 
   create_table "approvers", force: :cascade do |t|
     t.string   "name"
@@ -220,6 +220,9 @@ ActiveRecord::Schema.define(version: 20150804065001) do
     t.string   "provider"
     t.boolean  "is_admin"
     t.string   "position"
+    t.string   "token"
+    t.string   "refresh_token"
+    t.datetime "expired_at"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
