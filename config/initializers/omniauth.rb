@@ -1,7 +1,9 @@
 # 'config/initializers/omniauth.rb'
 Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :google_oauth2, '772021837446-vnbketkbvppb2o38lrnrjtdt4v2cfi2g.apps.googleusercontent.com', 'dxIshXuB0zqC2enaPZZx4ooL', {
-  	:prompt => '',
-  	:hd => 'veritrans.co.id'
+  provider :google_oauth2, ENV['GOOGLE_API_KEY'], ENV['GOOGLE_API_SECRET'], {
+  	:prompt => 'consent',
+  	:hd => 'veritrans.co.id',
+  	:access_type => 'offline',
+  	:scope => 'profile,email,calendar'
   }
 end
