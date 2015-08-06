@@ -19,7 +19,7 @@
   <div class="row">
     <div class="col-xs-12">
       <h2 class="page-header">
-        <i class="fa fa-globe"></i> <%= @incident_report.service_impact %>
+        <i class="fa fa-exclamation-triangle"></i> <%= @incident_report.service_impact %>
         <small class="pull-right">Last Updated at <%= @incident_report.updated_at.to_s(:long)%> by <%= @incident_report.user.name %> </small>
       </h2>
     </div><!-- /.col -->
