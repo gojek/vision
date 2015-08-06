@@ -1,3 +1,5 @@
-theme_modern_statusbar_location: bottom
-theme_modern_buttons3_add:
-  - fullscreen
+menubar: false
+plugins: ['textcolor link image tabfocus ']
+toolbar: 'undo redo | styleselect | bold italic| alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | forecolor' 
+theme: "modern" 
+browser_spellcheck: true
