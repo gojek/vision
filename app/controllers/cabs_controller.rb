@@ -19,15 +19,46 @@ class CabsController < ApplicationController
 		if @cab.save
       @cr_list = params[:cr_list].split(",")
 		  ChangeRequest.where(:id => @cr_list).update_all(:cab_id => @cab.id)
-      UserMailer.cab_email(@cab).deliver_later
+      UserMailer.cab_email(@cab).deliver
       #SendCabEmailJob.set(wait: 20.seconds).perform_later(@cab)
       flash[:create_cab_notice] = 'CAB successfully arranged'
+      arrange_google_calendar
 		  redirect_to @cab
     else
       @change_requests =ChangeRequest.cab_free
       render :new
     end
 	end
+
+  def arrange_google_calendar
+    event = {
+      'summary' => 'CAB Meeting',
+      'location' => @cab.room,
+      'description' => @cab.notes,
+      'start' => {
+        'dateTime' => @cab.meet_date.iso8601,
+        'timeZone' => 'Asia/Jakarta',
+      },
+      'end' => {
+        'dateTime' => (@cab.meet_date+1.hour).iso8601,
+        'timeZone' => 'Asia/Jakarta',
+      },
+      'attendees' => [
+        {'email' => 'm.idhame@gmail.com'},
+        {'email' => 'sanadhis@veritrans.co.id'}
+      ]
+    }
+
+    client = Google::APIClient.new
+    client.authorization.access_token = current_user.fresh_token
+    service = client.discovered_api('calendar', 'v3')
+    results = client.execute!(
+      :api_method => service.events.insert,
+      :parameters => {
+        :calendarId => 'primary', :sendNotifications => 'true'},
+      :body_object => event)
+    event = results.data
+  end
 
   def destroy
     @cab.destroy
