@@ -59,6 +59,10 @@ class ChangeRequest < ActiveRecord::Base
   def approvers_count
     self.approvers.where(approve: true).count 
   end
+
+  def rejects_count
+    self.approvers.where(approve: false).count 
+  end
   
   def approvable?
     self.approvers.where(approve: true).count >= CONFIG[:minimum_approval]
