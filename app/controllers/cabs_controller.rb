@@ -19,7 +19,10 @@ class CabsController < ApplicationController
 		if @cab.save
       @cr_list = params[:cr_list].split(",")
 		  ChangeRequest.where(:id => @cr_list).update_all(:cab_id => @cab.id)
-      UserMailer.cab_email(@cab).deliver
+      Thread.new do
+        UserMailer.cab_email(@cab).deliver
+        ActiveRecord::Base.connection.close
+      end
       #SendCabEmailJob.set(wait: 20.seconds).perform_later(@cab)
       flash[:create_cab_notice] = 'CAB successfully arranged'
       arrange_google_calendar
