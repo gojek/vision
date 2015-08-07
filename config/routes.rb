@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources :comments
   get 'tags/:tag', to: 'change_requests#index', as: :tag
   get 'change_requests/:id/graceperiod' => 'change_requests#edit_grace_period_notes', :as => 'graceperiod'
+  get 'change_requests/:id/implementation' => 'change_requests#edit_implementation_notes', :as => 'implementation_notes'
   post 'change_requests/:id/deploy' => 'change_request_statuses#deploy', :as => 'deploy'
   post 'change_requests/:id/rollback' => 'change_request_statuses#rollback', :as =>'rollback'
   post 'change_requests/:id/cancel' => 'change_request_statuses#cancel', :as =>'cancel'
@@ -40,6 +41,7 @@ Rails.application.routes.draw do
   get 'cabs/:id/get_change_requests' => 'cabs#get_change_requests'
   get 'signin' => 'pages#signin'
   get 'blank' => 'pages#blank'
+
 
   get 'incident_reports/show'
 
