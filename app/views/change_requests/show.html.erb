@@ -16,6 +16,8 @@
     <% end %>
       <%=@change_request.aasm_state%></div>
   </h1>
+  <br>
+  <%= link_to 'Edit', edit_change_request_path, :class => 'btn btn-primary btn-flat'  %>
 </section>
 <section class="content">
     <%if flash[:create_cr_notice] != nil %>
@@ -225,7 +227,7 @@
               <table class="table table-striped table-bordered table-hover">
                 <thead>
                   <tr>
-                    <th><strong>Definition of failed:</strong></th>
+                    <th><strong>Definition of failure:</strong></th>
                   </tr>
                 </thead>
 
