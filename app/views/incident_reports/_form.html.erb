@@ -3,6 +3,8 @@
 </script>
 <%= tinymce %>
 <%= form_for(@incident_report) do |f| %>
+  
+<div class="col-lg-6 col-xs-12 col-md-12">
   <% if @incident_report.errors.any? %>
     <div id="error_explanation" class="alert alert-danger" role="alert">
       <ul>
@@ -12,13 +14,17 @@
       </ul>
     </div>
   <% end %>
-<div class="col-lg-6 col-xs-12 col-md-12">
   <div class='box'>
     <div class='box-header with-border'>
         <h3 class='box-title'>Incident Report</h3>
     </div>
     <div class='box-body table-responsive'>
-        <div class="form-group"><div class="field">
+        <div class="form-group">
+          <% if @incident_report.errors.messages[:service_impact] %>
+            <div class="field form-group has-error">
+            <%else %>  
+            <div class="field form-group">
+            <% end %>
           <%= f.label :service_impacted %><br>
           <%= f.text_field :service_impact, class: 'form-control' %>
         </div>
@@ -28,52 +34,102 @@
           <%= f.text_area :problem_details, class: 'form-control tinymce' %>
         </div>
         </div>
-        <div class="form-group"><div class="field">
+        <div class="form-group">
+          <% if @incident_report.errors.messages[:how_detected] %>
+            <div class="field form-group has-error">
+            <%else %>  
+            <div class="field form-group">
+            <% end %>
           <%= f.label :how_was_the_problem_detected_? %><br>
           <%= f.text_field :how_detected, class: 'form-control' %>
         </div>
         </div>
-        <div class="form-group"><div class="field">
+        <div class="form-group">
+          <% if @incident_report.errors.messages[:current_status] %>
+            <div class="field form-group has-error">
+            <%else %>  
+            <div class="field form-group">
+            <% end %>
           <%= f.label :current_status %><br>
           <%=f.select :current_status, options_for_select(IncidentReport::CURRENT_STATUS, @incident_report.current_status), {include_blank: true}, {class: 'form-control select2'} %>
         </div>
         </div>
-        <div class="form-group"><div class="field">
+        <div class="form-group">
+         <% if @incident_report.errors.messages[:occurrence_time] %>
+            <div class="field form-group has-error">
+            <%else %>  
+            <div class="field form-group">
+            <% end %>
           <%= f.label :occurrence_time %><br>
           <%= f.datetime_select :occurrence_time, :include_blank => true,class: 'form-control' %>
         </div>
         </div>
-        <div class="form-group"><div class="field">
+        <div class="form-group">
+         <% if @incident_report.errors.messages[:detection_time] %>
+            <div class="field form-group has-error">
+            <%else %>  
+            <div class="field form-group">
+            <% end %>
           <%= f.label :detection_time %><br>
           <%= f.datetime_select :detection_time, :include_blank => true,class: 'form-control' %>
         </div>
         </div>
-        <div class="form-group"><div class="field">
+        <div class="form-group">
+          <% if @incident_report.errors.messages[:recovery_time] %>
+            <div class="field form-group has-error">
+            <%else %>  
+            <div class="field form-group">
+            <% end %>
           <%= f.label :recovery_time %><br>
           <%= f.datetime_select :recovery_time, :include_blank => true,class: 'form-control' %>
         </div>
         </div>
-        <div class="form-group"><div class="field">
+        <div class="form-group">
+          <% if @incident_report.errors.messages[:source] %>
+            <div class="field form-group has-error">
+            <%else %>  
+            <div class="field form-group">
+            <% end %>
           <%= f.label :source %><br>
           <%=f.select :source, options_for_select(IncidentReport::SOURCE, @incident_report.source), {include_blank: true}, { class: 'form-control select2'} %>
         </div>
         </div>
-        <div class="form-group"><div class="field">
+        <div class="form-group">
+          <% if @incident_report.errors.messages[:rank] %>
+            <div class="field form-group has-error">
+            <%else %>  
+            <div class="field form-group">
+            <% end %>
           <%= f.label :rank %><br>
           <%= f.number_field :rank, in:1..5, class: 'form-control' %>
         </div>
         </div>
-        <div class="form-group"><div class="field">
+        <div class="form-group">
+          <% if @incident_report.errors.messages[:loss_related] %>
+            <div class="field form-group has-error">
+            <%else %>  
+            <div class="field form-group">
+            <% end %>
           <%= f.label :loss_related_to_the_issue %><br>
           <%= f.text_field :loss_related, class: 'form-control' %>
         </div>
         </div>
-        <div class="form-group"><div class="field">
+        <div class="form-group">
+          <% if @incident_report.errors.messages[:recurrence_concern] %>
+            <div class="field form-group has-error">
+            <%else %>  
+            <div class="field form-group">
+            <% end %>
           <%= f.label :concern_of_recurrence %><br>
            <%=f.select :recurrence_concern, options_for_select(IncidentReport::RECURRENCE_CONCERN, @incident_report.recurrence_concern), {include_blank: true}, {class: 'form-control select2'} %>
         </div>
         </div>
-        <div class="form-group"><div class="field">
+        <div class="form-group">
+          <% if @incident_report.errors.messages[:measurer_status] %>
+            <div class="field form-group has-error">
+            <%else %>  
+            <div class="field form-group">
+            <% end %>
           <%= f.label :status_of_the_measurer %><br>
            <%=f.select :measurer_status, options_for_select(IncidentReport::MEASURER_STATUS, @incident_report.measurer_status), {include_blank: true}, {class: 'form-control select2'} %>
         </div>
@@ -85,22 +141,42 @@
 <div class="col-lg-6 col-xs-12 col-md-12">
   <div class='box'>
       <div class='box-body table-responsive'>
-        <div class="form-group"><div class="field">
+        <div class="form-group">
+          <% if @incident_report.errors.messages[:occurred_reason] %>
+            <div class="field form-group has-error">
+            <%else %>  
+            <div class="field form-group">
+            <% end %>
           <%= f.label :why_did_it_occured_? %><br>
           <%= f.text_area :occurred_reason, class: 'form-control tinymce'%>
         </div>
         </div>
-        <div class="form-group"><div class="field">
+        <div class="form-group">
+          <% if @incident_report.errors.messages[:overlooked_reason] %>
+            <div class="field form-group has-error">
+            <%else %>  
+            <div class="field form-group">
+            <% end %>
           <%= f.label :why_was_it_overlooked_? %><br>
           <%= f.text_area :overlooked_reason, class: 'form-control tinymce'%>
         </div>
         </div>
-        <div class="form-group"><div class="field">
+        <div class="form-group">
+          <% if @incident_report.errors.messages[:recovery_action] %>
+            <div class="field form-group has-error">
+            <%else %>  
+            <div class="field form-group">
+            <% end %>
           <%= f.label :action_for_recovery %><br>
           <%= f.text_area :recovery_action, class: 'form-control tinymce'%>
         </div>
         </div>
-        <div class="form-group"><div class="field">
+        <div class="form-group">
+          <% if @incident_report.errors.messages[:prevent_action] %>
+            <div class="field form-group has-error">
+            <%else %>  
+            <div class="field form-group">
+            <% end %>
           <%= f.label :to_prevent_recurrence %><br>
           <%= f.text_area :prevent_action, class: 'form-control tinymce'%>
         </div>
