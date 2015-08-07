@@ -2,6 +2,8 @@
   <h1>
     Incident Report #<%= @incident_report.id %>
   </h1>
+  <br>
+    <%= link_to 'Edit', edit_incident_report_path, :class => 'btn btn-primary btn-flat'  %>
 </section>
 <!-- Main content -->
 <section class="invoice">
@@ -22,6 +24,7 @@
         <i class="fa fa-exclamation-triangle"></i> <%= @incident_report.service_impact %>
         <small class="pull-right">Last Updated at <%= @incident_report.updated_at.to_s(:long)%> by <%= @incident_report.user.name %> </small>
       </h2>
+
     </div><!-- /.col -->
   </div>
   <!-- info row -->
