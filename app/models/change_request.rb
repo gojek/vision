@@ -24,6 +24,8 @@ class ChangeRequest < ActiveRecord::Base
   accepts_nested_attributes_for :implementers, :allow_destroy => true
   accepts_nested_attributes_for :testers, :allow_destroy => true
   accepts_nested_attributes_for :approvers, :allow_destroy => true
+  validate :at_least_one_category
+  validate :at_least_one_type
   #validates :change_summary, :priority, :category, :cr_type, :change_requirement, :business_justification, :requestor_position, :requestor_name, presence: true
   aasm do 
     state :submitted, :initial => true
@@ -55,7 +57,16 @@ class ChangeRequest < ActiveRecord::Base
       transitions :form => :cancelled, :to => :submitted 
     end
   end
-  
+  def at_least_one_category
+    if [self.category_application, self.category_other, self.category_server, self.category_user_access,self.category_network_equipment].reject(&:blank?).size == 0
+      errors[:base] << ("Please choose at least one category.")
+    end
+  end
+  def at_least_one_type
+    if [self.type_security_update, self.type_install_uninstall, self.type_configuration_change, self.type_emergency_change,self.type_other].reject(&:blank?).size == 0
+      errors[:base] << ("Please choose at least one type.")
+    end
+  end      
   def approvers_count
     self.approvers.where(approve: true).count 
   end
