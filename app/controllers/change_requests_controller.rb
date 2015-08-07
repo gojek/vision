@@ -1,5 +1,5 @@
 class ChangeRequestsController < ApplicationController
-  before_action :set_change_request, only: [:show, :edit, :update, :destroy, :approve, :reject, :edit_grace_period_notes]
+  before_action :set_change_request, only: [:show, :edit, :update, :destroy, :approve, :reject, :edit_grace_period_notes, :edit_implementation_notes]
   before_action :authenticate_user!
   before_action :owner_required, only: [:edit, :update, :destroy]
   before_action :not_closed_required, only: [:destroy]
@@ -42,6 +42,11 @@ class ChangeRequestsController < ApplicationController
 
   def edit_grace_period_notes
   end
+  
+  def edit_implementation_notes
+  end
+
+
 
   def create
     @change_request = current_user.ChangeRequests.build(change_request_params)
@@ -139,6 +144,8 @@ class ChangeRequestsController < ApplicationController
     def submitted_required
       if @change_request.closed?
         redirect_to change_requests_path
+      elsif @change_request.scheduled? || @change_request.deployed?
+        redirect_to implementation_notes_path
       else
         redirect_to graceperiod_path if !@change_request.submitted?
       end
