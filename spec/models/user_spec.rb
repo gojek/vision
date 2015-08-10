@@ -67,4 +67,30 @@ describe User do
 		expect(user.role).to eq 'requestor'
 		expect(user.is_admin).to eq false
 	end
+
+	it "expired? method will return true if user token has been expired" do
+		user = FactoryGirl.create(:user, :expired_at => Time.now - 1.hour)
+		expect(user.expired?).to eq true
+	end
+
+	it "expired? method will return false if user token has not been expired" do
+		user = FactoryGirl.create(:user, :expired_at => Time.now + 1.hour)
+		expect(user.expired?).to eq false
+	end
+
+	
+	it "fresh_token method will return current token if not expired" do
+		user = FactoryGirl.create(:user)
+		expect(user.fresh_token).to eq '123456'
+	end
+
+	it "fresh_token method will refresh token and return new token if token expired" do
+		user = FactoryGirl.create(:user, :expired_at => Time.now - 1.hour)
+		stub_request(:post, 'https://accounts.google.com/o/oauth2/token').with(headers: {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).to_return(status:200, body: '{"access_token":
+											  "45678",
+											 "token_type":"Bearer",
+											 "expires_in":3600,
+											 "id_token":"id"}', headers: {})
+		expect(user.fresh_token).to eq '45678'
+	end	
 end
