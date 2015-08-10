@@ -79,7 +79,7 @@ class ChangeRequest < ActiveRecord::Base
     self.approvers.where(approve: true).count >= CONFIG[:minimum_approval]
   end
 
-  def all_type
+  def all_category
     type_array = []
     self.category_application ? type_array.push('Application') : nil
     self.category_network_equipment ? type_array.push('Network Equipment') : nil
@@ -89,7 +89,7 @@ class ChangeRequest < ActiveRecord::Base
     type_array.join(', ')
   end
 
-  def all_category
+  def all_type
     category_array = []
     self.type_security_update ? category_array.push('Security Update') : nil
     self.type_install_uninstall ? category_array.push('Install Uninstall') : nil
