@@ -52,7 +52,7 @@
 <aside class="main-sidebar">
   <section class="sidebar">
     <ul class="sidebar-menu">
-      <% if current_user.is_admin || is_release_manager %>
+      <% if current_user.is_admin || current_user.role=='release_manager' %>
       <li>
         <%= link_to users_path do %>
           <i class="fa fa-user"></i><span> Users </span>
