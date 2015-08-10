@@ -92,6 +92,7 @@ class CabsController < ApplicationController
   def show
     @current_change_requests = ChangeRequest.where(:cab_id => @cab.id)
   end
+  
   def update_change_requests
     change_requests = @cab.change_requests
     change_requests.each do |change_request|
