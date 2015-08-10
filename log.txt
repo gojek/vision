@@ -1,0 +1,785 @@
+commit 66b1c490b22171fe2eb71df085fe473516a131b2
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Fri Aug 7 14:46:29 2015 +0700
+
+    add edit button to cab, cr and incidentreport show page
+
+commit dc374dcd9977a0c36af69f05ec5713942c64e6ec
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Fri Aug 7 14:46:10 2015 +0700
+
+    Add type and category validation (minimal one selection)
+
+commit cc19337e5e9cfae5f327ccec7e6b1fcd98229379
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Fri Aug 7 14:45:33 2015 +0700
+
+    Add ability to edit implementation notes when CR statues either Scheduled or Deployed
+
+commit 4a6e5aeaffd96b9c8721993170e46bacb3bf00c9
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Fri Aug 7 14:43:40 2015 +0700
+
+    Move variable to configuration
+
+commit b3e4fb42ab97a9ba8b59934990c1548c6a878043
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Fri Aug 7 13:42:39 2015 +0700
+
+    Add error notification (red form)
+
+commit 8921ba5cef166cfae5e83c9c3ca1b256943873bd
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Thu Aug 6 16:01:53 2015 +0700
+
+    remove destroy function for release manager
+
+commit cb2c596261e0adbe9ad8ac780fa62c8d8e061c04
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Thu Aug 6 15:26:48 2015 +0700
+
+    Add rejects count to CR index
+
+commit 828117640f99caef5362266076c1d4f91b3095c6
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Thu Aug 6 15:10:13 2015 +0700
+
+    add timeout session
+
+commit 1869a45808c14cc8e29b27d60f66789c245799b4
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Thu Aug 6 14:45:14 2015 +0700
+
+    Add token check, sign out user if has no token
+
+commit ee7727947fcb7a59f3ca4bde415573e3d7af0962
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Thu Aug 6 14:21:12 2015 +0700
+
+    Add threading to deliver CAB email
+
+commit 61f8e1db4cfcaa01e318208d177f91c3da8b6734
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Thu Aug 6 14:20:50 2015 +0700
+
+    Add event to Google Calendar when arrange a CAB
+
+commit 2363bea9af9d5f1f676b827c919be1b587f7b24e
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Thu Aug 6 13:32:19 2015 +0700
+
+    revert back wysihtml5 to latest tinymce
+
+commit 79566c429566f19b299b8ab593723dcd5272c351
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Wed Aug 5 13:21:02 2015 +0700
+
+    Add feature to make CR schedule editable in CAB Calendar view
+
+commit 4ceb90285b34b2abcebb9b06239e5a336a609409
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Wed Aug 5 11:08:46 2015 +0700
+
+    Add change request calendar to CAB show page
+
+commit 733d87acd9737a5aa20a7959c2e12aef9c5a00a4
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Tue Aug 4 17:41:34 2015 +0700
+
+    remove several field validation from changer request
+
+commit 593f841024ac2446edadd510affe832da7120f77
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Tue Aug 4 17:29:32 2015 +0700
+
+    Add validates for all field in CR
+
+commit 46698ab392b8e9140ff13648f150f4225c3b3a35
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Tue Aug 4 17:28:07 2015 +0700
+
+    add authenticate user to cabs, cr status and comment controller. Add calendar view for cab schedule with full calendar
+
+commit 2ea40cac8f6762ff862307bf60c67a18b6e3d3c6
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Tue Aug 4 15:14:57 2015 +0700
+
+    add exception recepients
+
+commit 019c357518545b4e03016ded08204b2318f560e9
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Tue Aug 4 14:49:51 2015 +0700
+
+    exception notification
+
+commit f39b92732af9904f616a1df8d977f90358d28a4f
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Tue Aug 4 14:07:49 2015 +0700
+
+    edit cr spec factories & remove cr_type and category
+
+commit ba54e180ec6a1eaca5be12c30f08a0ea141793f3
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Tue Aug 4 14:03:17 2015 +0700
+
+    remove delete user feature
+
+commit 9e2641d2752ef8b9c12bcbd0236c218241a3c074
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Tue Aug 4 13:24:03 2015 +0700
+
+    User Interface improvement, html truncate in index change request
+
+commit 8243e0e3cf2c8343f5a835e4f578eb3641273814
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Mon Aug 3 15:13:46 2015 +0700
+
+    bugfix cant delete change request
+
+commit 22c8cb0bdcd2f9ba10557b44d51bd75e5b90af58
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Mon Aug 3 15:09:26 2015 +0700
+
+    Undo delayed job
+
+commit 10aee67cb66015e0f85fc1ac0ec6e73b66b6e5e9
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Mon Aug 3 14:54:32 2015 +0700
+
+    Send mail asynchronously with delayed_job
+
+commit f7ae45210594a81a25a51d01827edb9174bdcdab
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Mon Aug 3 14:10:48 2015 +0700
+
+    add notice to user operation
+
+commit 2b47b4a31cb278fdb57d4a94b5dac926dbc69de4
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Mon Aug 3 14:07:28 2015 +0700
+
+    Add controller verification before destroy CR to make sure the CR is not closed
+
+commit 979843940dbd7872c95f0202daf283e4d83f3e8b
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Mon Aug 3 14:06:21 2015 +0700
+
+    add dependency destroy policy in relation with approver to user
+
+commit cd04285bdb86b28af10735e8c9bac25e465157b0
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Mon Aug 3 14:05:47 2015 +0700
+
+    add notice to incident report operation
+
+commit cdb0a4a1f2146db69a356aa9bb5a70d5b8474c25
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Mon Aug 3 13:51:58 2015 +0700
+
+    add notice to cab operation
+
+commit 037552d228a0a523f4fb284d4895c87c9df72ff7
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Mon Aug 3 13:50:47 2015 +0700
+
+    add filtering to change request, and add notice to change request operation
+
+commit cf86eeb758ff07d1c36d96d7101b6974f3644a24
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Mon Aug 3 13:48:20 2015 +0700
+
+    add signout button and modify signout routes
+
+commit 3041e6c6998b2be82c10b5b8b5cc720510c3e7ba
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Fri Jul 31 17:59:50 2015 +0700
+
+    remove unecessary small header
+
+commit 4813d1d8b5be54c3d683482d65d521df65d96d18
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Fri Jul 31 17:51:54 2015 +0700
+
+    add link to root, remove dashboard temporarily
+
+commit cfe8645b630afbcd27cdc797b97d6ff76ad928dc
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Fri Jul 31 15:42:11 2015 +0700
+
+    layouting cab edit  and new
+
+commit 47c167f4c19a924cab5fc4d673b7d68ff0e6310f
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Fri Jul 31 15:20:42 2015 +0700
+
+    layouting change request form and show
+
+commit b8df94827b5cd45379e16c44e858a1e489a4b495
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Fri Jul 31 14:48:10 2015 +0700
+
+    ressolve bug where form cannot be submitted
+
+commit ab6575e917197058c5056b80dc97bb5c9b0b018f
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Fri Jul 31 14:46:57 2015 +0700
+
+    edit layout for new cab page
+
+commit 68cb227030f0efbf2d1615012071049030fcab98
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Fri Jul 31 14:46:10 2015 +0700
+
+    remove unecessary file
+
+commit 605f72482b56e62fb965ec8f4faf4d59088d6734
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Thu Jul 30 19:27:23 2015 +0700
+
+    remove row from textarea to make it responsive, add raw to incident report index
+
+commit dc2d282bcd091f9f2a8145409f50207bd0a6c64d
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Thu Jul 30 17:52:28 2015 +0700
+
+    remove p
+
+commit 5522ba714fc503d9e3e875a6eda9f581a7e75b83
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Thu Jul 30 17:39:32 2015 +0700
+
+    edit layout view for incident report show and signin page
+
+commit 8c341c30c0d8ae3b1cc3800e1216d3df3e119e39
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Thu Jul 30 15:41:46 2015 +0700
+
+    forget to run bundle before push
+
+commit 025b339c6f278633009e6d9505954f40cf09046a
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Thu Jul 30 15:36:07 2015 +0700
+
+    replace TinyMCE with WYSIHTML5, edit layout IncidentReport form to adjust with adminlte
+
+commit 9f92ec9bdb0f4d30d1dac5de6112497e4c929c36
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Thu Jul 30 14:21:17 2015 +0700
+
+    use bootstrap sass gem
+
+commit d84891b09f0663f79be2fa43601c0f1642f88e30
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Thu Jul 30 13:58:16 2015 +0700
+
+    remove .DS_Store, reconfig production config, add glyphicon fonts to assets
+
+commit 048e6c10f2dda474bb7f44e7ff84c8eab43b27cf
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Thu Jul 30 13:22:17 2015 +0700
+
+    set config production asset
+
+commit 0cbe48f05cde0ae69a9c7bd99745b0567fe90660
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Thu Jul 30 13:11:42 2015 +0700
+
+    add right side-bar, use bootstrap-datetimepicker and add helper method for formhelper
+
+commit 104a9ecd5aace8ea31d3dfccb3de7dcb14005e6f
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Thu Jul 30 11:04:55 2015 +0700
+
+    edit view for app layout, cab index, cr index, user index, user edit to align with adminlte
+
+commit 9a0f85c1b51c193ab50668c3875cb219d05fb247
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Wed Jul 29 13:59:27 2015 +0700
+
+    remove unecessary assets from git
+
+commit b5be7438da32716bcbba5845dd45a6f4370faac6
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Wed Jul 29 13:52:58 2015 +0700
+
+    set admin lte skin
+
+commit 13135697211dfd27adf8081a6ac7e1cabf4e6f9a
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Wed Jul 29 13:44:21 2015 +0700
+
+    add admin lte with bower
+
+commit e2c4acd6700152ab88615b3992a3ade2c04a4721
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Tue Jul 28 17:00:39 2015 +0700
+
+    admin can view CAB
+
+commit 882a2c51747fb4c3db8fa2689c24155fc1add028
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Tue Jul 28 15:40:28 2015 +0700
+
+    add type and category method to change request model
+
+commit ab4f28c7ec24d505c46b7f1251922cd38fcd3ae2
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Tue Jul 28 15:07:54 2015 +0700
+
+    alter table ChangeRequest
+
+commit 4cfd6036657aa47a764b2eaca0d42d7f0de243be
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Tue Jul 28 14:45:01 2015 +0700
+
+    add definition of success&failure, add type and category field to ChangeRequest model
+
+commit ff3a31b6c966bf44a9cfd62ab91260c0ccb26399
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Tue Jul 28 13:42:33 2015 +0700
+
+    add thorough create and update testing to Cab Controller
+
+commit dde8d31d3cb40148c43bb8f56ccf98dac663d497
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Tue Jul 28 11:31:41 2015 +0700
+
+    incident report controller rspec & comment controller rspec
+
+commit a3af8042ecaf07f43a15374155255c855c620886
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Mon Jul 27 17:19:02 2015 +0700
+
+    change request controller rspec
+
+commit 19fbc82c6d8ac44f8192abf5d736174373806b95
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Mon Jul 27 15:16:35 2015 +0700
+
+    create change request status spec and remove unecessary code from some controller
+
+commit e10b999532b08d88ade58e43ae77841735eef852
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Fri Jul 24 14:19:24 2015 +0700
+
+    add controller test for cab controller, and modify factory
+
+commit 2f1b6fdb9c59dd8a5850ebf458ffe6d255239c6e
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Thu Jul 23 16:15:56 2015 +0700
+
+    add cab, change_request_status rspec and modify user, change_request rspec test
+
+commit 5c4b9bfd862e7d34e315f47bfbcedfda86491d9a
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Wed Jul 15 15:53:46 2015 +0700
+
+    CAB details field & add label in cr modal
+
+commit 656f211c2896288976f33a784c6d62f81ea4f7dd
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Wed Jul 15 14:45:01 2015 +0700
+
+    Reason must be filled to reject CR
+
+commit 20858310e86a7e53edd89dd5fb11f6a4f3318d77
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Wed Jul 15 14:09:11 2015 +0700
+
+    Add Approval status to CR Show page
+
+commit 7b3ef031a6c6b079ac536280fe03792d358b6fa0
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Wed Jul 15 14:04:08 2015 +0700
+
+    default current time to date field in change request form
+
+commit 841379b6a4714f9cee1964490f8d3bc771cf5345
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Wed Jul 15 13:55:51 2015 +0700
+
+    CAB Date validation
+
+commit 323bb9c95b04fd715393b81aeec8ca3f450fec50
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Wed Jul 15 13:41:15 2015 +0700
+
+    pra-beta revision
+
+commit abdb0956d3bbe031c06531f28ffdcb236b54698c
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Wed Jul 15 11:23:32 2015 +0700
+
+    add notif
+
+commit 6107d5e395d147e4c938ba2cad86529d5045d668
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Tue Jul 14 11:17:49 2015 +0700
+
+    adding notify email
+
+commit de72686b120e0dbbff3afcb5d3c4f9eaeb48bc1d
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Tue Jul 14 10:09:25 2015 +0700
+
+    action mailer
+
+commit eb0e91e8e12858185af01bd556004b5c8bafd4e8
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Mon Jul 13 19:03:18 2015 +0700
+
+    add CAB menu to nav
+
+commit 8941434f48da18874d5e4b0321bbb5d864a90964
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Mon Jul 13 17:22:54 2015 +0700
+
+    setup action mailer
+
+commit dd70f34541528c8704ad48f60b52e6d4fa745a85
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Mon Jul 13 17:16:16 2015 +0700
+
+    setup action mailer
+
+commit e4208bc122cf5bdd2a5ec7bef0a136f0d67cd84b
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Mon Jul 13 17:02:48 2015 +0700
+
+    setting up email
+
+commit 46db76246fd99a5472414520f1da30c3c41d8105
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Mon Jul 13 16:34:04 2015 +0700
+
+    delete unecessary file
+
+commit 049ff6565831590222a49348811809da046424d2
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Mon Jul 13 16:25:42 2015 +0700
+
+    several interface fix, add action mailer, add create and edit cab
+
+commit 6c39185175c0d6a536ac15ccb025657591c88e06
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Mon Jul 13 11:46:40 2015 +0700
+
+    cr state
+
+commit ae7b6edc2f3757e60a4a91213d65f5b41fda3105
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Fri Jul 10 16:21:05 2015 +0700
+
+    change cr status auth
+
+commit c230dbc51666e84c7e409532d2a8384b2cae4a62
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Fri Jul 10 15:24:19 2015 +0700
+
+    fix change deply status without reason
+
+commit e80f5d5b66e0f981aa0ae41d57891fdbaeaab3d2
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Fri Jul 10 15:16:13 2015 +0700
+
+    fix javascript not working at heroku
+
+commit fa47f0c37e014ab7d45fb6f2d4772f6a5d5f0a02
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Fri Jul 10 14:51:58 2015 +0700
+
+    CR state
+
+commit 7ef6fa6242aad6bac7bbbb74e41bf3877a49f939
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Fri Jul 10 12:39:37 2015 +0700
+
+    change Request Status with aasm
+
+commit b06cbabe2b3d0cb716076959b5bf2729043ac976
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Thu Jul 9 18:10:31 2015 +0700
+
+    refactoring change request status
+
+commit f19ccda993bc594a9538c6bd554271ca8060e8ad
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Thu Jul 9 12:03:38 2015 +0700
+
+    change request status
+
+commit c31b20f8f21f087a970cafc8491d64dfe9cecc68
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Wed Jul 8 17:31:42 2015 +0700
+
+    change status for release manager
+
+commit cf9b6f630c422819d5dbb6cebe6080a2dd3f985f
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Wed Jul 8 15:48:13 2015 +0700
+
+    see cr status
+
+commit db373e98ecc357181de7ac75facf085fe106cc64
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Wed Jul 8 15:30:32 2015 +0700
+
+    fixing
+
+commit 0bf46a269ecfb2277dfd4cb38646ee480bf33852
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Tue Jul 7 13:40:20 2015 +0700
+
+    grant release_manager right to manage user
+
+commit 94b10943e27b73a7c8ee5286e2b01ffb21ba7f16
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Tue Jul 7 11:21:11 2015 +0700
+
+    fix form & approver global
+
+commit 999134566be6f3010bda17519aeadbe4996fb4a1
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Tue Jul 7 10:26:39 2015 +0700
+
+    fix form
+
+commit 522ce096938d2352df554e0f924ac909313f59d3
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Tue Jul 7 10:16:51 2015 +0700
+
+    fix user index
+
+commit f753b45955a6bfb985f601cfe2a52d36d99db6d1
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Tue Jul 7 10:12:33 2015 +0700
+
+    fix create cr
+
+commit d5e271bf989afbf4475f1be1dcd703627e666a5a
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Mon Jul 6 13:43:16 2015 +0700
+
+    remove cab
+
+commit 597b187a823c747423dc568578da8381f1a4f4b2
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Mon Jul 6 13:39:20 2015 +0700
+
+    cr indexing authorisation
+
+commit cf57cac0fe591d398885eac0f4a3cac37fd2c823
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Mon Jul 6 11:52:50 2015 +0700
+
+    user role
+
+commit 58209aa99c32de71cbec26de77cd4453c26bfaf7
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Mon Jul 6 11:37:42 2015 +0700
+
+    delete cr
+
+commit 756058d0b8cd795b2d8d5b678c5ac522626f508c
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Fri Jul 3 17:25:08 2015 +0700
+
+    form fix
+
+commit b24e7540c3bfcd30458910a687ed1e4249910be9
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Thu Jul 2 16:22:18 2015 +0700
+
+    comment
+
+commit 01c30b9dba5c508d5959b2d393c038549b44b696
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Thu Jul 2 14:18:24 2015 +0700
+
+    tinymce assets
+
+commit 6c44898623cadf6fc14c3a57db720efce073148d
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Thu Jul 2 14:00:07 2015 +0700
+
+    tinymce assets
+
+commit 139e4b38458c30164c31aff8dd688d75c6f2f40d
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Thu Jul 2 13:52:40 2015 +0700
+
+    tinymce assets
+
+commit 522b3061c4d3229a0bc8976037bd02d3133f5291
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Thu Jul 2 13:37:41 2015 +0700
+
+    tinymce assets
+
+commit 0ca207c04f84a6fdabedf547f567774431de18df
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Thu Jul 2 13:29:22 2015 +0700
+
+    tinymce assets
+
+commit e90bf95cbe801dec41a7a8f782d10aa9a17d2a56
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Thu Jul 2 13:19:20 2015 +0700
+
+    tinymce assets
+
+commit acd23ea5c076e598e38f5a2dceaa5925945aa865
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Thu Jul 2 13:15:15 2015 +0700
+
+    tinymce
+
+commit e23114bf390c7fedeac7d1eb651a05c01145eb7f
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Thu Jul 2 13:05:23 2015 +0700
+
+    move tinymce
+
+commit 041639bdf1e5b2fbee351e7af814d4eecc42cdac
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Thu Jul 2 13:01:55 2015 +0700
+
+    move tinymce assets
+
+commit 4ac11f025e15b32ce90e342af649204ba4340bd7
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Thu Jul 2 12:51:49 2015 +0700
+
+    change request form fix
+
+commit c185435836e4e0f5f3d6bfeb9034a62586d403ff
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Wed Jul 1 17:00:38 2015 +0700
+
+    pindah assets ke vendor
+
+commit 2a680b940a84fe1252673365ea9b771271e0942b
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Wed Jul 1 16:51:00 2015 +0700
+
+    form
+
+commit 16bb748a7f694a645b5f217d61ee38c6f5481543
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Wed Jul 1 16:48:19 2015 +0700
+
+    form
+
+commit 8f1063a14f9ae5574e1b593d76022fd730fec7e9
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Wed Jul 1 16:39:04 2015 +0700
+
+    percantik form
+
+commit 64fe2e7ccbe64c1ace921eb17655ee96e0b53d2b
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Wed Jul 1 15:13:21 2015 +0700
+
+    hotfix cr
+
+commit 7c59bc73d95ffd9d2e3120a39e3cdb9312b22721
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Wed Jul 1 15:01:49 2015 +0700
+
+    Create + Update Change Request
+
+commit 1d3d73e0da06415d3fb61fc751df19741b364c25
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Wed Jul 1 10:57:53 2015 +0700
+
+    auth google
+
+commit 62d9261062ac0e94f7c1cfd0da016e25ce10a2cd
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Wed Jul 1 10:51:36 2015 +0700
+
+    auth google
+
+commit 2d8dbf1ccbd9c513a6fd15b58e926c26b9e68d58
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Wed Jul 1 10:35:39 2015 +0700
+
+    auth google
+
+commit 3a43cdc58bc132b67997994c64fd0423975e9238
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Wed Jul 1 10:25:29 2015 +0700
+
+    auth google
+
+commit 7cc91bf8cc8bfdf18fa86a2232d3ea1738cb11e7
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Wed Jul 1 10:15:31 2015 +0700
+
+    add separate api_keys for development and production
+
+commit 776cb8d335975bb3c5c7c6dbde659168e384c783
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Wed Jul 1 09:56:14 2015 +0700
+
+    sso etc
+
+commit d87bf78b8439dc2965b5148bc46ee59a86ffb669
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Fri Jun 26 17:27:04 2015 +0700
+
+    papertrails, dll
+
+commit 11258f79dccc8db705eed4de6dd15cdb0b3d0a96
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Wed Jun 24 14:18:28 2015 +0700
+
+    add notification etc
+
+commit 053453a9772e297ab908c09133b2ea0481c386e5
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Wed Jun 24 12:23:23 2015 +0700
+
+    add filtering and download xls
+
+commit c0e2aca3508a7385069baa059e803748c055e38a
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Tue Jun 23 17:27:35 2015 +0700
+
+    remove unecessary file
+
+commit e0e0148379939ff4c31888e50bac279ccebc3049
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Tue Jun 23 17:18:57 2015 +0700
+
+    incident report template
+
+commit 7e9c8832a4d91d26c49539d9461d997ecada0767
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Tue Jun 23 15:38:04 2015 +0700
+
+    Add dashboard
+
+commit 85baff705ff9c40ccd8833afe2e460feaccce820
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Tue Jun 23 14:33:12 2015 +0700
+
+    login page
+
+commit 9282102141414ff9751b03c78183a8b4b2b4e318
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Tue Jun 23 14:10:58 2015 +0700
+
+    add pg to production
+
+commit e5c20ff98a6220495fdb76f56b361f46a62cb558
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Tue Jun 23 13:56:52 2015 +0700
+
+    Remove unnecessary folder
+
+commit b082331a642b7eacc587889c29ccd104094d40eb
+Author: Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>
+Date:   Tue Jun 23 13:48:50 2015 +0700
+
+    Initial Push

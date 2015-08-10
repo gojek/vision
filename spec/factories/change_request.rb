@@ -27,6 +27,10 @@ FactoryGirl.define do
     grace_period_end {Time.now}
     implementation_notes "Implementation Notes"
     grace_period_notes "Grace Period Notes"
+    definition_of_success "Success"
+    definition_of_failed " Failed"
+    category_application true
+    type_other "other type"
 
     factory :submitted_change_request do
       aasm_state 'submitted'

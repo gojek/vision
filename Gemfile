@@ -49,6 +49,7 @@ gem 'pry'
 gem 'google-api-client', :require => 'google/api_client'
 gem 'omniauth'
 gem 'tinymce-rails', :git => 'https://github.com/spohlenz/tinymce-rails.git'
+gem 'webmock'
 
 group :production do
 	gem 'pg'
