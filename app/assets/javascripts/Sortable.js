@@ -3,8 +3,6 @@
  * @author	RubaXa   <trash@rubaxa.org>
  * @license MIT
  */
-
-
 (function (factory) {
 	"use strict";
 
@@ -1126,8 +1124,6 @@
 		toggleClass: _toggleClass,
 		index: _index
 	};
-
-
 	Sortable.version = '1.2.0';
 
 
