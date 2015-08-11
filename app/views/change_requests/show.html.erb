@@ -1,3 +1,4 @@
+
 <section class="content-header">
   <h1>
   Change Request #<%= @change_request.id %>  
@@ -18,6 +19,11 @@
   <%if flash[:create_cr_notice] != nil %>
     <div class='alert alert-success'>
       <p id="notice"><%= flash[:create_cr_notice]  %></p>
+    </div><!--/alert-->
+  <% end %>
+   <%if flash[:reject_reason_notice] != nil %>
+    <div class='alert alert-danger'>
+      <p id="notice"><%= flash[:reject_reason_notice]  %></p>
     </div><!--/alert-->
   <% end %>
   <%if flash[:update_cr_notice] != nil %>
@@ -41,9 +47,9 @@
         <%= link_to  approve_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
           <i class="fa fa-check fa-fw"></i>Approve
         <%end %><!--/link_to approve--> 
-        <%= link_to  reject_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to reject this Change Request?' }, class: 'btn btn-danger'  do %>
+        <button class="btn btn-danger" data-toggle="modal" data-target="#reject">
           <i class="fa fa-times fa-fw"></i>Reject
-        <%end %> <!--/link_to reject-->
+        </button> 
       <% elsif @approved %>
         <div class="label label-primary"> Approved by you </div>
       <% else %>
@@ -313,7 +319,7 @@
                     <%elsif app.approve %>
                       approved
                     <%else%>
-                      rejected
+                       <a id="popoverOption" class="btn" href="#" data-content="<%= app.reject_reason%>" rel="popover" data-placement="bottom" data-original-title="Reject Reason" style='padding:0px'>Rejected</a>
                     <%end %>
                   </td>
                 </tr>
@@ -467,4 +473,29 @@
     </div><!--/col-->
   </div><!--/row-->
 </section><!--/content-->
-
+<div class="modal fade" id="reject" tabindex="-1" role="dialog" aria-labelledby="ScheduleModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+      <div class="modal-content">
+        <%= form_tag(reject_path) do %>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h4 class="modal-title" id="myModalLabel">Reject Change Request </h4>
+        </div>
+        <div class="modal-body">
+          <%= text_field_tag 'reject_reason',nil, class: 'form-control'%>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
+          <%= submit_tag 'Reject', class: "btn btn-danger btn-flat" %>
+        </div>
+        
+        <%end %>  
+      </div>
+      <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<script type="text/javascript">
+$('#popoverData').popover();
+$('#popoverOption').popover({ trigger: "hover" });
+</script>

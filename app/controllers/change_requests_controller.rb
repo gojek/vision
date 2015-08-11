@@ -111,10 +111,13 @@ class ChangeRequestsController < ApplicationController
 
   def reject
     approver = Approver.where(change_request_id: @change_request.id).where(user_id: current_user.id)
-    approver.update_all(:approve => false)
+    reject_reason = params["reject_reason"]
     if approver.empty?
       flash[:not_eligible_notice] = 'You are not eligible to reject this Change Request'
+    elsif reject_reason.blank?
+      flash[:reject_reason_notice] = 'You must fill reject reason'
     else
+      approver.update_all(:approve => false, :reject_reason => reject_reason)
       flash[:status_changed_notice] = 'Change Request Rejected'
     end
     redirect_to @change_request
