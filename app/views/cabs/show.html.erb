@@ -1,46 +1,46 @@
 <section class="content-header">
-  	<h1>
-  	CAB
-  	</h1>
-  	<br>
- 	 <%= link_to 'Edit', edit_cab_path, :class => 'btn btn-primary btn-flat'  %>
-</section>
+	<h1>
+	 CAB
+	</h1>
+	<br>
+	<%= link_to 'Edit', edit_cab_path, :class => 'btn btn-primary btn-flat'  %>
+</section><!--/content-header-->
 
 <section class='content'>
 	<div class='row'>
 		<div class='col-lg-6'>
 			<%if flash[:create_cab_notice] != nil %>
-			<div class='alert alert-success'>
-				<p id="notice"><%= flash[:create_cab_notice]  %></p>
-			</div>
-		   	<% end %>
-		   	<%if flash[:update_cab_notice] != nil %>
-			<div class='alert alert-success'>
-				<p id="notice"><%= flash[:update_cab_notice]  %></p>
-			</div>
-		   	<% end %>
+  			<div class='alert alert-success'>
+  				<p id="notice"><%= flash[:create_cab_notice]  %></p>
+  			</div><!--/alert-->
+		  <% end %><!--/flash[:create_cab_notice]-->
+		  <%if flash[:update_cab_notice] != nil %>
+  			<div class='alert alert-success'>
+  				<p id="notice"><%= flash[:update_cab_notice]  %></p>
+  			</div><!--/alert-->
+		  <% end %><!--/flash[:update_cab_notice]-->
 			<div class='box box-default'>
 				<div class='box-header with-border'>
 					<h3 class='box-title'><%= @cab.meet_date.to_s(:long) %></h3>
-				</div>
+				</div><!--/box-header-->
 				<div class='box-body'>
 					<label> Room: </label>
 					<%= @cab.room %><br>
 					<label>Notes: </label>
 					<%=raw @cab.notes %>
 					<div id="all-list" class="list-group">
-					<% @current_change_requests.each do |change_request| %>
-						<div data-id=<%= change_request.id %> class='list-group-item'>
-						<h4 class="list-group-item-heading"><%=raw change_request.change_summary %></h4>
-					    <p class="list-group-item-text"></p>
-					    <%= link_to 'Edit', edit_change_request_path(change_request) %> |
-					     <%= link_to 'Show', change_request_path(change_request) %>
-						</div>
-					<% end %>
-					</div>
-				</div>
-			</div>
-		</div>
+  					<% @current_change_requests.each do |change_request| %>
+  						<div data-id=<%= change_request.id %> class='list-group-item'>
+    						<h4 class="list-group-item-heading"><%=raw change_request.change_summary %></h4>
+    				    <p class="list-group-item-text"></p>
+    				    <%= link_to 'Edit', edit_change_request_path(change_request) %> |
+                <%= link_to 'Show', change_request_path(change_request) %>
+  						</div><!--/list-group-item-->
+  					<% end %><!--/current_change_request.each-->
+					</div><!--/list-group-->
+				</div><!--/box-body-->
+			</div><!--/box-->
+		</div><!--/col-->
 		<div class='col-lg-6'>
 			<div class='box box-default'>
 				<div class='box-body'>
@@ -53,13 +53,14 @@
 						<% end %>
 						<br>
 						<%= submit_tag "Save", class:"btn btn-primary"%>
-					<% end %>
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
+					<% end %><!--/form-->
+				</div><!--/box-body-->
+			</div><!--/box-->
+		</div><!--/col-->
+	</div><!--/row-->
+</section><!--/content-->
 
+<!--full calendar script-->
 <script>
 $(document).on('ready page:load', function () {
    $("#cr_calendar").fullCalendar({
@@ -99,7 +100,9 @@ $(document).on('ready page:load', function () {
   });
 });
 </script>
+
 <style type="text/css">
 .fc-content {
     font-size: 12pt;
-}</style>
+}
+</style>
