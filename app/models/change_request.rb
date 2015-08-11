@@ -21,11 +21,12 @@ class ChangeRequest < ActiveRecord::Base
   validates :requestor_name, :requestor_position, :change_summary, :priority,:change_requirement, :business_justification, :analysis, :solution, :impact, :scope, :design,
             :backup, :testing_procedure, :testing_notes, :schedule_change_date, :planned_completion, :definition_of_success, :definition_of_failed, presence: true
   validates_inclusion_of :testing_environment_available, :in => [true, false]
-  accepts_nested_attributes_for :implementers, :allow_destroy => true
+  accepts_nested_attributes_for :implementers, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :testers, :allow_destroy => true
   accepts_nested_attributes_for :approvers, :allow_destroy => true
   validate :at_least_one_category
   validate :at_least_one_type
+  validates :implementers, presence: true
   #validates :change_summary, :priority, :category, :cr_type, :change_requirement, :business_justification, :requestor_position, :requestor_name, presence: true
   aasm do 
     state :submitted, :initial => true
@@ -68,7 +69,10 @@ class ChangeRequest < ActiveRecord::Base
     if [self.type_security_update, self.type_install_uninstall, self.type_configuration_change, self.type_emergency_change,self.type_other].reject(&:blank?).size == 0
       errors[:base] << ("Please choose at least one type.")
     end
-  end    
+  end 
+  def no_implementers(attributes)
+    attributes[:implementers_id]
+  end   
     
   def approvers_count
     self.approvers.where(approve: true).count 
