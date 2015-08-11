@@ -5,6 +5,7 @@ class ChangeRequestsController < ApplicationController
   before_action :not_closed_required, only: [:destroy]
   before_action :submitted_required, only: [:edit]
   autocomplete :tag, :name, :class_name => 'ActsAsTaggableOn::Tag'
+
   def index
     if params[:tag]
       @q = ChangeRequest.ransack(params[:q])
@@ -45,8 +46,6 @@ class ChangeRequestsController < ApplicationController
   
   def edit_implementation_notes
   end
-
-
 
   def create
     @change_request = current_user.ChangeRequests.build(change_request_params)
@@ -122,6 +121,7 @@ class ChangeRequestsController < ApplicationController
   end
 
   private
+
     def set_change_request
       if params[:change_request_id]
         @change_request = ChangeRequest.find(params[:change_request_id])
@@ -153,4 +153,5 @@ class ChangeRequestsController < ApplicationController
     def not_closed_required
       redirect_to change_requests_path unless !@change_request.closed?
     end
+    
 end

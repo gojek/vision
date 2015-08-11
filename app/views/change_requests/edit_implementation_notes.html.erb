@@ -1,45 +1,43 @@
 <section class="content">
- <div class="row">
+  <div class="row">
     <div class='col-lg-6'>
       <div class='box box-default'>
         <div class='box-body'>
-    <%= form_for(@change_request) do |f| %>
-      <% if @change_request.errors.any? %>
-        <div id="error_explanation">
-          <h3><%= pluralize(@change_request.errors.count, "error") %> prohibited this change_request from being saved:</h3>
-
-          <ul>
-          <% @change_request.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
+          <%= form_for(@change_request) do |f| %>
+            <% if @change_request.errors.any? %>
+              <div id="error_explanation">
+                <h3><%= pluralize(@change_request.errors.count, "error") %> prohibited this change_request from being saved:</h3>
+                <ul>
+                <% @change_request.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+                </ul>
+              </div><!--/error-->
+            <% end %>
+            <%= tinymce :theme => "modern", menubar: "false"%>
+            <h1 class="page-header">Grace Period Notes</h1>
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="field form-group">
+                  <%= f.text_area :grace_period_notes, class: "tinymce" %>
+                </div><!--/field-->
+              </div><!--/col-->
+            </div><!--/row-->
+            <h1 class="page-header">Implementation Notes</h1>
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="field form-group">
+                  <%= f.text_area :implementation_notes, class: "tinymce" %>
+                </div><!--/field-->
+              </div><!--/col-->
+            </div><!--/row-->
+            <br>
+            <div class="actions">
+              <%= f.submit class:"btn btn-primary" %>
+            </div><!--/action-->
           <% end %>
-          </ul>
-        </div>
-      <% end %>
-     <%= tinymce :theme => "modern", menubar: "false"%>
-    <h1 class="page-header">Grace Period Notes</h1>
-    <div class="row">
-      <div class="col-lg-6">
-        <div class="field form-group">
-          <%= f.text_area :grace_period_notes, class: "tinymce" %>
-        </div>
-    </div>
-    </div>
-    <h1 class="page-header">Implementation Notes</h1>
-    <div class="row">
-      <div class="col-lg-6">
-        <div class="field form-group">
-          <%= f.text_area :implementation_notes, class: "tinymce" %>
-        </div>
-    </div>
-    </div>
-    <br>
-      <div class="actions">
-        <%= f.submit class:"btn btn-primary" %>
-      </div>
-
-    <% end %>
-  </div>
-</div>
-  </div>
-</div>
+        </div><!--box-body-->
+      </div><!--/box-->
+    </div><!--/col-->
+  </div><!--/row-->
 </section>
