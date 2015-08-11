@@ -1,5 +1,4 @@
 module ApplicationHelper
-	
 end
 
 module ActionView
