@@ -3,7 +3,6 @@ class CabsController < ApplicationController
 	before_action :set_cab, only: [:edit, :update, :show, :destroy, :get_change_requests, :update_change_requests]
   before_action :release_manager_required
 
-  
   def index
     @q = Cab.ransack(params[:q])
     @cabs = @q.result(distinct: true).order(meet_date: :desc).page(params[:page]).per(params[:per_page])
@@ -23,7 +22,6 @@ class CabsController < ApplicationController
         UserMailer.cab_email(@cab).deliver
         ActiveRecord::Base.connection.close
       end
-      #SendCabEmailJob.set(wait: 20.seconds).perform_later(@cab)
       flash[:create_cab_notice] = 'CAB successfully arranged'
       arrange_google_calendar
 		  redirect_to @cab
@@ -92,7 +90,7 @@ class CabsController < ApplicationController
   def show
     @current_change_requests = ChangeRequest.where(:cab_id => @cab.id)
   end
-  
+
   def update_change_requests
     change_requests = @cab.change_requests
     change_requests.each do |change_request|
