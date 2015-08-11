@@ -85,7 +85,7 @@ resources :versions, only: [] do
   put 'lock_user/:id' => 'users#lock_user', :as => 'lock_user'
   put 'unlock_user/:id' => 'users#unlock_user', :as => 'unlock_user'
   put 'approve/:id' => 'change_requests#approve', :as =>'approve'
-  put 'reject/:id' => 'change_requests#reject', :as =>'reject'
+  post 'reject/:id' => 'change_requests#reject', :as =>'reject'
   
  
 

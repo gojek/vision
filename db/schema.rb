@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150805074251) do
+ActiveRecord::Schema.define(version: 20150811070824) do
 
   create_table "approvers", force: :cascade do |t|
     t.string   "name"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 20150805074251) do
     t.datetime "updated_at",        null: false
     t.integer  "user_id"
     t.boolean  "approve"
+    t.text     "reject_reason"
   end
 
   add_index "approvers", ["change_request_id"], name: "index_approvers_on_change_request_id"
