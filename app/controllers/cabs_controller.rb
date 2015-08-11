@@ -45,8 +45,8 @@ class CabsController < ApplicationController
         'timeZone' => 'Asia/Jakarta',
       },
       'attendees' => [
-        {'email' => 'cr@veritrans.co.id'},
-        {'email' => 'it_operation@veritrans.co.id'}
+        {'email' => 'muhammad.idham@veritrans.co.id'},
+        {'email' => 'narendra.hanif@veritrans.co.id'}
       ]
     }
 
