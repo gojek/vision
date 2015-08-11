@@ -1,11 +1,11 @@
 <div class= "nested-fields panel panel-default panel-body" >
-	<div class="field">
-		<%= f.label :name %>
-		<%= f.collection_select :user_id, User.where("role = 'approver' "),:id,:name, include_blank: true %>
-	</div>
-	<div class="field">
-		<%= f.label :position %>
-		<%= f.text_field :position, class: 'form-control' %>
-	</div><br>
-	<%= link_to_remove_association "remove approver", f, class:"btn btn-danger" %>
+  <div class="field">
+    <%= f.label :name %>
+    <%= f.collection_select :user_id, User.where("role = 'approver' "),:id,:name, include_blank: true %>
+  </div>
+  <div class="field">
+    <%= f.label :position %>
+    <%= f.text_field :position, class: 'form-control' %>
+  </div><br>
+  <%= link_to_remove_association "remove approver", f, class:"btn btn-danger" %>
 </div>

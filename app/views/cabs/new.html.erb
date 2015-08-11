@@ -2,95 +2,96 @@
   <h1>
     Create CAB
   </h1>
-</section>
+</section><!--/content-header-->
 <section class="content">
-<% if @cab.errors.any? %>
-	<div id="error_explanation" class="alert alert-danger">
-	  <ul>
-	  <% @cab.errors.full_messages.each do |message| %>
-	    <li><%= message %></li>
-	  <% end %>
-	  </ul>
-	</div>
-<% end %>
-<script>
-	tinymce.remove();
-</script>
-<%= tinymce %>
-<%= form_for(@cab) do |f| %>
-<div class='row'>
- 	<div class = 'col-lg-12'>
- 		<div class="box">
- 			<div class="box-header with-border">
-              	<h3 class="box-title">CAB Details</h3>
-            </div><!-- /.box-header -->
-		 	<div class="box-body">
-				<div class="field form-group">
-			 	<%= f.label :meet_date %><br>
-			    <%= f.datetime_select :meet_date,start_year: 2015,:include_blank => true %>
-				</div>
-			    <div class="field form-group">
-			    <%= f.label :room %><br>
-			    <%= f.text_field :room, class: 'form-control' %>
-				</div>
-			    <div class="field form-group">
-			    <%= f.label :notes %><br>
-			    <%= f.text_area :notes, class: "form-control tinymce" %>
-				</div>
-		 	</div>
-		</div>
-	</div>
-</div>
-<div class='row'>
-	<div class='col-lg-6'>
-		<div class = 'box'>
-			<div class= 'box-header with-border'>
-				<h3 class="box-title">CAB Meeting</h3>
-			</div>
-			<div class= 'box-body'>
-				<div id="cab-list" class="list-group">
-					
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class='col-lg-6'>
-		<div class='box'>
-			<div class='box-header with-border'>
-				<h3 class='box-title'>Available Change Requests</h3>
-			</div>
-			<div class='box-body'>
-				<div id="all-list" class="box-group list-group">
-				<% @change_requests.each do |change_request| %>
-					<div data-id=<%= change_request.id %> class='list-group-item panel box box-solid'>
-						<div class='box-header with-border'>
-							<h4 class="list-group-item-heading box-title">
-								<a data-toggle="collapse" data-parent="#accordion" href="#collapse<%= change_request.id%>">
-								<%=raw change_request.change_summary %></a>
-							</h4>
-						</div>
-						<div id="collapse<%= change_request.id%>" class="panel-collapse collapse">
-					    	<div class='box-body'>
-					    	<p class="list-group-item-text">
-					    		<%=raw change_request.business_justification %>
-					    	</p>
-					    	</div>
-						</div>
-					</div>
-				<% end %>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<%= text_field_tag 'cr_list' %>
-<%= text_field_tag 'all_cr_list' %>
-<div class="actions">
-        <%= f.submit class:"btn btn-primary" %>
-      </div>
-<% end %>
+  <% if @cab.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger">
+      <ul>
+      <% @cab.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div><!--/alert alert-danger-->
+  <% end %>
+  <!--custom script to remove tinymce before init, it ressolve tinymce and turbolinks problem-->
+  <script>
+    tinymce.remove();
+  </script>
+  <%= tinymce %>
 
-</section>
+  <%= form_for(@cab) do |f| %>
+    <div class='row'>
+      <div class = 'col-lg-12'>
+        <div class="box">
+          <div class="box-header with-border">
+            <h3 class="box-title">CAB Details</h3>
+          </div><!-- /.box-header -->
+          <div class="box-body">
+            <div class="field form-group">
+              <%= f.label :meet_date %><br>
+              <%= f.datetime_select :meet_date,start_year: 2015,:include_blank => true %>
+            </div><!--/field-->
+            <div class="field form-group">
+              <%= f.label :room %><br>
+              <%= f.text_field :room, class: 'form-control' %>
+            </div><!--/field-->
+            <div class="field form-group">
+              <%= f.label :notes %><br>
+              <%= f.text_area :notes, class: "form-control tinymce" %>
+            </div><!--/field-->
+          </div><!--/box-body-->
+        </div><!--/box-->
+      </div><!--/col-->
+    </div><!--/row-->
+    <div class='row'>
+      <div class='col-lg-6'>
+        <div class = 'box'>
+          <div class= 'box-header with-border'>
+            <h3 class="box-title">CAB Meeting</h3>
+          </div><!--/box-header-->
+          <div class= 'box-body'>
+            <div id="cab-list" class="list-group">
+            </div>
+          </div><!--/box-body-->
+        </div><!--/box-->
+      </div><!--/col-->
+      <div class='col-lg-6'>
+        <div class='box'>
+          <div class='box-header with-border'>
+            <h3 class='box-title'>Available Change Requests</h3>
+          </div><!--/box-header-->
+          <div class='box-body'>
+            <div id="all-list" class="box-group list-group">
+            <% @change_requests.each do |change_request| %>
+              <div data-id=<%= change_request.id %> class='list-group-item panel box box-solid'>
+                <div class='box-header with-border'>
+                  <h4 class="list-group-item-heading box-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%= change_request.id%>">
+                    <%=raw change_request.change_summary %></a>
+                  </h4>
+                </div><!--/box-header-->
+                <div id="collapse<%= change_request.id%>" class="panel-collapse collapse">
+                  <div class='box-body'>
+                    <p class="list-group-item-text">
+                      <%=raw change_request.business_justification %>
+                    </p>
+                  </div><!--/box-body-->
+                </div><!--/panel-collapse-->
+              </div><!--/list-group-item panel box-->
+            <% end %><!--/change_request.each-->
+            </div><!--/box-group-->
+          </div><!--/box-body-->
+        </div><!--/box-->
+      </div><!--/col-->
+    </div><!--/row-->
+    <%= text_field_tag 'cr_list' %>
+    <%= text_field_tag 'all_cr_list' %>
+    <div class="actions">
+      <%= f.submit class:"btn btn-primary" %>
+    </div>
+  <% end %><!--/form-->
+</section><!--/content-->
+
 <style>
 .list-group {
   min-height: 20px;
@@ -103,11 +104,12 @@
 }
 </style>
 
+<!--custom script for change request draggable function -->
 <script>
 var el = document.getElementById('all-list');
 var sortable = Sortable.create(el, {
-	group:'cab', 
-	onAdd: function (evt) {
+  group:'cab', 
+  onAdd: function (evt) {
         // + indexes from onEnd
         var cr_list = document.getElementById('all_cr_list');
         cr_list.value = sortable.toArray();
@@ -117,12 +119,12 @@ var sortable = Sortable.create(el, {
         var cr_list = document.getElementById('all_cr_list');
         cr_list.value = sortable.toArray();
     }
-	
+  
 });
 var el2 = document.getElementById('cab-list');
 var sortable2 = Sortable.create(el2, {
-	group: 'cab',
-	onAdd: function (evt) {
+  group: 'cab',
+  onAdd: function (evt) {
         // + indexes from onEnd
         var cr_list = document.getElementById('cr_list');
         cr_list.value = sortable2.toArray();
