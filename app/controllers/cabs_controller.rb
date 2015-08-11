@@ -45,8 +45,8 @@ class CabsController < ApplicationController
         'timeZone' => 'Asia/Jakarta',
       },
       'attendees' => [
-        {'email' => 'cr@***REMOVED***'},
-        {'email' => 'it_operation@***REMOVED***'}
+        {'email' => 'muhammad.idham@***REMOVED***'},
+        {'email' => 'narendra.hanif@***REMOVED***'}
       ]
     }
 
