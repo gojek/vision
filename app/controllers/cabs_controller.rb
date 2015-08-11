@@ -46,6 +46,7 @@ class CabsController < ApplicationController
       },
       'attendees' => [
         {'email' => 'cr@veritrans.co.id'},
+        {'email' => 'stig@veritrans.co.id'},
         {'email' => 'it_operation@veritrans.co.id'}
       ]
     }
