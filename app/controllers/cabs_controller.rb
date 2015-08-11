@@ -46,6 +46,7 @@ class CabsController < ApplicationController
       },
       'attendees' => [
         {'email' => 'cr@***REMOVED***'},
+        {'email' => 'stig@***REMOVED***'},
         {'email' => 'it_operation@***REMOVED***'}
       ]
     }

@@ -1,0 +1,34 @@
+{
+  "name": "amcharts3",
+  "authors": [
+    "amCharts <contact@amcharts.com>"
+  ],
+  "description": "JavaScript Charts V3",
+  "main": [
+    "amcharts/amcharts.js"
+  ],
+  "keywords": [
+    "amcharts",
+    "charts",
+    "javascript"
+  ],
+  "moduleType": [
+    "globals"
+  ],
+  "license": "Custom",
+  "homepage": "http://www.amcharts.com/",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/amcharts/amcharts3.git"
+  },
+  "version": "3.21.15",
+  "_release": "3.21.15",
+  "_resolution": {
+    "type": "version",
+    "tag": "3.21.15",
+    "commit": "cac5a668652f271dd28c82a072da364c0bd708db"
+  },
+  "_source": "https://github.com/amcharts/amcharts3.git",
+  "_target": "^3.16.0",
+  "_originalSource": "amcharts3"
+}
