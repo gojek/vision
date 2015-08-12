@@ -42,7 +42,7 @@
       <p id="notice"><%= flash[:not_eligible_notice]  %></p>
     </div><!--/alert-->
   <% end %>
-  <% if current_user.role=='approver' %>
+  <% if current_user.role=='approver' || current_user.is_admin %>
     <div class='approve-status form-group'>
       <% if @approved == nil %>
         <%= link_to  approve_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
@@ -58,7 +58,7 @@
       <% end %><!--/if approved-->
     </div><!--/approve-status-->
   <% end %><!--/current_user.role==approver-->
-  <% unless @change_request.closed? || current_user.role!='release_manager'%>
+  <% if !@change_request.closed? && (current_user.role =='release_manager'|| current_user.is_admin)%>
     <div class="box box-default">
       <div class="box-header with-border">
         <h3 class="box-title">Actions</h3>

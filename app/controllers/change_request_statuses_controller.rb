@@ -1,6 +1,6 @@
 class ChangeRequestStatusesController < ApplicationController
 	before_action :set_change_request, only:[:schedule, :deploy, :rollback, :cancel, :close, :final_reject, :submit]
-	before_action :release_manager?, only:[:schedule, :deploy, :rollback, :cancel, :close, :final_reject, :submit]
+	before_action :authorized_user_required, only:[:schedule, :deploy, :rollback, :cancel, :close, :final_reject, :submit]
   before_action :authenticate_user!
 
   def schedule
@@ -105,7 +105,7 @@ class ChangeRequestStatusesController < ApplicationController
   	params.require(:change_request_status).permit(:reason)
   end
   
-  def release_manager?
+  def authorized_user_required
     redirect_to @change_request unless
     current_user.role == 'release_manager' || current_user.is_admin
   end

@@ -1,7 +1,7 @@
 class CabsController < ApplicationController
   before_action :authenticate_user!
 	before_action :set_cab, only: [:edit, :update, :show, :destroy, :get_change_requests, :update_change_requests]
-  before_action :release_manager_required
+  before_action :authorized_user_required
 
   def index
     @q = Cab.ransack(params[:q])
@@ -129,7 +129,7 @@ class CabsController < ApplicationController
 
 	private
 
-  def release_manager_required
+  def authorized_user_required
     redirect_to root_path unless current_user.role == 'release_manager' || current_user.is_admin
   end
 
