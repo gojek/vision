@@ -27,6 +27,7 @@ class ChangeRequest < ActiveRecord::Base
   validate :at_least_one_category
   validate :at_least_one_type
   validates :implementers, presence: true
+  validate :tester_required
   #validates :change_summary, :priority, :category, :cr_type, :change_requirement, :business_justification, :requestor_position, :requestor_name, presence: true
   aasm do 
     state :submitted, :initial => true
@@ -62,6 +63,11 @@ class ChangeRequest < ActiveRecord::Base
   def at_least_one_category
     if [self.category_application, self.category_other, self.category_server, self.category_user_access,self.category_network_equipment].reject(&:blank?).size == 0
       errors[:base] << ("Please choose at least one category.")
+    end
+  end
+  def tester_required
+    if self.testing_environment_available && self.testers.size == 0
+      errors[:base] << ("Testers can't be blank. ")
     end
   end
 
