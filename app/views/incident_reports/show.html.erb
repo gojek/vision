@@ -3,7 +3,9 @@
     Incident Report #<%= @incident_report.id %>
   </h1>
   <br>
+  <% if current_user.is_admin || current_user == @incident_report.user%>
     <%= link_to 'Edit', edit_incident_report_path, :class => 'btn btn-primary btn-flat'  %>
+  <%end %>
 </section>
 <!-- Main content -->
 <section class="invoice">
