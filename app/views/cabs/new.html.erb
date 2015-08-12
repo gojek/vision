@@ -1,3 +1,24 @@
+<script>
+    tinymce.remove();
+    function eventHandler(inst) {
+        unsaved = true;
+    };
+    tinyMCE.init({
+      selector: "textarea.tinymce",
+      menubar: false,
+      plugins: "textcolor link image tabfocus ",
+      toolbar: "undo redo | styleselect | bold italic| alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | forecolor",
+      theme: "modern",
+      toolbar_items_size: 'small',
+      browser_spellcheck: true,
+      statusbar: false,
+      setup: function (ed) {
+        ed.on("change", function () {
+            eventHandler(ed);
+        })
+    }
+    });
+</script>
 <section class="content-header">
   <h1>
     Create CAB
@@ -14,11 +35,6 @@
     </div><!--/alert alert-danger-->
   <% end %>
   <!--custom script to remove tinymce before init, it ressolve tinymce and turbolinks problem-->
-  <script>
-    tinymce.remove();
-  </script>
-  <%= tinymce %>
-
   <%= form_for(@cab) do |f| %>
     <div class='row'>
       <div class = 'col-lg-12'>
@@ -87,7 +103,7 @@
     <%= text_field_tag 'cr_list' %>
     <%= text_field_tag 'all_cr_list' %>
     <div class="actions">
-      <%= f.submit class:"btn btn-primary" %>
+      <%= f.submit class:"btn btn-primary", :id => 'save' %>
     </div>
   <% end %><!--/form-->
 </section><!--/content-->
@@ -106,33 +122,61 @@
 
 <!--custom script for change request draggable function -->
 <script>
-var el = document.getElementById('all-list');
-var sortable = Sortable.create(el, {
-  group:'cab', 
-  onAdd: function (evt) {
-        // + indexes from onEnd
-        var cr_list = document.getElementById('all_cr_list');
-        cr_list.value = sortable.toArray();
-    },
-    onRemove: function (evt) {
-        // + indexes from onEnd
-        var cr_list = document.getElementById('all_cr_list');
-        cr_list.value = sortable.toArray();
-    }
-  
-});
-var el2 = document.getElementById('cab-list');
-var sortable2 = Sortable.create(el2, {
-  group: 'cab',
-  onAdd: function (evt) {
-        // + indexes from onEnd
-        var cr_list = document.getElementById('cr_list');
-        cr_list.value = sortable2.toArray();
-    },
-    onRemove: function (evt) {
-        // + indexes from onEnd
-        var cr_list = document.getElementById('cr_list');
-        cr_list.value = sortable2.toArray();
-    }
-});
+
+  $(document).ready(function () {
+    $('body').attr("data-no-turbolink", "true");
+    
+    $('#save').click(function() {
+      unsaved = false;
+    });
+    // Another way to bind the event
+    $(window).bind('beforeunload', function() {
+        if(unsaved){
+            return "You have unsaved changes on this page. Do you want to leave this page and discard your changes or stay on this page?";
+        }
+    });
+    // Monitor dynamic inputs
+    $(document).on('change', ':input', function(){ //triggers change in all input fields including text type
+        unsaved = true;
+    });
+
+    $('.datetimepicker').on("dp.change", function(e) {
+      unsaved = true;
+    });
+
+
+  });
+  var el = document.getElementById('all-list');
+  var sortable = Sortable.create(el, {
+    group:'cab', 
+    onAdd: function (evt) {
+          // + indexes from onEnd
+          unsaved = true;
+          var cr_list = document.getElementById('all_cr_list');
+          cr_list.value = sortable.toArray();
+      },
+      onRemove: function (evt) {
+          // + indexes from onEnd
+          unsaved = true;
+          var cr_list = document.getElementById('all_cr_list');
+          cr_list.value = sortable.toArray();
+      }
+    
+  });
+  var el2 = document.getElementById('cab-list');
+  var sortable2 = Sortable.create(el2, {
+    group: 'cab',
+    onAdd: function (evt) {
+          // + indexes from onEnd
+          unsaved = true;
+          var cr_list = document.getElementById('cr_list');
+          cr_list.value = sortable2.toArray();
+      },
+      onRemove: function (evt) {
+          // + indexes from onEnd
+          unsaved = true;
+          var cr_list = document.getElementById('cr_list');
+          cr_list.value = sortable2.toArray();
+      }
+  });
 </script>
