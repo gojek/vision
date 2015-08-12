@@ -10,12 +10,12 @@ class ChangeRequestsController < ApplicationController
     if params[:tag]
       @q = ChangeRequest.ransack(params[:q])
       @change_requests = @q.result(distinct: true).tagged_with(params[:tag]).order(created_at: :desc).page(params[:page]).per(params[:per_page])
-    elsif(current_user.role=='requestor')
-      @q = ChangeRequest.ransack(params[:q])
-      @change_requests = @q.result(distinct: true).where(user_id: current_user.id).order(created_at: :desc).page(params[:page]).per(params[:per_page])
-    elsif(current_user.role=='approver')
-      @q = ChangeRequest.ransack(params[:q])
-      @change_requests = @q.result(distinct: true).joins(:approvers).where(approvers: {user_id: current_user.id}).order(created_at: :desc).page(params[:page]).per(params[:per_page])
+    #elsif(current_user.role=='requestor')
+     # @q = ChangeRequest.ransack(params[:q])
+     # @change_requests = @q.result(distinct: true).where(user_id: current_user.id).order(created_at: :desc).page(params[:page]).per(params[:per_page])
+    #elsif(current_user.role=='approver')
+      #@q = ChangeRequest.ransack(params[:q])
+      #@change_requests = @q.result(distinct: true).joins(:approvers).where(approvers: {user_id: current_user.id}).order(created_at: :desc).page(params[:page]).per(params[:per_page])
     else
       #populate all CR if release_manager
       @q = ChangeRequest.ransack(params[:q])
