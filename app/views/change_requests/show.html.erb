@@ -17,7 +17,8 @@
 </section><!--/content-header-->
 <section class="content">
   <%if flash[:create_cr_notice] != nil %>
-    <div class='alert alert-success'>
+    <div class="callout callout-success ">
+      <h4>  <i class="icon fa fa-check"></i> Success!</h4>
       <p id="notice"><%= flash[:create_cr_notice]  %></p>
     </div><!--/alert-->
   <% end %>
