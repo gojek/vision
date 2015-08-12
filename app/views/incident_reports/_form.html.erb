@@ -1,7 +1,24 @@
 <script>
     tinymce.remove();
+    function eventHandler(inst) {
+        unsaved = true;
+    };
+    tinyMCE.init({
+      selector: "textarea.tinymce",
+      menubar: false,
+      plugins: "textcolor link image tabfocus ",
+      toolbar: "undo redo | styleselect | bold italic| alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | forecolor",
+      theme: "modern",
+      toolbar_items_size: 'small',
+      browser_spellcheck: true,
+      statusbar: false,
+      setup: function (ed) {
+        ed.on("change", function () {
+            eventHandler(ed);
+        })
+    }
+    });
 </script>
-<%= tinymce %>
 <%= form_for(@incident_report) do |f| %>
   
 <div class="col-lg-6 col-xs-12 col-md-12">
@@ -183,7 +200,7 @@
         </div>
         </br>
         <div class="actions">
-          <%= f.submit class:"btn btn-flat btn-primary" %>
+          <%= f.submit class:"btn btn-flat btn-primary", :id => 'save' %>
         </div>
       </div>
   </div>
@@ -191,3 +208,30 @@
 <!-- /.col-xs-12 -->
 
 <% end %>
+
+<script>
+  $(document).ready(function () {
+    $('body').attr("data-no-turbolink", "true");
+    
+    $('#save').click(function() {
+      unsaved = false;
+    });
+    // Another way to bind the event
+    $(window).bind('beforeunload', function() {
+        if(unsaved){
+            return "You have unsaved changes on this page. Do you want to leave this page and discard your changes or stay on this page?";
+        }
+    });
+    // Monitor dynamic inputs
+    $(document).on('change', ':input', function(){ //triggers change in all input fields including text type
+        unsaved = true;
+    });
+
+    $('.datetimepicker').on("dp.change", function(e) {
+      unsaved = true;
+    });
+
+
+  });
+
+</script>
