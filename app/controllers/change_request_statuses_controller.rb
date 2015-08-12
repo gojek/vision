@@ -106,7 +106,8 @@ class ChangeRequestStatusesController < ApplicationController
   end
   
   def release_manager?
-    redirect_to @change_request if current_user.role != 'release_manager'
+    redirect_to @change_request unless
+    current_user.role == 'release_manager' || current_user.is_admin
   end
   
 end
