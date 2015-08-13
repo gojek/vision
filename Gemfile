@@ -35,7 +35,6 @@ gem 'omniauth-google-oauth2'
 gem 'diffy'
 gem "cocoon"
 gem 'acts-as-taggable-on'
-gem 'rails4-autocomplete'
 gem 'jquery-ui-rails'
 gem 'aasm'
 gem "figaro"

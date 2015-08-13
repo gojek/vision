@@ -116,7 +116,7 @@
                   </div><!--/field-->
                 <div class="field form-group">
                   <label>Tag (Separated by Comma)</label><br>
-                  <%= f.autocomplete_field :tag_list, autocomplete_tag_name_change_requests_path,:"data-delimiter" => ',' %>
+                    <%= f.text_field :tag_list, :value => @change_request.tag_list.to_s, class: 'form-control' %>
                 </div><!--/field-->
               </div><!--/col-->
             </div><!--/box-body-->
