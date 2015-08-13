@@ -28,6 +28,10 @@
 //= require turbolinks
 $(function(){
   $(".select2").select2();
+  $(".select2-tag").select2({
+  	tags: true,
+  	tokenSeparators: [',', ' ']
+  });
   $('.datetimepicker').datetimepicker({
     format: "yyyy-mm-dd"
   });
