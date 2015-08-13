@@ -52,6 +52,7 @@ gem 'tinymce-rails', :git => 'https://github.com/spohlenz/tinymce-rails.git'
 gem 'httpclient'
 #xml parser
 gem 'nokogiri'
+gem 'nprogress-rails'
 
 group :production do
 	gem 'pg'
