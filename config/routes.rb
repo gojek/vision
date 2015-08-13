@@ -20,9 +20,9 @@ Rails.application.routes.draw do
     collection do 
           get :deleted # <= this
     end
-    collection do
-      get :autocomplete_tag_name
-    end
+    #collection do
+      #get :autocomplete_tag_name
+    #end
     resources :cr_versions, only: [:destroy] do
       member do
         get :diff, to: 'cr_versions#diff'
