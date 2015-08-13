@@ -24,8 +24,13 @@
 //= require admin-lte
 //= require bootstrap-sprockets
 //= require moment
+//= require nprogress
+//= require nprogress-turbolinks
 //= require fullcalendar
 //= require turbolinks
+NProgress.configure({
+  parent: '.logo-mini'
+});
 $(function(){
   $(".select2").select2();
   $(".select2-tag").select2({
