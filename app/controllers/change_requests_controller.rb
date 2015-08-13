@@ -4,7 +4,6 @@ class ChangeRequestsController < ApplicationController
   before_action :owner_required, only: [:edit, :update, :destroy]
   before_action :not_closed_required, only: [:destroy]
   before_action :submitted_required, only: [:edit]
-  autocomplete :tag, :name, :class_name => 'ActsAsTaggableOn::Tag'
 
   def index
     if params[:tag]

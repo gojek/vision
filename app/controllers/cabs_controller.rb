@@ -76,6 +76,7 @@ class CabsController < ApplicationController
 	def edit
 		@change_requests = ChangeRequest.cab_free
 		@current_change_requests = ChangeRequest.where(:cab_id => @cab.id)
+    @participants = Cab::PARTICIPANTS + current_user.get_contacts
 	end
 
 	def update

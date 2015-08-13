@@ -13,7 +13,6 @@
 //= require jquery.turbolinks
 //= require jquery_ujs
 //= require jquery-ui
-//= require autocomplete-rails
 //= require Sortable
 //= require depends_on
 //= require admin-lte/plugins/select2/select2.full
@@ -33,10 +32,11 @@ NProgress.configure({
 });
 $(function(){
   $(".select2").select2();
-  $(".select2-tag").select2({
-  	tags: true,
-  	tokenSeparators: [',', ' ']
-  });
+  //$(".select2-tag").val(["cr@***REMOVED***", "stig@***REMOVED***"]);
+  //$(".select2-tag").select2({
+  	//tags: true,
+  	//tokenSeparators: [',', ' ']
+  //});
   $('.datetimepicker').datetimepicker({
     format: "yyyy-mm-dd"
   });
