@@ -51,6 +51,7 @@ Rails.application.routes.draw do
 
   get 'incident_reports/edit'
 
+
   get 'users/show'
   post 'cabs/:id'=> 'cabs#update_change_requests', :as => 'update_cr'
 
@@ -58,6 +59,7 @@ Rails.application.routes.draw do
   get 'register' => 'users#new'
   post 'users' => 'users#create'
   get 'users/edit/:id' => 'users#edit', :as => 'edit'
+  get 'change_requests/:id/print' => 'change_requests#print', :as => 'print'
   devise_for :users, skip: [:sessions], controllers: { omniauth_callbacks: "users/omniauth_callbacks" } 
   devise_scope :user do
     get 'sign_in', :to => 'pages#signin', :as => :new_user_session

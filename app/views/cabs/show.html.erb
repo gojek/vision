@@ -3,7 +3,9 @@
 	 CAB
 	</h1>
 	<br>
+   <% if current_user.is_admin || current_user.role == 'release_manager' %>
 	<%= link_to 'Edit', edit_cab_path, :class => 'btn btn-primary btn-flat'  %>
+  <% end %>
 </section><!--/content-header-->
 
 <section class='content'>
@@ -33,7 +35,9 @@
   						<div data-id=<%= change_request.id %> class='list-group-item'>
     						<h4 class="list-group-item-heading"><%=raw change_request.change_summary %></h4>
     				    <p class="list-group-item-text"></p>
+                 <% if current_user.is_admin || current_user.role == 'release_manager' %>
     				    <%= link_to 'Edit', edit_change_request_path(change_request) %> |
+                <% end %>
                 <%= link_to 'Show', change_request_path(change_request) %>
   						</div><!--/list-group-item-->
   					<% end %><!--/current_change_request.each-->
@@ -52,7 +56,9 @@
 						<%= hidden_field_tag 'end'+change_request.id.to_s, change_request.planned_completion.to_time.iso8601  %>
 						<% end %>
 						<br>
+             <% if current_user.is_admin || current_user.role == 'release_manager' %>
 						<%= submit_tag "Save", class:"btn btn-primary", id:'save'%>
+            <% end %>
 					<% end %><!--/form-->
 				</div><!--/box-body-->
 			</div><!--/box-->
@@ -85,7 +91,10 @@ $(document).on('ready page:load', function () {
 
    $("#cr_calendar").fullCalendar({
     defaultView: "agendaWeek",
-    editable: true,
+     <% if current_user.is_admin || current_user.role == 'release_manager' %>
+      editable: true,
+    <%end %>
+
     allDaySlot: false,
     header: {
 		left: 'prev,next today',

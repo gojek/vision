@@ -1,5 +1,5 @@
 class ChangeRequestsController < ApplicationController
-  before_action :set_change_request, only: [:show, :edit, :update, :destroy, :approve, :reject, :edit_grace_period_notes, :edit_implementation_notes]
+  before_action :set_change_request, only: [:show, :edit, :update, :destroy, :approve, :reject, :edit_grace_period_notes, :edit_implementation_notes, :print]
   before_action :authenticate_user!
   before_action :owner_required, only: [:edit, :update, :destroy]
   before_action :not_closed_required, only: [:destroy]
@@ -45,6 +45,10 @@ class ChangeRequestsController < ApplicationController
   end
   
   def edit_implementation_notes
+  end
+
+  def print
+    render layout:false
   end
 
   def create
@@ -139,7 +143,7 @@ class ChangeRequestsController < ApplicationController
     def change_request_params
       params.require(:change_request).permit(:tag_list, :change_summary, :priority, :db, :os, :net, :category, :cr_type, :change_requirement, :business_justification, :requestor_position, :note, :analysis, :solution, :impact, :scope, :design, :backup,:testing_environment_available, :testing_procedure, :testing_notes, :schedule_change_date, :planned_completion, :grace_period_starts, :grace_period_end, :implementation_notes, :grace_period_notes, :requestor_name,
         :definition_of_success, :definition_of_failed, :category_application, :category_network_equipment,:category_server, :category_user_access,
-        :category_other, :type_security_update,:type_install_uninstall, :type_configuration_change, :type_emergency_change, :type_other,
+        :category_other,:other_dependency,:type_security_update,:type_install_uninstall, :type_configuration_change, :type_emergency_change, :type_other,
         implementers_attributes: [:id, :name, :position, :_destroy], testers_attributes: [:id, :name, :position, :_destroy])
     end
 

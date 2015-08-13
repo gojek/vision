@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150811070824) do
+ActiveRecord::Schema.define(version: 20150813061922) do
 
   create_table "approvers", force: :cascade do |t|
     t.string   "name"
@@ -29,10 +29,11 @@ ActiveRecord::Schema.define(version: 20150811070824) do
 
   create_table "cabs", force: :cascade do |t|
     t.datetime "meet_date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.string   "room"
     t.text     "notes"
+    t.string   "participant"
   end
 
   add_index "cabs", ["meet_date"], name: "index_cabs_on_meet_date", unique: true
@@ -109,6 +110,7 @@ ActiveRecord::Schema.define(version: 20150811070824) do
     t.boolean  "type_configuration_change"
     t.boolean  "type_emergency_change"
     t.string   "type_other"
+    t.text     "other_dependency"
   end
 
   add_index "change_requests", ["cab_id"], name: "index_change_requests_on_cab_id"

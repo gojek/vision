@@ -1,7 +1,7 @@
 class CabsController < ApplicationController
   before_action :authenticate_user!
 	before_action :set_cab, only: [:edit, :update, :show, :destroy, :get_change_requests, :update_change_requests]
-  before_action :authorized_user_required
+  before_action :authorized_user_required, only:[:create, :edit, :update, :destroy, :arrange_google_calendar, :update_change_requests, :new]
 
   def index
     @q = Cab.ransack(params[:q])
@@ -11,10 +11,12 @@ class CabsController < ApplicationController
   def new 
 		@change_requests =ChangeRequest.cab_free
 		@cab = Cab.new
+    @participants = Cab::PARTICIPANTS + current_user.get_contacts
 	end
 	
 	def create
 		@cab = Cab.new(cab_params)
+    binding.pry
 		if @cab.save
       @cr_list = params[:cr_list].split(",")
 		  ChangeRequest.where(:id => @cr_list).update_all(:cab_id => @cab.id)
@@ -23,15 +25,22 @@ class CabsController < ApplicationController
         ActiveRecord::Base.connection.close
       end
       flash[:create_cab_notice] = 'CAB successfully arranged'
+      @participants = cab_params[:participant]
       arrange_google_calendar
 		  redirect_to @cab
     else
       @change_requests =ChangeRequest.cab_free
+      @participants = Cab::PARTICIPANTS + current_user.get_contacts
       render :new
     end
 	end
 
   def arrange_google_calendar
+    attendees = []
+    @participants.each do |participant|
+      attendees.push({'email' => participant}) unless participant.blank? 
+    end
+    binding.pry
     event = {
       'summary' => 'CAB Meeting',
       'location' => @cab.room,
@@ -44,11 +53,7 @@ class CabsController < ApplicationController
         'dateTime' => (@cab.meet_date+1.hour).iso8601,
         'timeZone' => 'Asia/Jakarta',
       },
-      'attendees' => [
-        {'email' => 'cr@***REMOVED***'},
-        {'email' => 'stig@***REMOVED***'},
-        {'email' => 'it_operation@***REMOVED***'}
-      ]
+      'attendees' => attendees
     }
 
     client = Google::APIClient.new
@@ -122,7 +127,7 @@ class CabsController < ApplicationController
     events =[]
     @change_requests.each do |change_request|
       events << {:id => change_request.id, :title => change_request.change_summary, :start => "#{change_request.schedule_change_date.to_time.iso8601}", 
-                 :end => "#{change_request.planned_completion.to_time.iso8601}", :url => "#{url_for(change_request)}"}
+                 :end => "#{change_request.planned_completion.to_time.iso8601}"}
     end
     render :text => events.to_json
   end
@@ -134,7 +139,7 @@ class CabsController < ApplicationController
   end
 
 	def cab_params
-		params.require(:cab).permit(:meet_date, :cr_list, :all_cr_list, :room, :notes)
+		params.require(:cab).permit(:meet_date, :cr_list, :all_cr_list, :room, :notes, :participant => [])
 	end
 
   def set_cab

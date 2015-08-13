@@ -33,8 +33,10 @@
             <tr>
                 <td><%=raw cab.meet_date.to_s(:long) %></td>
                 <td><%= link_to 'Show', cab %></td>
+                <% if current_user.is_admin || current_user.role == 'release_manager' %>
                 <td><%= link_to 'Edit', edit_cab_path(cab) %></td>
                 <td><%= link_to 'Destroy', cab, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                <%end %>
             </tr>
             <% end %>
           </table><!--/table table-hover-->

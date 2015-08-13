@@ -55,6 +55,10 @@
               <%= f.label :notes %><br>
               <%= f.text_area :notes, class: "form-control tinymce" %>
             </div><!--/field-->
+            <div class="field form-group">
+              <%= f.label :participant %><br>
+              <%= f.select :participant, options_for_select(@participants), {},{class: 'select2-tag form-control', multiple:'multiple'} %>
+            </div><!--/field-->
           </div><!--/box-body-->
         </div><!--/box-->
       </div><!--/col-->
@@ -122,10 +126,9 @@
 
 <!--custom script for change request draggable function -->
 <script>
-
+ 
   $(document).ready(function () {
     $('body').attr("data-no-turbolink", "true");
-    
     $('#save').click(function() {
       unsaved = false;
     });
@@ -179,4 +182,5 @@
           cr_list.value = sortable2.toArray();
       }
   });
+   
 </script>
