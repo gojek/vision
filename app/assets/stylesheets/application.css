@@ -20,4 +20,20 @@
  *= require font-awesome
  *= require admin-lte/dist/css/skins/skin-blue
  *= require fullcalendar
+ *= require nprogress
+*= require nprogress-bootstrap
  */
+#nprogress .spinner-icon{
+	border-top-color:#fff !important;
+	border-left-color:#fff !important;
+}
+
+#nprogress .spinner{
+	padding: 5px;
+	background-color: #367fa9;
+}
+
+.spinner {
+	margin-top: -2px !important;
+	padding-right: 2px !important;
+}
