@@ -139,6 +139,7 @@ GEM
     hashie (3.4.2)
     html_truncator (0.4.1)
       nokogiri (~> 1.5)
+    httpclient (2.6.0.1)
     i18n (0.7.0)
     jbuilder (2.3.0)
       activesupport (>= 3.0.0, < 5)
@@ -353,6 +354,7 @@ DEPENDENCIES
   fullcalendar-rails
   google-api-client
   html_truncator (~> 0.2)
+  httpclient
   jbuilder (~> 2.0)
   jquery-rails
   jquery-turbolinks
@@ -360,6 +362,7 @@ DEPENDENCIES
   kaminari
   launchy
   momentjs-rails
+  nokogiri
   omniauth
   omniauth-google-oauth2
   paper_trail (~> 4.0.0.rc)

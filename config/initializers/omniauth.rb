@@ -4,6 +4,6 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   	:prompt => 'consent',
   	:hd => 'veritrans.co.id',
   	:access_type => 'offline',
-  	:scope => 'profile,email,calendar'
+  	:scope => 'profile,email,calendar,https://www.google.com/m8/feeds/'
   }
 end
