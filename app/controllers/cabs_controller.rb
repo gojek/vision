@@ -16,7 +16,8 @@ class CabsController < ApplicationController
 	
 	def create
 		@cab = Cab.new(cab_params)
-    binding.pry
+    @participants = cab_params[:participant]
+    @cab.participant = (@participants.reject { |c| c.empty? }).join(',')
 		if @cab.save
       @cr_list = params[:cr_list].split(",")
 		  ChangeRequest.where(:id => @cr_list).update_all(:cab_id => @cab.id)
@@ -24,8 +25,7 @@ class CabsController < ApplicationController
         UserMailer.cab_email(@cab).deliver
         ActiveRecord::Base.connection.close
       end
-      flash[:create_cab_notice] = 'CAB successfully arranged'
-      @participants = cab_params[:participant]
+      flash[:create_cab_notice] = 'CAB successfully arranged'      
       arrange_google_calendar
 		  redirect_to @cab
     else
@@ -35,12 +35,51 @@ class CabsController < ApplicationController
     end
 	end
 
+  def destroy
+    @cab.destroy
+    flash[:destroy_cab_notice] = 'CAB successfully destroyed'
+    redirect_to cabs_url
+  end
+
+	def edit
+		@change_requests = ChangeRequest.cab_free
+		@current_change_requests = ChangeRequest.where(:cab_id => @cab.id)
+    @current_participants = @cab.participant.split(',')
+    @participants = Cab::PARTICIPANTS + current_user.get_contacts + @current_participants
+    @participants = @participants.uniq
+	end
+
+	def update
+    @participants = cab_params[:participant]
+    if @cab.update(cab_params)
+      #change participant from array to string
+      @cab.participant = (@participants.reject { |c| c.empty? }).join(',')
+      @cab.save
+      @cr_list = params[:cr_list].split(",")
+      @all_cr_list = params[:all_cr_list].split(",")
+      ChangeRequest.where(:id => @cr_list).update_all(:cab_id => @cab.id)
+      ChangeRequest.where(:id => @all_cr_list).update_all(:cab_id => nil)
+      flash[:update_cab_notice] = 'CAB successfully edited'
+      redirect_to @cab
+    else
+      @change_requests = ChangeRequest.cab_free
+      @current_change_requests = ChangeRequest.where(:cab_id => @cab.id)
+      @current_participants = @cab.participant.split(',')
+      @participants = Cab::PARTICIPANTS + current_user.get_contacts + @current_participants
+      @participants = @participants.uniq
+      render :edit
+    end
+	end
+
+  def show
+    @current_change_requests = ChangeRequest.where(:cab_id => @cab.id)
+  end
+
   def arrange_google_calendar
     attendees = []
     @participants.each do |participant|
       attendees.push({'email' => participant}) unless participant.blank? 
     end
-    binding.pry
     event = {
       'summary' => 'CAB Meeting',
       'location' => @cab.room,
@@ -67,36 +106,6 @@ class CabsController < ApplicationController
     event = results.data
   end
 
-  def destroy
-    @cab.destroy
-    flash[:destroy_cab_notice] = 'CAB successfully destroyed'
-    redirect_to cabs_url
-  end
-
-	def edit
-		@change_requests = ChangeRequest.cab_free
-		@current_change_requests = ChangeRequest.where(:cab_id => @cab.id)
-    @participants = Cab::PARTICIPANTS + current_user.get_contacts
-	end
-
-	def update
-    if @cab.update(cab_params)
-      @cr_list = params[:cr_list].split(",")
-      @all_cr_list = params[:all_cr_list].split(",")
-      ChangeRequest.where(:id => @cr_list).update_all(:cab_id => @cab.id)
-      ChangeRequest.where(:id => @all_cr_list).update_all(:cab_id => nil)
-      flash[:update_cab_notice] = 'CAB successfully edited'
-      redirect_to @cab
-    else
-      @change_requests = ChangeRequest.cab_free
-      @current_change_requests = ChangeRequest.where(:cab_id => @cab.id)
-      render :edit
-    end
-	end
-
-  def show
-    @current_change_requests = ChangeRequest.where(:cab_id => @cab.id)
-  end
 
   def update_change_requests
     change_requests = @cab.change_requests
