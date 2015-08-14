@@ -182,5 +182,11 @@
           cr_list.value = sortable2.toArray();
       }
   });
+  $(function(){
+    $(".select2-tag").select2({
+      tags: true,
+      tokenSeparators: [',', ' ']
+    });
+});
    
 </script>

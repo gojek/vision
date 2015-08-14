@@ -21,7 +21,7 @@
 </script>
 <section class="content-header">
   <h1>
-    Create CAB
+    Edit CAB
   </h1>
 </section>
 <section class="content">
@@ -57,7 +57,7 @@
                 </div><!--/field-->
                 <div class="field form-group">
                   <%= f.label :participant %><br>
-                  <%= f.select :participant, options_for_select(@participants, @cab.participant), {},{class: 'select2-tag form-control', multiple:'multiple'} %>
+                  <%= f.select :participant, options_for_select(@participants), {},{class: 'select2-tag form-control', multiple:'multiple'} %>
             </div><!--/field-->
             </div><!--/box-body-->
         </div><!--/box-->
@@ -200,11 +200,15 @@
   });
 
   $(function(){
-    $(".select2-tag").val(["cr@***REMOVED***", "stig@***REMOVED***"]);
+    var participants = []
+    <% @current_participants.each do |participant| %>
+      var p = '<%= participant %>';
+      participants.push(p);
+    <% end %>
+    $(".select2-tag").val(participants);
     $(".select2-tag").select2({
       tags: true,
       tokenSeparators: [',', ' ']
     });
-
-});
+  });
 </script>

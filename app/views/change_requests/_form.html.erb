@@ -115,8 +115,8 @@
                     <%= f.text_field :requestor_position, class: 'form-control' %>
                   </div><!--/field-->
                 <div class="field form-group">
-                  <label>Tag (Separated by Comma)</label><br>
-                    <%= f.text_field :tag_list, :value => @change_request.tag_list.to_s, class: 'form-control' %>
+                  <label>Tag</label><br>
+                    <%= f.select :tag_list, options_for_select(@tags), {}, {class: 'select2-tag form-control', multiple:'multiple'} %>
                 </div><!--/field-->
               </div><!--/col-->
             </div><!--/box-body-->
@@ -399,7 +399,18 @@
     $('.datetimepicker').on("dp.change", function(e) {
       unsaved = true;
     });
-
-
   });
+  $(function(){
+    var tags = []
+    <% @current_tags.each do |tag| %>
+      var p = '<%= tag %>';
+      tags.push(p);
+    <% end %>
+    $(".select2-tag").val(tags);
+    $(".select2-tag").select2({
+      tags: true,
+      tokenSeparators: [',', ' ']
+    });
+  });
+
 </script>

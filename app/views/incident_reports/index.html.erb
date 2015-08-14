@@ -17,7 +17,9 @@ $(function(){
     <div class="row">
       <div class='col-lg-6'>
         <%if flash[:destroy_incident_report_notice] != nil %>
-        <div class='alert alert-danger'>
+        <div class="alert alert-danger alert-dismissable ">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+          <h4>  <i class="icon fa fa-check"></i> Success!</h4>
           <p id="notice"><%= flash[:destroy_incident_report_notice]  %></p>
         </div>
         <% end %>

@@ -36,3 +36,6 @@
 	margin-top: -2px !important;
 	padding-right: 2px !important;
 }
+.modal {
+z-index: 200000;
+}
