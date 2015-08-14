@@ -12,12 +12,16 @@
 	<div class='row'>
 		<div class='col-lg-6'>
 			<%if flash[:create_cab_notice] != nil %>
-  			<div class='alert alert-success'>
+  			 <div class="alert alert-success alert-dismissable ">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+          <h4>  <i class="icon fa fa-check"></i> Success!</h4>
   				<p id="notice"><%= flash[:create_cab_notice]  %></p>
   			</div><!--/alert-->
 		  <% end %><!--/flash[:create_cab_notice]-->
 		  <%if flash[:update_cab_notice] != nil %>
-  			<div class='alert alert-success'>
+         <div class="alert alert-success alert-dismissable ">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+          <h4>  <i class="icon fa fa-check"></i> Success!</h4>
   				<p id="notice"><%= flash[:update_cab_notice]  %></p>
   			</div><!--/alert-->
 		  <% end %><!--/flash[:update_cab_notice]-->

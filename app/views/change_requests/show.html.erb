@@ -22,28 +22,37 @@
 </section><!--/content-header-->
 <section class="content">
   <%if flash[:create_cr_notice] != nil %>
-    <div class="callout callout-success ">
+    <div class="alert alert-success alert-dismissable ">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
       <h4>  <i class="icon fa fa-check"></i> Success!</h4>
       <p id="notice"><%= flash[:create_cr_notice]  %></p>
     </div><!--/alert-->
   <% end %>
    <%if flash[:reject_reason_notice] != nil %>
-    <div class='alert alert-danger'>
+   <div class="alert alert-warning alert-dismissable ">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      <h4>  <i class="icon fa fa-warning"></i> Alert!</h4>
       <p id="notice"><%= flash[:reject_reason_notice]  %></p>
     </div><!--/alert-->
   <% end %>
   <%if flash[:update_cr_notice] != nil %>
-    <div class='alert alert-success'>
+    <div class="alert alert-success alert-dismissable ">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      <h4>  <i class="icon fa fa-check"></i> Success!</h4>
       <p id="notice"><%= flash[:update_cr_notice]  %></p>
     </div><!--/alert-->
   <% end %>
   <%if flash[:status_changed_notice] != nil %>
-    <div class='alert alert-success'>
+   <div class="alert alert-success alert-dismissable ">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      <h4>  <i class="icon fa fa-check"></i> Success!</h4>
       <p id="notice"><%= flash[:status_changed_notice]  %></p>
     </div><!--/alert-->
   <% end %>
   <%if flash[:not_eligible_notice] != nil %>
-    <div class='alert alert-danger'>
+    <div class="alert alert-warning alert-dismissable ">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      <h4>  <i class="icon fa fa-warning"></i> Alert!</h4>
       <p id="notice"><%= flash[:not_eligible_notice]  %></p>
     </div><!--/alert-->
   <% end %>
@@ -80,7 +89,9 @@
           <h3 class="box-title">Change Summary</h3>
         </div><!--/box-header-->
         <div class="box-body">
-          <%=raw @change_request.tag_list.map{ |t| link_to t, tag_path(t) }.join(', ')  %>
+          <div class= 'form-group'>
+          <%=raw @change_request.tag_list.map{ |t| link_to t, tag_path(t), class:'btn btn-primary btn-xs' }.join('     ')  %>
+        </div>
           <table class="table table-striped table-bordered">
             <thead>
               <tr>
