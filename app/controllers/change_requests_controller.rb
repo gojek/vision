@@ -9,12 +9,6 @@ class ChangeRequestsController < ApplicationController
     if params[:tag]
       @q = ChangeRequest.ransack(params[:q])
       @change_requests = @q.result(distinct: true).tagged_with(params[:tag]).order(created_at: :desc).page(params[:page]).per(params[:per_page])
-    #elsif(current_user.role=='requestor')
-     # @q = ChangeRequest.ransack(params[:q])
-     # @change_requests = @q.result(distinct: true).where(user_id: current_user.id).order(created_at: :desc).page(params[:page]).per(params[:per_page])
-    #elsif(current_user.role=='approver')
-      #@q = ChangeRequest.ransack(params[:q])
-      #@change_requests = @q.result(distinct: true).joins(:approvers).where(approvers: {user_id: current_user.id}).order(created_at: :desc).page(params[:page]).per(params[:per_page])
     else
       #populate all CR if release_manager
       @q = ChangeRequest.ransack(params[:q])
@@ -35,9 +29,13 @@ class ChangeRequestsController < ApplicationController
 
   def new
     @change_request = ChangeRequest.new
+    @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
+    @current_tags = []
   end
 
   def edit
+    @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
+    @current_tags = @change_request.tag_list
   end
 
   def edit_grace_period_notes
@@ -63,15 +61,17 @@ class ChangeRequestsController < ApplicationController
           @approval.change_request_id = @change_request.id
           @approval.save
         end
-        Thread.new do
-          UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
-          ActiveRecord::Base.connection.close
-        end
+        #Thread.new do
+         # UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
+          #ActiveRecord::Base.connection.close
+        #end
         #SendNotifEmailJob.set(wait: 20.seconds).perform_later(@change_request.user, @change_request, @status)
         flash[:create_cr_notice] = 'Change request was successfully created.'
         format.html { redirect_to @change_request }
         format.json { render :show, status: :created, location: @change_request }
       else
+        @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
+        @current_tags = []
         format.html { render :new }
         format.json { render json: @change_request.errors, status: :unprocessable_entity }
       end
@@ -85,6 +85,8 @@ class ChangeRequestsController < ApplicationController
         format.html { redirect_to @change_request }
         format.json { render :show, status: :ok, location: @change_request }
       else
+        @current_tags = @change_request.tag_list
+        @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
         format.html { render :edit }
         format.json { render json: @change_request.errors, status: :unprocessable_entity }
       end
@@ -140,10 +142,10 @@ class ChangeRequestsController < ApplicationController
     end
 
     def change_request_params
-      params.require(:change_request).permit(:tag_list, :change_summary, :priority, :db, :os, :net, :category, :cr_type, :change_requirement, :business_justification, :requestor_position, :note, :analysis, :solution, :impact, :scope, :design, :backup,:testing_environment_available, :testing_procedure, :testing_notes, :schedule_change_date, :planned_completion, :grace_period_starts, :grace_period_end, :implementation_notes, :grace_period_notes, :requestor_name,
+      params.require(:change_request).permit(:change_summary, :priority, :db, :os, :net, :category, :cr_type, :change_requirement, :business_justification, :requestor_position, :note, :analysis, :solution, :impact, :scope, :design, :backup,:testing_environment_available, :testing_procedure, :testing_notes, :schedule_change_date, :planned_completion, :grace_period_starts, :grace_period_end, :implementation_notes, :grace_period_notes, :requestor_name,
         :definition_of_success, :definition_of_failed, :category_application, :category_network_equipment,:category_server, :category_user_access,
         :category_other,:other_dependency,:type_security_update,:type_install_uninstall, :type_configuration_change, :type_emergency_change, :type_other,
-        implementers_attributes: [:id, :name, :position, :_destroy], testers_attributes: [:id, :name, :position, :_destroy])
+        implementers_attributes: [:id, :name, :position, :_destroy], testers_attributes: [:id, :name, :position, :_destroy], :tag_list => [])
     end
 
     def owner_required
