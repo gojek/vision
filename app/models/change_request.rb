@@ -18,6 +18,8 @@ class ChangeRequest < ActiveRecord::Base
             inclusion: { in: PRIORITY, message: '%{value} is not a valid scope' }
   STATUS = %w(submitted scheduled rollbacked cancelled rejected deployed closed)
   
+  TAG = %w(rubi pato jarvis)
+
   validates :requestor_name, :requestor_position, :change_summary, :priority,:change_requirement, :business_justification, :analysis, :solution, :impact, :scope, :design,
             :backup, :testing_procedure, :testing_notes, :schedule_change_date, :planned_completion, :definition_of_success, :definition_of_failed, presence: true
   validates_inclusion_of :testing_environment_available, :in => [true, false]
