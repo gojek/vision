@@ -28,7 +28,8 @@
 //= require fullcalendar
 //= require turbolinks
 NProgress.configure({
-  parent: '.logo-mini'
+  parent: '.logo'
+  
 });
 $(function(){
   $(".select2").select2();
