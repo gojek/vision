@@ -2,6 +2,7 @@
 	position: fixed !important;
 	z-index: 3000 !important;
 	width: 100% !important;
+	margin-bottom: 50px;
 }
 
 .logo {
@@ -15,4 +16,12 @@
 
 .content-wrapper {
 	margin-top: 50px;
+}
+
+@media screen and (max-width: 768px){
+  
+  *[class*='content-header']{
+    margin-top:100px;
+  }
+  
 }
