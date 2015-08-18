@@ -1,3 +1,12 @@
+ 
+ <style type="text/css">
+ .pull-right{
+    float: right !important;
+ }
+
+
+
+ </style>
  <section class="content-header">
   <h1>
     User
@@ -14,22 +23,25 @@
     </div>
     <div class="col-xs-12">
       <div class="box">
-        <div class="box-header with-border">
+        <div class="box-header with-border ">
+            <div class='col-lg-8 col-md-2 col-xs-12'>
           <h3 class="box-title">User List</h3>
-          <div class="box-tools">
+        </div>
+        <div class='col-lg-4  col-md-10 col-xs-12 pull-right' >
             <%= search_form_for @q, html: {class: "form-inline"} do |f| %>
-                <div class="input-group" style='min-width:150px'>
+                <div class="input-group" style='min-width:100px'>
                     <span class="input-group-addon">Role </span>
                     <%= f.select :role_cont, options_for_select([['Any','']] + User::ROLES), {}, {class: 'form-control select2', style: 'display:none'}%>
                 </div>
                 <div class="input-group">
                     <span class="input-group-addon">Name </span>
-                    <%= f.search_field :name_cont, class: 'form-control' %>
+                 <%= f.search_field :name_cont, class: 'form-control' %>
                 </div>
-                
-                <%= f.submit class: 'btn btn-flat btn-default pull-right'%>
+                <div class="input-group">
+                    <%= f.submit class: 'btn btn-flat btn-default pull-right'%>
+                </div>
             <% end %>
-          </div>
+        </div>
         </div><!-- /.box-header -->
         <div class="box-body table-responsive">
           <table class="table table-hover">
