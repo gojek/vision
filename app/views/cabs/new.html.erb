@@ -64,42 +64,36 @@
       </div><!--/col-->
     </div><!--/row-->
     <div class='row'>
-      <div class='col-lg-6'>
+      <div class='col-lg-6 col-md-6'>
         <div class = 'box'>
           <div class= 'box-header with-border'>
             <h3 class="box-title">CAB Meeting</h3>
           </div><!--/box-header-->
           <div class= 'box-body'>
-            <div id="cab-list" class="list-group">
-            </div>
+            <ul id="cab-list" class="list-group">
+            </ul>
           </div><!--/box-body-->
         </div><!--/box-->
       </div><!--/col-->
-      <div class='col-lg-6'>
+      <div class='col-lg-6 col-md-6 col-xs-12'>
         <div class='box'>
           <div class='box-header with-border'>
             <h3 class='box-title'>Available Change Requests</h3>
           </div><!--/box-header-->
           <div class='box-body'>
-            <div id="all-list" class="box-group list-group">
-            <% @change_requests.each do |change_request| %>
-              <div data-id=<%= change_request.id %> class='list-group-item panel box box-solid'>
-                <div class='box-header with-border'>
-                  <h4 class="list-group-item-heading box-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%= change_request.id%>">
-                    <%=raw change_request.change_summary %></a>
-                  </h4>
-                </div><!--/box-header-->
-                <div id="collapse<%= change_request.id%>" class="panel-collapse collapse">
-                  <div class='box-body'>
-                    <p class="list-group-item-text">
-                      <%=raw change_request.business_justification %>
-                    </p>
-                  </div><!--/box-body-->
-                </div><!--/panel-collapse-->
-              </div><!--/list-group-item panel box-->
-            <% end %><!--/change_request.each-->
-            </div><!--/box-group-->
+            <div id="header">Search</div>
+            <br>
+            <ul id="all-list" class="list-group">
+              <% @change_requests.each do |change_request| %>
+                <li data-id=<%= change_request.id %> class='list-group-item panel box box-solid'>
+                  <div class='box-header with-border'>
+                    <h4 class="list-group-item-heading box-title">
+                      <%=raw change_request.change_summary %>
+                    </h4>
+                  </div><!--/box-header-->
+                </li><!--/list-group-item panel box-->
+              <% end %><!--/change_request.each-->
+            </ul><!--/box-group-->
           </div><!--/box-body-->
         </div><!--/box-->
       </div><!--/col-->
@@ -112,6 +106,7 @@
   <% end %><!--/form-->
 </section><!--/content-->
 
+
 <style>
 .list-group {
   min-height: 20px;
@@ -122,6 +117,7 @@
 #all_cr_list {
   display: none;
 }
+
 </style>
 
 <!--custom script for change request draggable function -->
@@ -189,4 +185,68 @@
     });
 });
    
+</script>
+
+<script>
+
+// Copyright (c) 2010 Kilian Valkhof
+
+// Permission is hereby granted, free of charge, to any person
+// obtaining a copy of this software and associated documentation
+// files (the "Software"), to deal in the Software without
+// restriction, including without limitation the rights to use,
+// copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the
+// Software is furnished to do so, subject to the following
+// conditions:
+
+// The above copyright notice and this permission notice shall be
+// included in all copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+// OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+// HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
+
+(function ($) {
+  // custom css expression for a case-insensitive contains()
+  jQuery.expr[':'].Contains = function(a,i,m){
+      return (a.textContent || a.innerText || "").toUpperCase().indexOf(m[3].toUpperCase())>=0;
+  };
+
+  function listFilter(header, list) { // header is any element, list is an unordered list
+    // create and add the filter form to the header
+    var form = $("<form>").attr({"class":"filterform","action":"#"}),
+        input = $("<input>").attr({"class":"filterinput form-control","type":"text"});
+    $(form).append(input).appendTo(header);
+
+    $(input)
+      .change( function () {
+        var filter = $(this).val();
+        if(filter) {
+          // this finds all links in a list that contain the input,
+          // and hide the ones not containing the input while showing the ones that do
+          $(list).find("div:not(:Contains(" + filter + "))").parent().slideUp();
+          $(list).find("div:Contains(" + filter + ")").parent().slideDown();
+        } else {
+          $(list).find("li").slideDown();
+        }
+        return false;
+      })
+    .keyup( function () {
+        // fire the above change event after every letter
+        $(this).change();
+    });
+  }
+
+  //ondomready
+  $(function () {
+    listFilter($("#header"), $("#all-list"));
+  });
+}(jQuery));
+
 </script>
