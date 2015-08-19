@@ -25,4 +25,10 @@ class IncidentReport < ActiveRecord::Base
   def user_name
     user ? user.name : ''
   end
+
+  def set_solving_duration
+    self.solving_duration = (self.recovery_time-self.detection_time)/60
+  end
+
+
 end
