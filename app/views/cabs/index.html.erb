@@ -2,9 +2,11 @@
 <section class="content-header">
   <h1>
     CAB
-    <%= link_to  new_cab_path, class: 'btn btn-flat btn-primary pull-right'  do %>
-      <i class="fa fa-plus"></i> <strong>Arrange CAB</strong>
-    <%end %> 
+    <% if current_user.role == 'release_manager' || current_user.is_admin %>
+      <%= link_to  new_cab_path, class: 'btn btn-flat btn-primary pull-right'  do %>
+        <i class="fa fa-plus"></i> <strong>Arrange CAB</strong>
+      <%end %> 
+    <% end %>
   </h1>
 </section><!--/content-header-->
 

@@ -5,8 +5,13 @@ class IncidentReportsController < ApplicationController
   before_action :owner_required, only: [:edit, :update, :destroy]
 
   def index
-    @q = IncidentReport.ransack(params[:q])
-    @incident_reports = @q.result(distinct: true).page(params[:page]).per(params[:per_page])
+    if params[:tag]
+      @q = IncidentReport.ransack(params[:q])
+      @incident_reports = @q.result(distinct: true).tagged_with(params[:tag]).page(params[:page]).per(params[:per_page])
+    else
+      @q = IncidentReport.ransack(params[:q])
+      @incident_reports = @q.result(distinct: true).page(params[:page]).per(params[:per_page])
+    end
     respond_to do |format|
       format.html
       format.xls { send_data(@incident_reports.to_xls) }
@@ -18,9 +23,13 @@ class IncidentReportsController < ApplicationController
 
   def new
     @incident_report = IncidentReport.new
+    @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
+    @current_tags = []
   end
 
   def edit
+    @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
+    @current_tags = @incident_report.tag_list
   end
 
   def create
@@ -32,6 +41,8 @@ class IncidentReportsController < ApplicationController
         format.html { redirect_to @incident_report }
         format.json { render :show, status: :created, location: @incident_report }
       else
+        @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
+        @current_tags = []
         format.html { render :new }
         format.json { render json: @incident_report.errors, status: :unprocessable_entity }
       end
@@ -45,6 +56,8 @@ class IncidentReportsController < ApplicationController
         format.html { redirect_to @incident_report }
         format.json { render :show, status: :ok, location: @incident_report }
       else
+        @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
+        @current_tags = @incident_report.tag_list
         format.html { render :edit }
         format.json { render json: @incident_report.errors, status: :unprocessable_entity }
       end
@@ -77,7 +90,7 @@ class IncidentReportsController < ApplicationController
               :occurrence_time, :detection_time, :recovery_time,
               :source, :rank, :loss_related, :occurred_reason,
               :overlooked_reason, :solving_duration, :recovery_action, :prevent_action,
-              :recurrence_concern, :current_status, :measurer_status)
+              :recurrence_concern, :current_status, :measurer_status, :tag_list => [])
   end
 
   def owner_required

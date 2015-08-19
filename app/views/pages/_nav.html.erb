@@ -26,7 +26,13 @@
             <li class="user-header">
               <p>
                 <%= current_user.name %>
-                <small><%= current_user.role %></small>
+                <small><%= current_user.role %>
+                  <% if current_user.is_admin %>
+                  -admin
+                  <%end %>
+
+
+                </small>
               </p>
             </li>
             <li class='user-footer'>
