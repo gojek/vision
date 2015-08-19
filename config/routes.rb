@@ -4,7 +4,9 @@ Rails.application.routes.draw do
   get 'cobas/new'
 
   resources :comments
-  get 'tags/:tag', to: 'change_requests#index', as: :tag
+  
+  get 'change_requests/tags/:tag', to: 'change_requests#index', as: :tag
+  get 'incident_reports/tags/:tag', to: 'incident_reports#index', as: :incident_report_tag
   get 'change_requests/:id/graceperiod' => 'change_requests#edit_grace_period_notes', :as => 'graceperiod'
   get 'change_requests/:id/implementation' => 'change_requests#edit_implementation_notes', :as => 'implementation_notes'
   post 'change_requests/:id/deploy' => 'change_request_statuses#deploy', :as => 'deploy'
