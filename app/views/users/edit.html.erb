@@ -1,12 +1,87 @@
 <section class="content">
     <div class="row">
-        <div class="col-xs-12 col-md-8 col-lg-6">
+        <div class="col-xs-12 col-md-12 col-lg-12">
             <div class="box box-info">
               <div class="box-header with-border">
                 <h3 class="box-title">Edit form</h3>
               </div><!-- /.box-header -->
             <%= render 'registrationform' %>
             </div><!-- /box -->
+
+             <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Role Descriptions</h3>
+            </div><!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+              <table class="table  table-striped table-hover">
+                <tbody><tr>
+                    <th style="width: 10px">#</th>
+                    <th>Role</th>
+                    <th>Create, Edit, Delete Change Requests</th>
+                    <th>Delete & Edit all Change Requests</th>
+                    <th>Approve / Reject CR</th>
+                    <th>Change CR Status</th>
+                    <th>Create, Edit, Delete Incident Reports</th>
+                    <th>Delete & Edit all Incident Reports</th>
+                    <th>Arrange, Delete, Update CAB</th>
+                    <th>Change User Roles</th>
+                    <th>Lock User</th>
+                </tr>
+                <tr>
+                  <td>1.</td>
+                  <td><b>Administrator</b></td>
+                  <td><i class="fa fa-fw fa-check"></i></td>
+                  <td><i class="fa fa-fw fa-check"></i></td>
+                  <td><i class="fa fa-fw fa-check"></i></td>
+                  <td><i class="fa fa-fw fa-check"></i></td>
+                  <td><i class="fa fa-fw fa-check"></i></td>
+                  <td><i class="fa fa-fw fa-check"></i></td>
+                  <td><i class="fa fa-fw fa-check"></i></td>
+                  <td><i class="fa fa-fw fa-check"></i></td>
+                  <td><i class="fa fa-fw fa-check"></i></td>
+                </tr>
+                <tr>
+                  <td>2.</td>
+                  <td><b>Release Manager</b></td>
+                  <td><i class="fa fa-fw fa-check"></i></td>
+                  <td><i class="fa fa-fw fa-check"></i></td>
+                  <td><i class="fa fa-fw fa-minus"></i></td>
+                  <td><i class="fa fa-fw fa-check"></i></td>
+                  <td><i class="fa fa-fw fa-check"></i></td>
+                  <td><i class="fa fa-fw fa-minus"></i></td>
+                  <td><i class="fa fa-fw fa-check"></i></td>
+                  <td><i class="fa fa-fw fa-check"></i></td>
+                  <td><i class="fa fa-fw fa-minus"></i></td>
+                </tr>
+                <tr>
+                  <td>3.</td>
+                  <td><b>Approver</b></td>
+                  <td><i class="fa fa-fw fa-check"></i></td>
+                  <td><i class="fa fa-fw fa-minus"></i></td>
+                  <td><i class="fa fa-fw fa-check"></i></td>
+                  <td><i class="fa fa-fw fa-minus"></i></td>
+                  <td><i class="fa fa-fw fa-check"></i></td>
+                  <td><i class="fa fa-fw fa-minus"></i></td>
+                  <td><i class="fa fa-fw fa-minus"></i></td>
+                  <td><i class="fa fa-fw fa-minus"></i></td>
+                  <td><i class="fa fa-fw fa-minus"></i></td>
+                </tr>
+                <tr>
+                  <td>4.</td>
+                  <td><b>Requestor</b></td>
+                  <td><i class="fa fa-fw fa-check"></i></td>
+                  <td><i class="fa fa-fw fa-minus"></i></td>
+                  <td><i class="fa fa-fw fa-minus"></i></td>
+                  <td><i class="fa fa-fw fa-minus"></i></td>
+                  <td><i class="fa fa-fw fa-check"></i></td>
+                  <td><i class="fa fa-fw fa-minus"></i></td>
+                  <td><i class="fa fa-fw fa-minus"></i></td>
+                  <td><i class="fa fa-fw fa-minus"></i></td>
+                  <td><i class="fa fa-fw fa-minus"></i></td>
+                </tr>
+              </tbody></table>
+            </div><!-- /.box-body -->
+        </div>
         </div><!-- /col -->
     </div><!-- /row -->
 </section><!-- /content -->
