@@ -29,7 +29,6 @@
 //= require turbolinks
 NProgress.configure({
   parent: '.logo'
-  
 });
 $(function(){
   $(".select2").select2();

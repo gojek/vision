@@ -30,6 +30,7 @@ class ChangeRequest < ActiveRecord::Base
   validate :at_least_one_type
   validates :implementers, presence: true
   validate :tester_required
+  validate :deploy_date
   #validates :change_summary, :priority, :category, :cr_type, :change_requirement, :business_justification, :requestor_position, :requestor_name, presence: true
   aasm do 
     state :submitted, :initial => true
@@ -89,6 +90,9 @@ class ChangeRequest < ActiveRecord::Base
   def rejects_count
     self.approvers.where(approve: false).count 
   end
+   def deploy_date
+    errors.add("Deploy date", "is invalid.") unless schedule_change_date < planned_completion
+  end
   
   def approvable?
     self.approvers.where(approve: true).count >= CONFIG[:minimum_approval]
@@ -113,6 +117,39 @@ class ChangeRequest < ActiveRecord::Base
     self.type_other.blank? ? nil : category_array.push(self.type_other)
     category_array.join(', ')
   end
+  def arrange_google_calendar(current_user)
+    attendees = []
+    @participants = self.cab.participant.split(",")
+    @participants.each do |participant|
+      attendees.push({'email' => participant}) unless participant.blank? 
+    end
+  
+    event = {
+      'summary' => self.change_summary,
+      'location' => 'Veritrans',
+      'start' => {
+        'dateTime' => self.schedule_change_date.iso8601,
+        'timeZone' => 'Asia/Jakarta',
+      },
+      'end' => {
+        'dateTime' => self.planned_completion.iso8601,
+        'timeZone' => 'Asia/Jakarta',
+      },
+      'attendees' => attendees
+    }
+
+    client = Google::APIClient.new
+    client.authorization.access_token = current_user.fresh_token
+    service = client.discovered_api('calendar', 'v3')
+    results = client.execute!(
+      :api_method => service.events.insert,
+      :parameters => {
+        :calendarId => 'primary', :sendNotifications => 'true'},
+      :body_object => event)
+    event = results.data
+
+  end
+
 
 end
 
