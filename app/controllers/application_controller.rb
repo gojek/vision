@@ -13,4 +13,5 @@ class ApplicationController < ActionController::Base
   	sign_out current_user unless current_user.token != nil 
   end 
  
+ 
 end

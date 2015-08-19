@@ -25,6 +25,7 @@ class IncidentReportsController < ApplicationController
 
   def create
     @incident_report = current_user.IncidentReports.build(incident_report_params)
+    @incident_report.solving_duration = (@incident_report.recovery_time - @incident_report.detection_time)/60
     respond_to do |format|
       if @incident_report.save
         flash[:create_incident_report_notice] = 'Incident report was successfully created.'
@@ -75,7 +76,7 @@ class IncidentReportsController < ApplicationController
       .permit(:service_impact, :problem_details, :how_detected,
               :occurrence_time, :detection_time, :recovery_time,
               :source, :rank, :loss_related, :occurred_reason,
-              :overlooked_reason, :recovery_action, :prevent_action,
+              :overlooked_reason, :solving_duration, :recovery_action, :prevent_action,
               :recurrence_concern, :current_status, :measurer_status)
   end
 
