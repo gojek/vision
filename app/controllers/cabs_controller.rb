@@ -80,10 +80,16 @@ class CabsController < ApplicationController
     @participants.each do |participant|
       attendees.push({'email' => participant}) unless participant.blank? 
     end
+    @change_requests = @cab.change_requests.collect(&:change_summary)
+    all_cr = @change_requests.join("\n")
+    #@change_requests.each do |cr|
+     # all_cr = all_cr+ "," + cr.change_summary
+    #end
+
     event = {
       'summary' => 'CAB Meeting',
       'location' => @cab.room,
-      'description' => @cab.notes,
+      'description' => all_cr,
       'start' => {
         'dateTime' => @cab.meet_date.iso8601,
         'timeZone' => 'Asia/Jakarta',
@@ -115,6 +121,7 @@ class CabsController < ApplicationController
       change_request.planned_completion = end_date
       change_request.schedule_change_date = start_date
       change_request.save
+      change_request.arrange_google_calendar(current_user)
     end
     redirect_to @cab
 
