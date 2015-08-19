@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150819035906) do
+ActiveRecord::Schema.define(version: 20150819071518) do
 
   create_table "approvers", force: :cascade do |t|
     t.string   "name"
@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 20150819035906) do
     t.string   "room"
     t.text     "notes"
     t.string   "participant"
+    t.string   "event_id"
   end
 
   add_index "cabs", ["meet_date"], name: "index_cabs_on_meet_date", unique: true

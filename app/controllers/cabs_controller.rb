@@ -38,6 +38,7 @@ class CabsController < ApplicationController
   def destroy
     @cab.destroy
     flash[:destroy_cab_notice] = 'CAB successfully destroyed'
+    delete_google_calendar
     redirect_to cabs_url
   end
 
@@ -60,6 +61,7 @@ class CabsController < ApplicationController
       ChangeRequest.where(:id => @cr_list).update_all(:cab_id => @cab.id)
       ChangeRequest.where(:id => @all_cr_list).update_all(:cab_id => nil)
       flash[:update_cab_notice] = 'CAB successfully edited'
+      update_google_calendar
       redirect_to @cab
     else
       @change_requests = ChangeRequest.cab_free
@@ -110,6 +112,49 @@ class CabsController < ApplicationController
         :calendarId => 'primary', :sendNotifications => 'true'},
       :body_object => event)
     event = results.data
+    @cab.event_id = event.id
+    @cab.save
+  end
+
+  def update_google_calendar
+    attendees = []
+    @participants.each do |participant|
+      attendees.push({'email' => participant}) unless participant.blank? 
+    end
+    @change_requests = @cab.change_requests.collect(&:change_summary)
+    all_cr = @change_requests.join("\n")
+
+    client = Google::APIClient.new
+    client.authorization.access_token = current_user.fresh_token
+    service = client.discovered_api('calendar', 'v3')
+    result = client.execute(:api_method => service.events.get,
+                        :parameters => {'calendarId' => 'primary', 'eventId' => @cab.event_id})
+    event = result.data
+    event.location = @cab.room
+    event.description = all_cr
+    event.start = {
+      'dateTime' => @cab.meet_date.iso8601,
+      'timeZone' => 'Asia/Jakarta',
+    }
+    event.end = {
+      'dateTime' => (@cab.meet_date+1.hour).iso8601,
+      'timeZone' => 'Asia/Jakarta',
+    }
+    event.attendees = attendees
+
+    result = client.execute(:api_method => service.events.update,
+                        :parameters => {'calendarId' => 'primary', 'eventId' => event.id, :sendNotifications => 'true'},
+                        :body_object => event,
+                        :headers => {'Content-Type' => 'application/json'})
+    event = result.data
+  end
+
+  def delete_google_calendar
+    client = Google::APIClient.new
+    client.authorization.access_token = current_user.fresh_token
+    service = client.discovered_api('calendar', 'v3')
+    result = client.execute(:api_method => service.events.delete,
+                        :parameters => {'calendarId' => 'primary', 'eventId' => @cab.event_id, :sendNotifications => 'true'})
   end
 
 

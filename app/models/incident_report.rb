@@ -3,6 +3,7 @@ class IncidentReport < ActiveRecord::Base
   belongs_to :user
   has_paper_trail class_name: 'IncidentReportVersion',
                   meta: { author_username: :user_name }
+  acts_as_taggable
   CURRENT_STATUS = %w(Recovered Ongoing)
   MEASURER_STATUS = %w(Implemented Development)
   SOURCE = %w(Internal External)

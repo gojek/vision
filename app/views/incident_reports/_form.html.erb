@@ -36,6 +36,10 @@
         <h3 class='box-title'>Incident Report</h3>
     </div>
     <div class='box-body table-responsive'>
+        <div class="field form-group">
+          <label>Tag</label><br>
+            <%= f.select :tag_list, options_for_select(@tags), {}, {class: 'select2-tag form-control', multiple:'multiple'} %>
+        </div><!--/field-->
         <div class="form-group">
           <% if @incident_report.errors.messages[:service_impact] %>
             <div class="field form-group has-error">
@@ -232,6 +236,18 @@
     });
 
 
+  });
+  $(function(){
+    var tags = []
+    <% @current_tags.each do |tag| %>
+      var p = '<%= tag %>';
+      tags.push(p);
+    <% end %>
+    $(".select2-tag").val(tags);
+    $(".select2-tag").select2({
+      tags: true,
+      tokenSeparators: [',', ' ']
+    });
   });
 
 </script>
