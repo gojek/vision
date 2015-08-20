@@ -52,7 +52,15 @@
       <br/>
       <b>Occurance Time:</b> <%= @incident_report.occurrence_time.to_s(:db) %><br/>
       <b>Detection Time:</b>  <%= @incident_report.detection_time.to_s(:db) %><br/>
-      <b>Recovery Time:</b>  <%= @incident_report.recovery_time.to_s(:db) %>
+      <b>Recovery Time:</b>  <%= @incident_report.recovery_time.to_s(:db) %><br>
+      <b>Recovery Duration:</b>  <%= @incident_report.recovery_duration %> minutes<br>
+      <%if @incident_report.resolved_time != nil %>
+      <b>Resolve Time:</b>  <%= @incident_report.resolved_time.to_s(:db) %><br>
+      <% end %>
+      <% if @incident_report.recovery_duration != nil %>
+      <b>Resolution Duration:</b>  <%= @incident_report.recovery_duration %> minutes
+      <% end %>
+
     </div><!-- /.col -->
   </div><!-- /.row -->
 
