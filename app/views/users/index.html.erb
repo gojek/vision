@@ -33,7 +33,7 @@
         </div>
         <div class='col-lg-4  col-md-10 col-xs-12 pull-right' >
             <%= search_form_for @q, html: {class: "form-inline"} do |f| %>
-                <div class="input-group" style='min-width:100px'>
+                <div class="input-group" style='min-width:130px'>
                     <span class="input-group-addon">Role </span>
                     <%= f.select :role_cont, options_for_select([['Any','']] + User::ROLES), {}, {class: 'form-control select2', style: 'display:none'}%>
                 </div>

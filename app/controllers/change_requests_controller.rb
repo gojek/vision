@@ -53,7 +53,6 @@ class ChangeRequestsController < ApplicationController
   end
 
   def create
-    binding.pry
     @change_request = current_user.ChangeRequests.build(change_request_params)
     @collaborators_list = params[:collaborators_list]? params[:collaborators_list] : []
     @collaborators_list.each do |collaborator|
