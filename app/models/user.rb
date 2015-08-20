@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
   validates :email, presence: true
   has_many :IncidentReports
   has_many :ChangeRequests
+  has_and_belongs_to_many :collaborate_change_requests, :class_name => 'ChangeRequest'
   has_many :Comments
   has_many :Approvers, :dependent => :destroy
   validates :email, format: { with: /\b[A-Z0-9._%a-z\-]+@veritrans\.co\.id\z/,
