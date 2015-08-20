@@ -181,8 +181,8 @@ ActiveRecord::Schema.define(version: 20150820053456) do
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
     t.datetime "resolved_time"
-    t.float    "resolution_duration"
-    t.float    "recovery_duration"
+    t.decimal  "resolution_duration"
+    t.decimal  "recovery_duration"
   end
 
   add_index "incident_reports", ["user_id"], name: "index_incident_reports_on_user_id"
