@@ -57,8 +57,8 @@
       <%if @incident_report.resolved_time != nil %>
       <b>Resolve Time:</b>  <%= @incident_report.resolved_time.to_s(:db) %><br>
       <% end %>
-      <% if @incident_report.recovery_duration != nil %>
-      <b>Resolution Duration:</b>  <%= @incident_report.recovery_duration %> minutes
+      <% if @incident_report.recovery_duration.blank? %>
+      <b>Resolution Duration:</b>  <%= @incident_report.resolution_duration %> minutes
       <% end %>
 
     </div><!-- /.col -->
