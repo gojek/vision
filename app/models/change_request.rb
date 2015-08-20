@@ -1,6 +1,7 @@
 class ChangeRequest < ActiveRecord::Base
   include AASM
   belongs_to :user
+  has_and_belongs_to_many :collaborators, :class_name =>'User'
   has_many :testers, dependent: :destroy
   has_many :implementers, dependent: :destroy
   has_many :change_request_statuses, dependent: :destroy
@@ -28,7 +29,7 @@ class ChangeRequest < ActiveRecord::Base
   validate :at_least_one_type
   validates :implementers, presence: true
   validate :tester_required
-  validate :deploy_date
+  validate :deploy_date, :if => :schedule_change_date? && :planned_completion?
   #validates :change_summary, :priority, :category, :cr_type, :change_requirement, :business_justification, :requestor_position, :requestor_name, presence: true
   aasm do 
     state :submitted, :initial => true
