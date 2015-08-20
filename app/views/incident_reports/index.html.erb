@@ -40,7 +40,8 @@ $(function(){
                     <th><%= sort_link(@q, :occurrence_time) %></th>
                     <th><%= sort_link(@q, :detection_time) %></th>
                     <th><%= sort_link(@q, :recovery_time) %></th>
-                    <th>Solving duration</th>
+                    <th>Recovery duration</th>
+                    <th>Resolution duration</th>
                     <th>Source</th>
                     <th><%= sort_link(@q, :rank) %></th>
                     <th>Reported by</th>
@@ -49,6 +50,7 @@ $(function(){
 
               </tr>
               <% @incident_reports.each do |incident_report| %>
+              
                     <tr>
                       <td><%= incident_report.id %></td>
                       <td><%= incident_report.service_impact %></td>
@@ -58,7 +60,8 @@ $(function(){
                       <td><%= incident_report.occurrence_time.to_s(:long) %></td>
                       <td><%= incident_report.detection_time.to_s(:long) %></td>
                       <td><%= incident_report.recovery_time.to_s(:long) %></td>
-                      <td><%= incident_report.solving_duration %> minutes</td>
+                      <td><%= incident_report.recovery_duration %> </td>
+                      <td><%= incident_report.resolution_duration %> </td>
                       <td><%= incident_report.source %></td>
                       <td><%= incident_report.rank %></td>
                       <td><%= incident_report.user.name %></td>

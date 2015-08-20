@@ -118,6 +118,11 @@
                   <label>Tag</label><br>
                     <%= f.select :tag_list, options_for_select(@tags), {}, {class: 'select2-tag form-control', multiple:'multiple'} %>
                 </div><!--/field-->
+                <div class="field form-group">
+                  <label>Collaborators</label><br>
+                    <%= select_tag "collaborators_list" ,options_for_select(@users), class: 'select2-collaborate form-control', multiple:true %>
+                </div><!--/field-->
+                
               </div><!--/col-->
             </div><!--/box-body-->
           </div> <!--/box-->
@@ -409,6 +414,16 @@
     $(".select2-tag").val(tags);
     $(".select2-tag").select2({
       tags: true,
+      tokenSeparators: [',', ' ']
+    });
+
+    var collaborators = []
+    <% @current_collaborators.each do |collaborator| %>
+      var p = '<%= collaborator %>';
+      collaborators.push(p);
+    <% end %>
+    $(".select2-collaborate").val(collaborators);
+    $(".select2-collaborate").select2({
       tokenSeparators: [',', ' ']
     });
   });

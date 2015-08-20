@@ -30,12 +30,16 @@ class ChangeRequestsController < ApplicationController
   def new
     @change_request = ChangeRequest.new
     @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
+    @users = User.all.collect(&:name)
     @current_tags = []
+    @current_collaborators = []
   end
 
   def edit
     @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
     @current_tags = @change_request.tag_list
+    @users = User.all.collect(&:name)
+    @current_collaborators = @change_request.collaborators.collect(&:name)
   end
 
   def edit_grace_period_notes
@@ -49,7 +53,12 @@ class ChangeRequestsController < ApplicationController
   end
 
   def create
+    binding.pry
     @change_request = current_user.ChangeRequests.build(change_request_params)
+    @collaborators_list = params[:collaborators_list]? params[:collaborators_list] : []
+    @collaborators_list.each do |collaborator|
+      @change_request.collaborators << User.find_by(name: collaborator)
+    end
     respond_to do |format|
       if @change_request.save
         @approvers = User.where(role: "approver")
@@ -61,6 +70,7 @@ class ChangeRequestsController < ApplicationController
           @approval.change_request_id = @change_request.id
           @approval.save
         end
+
         #Thread.new do
          # UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
           #ActiveRecord::Base.connection.close
@@ -72,6 +82,8 @@ class ChangeRequestsController < ApplicationController
       else
         @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
         @current_tags = []
+        @users = User.all.collect(&:name)
+        @current_collaborators = []
         format.html { render :new }
         format.json { render json: @change_request.errors, status: :unprocessable_entity }
       end
@@ -81,12 +93,20 @@ class ChangeRequestsController < ApplicationController
   def update
     respond_to do |format|
       if @change_request.update(change_request_params)
+        @collaborators_list = params[:collaborators_list]? params[:collaborators_list] : []
+        @change_request.collaborators.delete_all
+        @collaborators_list.each do |collaborator|
+          @change_request.collaborators << User.find_by(name: collaborator)
+        end
+        @change_request.save
         flash[:update_cr_notice] = 'Change request was successfully updated.'
         format.html { redirect_to @change_request }
         format.json { render :show, status: :ok, location: @change_request }
       else
         @current_tags = @change_request.tag_list
         @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
+        @users = User.all.collect(&:name)
+        @current_collaborators = @change_request.collaborators.collect(&:name)
         format.html { render :edit }
         format.json { render json: @change_request.errors, status: :unprocessable_entity }
       end
@@ -145,12 +165,12 @@ class ChangeRequestsController < ApplicationController
       params.require(:change_request).permit(:change_summary, :priority, :db, :os, :net, :category, :cr_type, :change_requirement, :business_justification, :requestor_position, :note, :analysis, :solution, :impact, :scope, :design, :backup,:testing_environment_available, :testing_procedure, :testing_notes, :schedule_change_date, :planned_completion, :grace_period_starts, :grace_period_end, :implementation_notes, :grace_period_notes, :requestor_name,
         :definition_of_success, :definition_of_failed, :category_application, :category_network_equipment,:category_server, :category_user_access,
         :category_other,:other_dependency,:solving_duration, :type_security_update,:type_install_uninstall, :type_configuration_change, :type_emergency_change, :type_other,
-        implementers_attributes: [:id, :name, :position, :_destroy], testers_attributes: [:id, :name, :position, :_destroy], :tag_list => [])
+        implementers_attributes: [:id, :name, :position, :_destroy], testers_attributes: [:id, :name, :position, :_destroy], :tag_list => [], :collaborators_list => [])
     end
 
     def owner_required
       redirect_to change_requests_url unless
-      current_user == @change_request.user || current_user.is_admin || (current_user.role == 'release_manager')
+      current_user == @change_request.user || current_user.is_admin || (current_user.role == 'release_manager') || current_user.collaborate_change_requests.include?(@change_request)
     end
     def submitted_required
       if @change_request.closed?
