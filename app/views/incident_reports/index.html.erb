@@ -11,6 +11,7 @@ $(function(){
     <%= link_to  new_incident_report_path, class: 'btn btn-flat btn-primary pull-right'  do %>
          <i class="fa fa-plus"></i> <strong>New Incident Report</strong>
     <%end %> 
+    <a href="#" data-toggle="control-sidebar" class="btn btn-flat btn-primary pull-right"><i class="fa fa-filter"></i><span><strong> Filter</strong></span></a>
     </h1>
 </section>
 <section class="content">
@@ -40,6 +41,7 @@ $(function(){
                     <th><%= sort_link(@q, :occurrence_time) %></th>
                     <th><%= sort_link(@q, :detection_time) %></th>
                     <th><%= sort_link(@q, :recovery_time) %></th>
+                    <th><%= sort_link(@q, :resolved_time) %></th>
                     <th>Recovery duration</th>
                     <th>Resolution duration</th>
                     <th>Source</th>
@@ -50,7 +52,7 @@ $(function(){
 
               </tr>
               <% @incident_reports.each do |incident_report| %>
-              
+
                     <tr>
                       <td><%= incident_report.id %></td>
                       <td><%= incident_report.service_impact %></td>
@@ -60,6 +62,8 @@ $(function(){
                       <td><%= incident_report.occurrence_time.to_s(:long) %></td>
                       <td><%= incident_report.detection_time.to_s(:long) %></td>
                       <td><%= incident_report.recovery_time.to_s(:long) %></td>
+
+                       <td> <% if incident_report.resolved_time != nil %><%= incident_report.resolved_time.to_s(:long) %> <% end %></td>
                       <td><%= incident_report.recovery_duration %> </td>
                       <td><%= incident_report.resolution_duration %> </td>
                       <td><%= incident_report.source %></td>
