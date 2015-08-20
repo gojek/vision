@@ -23,7 +23,7 @@ class IncidentReport < ActiveRecord::Base
             inclusion: { in: RECURRENCE_CONCERN, message: '%{ value } is not a valid value' }
   validates :rank, presence: true, inclusion: { in: 1..5, message: '%{ value } is not a valid value' }
   validate  :validate_recovery_duration
-  validate  :validate_resolution_duration
+  validate  :validate_resolution_duration, :if => :resolved_time? 
 
   def user_name
     user ? user.name : ''
