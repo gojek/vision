@@ -55,7 +55,7 @@
                 <td><%= change_request.approvers_count %></td>
                 <td><%= change_request.rejects_count %></td>
                 <td><%= link_to 'Show', change_request %></td>
-                <%if (current_user==change_request.user || current_user.is_admin || current_user.role=='release_manager' )&& !change_request.closed? %>
+                <%if (current_user==change_request.user || current_user.is_admin || current_user.role=='release_manager' )|| current_user.collaborate_change_requests.include?(change_request) && !change_request.closed? %>
                 <td><%= link_to 'Edit', edit_change_request_path(change_request) %></td>
                 <% else %>
                 <td></td>
