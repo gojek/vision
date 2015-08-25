@@ -9,11 +9,15 @@ class ChangeRequestsController < ApplicationController
     if params[:tag]
       @q = ChangeRequest.ransack(params[:q])
       @change_requests = @q.result(distinct: true).tagged_with(params[:tag]).order(created_at: :desc).page(params[:page]).per(params[:per_page])
+    elsif params[:tag_list]
+      @q = ChangeRequest.ransack(params[:q])
+      @change_requests = @q.result(distinct: true).tagged_with(params[:tag_list]).order(created_at: :desc).page(params[:page]).per(params[:per_page])
     else
       #populate all CR if release_manager
       @q = ChangeRequest.ransack(params[:q])
       @change_requests = @q.result(distinct: true).order(created_at: :desc).page(params[:page]).per(params[:per_page])
     end
+    @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
   end
 
   def show
@@ -54,12 +58,15 @@ class ChangeRequestsController < ApplicationController
 
   def create
     @change_request = current_user.ChangeRequests.build(change_request_params)
-    @collaborators_list = params[:collaborators_list]? params[:collaborators_list] : []
-    @collaborators_list.each do |collaborator|
-      @change_request.collaborators << User.find_by(name: collaborator)
-    end
+    
     respond_to do |format|
       if @change_request.save
+        @collaborators_list = params[:collaborators_list]? params[:collaborators_list] : []
+        @change_request.collaborators = []
+        @collaborators_list.each do |collaborator|
+          @change_request.collaborators << User.find_by(name: collaborator)
+        end
+
         @approvers = User.where(role: "approver")
         @status = @change_request.change_request_statuses.new(:status => 'submitted')
         @status.save
@@ -97,7 +104,6 @@ class ChangeRequestsController < ApplicationController
         @collaborators_list.each do |collaborator|
           @change_request.collaborators << User.find_by(name: collaborator)
         end
-        @change_request.save
         flash[:update_cr_notice] = 'Change request was successfully updated.'
         format.html { redirect_to @change_request }
         format.json { render :show, status: :ok, location: @change_request }
