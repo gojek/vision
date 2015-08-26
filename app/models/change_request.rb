@@ -122,16 +122,6 @@ class ChangeRequest < ActiveRecord::Base
     ChangeRequest.where(["id > ?", id]).first
   end
 
-  def lifetime
-    if(closed_date?)
-      s = closed_date - self.created_at
-    else
-      s = Time.now - self.created_at
-    end
-    dhms = [60,60,24].reduce([s]) { |m,o| m.unshift(m.shift.divmod(o)).flatten }
-    result = dhms[0].to_s + " Days " + dhms[1].to_s + " Hours and " + dhms[2].to_s + " minutes." 
-  end
-
   def all_category
     type_array = []
     self.category_application ? type_array.push('Application') : nil
@@ -184,6 +174,15 @@ class ChangeRequest < ActiveRecord::Base
 
   end
 
+  def lifetime
+    if(closed_date?)
+      s = closed_date - self.created_at
+    else
+      s = Time.now - self.created_at
+    end
+    dhms = [60,60,24].reduce([s]) { |m,o| m.unshift(m.shift.divmod(o)).flatten }
+    result = dhms[0].to_s + " Days, " + dhms[1].to_s + " Hours, " + dhms[2].to_s + " minutes." 
+  end
 
 end
 
