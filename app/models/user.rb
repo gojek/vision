@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
   devise :trackable, :lockable, :timeoutable,  
          :omniauthable, omniauth_providers: [:google_oauth2]
   ROLES = %w(requestor approver release_manager)
+  ADMIN = %w(Admin User)
   validates :role, inclusion: { in: ROLES,
                                 message: '%{value} is not a valid role' }
   validates :email, presence: true
@@ -19,6 +20,7 @@ class User < ActiveRecord::Base
   validates :email, format: { with: /\b[A-Z0-9._%a-z\-]+@veritrans\.co\.id\z/,
                   message: "must be a veritrans account" }
   validates :email, uniqueness: true
+
 
   def account_active?
     locked_at.nil?
