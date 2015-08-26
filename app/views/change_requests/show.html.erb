@@ -13,13 +13,26 @@
       </div><!--/label-->
   </h1>
   <br>
-  <% if current_user.role == 'release_manager' || current_user.is_admin || @change_request.user == current_user ||  current_user.collaborate_change_requests.include?(@change_request)%>
-  <%= link_to 'Edit', edit_change_request_path, :class => 'btn btn-primary btn-flat'  %>
-  <% end %>
-  <%= link_to  print_path, :class => 'btn btn-default btn-flat',data: { no_turbolink: true }, :target => "_blank" do %>
-  <i class="fa fa-print"></i> Print
-  <%end%>
+  <span class='pull-left'>
+    <% if current_user.role == 'release_manager' || current_user.is_admin || @change_request.user == current_user ||  current_user.collaborate_change_requests.include?(@change_request)%>
+    <%= link_to 'Edit', edit_change_request_path, :class => 'btn btn-primary btn-flat'  %>
+    <% end %>
+    <%= link_to  print_path, :class => 'btn btn-default btn-flat',data: { no_turbolink: true }, :target => "_blank" do %>
+    <i class="fa fa-print"></i> Print
+    <%end%>
+  </span>
+
+  <span class='pull-right'>
+    <% if @change_request.previous_cr %>
+      <%= link_to "< Previous", @change_request.previous_cr, class: "btn btn-flat btn-primary"%>
+    <% end %>
+    <%if @change_request.next_cr %>
+      <%= link_to "Next >", @change_request.next_cr,  class: "btn btn-flat btn-primary" %>
+    <%end%>
+  </span>
+   
 </section><!--/content-header-->
+<br><br>
 <section class="content">
   <%if flash[:create_cr_notice] != nil %>
     <div class="alert alert-success alert-dismissable ">
@@ -56,7 +69,7 @@
       <p id="notice"><%= flash[:not_eligible_notice]  %></p>
     </div><!--/alert-->
   <% end %>
-  <% if current_user.role=='approver' %>
+  <% if current_user.role=='approver' && @eligible_to_approve %>
     <div class='approve-status form-group'>
       <% if @approved == nil %>
         <%= link_to  approve_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
