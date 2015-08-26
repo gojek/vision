@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150820053456) do
+ActiveRecord::Schema.define(version: 20150825073749) do
 
   create_table "approvers", force: :cascade do |t|
     t.string   "name"
@@ -112,6 +112,7 @@ ActiveRecord::Schema.define(version: 20150820053456) do
     t.boolean  "type_emergency_change"
     t.string   "type_other"
     t.text     "other_dependency"
+    t.datetime "closed_date"
   end
 
   add_index "change_requests", ["cab_id"], name: "index_change_requests_on_cab_id"
