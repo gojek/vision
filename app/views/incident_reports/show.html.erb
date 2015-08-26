@@ -3,10 +3,21 @@
     Incident Report #<%= @incident_report.id %>
   </h1>
   <br>
-  <% if current_user.is_admin || current_user == @incident_report.user%>
-    <%= link_to 'Edit', edit_incident_report_path, :class => 'btn btn-primary btn-flat'  %>
-  <%end %>
+  <span class='pull-left'>
+    <% if current_user.is_admin || current_user == @incident_report.user%>
+      <%= link_to 'Edit', edit_incident_report_path, :class => 'btn btn-primary btn-flat'  %>
+    <%end %>
+  </span>
+  <span class='pull-right'>
+    <% if @incident_report.previous %>
+      <%= link_to "< Previous", @incident_report.previous, class: "btn btn-flat btn-primary"%>
+    <% end %>
+    <%if @incident_report.next %>
+      <%= link_to "Next >", @incident_report.next,  class: "btn btn-flat btn-primary" %>
+    <%end%>
+  </span>
 </section>
+<br><br>
 <!-- Main content -->
 <section class="invoice">
   <%if flash[:create_incident_report_notice] != nil %>
@@ -52,8 +63,10 @@
       <br/>
       <b>Occurance Time:</b> <%= @incident_report.occurrence_time.to_s(:db) %><br/>
       <b>Detection Time:</b>  <%= @incident_report.detection_time.to_s(:db) %><br/>
+      <% unless @incident_report.recovery_time.blank? %> 
       <b>Recovery Time:</b>  <%= @incident_report.recovery_time.to_s(:db) %><br>
       <b>Recovery Duration:</b>  <%= @incident_report.recovery_duration %> minutes<br>
+        <% end %>
       <%if @incident_report.resolved_time != nil %>
       <b>Resolve Time:</b>  <%= @incident_report.resolved_time.to_s(:db) %><br>
       <% end %>
