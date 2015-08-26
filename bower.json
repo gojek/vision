@@ -15,6 +15,7 @@
   ],
   "dependencies": {
     "admin-lte": "~2.2.0",
-    "eonasdan-bootstrap-datetimepicker": "~4.15.35"
+    "eonasdan-bootstrap-datetimepicker": "~4.15.35",
+    "Chart.js": "~1.0.2"
   }
 }

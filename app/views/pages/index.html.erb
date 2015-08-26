@@ -1,3 +1,302 @@
 <section class='content-header'>
-    <h1>Welcome</h1>
+    <h1>Dashboard</h1>
+    
 </section>
+<section class='content'>
+  <div class='row'>
+    <div class='col-lg-6'>
+      <div class='box '>
+        <div class='box-header with-border'>
+          <h3 class='box-title'>Source</h3>
+        </div>
+        <div class='box-body'>
+          <div class='row'>
+            <div class='col-lg-12'>
+              <div class="btn-group pull-right">
+                <button type="button" class="btn btn-default" id='source_week_button'>This Week</button>
+                <button type="button" class="btn btn-default" id='source_month_button'>This Month</button>
+                <button id="daterange" class="selectbox pull-right btn btn-default">
+                  <i class="fa fa-calendar"></i>
+                  <span>Custom Range</span> <b class="caret"></b>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class='row'>
+            <div class='col-lg-12'>
+              <div id="source-chart" width="300" height="300"></div>
+              <div id="chartdiv"></div>               
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class='col-lg-6'>
+      <div class='box '>
+        <div class='box-header with-border'>
+          <h3 class='box-title'>Average Time</h3>
+          <div class='box-tools'>
+            
+          <!--   <button id='reset'>reset</button> -->
+          </div>
+         </div>
+        <div class='box-body'>
+          <div class='row'>
+            <div class='col-lg-12'>
+              <div class="btn-group pull-right">
+                <div class='input-group date col-lg-2 col-md-2 col-xs-2 pull-right'  id='selected_month'>
+                  <input type='text' class="form-control" />
+                  <span class="input-group-addon">
+                      <span class="glyphicon glyphicon-calendar">
+                      </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class='row'>
+            <div class='col-lg-12'>
+              <div id="average-chart" width="300" height="300"> </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-lg-6'>
+      <div class='box'>
+        <div class='box-header with-border'>
+          <h3 class='box-title'>Incident Number</h3>
+        </div>
+        <div class='box-body'>
+          <div class='row'>
+            <div class='col-lg-12'>
+               <div class='input-group date col-lg-2 col-md-2 col-xs-2 pull-right'  id='number_chart_selected_month'>
+                <input type='text' class="form-control" />
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar">
+                    </span>
+                </span>
+            </div>
+            </div>
+          </div>
+          <div class='row'>
+            <div class='col-lg-12'>
+              <div id='number-chart' width='300' height='300'></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  #source-chart {
+  width   : 100%;
+  height    : 500px;
+  font-size : 11px;
+}   
+#average-chart {
+  width   : 100%;
+  height    : 500px;
+  font-size : 11px;
+}
+#number-chart {
+  width   : 100%;
+  height    : 500px;
+  font-size : 11px;
+}                                
+</style>
+<script>
+  function loadSourceChart(url) {
+    $.get(url, function(data, status){
+      var pieData = jQuery.parseJSON(data)
+      //var ctx = document.getElementById("source-chart").getContext("2d");
+      //if(window.myPie != null) {
+        //window.myPie.destroy();
+      //}
+      //window.myPie = new Chart(ctx).Pie(pieData);
+      var chart = AmCharts.makeChart( "source-chart", {
+        "type": "pie",
+        "theme": "light",
+        "dataProvider": pieData,
+        "titleField": "title",
+        "valueField": "value",
+        "labelRadius": 5,
+
+        "radius": "42%",
+        "innerRadius": "60%",
+        "labelText": "[[title]]",
+        "export": {
+          "enabled": true
+        },
+        "startEffect": "easeOutSine",
+        "sequencedAnimation": false,
+        "startDuration": 0.5
+      } );
+    });
+  };
+
+  function loadAverageChart(url) {
+    $.get(url, function(data, status){
+      var barChartData = jQuery.parseJSON(data);
+      var chart = AmCharts.makeChart("average-chart", {
+          "type": "serial",
+             "theme": "light",
+          "categoryField": "label",
+          "startDuration": 1,
+          "categoryAxis": {
+            "gridPosition": "start",
+            "position": "left"
+          },
+          "trendLines": [],
+          "graphs": [
+            {
+          "balloonText": "Recovery duration: <b>[[value]]</b>",
+          "fillAlphas": 0.8,
+          "lineAlpha": 0.2,
+          "type": "column",
+          "valueField": "recovery_duration"
+        } ,{
+          "balloonText": "Resolution duration: <b>[[value]]</b>",
+          "fillAlphas": 0.8,
+          "lineAlpha": 0.2,
+          "type": "column",
+          "valueField": "resolution_duration"
+        }
+          ],
+          "guides": [],
+          "valueAxes": [
+            {
+              "id": "ValueAxis-1",
+              "position": "top",
+              "axisAlpha": 0
+            }
+          ],
+          "allLabels": [],
+          "balloon": {},
+          "titles": [],
+          "dataProvider": barChartData,
+            "export": {
+              "enabled": true
+             }
+        });
+    });
+  };
+
+  function loadNumberChart(url) {
+      $.get(url, function(data, status){
+        var numberBarData = jQuery.parseJSON(data);
+        var chart = AmCharts.makeChart("number-chart", {
+          "type": "serial",
+             "theme": "light",
+          "categoryField": "label",
+          "startDuration": 1,
+          "categoryAxis": {
+            "gridPosition": "start",
+            "position": "left"
+          },
+          "trendLines": [],
+          "graphs": [
+            {
+            "balloonText": "Incident Occured: <b>[[value]]</b>",
+            "fillAlphas": 0.8,
+            "lineAlpha": 0.2,
+            "type": "column",
+            "valueField": "occured_number"
+          } ,{
+            "balloonText": "Incident Recovered: <b>[[value]]</b>",
+            "fillAlphas": 0.8,
+            "lineAlpha": 0.2,
+            "type": "column",
+            "valueField": "recovered_number"
+          } ,{
+            "balloonText": "Incident Resolved: <b>[[value]]</b>",
+            "fillAlphas": 0.8,
+            "lineAlpha": 0.2,
+            "type": "column",
+            "valueField": "resolved_number"
+          }
+          ],
+          "guides": [],
+          "valueAxes": [
+            {
+              "id": "ValueAxis-1",
+              "position": "top",
+              "axisAlpha": 0
+            }
+          ],
+          "allLabels": [],
+          "balloon": {},
+          "titles": [],
+          "dataProvider": numberBarData,
+            "export": {
+              "enabled": true
+             }
+        });
+      });
+    };
+
+	window.onload = function(){
+    loadSourceChart("<%=incident_reports_by_source_path %>");
+    loadAverageChart("<%=incident_reports_by_recovered_resolved_duration_path %>")
+    loadNumberChart("<%=incident_reports_number_path %>")
+
+    $("#source_month_button").click(function(){
+      url = "<%=incident_reports_by_source_path %>?month=true";
+      loadSourceChart(url);
+    });
+
+    $("#source_week_button").click(function(){
+      url = "<%=incident_reports_by_source_path %>";
+      loadSourceChart(url);
+    });
+
+
+	};
+
+  $(document).ready(function() { 
+
+    $('#daterange').daterangepicker(
+      {
+        opens: 'left',
+        locale: {
+          format: 'YYYY-MM-DD',
+        },
+        timePicker: true,
+        timePicker24Hour: true
+      }, 
+      function(start, end) {
+        $('#daterange span').html(start.format('YYYY-MM-DD hh:mm A') + ' - ' + end.format('YYYY-MM-DD hh:mm A'));
+        var url = "<%=incident_reports_by_source_path %>";
+        url = url+'?start_time='+start.format('YYYY-MM-DD hh:mm A')+"?end_time="+end.format('YYYY-MM-DD hh:mm A');
+        loadSourceChart(url);
+      }
+    );
+    $(function () {
+      $('#selected_month').datetimepicker({
+        viewMode: 'years',
+        format: 'MM/YYYY'
+      });
+      $('#number_chart_selected_month').datetimepicker({
+        viewMode: 'years',
+        format: 'MM/YYYY'
+      });
+    });
+    $('#selected_month').on("dp.change", function(e) {
+      var time = (e.date.format('YYYY/MM'));
+      var url = "<%=incident_reports_by_recovered_resolved_duration_path %>";
+      url = url+'?start_time='+time;
+      loadAverageChart(url);
+    });
+    $('#number_chart_selected_month').on("dp.change", function(e) {
+      var time = (e.date.format('YYYY/MM'));
+      var url = "<%=incident_reports_number_path %>";
+      url = url+'?start_time='+time;
+      loadNumberChart(url);
+    });
+  });
+
+</script>
+
