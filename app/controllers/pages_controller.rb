@@ -3,10 +3,7 @@ class PagesController < ApplicationController
   before_action :signed_in, only: [:index]
 
   def index
-    @recovered = IncidentReport.where(current_status: 'Recovered').count
-    @ongoing = IncidentReport.where(current_status: 'Ongoing').count
-    @implemented = IncidentReport.where(measurer_status: 'Implemented').count
-    @development = IncidentReport.where(measurer_status: 'Development').count
+    @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
   end
   def blank
   end
