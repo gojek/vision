@@ -8,14 +8,20 @@ class IncidentReportsController < ApplicationController
     if params[:tag]
       @q = IncidentReport.ransack(params[:q])
       @incident_reports = @q.result(distinct: true).tagged_with(params[:tag]).page(params[:page]).per(params[:per_page])
+    elsif params[:tag_list]
+      @q = IncidentReport.ransack(params[:q])
+      @incident_reports = @q.result(distinct: true).tagged_with(params[:tag_list]).page(params[:page]).per(params[:per_page])
     else
       @q = IncidentReport.ransack(params[:q])
       @incident_reports = @q.result(distinct: true).page(params[:page]).per(params[:per_page])
     end
+
+    @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
     respond_to do |format|
       format.html
       format.xls { send_data(@incident_reports.to_xls) }
     end
+
   end
 
   def show
@@ -34,7 +40,8 @@ class IncidentReportsController < ApplicationController
 
   def create
     @incident_report = current_user.IncidentReports.build(incident_report_params)
-    @incident_report.recovery_duration = (@incident_report.recovery_time - @incident_report.occurrence_time)/60
+    @incident_report.set_current_status
+    (@incident_report.recovery_duration)? (@incident_report.recovery_time - @incident_report.occurrence_time)/60 : 0
     (@incident_report.resolved_time)?    @incident_report.resolution_duration = (@incident_report.resolved_time - @incident_report.occurrence_time)/60 : 0
  
     respond_to do |format|
@@ -55,6 +62,7 @@ class IncidentReportsController < ApplicationController
    
     respond_to do |format|
       if @incident_report.update(incident_report_params)
+        @incident_report.set_current_status
         @incident_report.recovery_duration = (@incident_report.recovery_time - @incident_report.occurrence_time)/60
         (@incident_report.resolved_time)?    @incident_report.resolution_duration = (@incident_report.resolved_time - @incident_report.occurrence_time)/60 : 0
         @incident_report.save
@@ -84,6 +92,122 @@ class IncidentReportsController < ApplicationController
                         .page(params[:page]).per(params[:per_page])
   end
 
+  respond_to :json
+  def incident_reports_by_source()
+    #default is per week
+    start_time = Time.now.beginning_of_week
+    end_time = Time.now.end_of_week
+
+    if params[:month]
+      start_time = Time.now.beginning_of_month
+      end_time = Time.now.end_of_month
+    end
+
+    if params[:start_time]
+      start_time = (params[:start_time].in_time_zone('Asia/Jakarta'))
+    end
+    if params[:end_time]
+      end_time = (params[:end_time].in_time_zone('Asia/Jakarta'))
+    end
+    
+    internal = IncidentReport.where('occurrence_time <= ? AND occurrence_time >= ? AND source = "Internal"', end_time, start_time).count
+    external = IncidentReport.where('occurrence_time <= ? AND occurrence_time >= ? AND source = "External"', end_time, start_time).count
+    pieData = [
+        {
+          title: "Internal",
+          value: internal
+          
+        },
+        {
+          title: "External",
+          value: external
+        }
+      ]
+    render :text => pieData.to_json   
+  end
+
+  respond_to :json
+  def incident_reports_by_incedent_number
+    start_time = Time.now.beginning_of_month
+    end_time = Time.now.end_of_month
+  end
+
+  respond_to :json
+  def incident_reports_by_recovered_resolved_duration
+    start_month = (Time.now).beginning_of_month
+    end_month = (Time.now).end_of_month
+    if params[:start_time]
+      start_month = Time.parse(params[:start_time])
+      end_month = start_month.end_of_month
+    end
+    i = 1
+    avg_recovery_data = []
+    avg_resolved_data = []
+    result = []
+    while start_month <= end_month do
+      start_time = start_month
+      if start_month.end_of_week > start_month.end_of_month
+        end_time = end_month
+      else
+        end_time = start_month.end_of_week
+      end
+      recovery = IncidentReport.where('recovery_duration > 0 AND recovery_time <= ? AND recovery_time >= ?', end_time, start_time)
+      resolved = IncidentReport.where('resolution_duration > 0 AND resolved_time <= ? AND resolved_time >= ?', end_time, start_time)
+      
+      avg_recovery = recovery.blank? ? 0 : recovery.average(:recovery_duration)
+      avg_resolved = resolved.blank? ? 0 : resolved.average(:resolution_duration)
+      result << { 
+        label: 'Week '+i.to_s,
+        recovery_duration: avg_recovery,
+        resolution_duration: avg_resolved
+      }
+      i = i+1
+      #result << {:start => start_time, :end => end_time}
+      start_month = (start_month.end_of_week + 1.day).beginning_of_day
+    end
+    render :text => result.to_json
+  end
+
+  respond_to :json
+  def incident_reports_number
+    start_month = (Time.now).beginning_of_month
+    end_month = (Time.now).end_of_month
+    if params[:start_time]
+      start_month = Time.parse(params[:start_time])
+      end_month = start_month.end_of_month
+    end
+    i = 1
+    #avg_recovery_data = []
+    #avg_resolved_data = []
+    result = []
+    while start_month <= end_month do
+      start_time = start_month
+      if start_month.end_of_week > start_month.end_of_month
+        end_time = end_month
+      else
+        end_time = start_month.end_of_week
+      end
+      occured = IncidentReport.where('current_status == "Ongoing" AND occurrence_time <= ? AND occurrence_time >= ?', end_time, start_time)
+      recovered = IncidentReport.where('current_status == "Recovered" AND recovery_time <= ? AND recovery_time >= ?', end_time, start_time)
+      resolved = IncidentReport.where('current_status == "Resolved" AND resolved_time <= ? AND resolved_time >= ?', end_time, start_time)
+      
+      total_occured = occured.blank? ? 0 : occured.count
+      total_recovered = recovered.blank? ? 0 : recovered.count
+      total_resolved = resolved.blank? ? 0 : resolved.count
+      result << { 
+        label: 'Week '+i.to_s,
+        occured_number: total_occured,
+        recovered_number: total_recovered,
+        resolved_number: total_resolved
+      }
+      i = i+1
+      #result << {:start => start_time, :end => end_time}
+      start_month = (start_month.end_of_week + 1.day).beginning_of_day
+    end
+    render :text => result.to_json
+  end
+
+
   private
 
   def set_incident_report
@@ -103,4 +227,7 @@ class IncidentReportsController < ApplicationController
     redirect_to incident_reports_url if
     current_user != @incident_report.user && !current_user.is_admin
   end
+
+
+
 end
