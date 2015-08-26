@@ -24,9 +24,12 @@ class ChangeRequestsController < ApplicationController
     @version = @change_request.versions
     @change_request_status = ChangeRequestStatus.new
     approve = Approver.where(change_request_id: @change_request.id).where(user_id: current_user.id).first
+    @eligible_to_approve = true
     if(approve == nil) 
-      @approved = nil
+      #approver for change request with current user id not present, so the user not eligible
+      @eligible_to_approve = false
     else
+      #the status of cr approval, it can be : true, false or nil (nil is not decided yet by approver)
       @approved = approve.approve
     end
   end
@@ -154,6 +157,103 @@ class ChangeRequestsController < ApplicationController
       flash[:status_changed_notice] = 'Change Request Rejected'
     end
     redirect_to @change_request
+  end
+
+  respond_to :json
+  def change_requests_by_success_rate 
+    #default status is weekly
+    status = 'weekly' 
+    start_time = Time.now.beginning_of_month
+    end_time = Time.now.end_of_month
+    if(params[:start_time])
+      start_time = params[:start_time].in_time_zone('Asia/Jakarta')
+    end
+    if(params[:end_time])
+      end_time = params[:end_time].in_time_zone('Asia/Jakarta')
+    end
+    if(params[:tag])
+      tag = params[:tag]
+    end
+    if(params[:status])
+      status = params[:status]
+    end
+
+    if status == 'weekly'
+      result = change_request_by_success_rate_weekly(start_time, end_time, tag)
+    else
+      result = change_request_by_success_rate_monthly(start_time, end_time, tag)
+    end
+    #success = ChangeRequest.where('status == "success" AND closed_date <= ? AND closed_date >= ?',end_time, start_time)
+    #failed = ChangeRequest.where('status == "failed" AND closed_date <= ? AND closed_date >= ?', end_time, start_time)
+
+    #total_success = success.blank? ? 0 : success.count
+    #total_failed = failed.blank? ? 0 : failed.count
+    #result = []
+    #result << {
+      #success: total_success,
+      #failed: total_failed
+    #}
+    render :text => result.to_json
+  end
+
+  def change_request_by_success_rate_weekly(start_time, end_time, tag)
+    i = 1
+    result = []
+    while start_time <= end_time do
+      start_week = start_time
+      if start_week.end_of_week > end_time
+        end_week = end_time
+      else
+        end_week = start_week.end_of_week
+      end
+      if tag==nil
+        success = ChangeRequest.where('status == "success" AND closed_date <= ? AND closed_date >= ?',end_week, start_week)
+        failed = ChangeRequest.where('status == "failed" AND closed_date <= ? AND closed_date >= ?',end_week, start_week)
+      else
+        success = ChangeRequest.where('status == "success" AND closed_date <= ? AND closed_date >= ?',end_week, start_week).tagged_with(tag)
+        failed = ChangeRequest.where('status == "failed" AND closed_date <= ? AND closed_date >= ?',end_week, start_week).tagged_with(tag)
+      end
+      total_success = success.blank? ? 0 : success.count
+      total_failed = failed.blank? ? 0 : failed.count
+      result << {
+        success: total_success,
+        failed: total_failed,
+        label: 'Week '+i.to_s
+      }
+      start_time = (end_week + 1.day).beginning_of_day
+      i = i + 1
+    end
+    result
+  end
+
+  def change_request_by_success_rate_monthly(start_time, end_time, tag)
+    result = []
+    i = 1
+    while start_time <= end_time do
+      start_month = start_time
+      if start_month.end_of_month > end_time
+        end_month = end_time
+      else
+        end_month = start_month.end_of_month 
+      end
+      if tag==nil
+        success = ChangeRequest.where('status == "success" AND closed_date <= ? AND closed_date >= ?',end_month, start_month)
+        failed = ChangeRequest.where('status == "failed" AND closed_date <= ? AND closed_date >= ?',end_month, start_month)
+      else
+        success = ChangeRequest.where('status == "success" AND closed_date <= ? AND closed_date >= ?',end_month, start_month).tagged_with(tag)
+        failed = ChangeRequest.where('status == "failed" AND closed_date <= ? AND closed_date >= ?',end_month, start_month).tagged_with(tag)
+      end
+      total_success = success.blank? ? 0 : success.count
+      total_failed = failed.blank? ? 0 : failed.count
+      result << {
+        success: total_success,
+        failed: total_failed,
+        label: start_month.strftime("%B")
+      }
+      start_time = (end_month + 1.day).beginning_of_day
+      i = i + 1
+    end
+    result
   end
 
   private
