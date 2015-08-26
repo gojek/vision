@@ -12,10 +12,13 @@ class UsersController < ApplicationController
   
   def edit
     @user = User.find params[:id]
+
   end
 
   def update
     @user = User.find params[:id]
+    @user.is_admin = params[:is_admin]
+    @user.save
     if @user.update(update_user_params)
       flash[:user_notice] = 'User updated succesfully'
       redirect_to users_path
@@ -45,6 +48,6 @@ class UsersController < ApplicationController
   end
 
   def update_user_params
-    params.require(:user).permit(:email, :role, :position)
+    params.require(:user).permit(:email, :role, :position, :is_admin)
   end
 end
