@@ -26,9 +26,17 @@
 //= require nprogress
 //= require nprogress-turbolinks
 //= require fullcalendar
+//= require amcharts
+//= require pie
+//= require serial
+//= require light
+//= require Chart.js/Chart.min
+
+//= require daterangepicker
 //= require turbolinks
 NProgress.configure({
-  parent: '.logo'
+ 
+
 });
 $(function(){
   $(".select2").select2();
@@ -41,3 +49,4 @@ $(function(){
     format: "yyyy-mm-dd"
   });
 });
+$(document).on('page:fetch',   function() { NProgress.set(0.3); });
