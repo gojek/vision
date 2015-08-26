@@ -5,85 +5,131 @@
 <section class='content'>
   <div class='row'>
     <div class='col-lg-6'>
-      <div class='box '>
-        <div class='box-header with-border'>
-          <h3 class='box-title'>Source</h3>
-        </div>
-        <div class='box-body'>
-          <div class='row'>
-            <div class='col-lg-12'>
-              <div class="btn-group pull-right">
-                <button type="button" class="btn btn-default" id='source_week_button'>This Week</button>
-                <button type="button" class="btn btn-default" id='source_month_button'>This Month</button>
-                <button id="daterange" class="selectbox pull-right btn btn-default">
-                  <i class="fa fa-calendar"></i>
-                  <span>Custom Range</span> <b class="caret"></b>
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class='row'>
-            <div class='col-lg-12'>
-              <div id="source-chart" width="300" height="300"></div>
-              <div id="chartdiv"></div>               
-            </div>
-          </div>
-        </div>
-      </div>
+      <ul class="nav nav-pills">
+        <li role="presentation" class="active"><a data-toggle="pill" href="#incident_report">Incident Report</a></li>
+        <li role="presentation"><a data-toggle="pill" href="#change_request">Change Request</a></li>
+      </ul>
     </div>
-    <div class='col-lg-6'>
-      <div class='box '>
-        <div class='box-header with-border'>
-          <h3 class='box-title'>Average Time</h3>
-          <div class='box-tools'>
-            
-          <!--   <button id='reset'>reset</button> -->
-          </div>
-         </div>
-        <div class='box-body'>
-          <div class='row'>
-            <div class='col-lg-12'>
-              <div class="btn-group pull-right">
-                <div class='input-group date col-lg-2 col-md-2 col-xs-2 pull-right'  id='selected_month'>
-                  <input type='text' class="form-control" />
-                  <span class="input-group-addon">
-                      <span class="glyphicon glyphicon-calendar">
-                      </span>
-                  </span>
+  </div>
+  <div class='tab-content'>
+    <div id='incident_report' class='tab-pane fade in active'>
+      <div class='row'>
+        <div class='col-lg-6'>
+          <div class='box '>
+            <div class='box-header with-border'>
+              <h3 class='box-title'>Source</h3>
+            </div>
+            <div class='box-body'>
+              <div class='row'>
+                <div class='col-lg-12'>
+                  <div class="btn-group pull-right">
+                    <button type="button" class="btn btn-default" id='source_week_button'>This Week</button>
+                    <button type="button" class="btn btn-default" id='source_month_button'>This Month</button>
+                    <button id="daterange" class="selectbox pull-right btn btn-default">
+                      <i class="fa fa-calendar"></i>
+                      <span>Custom Range</span> <b class="caret"></b>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class='row'>
+                <div class='col-lg-12'>
+                  <div id="source-chart" width="300" height="300"></div>
+                  <div id="chartdiv"></div>               
                 </div>
               </div>
             </div>
           </div>
-          <div class='row'>
-            <div class='col-lg-12'>
-              <div id="average-chart" width="300" height="300"> </div>
+        </div>
+        <div class='col-lg-6'>
+          <div class='box '>
+            <div class='box-header with-border'>
+              <h3 class='box-title'>Average Time</h3>
+              <div class='box-tools'>
+                
+              <!--   <button id='reset'>reset</button> -->
+              </div>
+             </div>
+            <div class='box-body'>
+              <div class='row'>
+                <div class='col-lg-12'>
+                  <div class="btn-group pull-right">
+                    <div class='input-group date col-lg-2 col-md-2 col-xs-2 pull-right'  id='selected_month'>
+                      <input type='text' class="form-control" />
+                      <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-calendar">
+                          </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class='row'>
+                <div class='col-lg-12'>
+                  <div id="average-chart" width="300" height="300"> </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class='row'>
+        <div class='col-lg-6'>
+          <div class='box'>
+            <div class='box-header with-border'>
+              <h3 class='box-title'>Incident Number</h3>
+            </div>
+            <div class='box-body'>
+              <div class='row'>
+                <div class='col-lg-12'>
+                   <div class='input-group date col-lg-2 col-md-2 col-xs-2 pull-right'  id='number_chart_selected_month'>
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar">
+                        </span>
+                    </span>
+                </div>
+                </div>
+              </div>
+              <div class='row'>
+                <div class='col-lg-12'>
+                  <div id='number-chart' width='300' height='300'></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class='row'>
-    <div class='col-lg-6'>
-      <div class='box'>
-        <div class='box-header with-border'>
-          <h3 class='box-title'>Incident Number</h3>
-        </div>
-        <div class='box-body'>
-          <div class='row'>
-            <div class='col-lg-12'>
-               <div class='input-group date col-lg-2 col-md-2 col-xs-2 pull-right'  id='number_chart_selected_month'>
-                <input type='text' class="form-control" />
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar">
-                    </span>
-                </span>
+    <div id='change_request' class='tab-pane fade'>
+      <div class='row'>
+        <div class='col-lg-6'>
+          <div class='box'>
+            <div class='box-header with-border'>
+              <h3 class='box-title'>Change Request Deployment</h3>
             </div>
-            </div>
-          </div>
-          <div class='row'>
-            <div class='col-lg-12'>
-              <div id='number-chart' width='300' height='300'></div>
+            <div class='box-body'>
+              <div class='row'>
+                <div class='col-lg-12'>
+                   <div class='pull-right'>
+                    <select class="form-control deployment-duration-filter">
+                      <option value="weekly">Per Week</option>
+                      <option value="monthly">Per Month</option>
+                    </select>
+                    <%= select_tag "tag_list" ,options_for_select(@tags), class: 'deployment-tag-filter form-control', multiple:true %>
+                    <button id="daterange2" class="selectbox btn btn-default">
+                      <i class="fa fa-calendar"></i>
+                      <span>Custom Range</span> <b class="caret"></b>
+                    </button>
+                    <button type="button" class="btn btn-default" id='apply_button'>Apply</button>
+                  </div>
+                </div>
+              </div>
+              <div class='row'>
+                <div class='col-lg-12'>
+                  <div id='deployment-chart' width='300' height='300'></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -106,7 +152,15 @@
   width   : 100%;
   height    : 500px;
   font-size : 11px;
-}                                
+}                  
+#deployment-chart {
+  width   : 100%;
+  height    : 500px;
+  font-size : 11px;
+}
+.deployment-tag-filter {
+  width : 300px;
+}                   
 </style>
 <script>
   function loadSourceChart(url) {
@@ -118,9 +172,15 @@
       //}
       //window.myPie = new Chart(ctx).Pie(pieData);
       var chart = AmCharts.makeChart( "source-chart", {
+        "titles": [
+            {
+              "text": pieData[0].title,
+              "size": 15
+            }
+          ],
         "type": "pie",
         "theme": "light",
-        "dataProvider": pieData,
+        "dataProvider": pieData[1],
         "titleField": "title",
         "valueField": "value",
         "labelRadius": 5,
@@ -142,6 +202,12 @@
     $.get(url, function(data, status){
       var barChartData = jQuery.parseJSON(data);
       var chart = AmCharts.makeChart("average-chart", {
+         "titles": [
+            {
+              "text": barChartData[0].title,
+              "size": 15
+            }
+          ],
           "type": "serial",
              "theme": "light",
           "categoryField": "label",
@@ -170,14 +236,11 @@
           "valueAxes": [
             {
               "id": "ValueAxis-1",
-              "position": "top",
-              "axisAlpha": 0
             }
           ],
           "allLabels": [],
           "balloon": {},
-          "titles": [],
-          "dataProvider": barChartData,
+          "dataProvider": barChartData[1],
             "export": {
               "enabled": true
              }
@@ -189,10 +252,16 @@
       $.get(url, function(data, status){
         var numberBarData = jQuery.parseJSON(data);
         var chart = AmCharts.makeChart("number-chart", {
+          "titles": [
+            {
+              "text": numberBarData[0].title,
+              "size": 15
+            }
+          ],
+          "startDuration": 1.5,
           "type": "serial",
              "theme": "light",
           "categoryField": "label",
-          "startDuration": 1,
           "categoryAxis": {
             "gridPosition": "start",
             "position": "left"
@@ -223,25 +292,77 @@
           "valueAxes": [
             {
               "id": "ValueAxis-1",
-              "position": "top",
-              "axisAlpha": 0
             }
           ],
           "allLabels": [],
           "balloon": {},
-          "titles": [],
-          "dataProvider": numberBarData,
+          "dataProvider": numberBarData[1],
             "export": {
               "enabled": true
              }
         });
       });
-    };
+  };
+
+  function loadDeploymentChart(url) {
+    $.get(url, function(data, status){
+      var stackChartData = jQuery.parseJSON(data);
+      var chart = AmCharts.makeChart("deployment-chart", {
+        "titles": [
+            {
+              "text": stackChartData[0].title,
+              "size": 15
+            }
+          ],
+        "trendLines": [],
+        "guides" : [],
+        "startDuration": 1,
+        "type": "serial",
+        "theme": "light",
+          "dataProvider": stackChartData[1],
+          "valueAxes": [{
+              "stackType": "regular",
+          }],
+          "graphs": [{
+              "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+              "fillColors": '#84b761',
+              "fillAlphas": 0.8,
+              "labelText": "[[value]]",
+              "lineColor": '#84b761',
+              "lineAlpha": 0.3,
+              "title": "Success",
+              "type": "column",
+              "valueField": "success"
+          }, {
+              "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+              "fillColors": '#eba2a2',
+              "fillAlphas": 0.8,
+              "labelText": "[[value]]",
+              "lineAlpha": 0.3,
+              "lineColor": '#eba2a2',
+              "title": "Failed",
+              "type": "column",
+              "valueField": "failed"
+          }],
+          "categoryField": "label",
+          "categoryAxis": {
+              "gridPosition": "start",
+              "position": "left",
+              "autoRotateAngle": 90,
+              "autoRotateCount": 8
+          },
+          "export": {
+            "enabled": true
+           }
+      });
+    });
+  };
 
 	window.onload = function(){
     loadSourceChart("<%=incident_reports_by_source_path %>");
-    loadAverageChart("<%=incident_reports_by_recovered_resolved_duration_path %>")
-    loadNumberChart("<%=incident_reports_number_path %>")
+    loadAverageChart("<%=incident_reports_by_recovered_resolved_duration_path %>");
+    loadNumberChart("<%=incident_reports_number_path %>");
+    loadDeploymentChart("<%=change_requests_by_success_rate_path %>");
 
     $("#source_month_button").click(function(){
       url = "<%=incident_reports_by_source_path %>?month=true";
@@ -253,10 +374,40 @@
       loadSourceChart(url);
     });
 
+    $("#apply_button").click(function(){
+      var duration = $('.deployment-duration-filter').val();
+      var tag = $('.deployment-tag-filter').val();
+      var start_time = $('#daterange2').data('daterangepicker').startDate.format('YYYY-MM-DD hh:mm A');
+      var end_time = $('#daterange2').data('daterangepicker').endDate.format('YYYY-MM-DD hh:mm A');
+      var url = '<%=change_requests_by_success_rate_path %>';
+      url = url+'?status='+duration;
+      url = url+'&start_time='+start_time;
+      url = url+'&end_time='+end_time;
+      if(tag!=null) {
+        url = url+'&tag='+tag;
+      }
+      
+      loadDeploymentChart(url);
+    });
 
 	};
 
   $(document).ready(function() { 
+    $('#selected_month').datetimepicker({
+        viewMode: 'years',
+        format: 'MM/YYYY'
+    });
+
+    $('#number_chart_selected_month').datetimepicker({
+      viewMode: 'years',
+      format: 'MM/YYYY'
+    });
+
+    $(".deployment-duration-filter").select2();
+
+    $(".deployment-tag-filter").select2({
+      tokenSeparators: [',', ' ']
+    });
 
     $('#daterange').daterangepicker(
       {
@@ -270,20 +421,28 @@
       function(start, end) {
         $('#daterange span').html(start.format('YYYY-MM-DD hh:mm A') + ' - ' + end.format('YYYY-MM-DD hh:mm A'));
         var url = "<%=incident_reports_by_source_path %>";
-        url = url+'?start_time='+start.format('YYYY-MM-DD hh:mm A')+"?end_time="+end.format('YYYY-MM-DD hh:mm A');
+        url = url+'?start_time='+start.format('YYYY-MM-DD hh:mm A')+"&end_time="+end.format('YYYY-MM-DD hh:mm A');
         loadSourceChart(url);
       }
     );
-    $(function () {
-      $('#selected_month').datetimepicker({
-        viewMode: 'years',
-        format: 'MM/YYYY'
-      });
-      $('#number_chart_selected_month').datetimepicker({
-        viewMode: 'years',
-        format: 'MM/YYYY'
-      });
-    });
+    $('#daterange2').daterangepicker(
+      {
+        opens: 'left',
+        locale: {
+          format: 'YYYY-MM-DD',
+        },
+        timePicker: true,
+        timePicker24Hour: true
+      },
+      function(start, end) {
+        $('#daterange2 span').html(start.format('YYYY-MM-DD hh:mm A') + ' - ' + end.format('YYYY-MM-DD hh:mm A'));
+        // var url = "<%=incident_reports_by_source_path %>";
+        // url = url+'?start_time='+start.format('YYYY-MM-DD hh:mm A')+"&end_time="+end.format('YYYY-MM-DD hh:mm A');
+        // loadSourceChart(url);
+      }
+    );
+
+
     $('#selected_month').on("dp.change", function(e) {
       var time = (e.date.format('YYYY/MM'));
       var url = "<%=incident_reports_by_recovered_resolved_duration_path %>";
