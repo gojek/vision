@@ -30,6 +30,7 @@ class ChangeRequest < ActiveRecord::Base
   validates :implementers, presence: true
   validate :tester_required
   validate :deploy_date, :if => :schedule_change_date? && :planned_completion?
+  validate :grace_period_date, :if => :grace_period_date_starts? && :grace_period_end
   #validates :change_summary, :priority, :category, :cr_type, :change_requirement, :business_justification, :requestor_position, :requestor_name, presence: true
   aasm do 
     state :submitted, :initial => true
@@ -55,11 +56,22 @@ class ChangeRequest < ActiveRecord::Base
       transitions :from => :scheduled, :to => :cancelled
     end
     event :close do 
-      transitions :from => [:submitted, :rejected, :deployed, :rollbacked, :cancelled, :scheduled], :to => :closed
+      transitions :from => [:submitted, :rejected, :rollbacked, :cancelled, :scheduled], :to => :closed, after: :failed_change_request
+      transitions :from => :deployed, :to => :closed, after: :success_change_request
     end
     event :submit do 
       transitions :form => :cancelled, :to => :submitted 
     end
+  end
+
+  def failed_change_request
+    self.status = 'failed'
+    self.closed_date = Time.now
+  end
+
+  def success_change_request
+    self.status = 'success'
+    self.closed_date = Time.now
   end
 
   def at_least_one_category
@@ -77,7 +89,8 @@ class ChangeRequest < ActiveRecord::Base
     if [self.type_security_update, self.type_install_uninstall, self.type_configuration_change, self.type_emergency_change,self.type_other].reject(&:blank?).size == 0
       errors[:base] << ("Please choose at least one type.")
     end
-  end 
+  end
+
   def no_implementers(attributes)
     attributes[:implementers_id]
   end   
@@ -92,9 +105,31 @@ class ChangeRequest < ActiveRecord::Base
    def deploy_date
     errors.add("Deploy date", "is invalid.") unless schedule_change_date < planned_completion
   end
+
+  def grace_period_date
+    errors.add("Grace Period time", "is invlaid") unless grace_period_starts < grace_period_end
+  end
   
   def approvable?
     self.approvers.where(approve: true).count >= CONFIG[:minimum_approval]
+  end
+
+  def previous_cr
+    ChangeRequest.where(["id < ?", id]).last
+  end
+
+  def next_cr
+    ChangeRequest.where(["id > ?", id]).first
+  end
+
+  def lifetime
+    if(closed_date?)
+      s = closed_date - self.created_at
+    else
+      s = Time.now - self.created_at
+    end
+    dhms = [60,60,24].reduce([s]) { |m,o| m.unshift(m.shift.divmod(o)).flatten }
+    result = dhms[0].to_s + " Days " + dhms[1].to_s + " Hours and " + dhms[2].to_s + " minutes." 
   end
 
   def all_category
