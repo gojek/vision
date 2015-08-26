@@ -95,18 +95,22 @@ class IncidentReportsController < ApplicationController
   respond_to :json
   def incident_reports_by_source()
     #default is per week
+    title = 'This Week'
     start_time = Time.now.beginning_of_week
     end_time = Time.now.end_of_week
 
     if params[:month]
+      title = 'This Month'
       start_time = Time.now.beginning_of_month
       end_time = Time.now.end_of_month
     end
 
     if params[:start_time]
+      title = params[:start_time]
       start_time = (params[:start_time].in_time_zone('Asia/Jakarta'))
     end
     if params[:end_time]
+      title = title + ' - ' + params[:end_time]
       end_time = (params[:end_time].in_time_zone('Asia/Jakarta'))
     end
     
@@ -123,14 +127,10 @@ class IncidentReportsController < ApplicationController
           value: external
         }
       ]
-    render :text => pieData.to_json   
+    final_result = [{title: title}, pieData]
+    render :text => final_result.to_json   
   end
 
-  respond_to :json
-  def incident_reports_by_incedent_number
-    start_time = Time.now.beginning_of_month
-    end_time = Time.now.end_of_month
-  end
 
   respond_to :json
   def incident_reports_by_recovered_resolved_duration
@@ -144,6 +144,7 @@ class IncidentReportsController < ApplicationController
     avg_recovery_data = []
     avg_resolved_data = []
     result = []
+    title = start_month.strftime('%Y/%m')
     while start_month <= end_month do
       start_time = start_month
       if start_month.end_of_week > start_month.end_of_month
@@ -157,7 +158,7 @@ class IncidentReportsController < ApplicationController
       avg_recovery = recovery.blank? ? 0 : recovery.average(:recovery_duration)
       avg_resolved = resolved.blank? ? 0 : resolved.average(:resolution_duration)
       result << { 
-        label: 'Week '+i.to_s,
+        label: start_time.strftime("%d/%m")+' - '+end_time.strftime("%d/%m"),
         recovery_duration: avg_recovery,
         resolution_duration: avg_resolved
       }
@@ -165,7 +166,9 @@ class IncidentReportsController < ApplicationController
       #result << {:start => start_time, :end => end_time}
       start_month = (start_month.end_of_week + 1.day).beginning_of_day
     end
-    render :text => result.to_json
+    
+    final_result = [{title: title}, result]
+    render :text => final_result.to_json
   end
 
   respond_to :json
@@ -180,6 +183,7 @@ class IncidentReportsController < ApplicationController
     #avg_recovery_data = []
     #avg_resolved_data = []
     result = []
+    title = start_month.strftime('%Y/%m')
     while start_month <= end_month do
       start_time = start_month
       if start_month.end_of_week > start_month.end_of_month
@@ -195,7 +199,7 @@ class IncidentReportsController < ApplicationController
       total_recovered = recovered.blank? ? 0 : recovered.count
       total_resolved = resolved.blank? ? 0 : resolved.count
       result << { 
-        label: 'Week '+i.to_s,
+        label: start_time.strftime("%d/%m")+' - '+end_time.strftime("%d/%m"),
         occured_number: total_occured,
         recovered_number: total_recovered,
         resolved_number: total_resolved
@@ -204,7 +208,9 @@ class IncidentReportsController < ApplicationController
       #result << {:start => start_time, :end => end_time}
       start_month = (start_month.end_of_week + 1.day).beginning_of_day
     end
-    render :text => result.to_json
+
+    final_result = [{title: title}, result]
+    render :text => final_result.to_json
   end
 
 

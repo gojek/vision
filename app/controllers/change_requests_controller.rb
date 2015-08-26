@@ -218,12 +218,13 @@ class ChangeRequestsController < ApplicationController
       result << {
         success: total_success,
         failed: total_failed,
-        label: 'Week '+i.to_s
+        label: start_week.strftime("%d/%m")+' - '+end_week.strftime("%d/%m")
       }
       start_time = (end_week + 1.day).beginning_of_day
       i = i + 1
     end
-    result
+    final_result = [{title: 'Weekly'}, result]
+    final_result
   end
 
   def change_request_by_success_rate_monthly(start_time, end_time, tag)
@@ -253,7 +254,8 @@ class ChangeRequestsController < ApplicationController
       start_time = (end_month + 1.day).beginning_of_day
       i = i + 1
     end
-    result
+    final_result = [{title: 'Monthly'}, result]
+    final_result
   end
 
   private
