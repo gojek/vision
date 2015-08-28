@@ -117,11 +117,11 @@ class ChangeRequest < ActiveRecord::Base
   end
 
   def previous_cr
-    ChangeRequest.where(["id < ?", id]).last
+     ChangeRequest.where(["id > ?", id]).first
   end
 
   def next_cr
-    ChangeRequest.where(["id > ?", id]).first
+    ChangeRequest.where(["id < ?", id]).last
   end
 
   def all_category
