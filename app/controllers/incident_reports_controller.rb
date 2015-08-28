@@ -8,13 +8,13 @@ require 'notifier.rb'
   def index
     if params[:tag]
       @q = IncidentReport.ransack(params[:q])
-      @incident_reports = @q.result(distinct: true).tagged_with(params[:tag]).page(params[:page]).per(params[:per_page])
+      @incident_reports = @q.result(distinct: true).tagged_with(params[:tag]).order(id: :desc).page(params[:page]).per(params[:per_page])
     elsif params[:tag_list]
       @q = IncidentReport.ransack(params[:q])
-      @incident_reports = @q.result(distinct: true).tagged_with(params[:tag_list]).page(params[:page]).per(params[:per_page])
+      @incident_reports = @q.result(distinct: true).tagged_with(params[:tag_list]).order(id: :desc).page(params[:page]).per(params[:per_page])
     else
       @q = IncidentReport.ransack(params[:q])
-      @incident_reports = @q.result(distinct: true).page(params[:page]).per(params[:per_page])
+      @incident_reports = @q.result(distinct: true).page(params[:page]).order(id: :desc).per(params[:per_page])
     end
 
     @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
