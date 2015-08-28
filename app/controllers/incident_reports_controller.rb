@@ -1,9 +1,10 @@
 #
 class IncidentReportsController < ApplicationController
+
   before_action :set_incident_report, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
   before_action :owner_required, only: [:edit, :update, :destroy]
-
+require 'notifier.rb'
   def index
     if params[:tag]
       @q = IncidentReport.ransack(params[:q])
@@ -25,6 +26,8 @@ class IncidentReportsController < ApplicationController
   end
 
   def show
+     @incident_report.mark_as_read! :for => current_user
+     Notifier.ir_read(current_user,@incident_report)
   end
 
   def new
@@ -40,15 +43,15 @@ class IncidentReportsController < ApplicationController
 
   def create
     @incident_report = current_user.IncidentReports.build(incident_report_params)
+    (@incident_report.recovery_time)? @incident_report.recovery_duration = (@incident_report.recovery_time - @incident_report.occurrence_time)/60 : 0
+    (@incident_report.resolved_time)? @incident_report.resolution_duration = (@incident_report.resolved_time - @incident_report.occurrence_time)/60 : 0
     @incident_report.set_current_status
-    (@incident_report.recovery_duration)? (@incident_report.recovery_time - @incident_report.occurrence_time)/60 : 0
-    (@incident_report.resolved_time)?    @incident_report.resolution_duration = (@incident_report.resolved_time - @incident_report.occurrence_time)/60 : 0
- 
     respond_to do |format|
       if @incident_report.save
         flash[:create_incident_report_notice] = 'Incident report was successfully created.'
         format.html { redirect_to @incident_report }
         format.json { render :show, status: :created, location: @incident_report }
+         Notifier.ir_notify(current_user, @incident_report, 'new_ir')
       else
         @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
         @current_tags = []
@@ -62,10 +65,15 @@ class IncidentReportsController < ApplicationController
    
     respond_to do |format|
       if @incident_report.update(incident_report_params)
+        
+        (@incident_report.recovery_time)? @incident_report.recovery_duration = (@incident_report.recovery_time - @incident_report.occurrence_time)/60 : 0
+        (@incident_report.resolved_time)? @incident_report.resolution_duration = (@incident_report.resolved_time - @incident_report.occurrence_time)/60 : 0
         @incident_report.set_current_status
-        @incident_report.recovery_duration = (@incident_report.recovery_time - @incident_report.occurrence_time)/60
-        (@incident_report.resolved_time)?    @incident_report.resolution_duration = (@incident_report.resolved_time - @incident_report.occurrence_time)/60 : 0
+        if @incident_report.check_status
+          Notifier.ir_notify(current_user, @incident_report, 'resolved_ir')
+        end
         @incident_report.save
+
         flash[:update_incident_report_notice] = 'Incident report was successfully updated.' 
         format.html { redirect_to @incident_report }
         format.json { render :show, status: :ok, location: @incident_report }
@@ -76,6 +84,7 @@ class IncidentReportsController < ApplicationController
         format.json { render json: @incident_report.errors, status: :unprocessable_entity }
       end
     end
+    
   end
 
   def destroy
@@ -114,8 +123,8 @@ class IncidentReportsController < ApplicationController
       end_time = (params[:end_time].in_time_zone('Asia/Jakarta'))
     end
     
-    internal = IncidentReport.where('occurrence_time <= ? AND occurrence_time >= ? AND source = "Internal"', end_time, start_time).count
-    external = IncidentReport.where('occurrence_time <= ? AND occurrence_time >= ? AND source = "External"', end_time, start_time).count
+    internal = IncidentReport.where("occurrence_time <= ? AND occurrence_time >= ? AND source = 'Internal'", end_time, start_time).count
+    external = IncidentReport.where("occurrence_time <= ? AND occurrence_time >= ? AND source = 'External'", end_time, start_time).count
     pieData = [
         {
           title: "Internal",
@@ -191,9 +200,9 @@ class IncidentReportsController < ApplicationController
       else
         end_time = start_month.end_of_week
       end
-      occured = IncidentReport.where('current_status == "Ongoing" AND occurrence_time <= ? AND occurrence_time >= ?', end_time, start_time)
-      recovered = IncidentReport.where('current_status == "Recovered" AND recovery_time <= ? AND recovery_time >= ?', end_time, start_time)
-      resolved = IncidentReport.where('current_status == "Resolved" AND resolved_time <= ? AND resolved_time >= ?', end_time, start_time)
+      occured = IncidentReport.where("current_status = 'Ongoing' AND occurrence_time <= ? AND occurrence_time >= ?", end_time, start_time)
+      recovered = IncidentReport.where("current_status = 'Recovered' AND recovery_time <= ? AND recovery_time >= ?", end_time, start_time)
+      resolved = IncidentReport.where("current_status = 'Resolved' AND resolved_time <= ? AND resolved_time >= ?", end_time, start_time)
       
       total_occured = occured.blank? ? 0 : occured.count
       total_recovered = recovered.blank? ? 0 : recovered.count

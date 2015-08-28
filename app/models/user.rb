@@ -7,15 +7,17 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :trackable, :lockable, :timeoutable,  
          :omniauthable, omniauth_providers: [:google_oauth2]
+  acts_as_reader
   ROLES = %w(requestor approver release_manager)
   ADMIN = %w(Admin User)
   validates :role, inclusion: { in: ROLES,
-                                message: '%{value} is not a valid role' }
+                              message: '%{value} is not a valid role' }
   validates :email, presence: true
   has_many :IncidentReports
   has_many :ChangeRequests
   has_and_belongs_to_many :collaborate_change_requests, :class_name => 'ChangeRequest'
   has_many :Comments
+  has_many :notifications
   has_many :Approvers, :dependent => :destroy
   validates :email, format: { with: /\b[A-Z0-9._%a-z\-]+@veritrans\.co\.id\z/,
                   message: "must be a veritrans account" }
