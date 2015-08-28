@@ -52,6 +52,7 @@ gem 'httpclient'
 #xml parser
 gem 'nokogiri'
 gem 'nprogress-rails'
+gem 'unread'
 
 
 group :production do

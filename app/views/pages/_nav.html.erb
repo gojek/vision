@@ -18,6 +18,8 @@
     </a>
     <div class="navbar-custom-menu">
       <ul class="nav navbar-nav">
+        <%= render 'pages/notification' %>
+        <%= render 'pages/ir_notification' %>
         <li class='dropdown user user-menu'>
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <span class='hidden-xs'><%= current_user.name %></span>
@@ -44,9 +46,6 @@
             </li>
           </ul>
         </li>
-      <% if current_page?(incident_reports_path)|| current_page?(change_requests_path) %>
-        <li> <a href="#" data-toggle="control-sidebar"><i class="fa fa-filter"></i><span><strong> Filter</strong></span></a></li>
-        <% end %>
         
       </ul>
     </div>

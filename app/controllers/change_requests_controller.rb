@@ -4,7 +4,7 @@ class ChangeRequestsController < ApplicationController
   before_action :owner_required, only: [:edit, :update, :destroy]
   before_action :not_closed_required, only: [:destroy]
   before_action :submitted_required, only: [:edit]
-
+  require 'notifier.rb'
   def index
     if params[:tag]
       @q = ChangeRequest.ransack(params[:q])
@@ -18,11 +18,14 @@ class ChangeRequestsController < ApplicationController
       @change_requests = @q.result(distinct: true).order(created_at: :desc).page(params[:page]).per(params[:per_page])
     end
     @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
+    #@n = Notifier.notify
   end
 
   def show
     @version = @change_request.versions
     @change_request_status = ChangeRequestStatus.new
+    @change_request.mark_as_read! :for => current_user
+    Notifier.cr_read(current_user,@change_request)
     approve = Approver.where(change_request_id: @change_request.id).where(user_id: current_user.id).first
     @eligible_to_approve = true
     if(approve == nil) 
@@ -32,6 +35,7 @@ class ChangeRequestsController < ApplicationController
       #the status of cr approval, it can be : true, false or nil (nil is not decided yet by approver)
       @approved = approve.approve
     end
+    #Notifier.mark_as_read(notifica)
   end
 
   def new
@@ -79,7 +83,8 @@ class ChangeRequestsController < ApplicationController
           @approval.change_request_id = @change_request.id
           @approval.save
         end
-
+        #Notify
+        Notifier.cr_notify(current_user, @change_request, 'new_cr')
         #Thread.new do
          # UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
           #ActiveRecord::Base.connection.close
@@ -107,6 +112,7 @@ class ChangeRequestsController < ApplicationController
         @collaborators_list.each do |collaborator|
           @change_request.collaborators << User.find_by(name: collaborator)
         end
+        Notifier.cr_notify(current_user, @change_request, 'update_cr')
         flash[:update_cr_notice] = 'Change request was successfully updated.'
         format.html { redirect_to @change_request }
         format.json { render :show, status: :ok, location: @change_request }
@@ -140,6 +146,7 @@ class ChangeRequestsController < ApplicationController
     if approver.empty?
       flash[:not_eligible_notice] = 'You are not eligible to approve this Change Request'
     else
+      Notifier.cr_notify(current_user, @change_request, 'cr_approved')
       flash[:status_changed_notice] = 'Change Request Approved'
     end
     redirect_to @change_request
@@ -153,6 +160,7 @@ class ChangeRequestsController < ApplicationController
     elsif reject_reason.blank?
       flash[:reject_reason_notice] = 'You must fill reject reason'
     else
+      Notifier.cr_notify(current_user, @change_request, 'cr_rejected')
       approver.update_all(:approve => false, :reject_reason => reject_reason)
       flash[:status_changed_notice] = 'Change Request Rejected'
     end
@@ -207,11 +215,11 @@ class ChangeRequestsController < ApplicationController
         end_week = start_week.end_of_week
       end
       if tag==nil
-        success = ChangeRequest.where('status == "success" AND closed_date <= ? AND closed_date >= ?',end_week, start_week)
-        failed = ChangeRequest.where('status == "failed" AND closed_date <= ? AND closed_date >= ?',end_week, start_week)
+        success = ChangeRequest.where("status = 'success' AND closed_date <= ? AND closed_date >= ?",end_week, start_week)
+        failed = ChangeRequest.where("status = 'failed' AND closed_date <= ? AND closed_date >= ?",end_week, start_week)
       else
-        success = ChangeRequest.where('status == "success" AND closed_date <= ? AND closed_date >= ?',end_week, start_week).tagged_with(tag)
-        failed = ChangeRequest.where('status == "failed" AND closed_date <= ? AND closed_date >= ?',end_week, start_week).tagged_with(tag)
+        success = ChangeRequest.where("status = 'success' AND closed_date <= ? AND closed_date >= ?",end_week, start_week).tagged_with(tag)
+        failed = ChangeRequest.where("status = 'failed' AND closed_date <= ? AND closed_date >= ?",end_week, start_week).tagged_with(tag)
       end
       total_success = success.blank? ? 0 : success.count
       total_failed = failed.blank? ? 0 : failed.count
@@ -238,11 +246,11 @@ class ChangeRequestsController < ApplicationController
         end_month = start_month.end_of_month 
       end
       if tag==nil
-        success = ChangeRequest.where('status == "success" AND closed_date <= ? AND closed_date >= ?',end_month, start_month)
-        failed = ChangeRequest.where('status == "failed" AND closed_date <= ? AND closed_date >= ?',end_month, start_month)
+        success = ChangeRequest.where("status = 'success' AND closed_date <= ? AND closed_date >= ?",end_month, start_month)
+        failed = ChangeRequest.where("status = 'failed' AND closed_date <= ? AND closed_date >= ?",end_month, start_month)
       else
-        success = ChangeRequest.where('status == "success" AND closed_date <= ? AND closed_date >= ?',end_month, start_month).tagged_with(tag)
-        failed = ChangeRequest.where('status == "failed" AND closed_date <= ? AND closed_date >= ?',end_month, start_month).tagged_with(tag)
+        success = ChangeRequest.where("status = 'success' AND closed_date <= ? AND closed_date >= ?",end_month, start_month).tagged_with(tag)
+        failed = ChangeRequest.where("status = 'failed' AND closed_date <= ? AND closed_date >= ?",end_month, start_month).tagged_with(tag)
       end
       total_success = success.blank? ? 0 : success.count
       total_failed = failed.blank? ? 0 : failed.count

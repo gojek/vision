@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150825073749) do
+ActiveRecord::Schema.define(version: 20150827053852) do
 
   create_table "approvers", force: :cascade do |t|
     t.string   "name"
@@ -187,6 +187,29 @@ ActiveRecord::Schema.define(version: 20150825073749) do
   end
 
   add_index "incident_reports", ["user_id"], name: "index_incident_reports_on_user_id"
+
+  create_table "notifications", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "change_request_id"
+    t.integer  "incident_report_id"
+    t.boolean  "read"
+    t.string   "message"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
+
+  add_index "notifications", ["change_request_id"], name: "index_notifications_on_change_request_id"
+  add_index "notifications", ["incident_report_id"], name: "index_notifications_on_incident_report_id"
+  add_index "notifications", ["user_id"], name: "index_notifications_on_user_id"
+
+  create_table "read_marks", force: :cascade do |t|
+    t.integer  "readable_id"
+    t.string   "readable_type", null: false
+    t.integer  "user_id",       null: false
+    t.datetime "timestamp"
+  end
+
+  add_index "read_marks", ["user_id", "readable_type", "readable_id"], name: "index_read_marks_on_user_id_and_readable_type_and_readable_id"
 
   create_table "taggings", force: :cascade do |t|
     t.integer  "tag_id"
