@@ -1,0 +1,89 @@
+<li class="dropdown dropdown-accordion messages-menu" data-accordion="#accordion">
+  <a  href="#" data-toggle="dropdown">
+    Incident Report
+     <% if current_user.notifications.ir.unread.count > 0 %>
+     <span class="label label-success"><%= current_user.notifications.ir.unread.count%></span>
+     <% n_ir = current_user.notifications.ir.unread %>
+  </a>
+  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+    <li>
+      <ul class='menu' id="accordion">
+        <% if n_ir.new_incident.count > 0 %>
+        <li>
+            <a href="#collapse1" data-toggle="collapse" data-parent="#accordion">
+             <%= n_ir.new_incident.count %> New Incident 
+            </a>
+          <ul class="collapse" id="collapse1">
+               <% n_ir.new_incident.each do |notif| %>
+                <%= link_to incident_report_path(notif.incident_report_id) do  %>
+                  <h5>
+                  <%= notif.incident_report.service_impact %>
+                  <small class="pull-right" style="padding-right:10px"><i class="fa fa-clock-o"></i> <%= distance_of_time_in_words(notif.created_at, Time.now) %></small>
+                  </h5>
+                <% end %>
+              <%end%>
+          </ul>
+        </li>
+        <%end %>
+
+        <% if n_ir.resolved.count > 0 %>
+        <li>
+            <a href="#collapse2" data-toggle="collapse" data-parent="#accordion">
+               <%= n_ir.resolved.count %> Resolved Incident
+            </a>
+          <ul class="collapse" id="collapse2">
+              <% n_ir.resolved.each do |notif| %>
+                <%= link_to incident_report_path(notif.incident_report_id) do  %>
+                  <h5>
+                  <%= notif.incident_report.service_impact %>
+                  <small class="pull-right" style="padding-right:10px"><i class="fa fa-clock-o"></i> <%= distance_of_time_in_words(notif.created_at, Time.now) %></small>
+                  </h5>
+                <% end %>
+              <%end%>
+          </ul>
+        </li>
+        <%end %>
+      </ul>
+    </li>
+  </ul>
+   <%else %>
+ </a>
+ <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+    <li>
+      <ul class='menu'>
+        <li >
+          <a>
+          No new notification
+        </a>
+        </li>
+      </ul>
+    </li>
+ </ul>
+<%end %>
+
+</li>
+
+
+
+
+<script type="text/javascript">
+// Collapse accordion every time dropdown is shown
+  $('.dropdown-accordion').on('show.bs.dropdown', function (event) {
+    var accordion = $(this).find($(this).data('accordion'));
+    accordion.find('.collapse.in').collapse('hide');
+  });
+
+  // Prevent dropdown to be closed when we click on an accordion link
+  $('.dropdown-accordion').on('click', 'a[data-toggle="collapse"]', function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+    $($(this).data('parent')).find('.collapse.in').collapse('hide');
+    $($(this).attr('href')).collapse('show');
+  })
+</script>
+
+<style type="text/css">
+  small{
+    padding-right: 10px;
+  }
+</style>
