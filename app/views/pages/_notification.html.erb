@@ -1,0 +1,258 @@
+<li class="dropdown dropdown-accordion messages-menu" data-accordion="#accordion">
+  <a  href="#" data-toggle="dropdown">
+    Change Request 
+    <% if current_user.notifications.cr.unread.count > 0 %>
+     <span class="label label-success"><%= current_user.notifications.cr.unread.count%></span>
+     <% n_cr = current_user.notifications.cr.unread %>
+    </a>
+  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+    <li>
+      <ul class='menu' id="accordion">
+        <% if n_cr.new_cr.count > 0 %>
+        <li>
+            <a href="#collapseOne" data-toggle="collapse" data-parent="#accordion">
+             <%= n_cr.new_cr.count %> New Change Request
+            </a>
+          <ul class="collapse" id="collapseOne">
+               <% n_cr.new_cr.each do |notif| %>
+                <%= link_to change_request_path(notif.change_request_id) do  %>
+                  <h5>
+                  <%= notif.change_request.change_summary %>
+                  <small class="pull-right" style="padding-right:10px"><i class="fa fa-clock-o"></i> <%= distance_of_time_in_words(notif.created_at, Time.now) %></small>
+                  </h5>
+                <% end %>
+              <%end%>
+          </ul>
+        </li>
+        <%end %>
+
+        <% if n_cr.update_cr.count > 0 %>
+        <li>
+            <a href="#collapseTwo" data-toggle="collapse" data-parent="#accordion">
+               <%= n_cr.update_cr.count %> Updated Change Requests
+            </a>
+          <ul class="collapse" id="collapseTwo">
+              <% n_cr.update_cr.each do |notif| %>
+                <%= link_to change_request_path(notif.change_request_id) do  %>
+                  <h5>
+                  <%= notif.change_request.change_summary %>
+                  <small class="pull-right" style="padding-right:10px"><i class="fa fa-clock-o"></i> <%= distance_of_time_in_words(notif.created_at, Time.now) %></small>
+                  </h5>
+                <% end %>
+              <%end%>
+          </ul>
+        </li>
+        <%end %>
+
+        <% if n_cr.approved.count > 0 %>
+        <li>
+            <a href="#collapse3" data-toggle="collapse" data-parent="#accordion">
+              <%= n_cr.approved.count %> Approved Change Requests by Approvers
+            </a>
+          <ul class="collapse" id="collapse3">
+              <% n_cr.approved_cr.each do |notif| %>
+                <%= link_to change_request_path(notif.change_request_id) do  %>
+                  <h5>
+                  <%= notif.change_request.change_summary %>
+                  <small class="pull-right"><i class="fa fa-clock-o"></i> <%= distance_of_time_in_words(notif.created_at, Time.now) %></small>
+                  </h5>
+                <% end %>
+              <%end%>
+          </ul>
+        </li>
+        <%end %>
+
+        <% if n_cr.rejected.count > 0 %>
+        <li>
+            <a href="#collapse4" data-toggle="collapse" data-parent="#accordion">
+             <%= n_cr.rejected.count %>  Rejected Change Request  by Approvers
+            </a>
+          <ul class="collapse" id="collapse4">
+              <% n_cr.rejected.each do |notif| %>
+                <%= link_to change_request_path(notif.change_request_id) do  %>
+                  <h5>
+                  <%= notif.change_request.change_summary %>
+                  <small class="pull-right"><i class="fa fa-clock-o"></i> <%= distance_of_time_in_words(notif.created_at, Time.now) %></small>
+                  </h5>
+                <% end %>
+              <%end%>
+          </ul>
+        </li>
+        <%end %>
+
+        <% if n_cr.final_rejected.count > 0 %>
+
+        <li>
+            <a href="#collapse5" data-toggle="collapse" data-parent="#accordion">
+             <%= n_cr.final_rejected.count %> Rejected Change Request
+            </a>
+          <ul class="collapse" id="collapse5">
+              <% n_cr.final_rejected.each do |notif| %>
+                <%= link_to change_request_path(notif.change_request_id) do  %>
+                  <h5>
+                  <%= notif.change_request.change_summary %>
+                  <small class="pull-right"><i class="fa fa-clock-o"></i> <%= distance_of_time_in_words(notif.created_at, Time.now) %></small>
+                  </h5>
+                <% end %>
+              <%end%>
+          </ul>
+        </li>
+        <%end %>
+
+        <% if n_cr.cancelled.count > 0 %>
+
+        <li>
+            <a href="#collapse6" data-toggle="collapse" data-parent="#accordion">
+              <%= n_cr.cancelled.count %> Cancelled Change Request
+            </a>
+          <ul class="collapse" id="collapse6">
+              <% n_cr.cancelled.each do |notif| %>
+                <%= link_to change_request_path(notif.change_request_id) do  %>
+                  <h5>
+                  <%= notif.change_request.change_summary %>
+                  <small class="pull-right"><i class="fa fa-clock-o"></i> <%= distance_of_time_in_words(notif.created_at, Time.now) %></small>
+                  </h5>
+                <% end %>
+              <%end%>
+          </ul>
+        </li>
+        <%end %>
+
+        <% if n_cr.scheduled.count > 0 %>
+
+         <li>
+            <a href="#collapse7" data-toggle="collapse" data-parent="#accordion">
+              <%= n_cr.scheduled.count %> Scheduled Change Request
+            </a>
+          <ul class="collapse" id="collapse7">
+             <% n_cr.scheduled.each do |notif| %>
+                <%= link_to change_request_path(notif.change_request_id) do  %>
+                  <h5>
+                  <%= notif.change_request.change_summary %>
+                  <small class="pull-right"><i class="fa fa-clock-o"></i> <%= distance_of_time_in_words(notif.created_at, Time.now) %></small>
+                  </h5>
+                <% end %>
+              <%end%>
+          </ul>
+        </li>
+        <%end %>
+
+        <% if n_cr.deployed.count > 0 %>
+
+         <li>
+            <a href="#collapse8" data-toggle="collapse" data-parent="#accordion">
+              <%= n_cr.deployed.count %> Deployed Change Request
+            </a>
+          <ul class="collapse" id="collapse8">
+              <% n_cr.deployed.each do |notif| %>
+                <%= link_to change_request_path(notif.change_request_id) do  %>
+                  <h5>
+                  <%= notif.change_request.change_summary %>
+                  <small class="pull-right"><i class="fa fa-clock-o"></i> <%= distance_of_time_in_words(notif.created_at, Time.now) %></small>
+                  </h5>
+                <% end %>
+              <%end%>
+          </ul>
+        </li>
+        <%end %>
+
+        <% if n_cr.closed.count > 0 %>
+
+         <li>
+            <a href="#collapse9" data-toggle="collapse" data-parent="#accordion">
+             <%= n_cr.closed.count %> Closed Change Request
+            </a>
+          <ul class="collapse" id="collapse9">
+             <% n_cr.closed.each do |notif| %>
+                <%= link_to change_request_path(notif.change_request_id) do  %>
+                  <h5>
+                  <%= notif.change_request.change_summary %>
+                  <small class="pull-right"><i class="fa fa-clock-o"></i> <%= distance_of_time_in_words(notif.created_at, Time.now) %></small>
+                  </h5>
+                <% end %>
+              <%end%>
+          </ul>
+        </li>
+        <%end %>
+
+        <% if n_cr.rollbacked.count > 0 %>
+         <li>
+            <a href="#collapse10" data-toggle="collapse" data-parent="#accordion">
+             <%= n_cr.rollbacked.count %> Rollbacked Change Request
+            </a>
+          <ul class="collapse" id="collapse10">
+              <% n_cr.rollbacked.each do |notif| %>
+                <%= link_to change_request_path(notif.change_request_id) do  %>
+                  <h5>
+                  <%= notif.change_request.change_summary %>
+                  <small class="pull-right"><i class="fa fa-clock-o"></i> <%= distance_of_time_in_words(notif.created_at, Time.now) %></small>
+                  </h5>
+                <% end %>
+              <%end%>
+          </ul>
+        </li>
+        <%end %>
+
+        <% if n_cr.comment.count > 0 %>
+        <li>
+            <a href="#collapse11" data-toggle="collapse" data-parent="#accordion">
+            <%= n_cr.comment.count %> New Comment
+            </a>
+          <ul class="collapse" id="collapse11">
+             <% n_cr.comment.each do |notif| %>
+                <%= link_to change_request_path(notif.change_request_id) do  %>
+                  <h5>
+                  <%= notif.change_request.change_summary %>
+                  <small class="pull-right"><i class="fa fa-clock-o"></i> <%= distance_of_time_in_words(notif.created_at, Time.now) %></small>
+                  </h5>
+                <% end %>
+              <%end%>
+          </ul>
+        </li>
+        <%end %>
+
+      </ul>
+    </li>
+  </ul>
+   <%else %>
+ </a>
+ <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+    <li>
+      <ul class='menu'>
+        <li >
+          <a>
+          No new notification
+        </a>
+        </li>
+      </ul>
+    </li>
+ </ul>
+<%end %>
+</li>
+<script type="text/javascript">
+// Collapse accordion every time dropdown is shown
+$('.dropdown-accordion').on('show.bs.dropdown', function (event) {
+  var accordion = $(this).find($(this).data('accordion'));
+  accordion.find('.collapse.in').collapse('hide');
+});
+
+// Prevent dropdown to be closed when we click on an accordion link
+$('.dropdown-accordion').on('click', 'a[data-toggle="collapse"]', function (event) {
+  event.preventDefault();
+  event.stopPropagation();
+  $($(this).data('parent')).find('.collapse.in').collapse('hide');
+  $($(this).attr('href')).collapse('show');
+})
+
+
+</script>
+
+<style type="text/css">
+  small{
+    padding-right: 10px;
+  }
+  .navbar-custom-menu a{
+    color: #000000;
+  }
+
+</style>

@@ -1,6 +1,9 @@
 # a model representating incident report document
 class IncidentReport < ActiveRecord::Base
+  include ActiveModel::Dirty
+  
   belongs_to :user
+  acts_as_readable :on => :updated_at
   has_paper_trail class_name: 'IncidentReportVersion',
                   meta: { author_username: :user_name }
   acts_as_taggable
@@ -8,13 +11,11 @@ class IncidentReport < ActiveRecord::Base
   MEASURER_STATUS = %w(Implemented Development)
   SOURCE = %w(Internal External)
   RECURRENCE_CONCERN = %w(Low Medium High)
+  has_many :notifications
   validates :service_impact, :problem_details, :how_detected, :occurrence_time,
             :detection_time, :loss_related, :occurred_reason,
             :overlooked_reason, :recovery_action, :prevent_action,
             presence: true
-  validates :current_status, presence: true,
-            inclusion: { in: CURRENT_STATUS,
-                        message: '%{ value } is not a valid status' }
   validates :measurer_status, presence: true,
             inclusion: { in: MEASURER_STATUS, message: '%{ value } is not a valid status' }
   validates :source, presence: true,
@@ -28,6 +29,10 @@ class IncidentReport < ActiveRecord::Base
 
   def user_name
     user ? user.name : ''
+  end
+
+  def check_status
+    self.current_status_changed?(from: nil, to: "Resolved") || self.current_status_changed?(from: "Recovered", to: "Resolved") || self.current_status_changed?(from: "Ongoing", to: "Resolved")
   end
 
   def set_recovery_duration
@@ -56,7 +61,7 @@ class IncidentReport < ActiveRecord::Base
       self.current_status = "Recovered"
     else
       self.current_status = "Ongoing"
-    end 
+    end
   end
 
   def previous
