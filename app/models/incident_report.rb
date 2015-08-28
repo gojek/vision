@@ -65,11 +65,11 @@ class IncidentReport < ActiveRecord::Base
   end
 
   def previous
-    IncidentReport.where("id < ?",id).last
+   IncidentReport.where("id > ?",id).first
   end
 
   def next
-    IncidentReport.where("id > ?",id).first
+    IncidentReport.where("id < ?",id).last
   end
 
 end
