@@ -53,7 +53,11 @@ $(function(){
               </tr>
               <% @incident_reports.each do |incident_report| %>
 
-                    <tr>
+              <% if current_user.have_read?(incident_report) %>
+                  <tr bgcolor="#F4F4F4">
+              <% else %>
+                  <tr>
+              <%end%>
                       <td><%= incident_report.id %></td>
                       <td><%= incident_report.service_impact %></td>
                       <td><%=raw incident_report.problem_details %></td>
@@ -63,7 +67,7 @@ $(function(){
                       <td><%= incident_report.detection_time.to_s(:long) %></td>
                       <td><%= incident_report.recovery_time.blank? ? "-" : incident_report.recovery_time.to_s(:long)  %></td>
 
-                       <td> <%= incident_report.resolved_time.blank? ? "-" : incident_report.recovery_time.to_s(:long)  %> </td>
+                       <td> <%= incident_report.resolved_time.blank? ? "-" : incident_report.resolved_time.to_s(:long)  %> </td>
                       <td><%= incident_report.recovery_duration.blank? ? "-" : incident_report.recovery_duration %> </td>
                       <td><%= incident_report.resolution_duration.blank? ? "-" : incident_report.resolution_duration %> </td>
                       <td><%= incident_report.source %></td>
