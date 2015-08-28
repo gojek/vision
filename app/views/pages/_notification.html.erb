@@ -50,7 +50,7 @@
               <%= n_cr.approved.count %> Approved Change Requests by Approvers
             </a>
           <ul class="collapse" id="collapse3">
-              <% n_cr.approved_cr.each do |notif| %>
+              <% n_cr.approved.each do |notif| %>
                 <%= link_to change_request_path(notif.change_request_id) do  %>
                   <h5>
                   <%= notif.change_request.change_summary %>
