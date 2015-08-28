@@ -200,9 +200,9 @@ require 'notifier.rb'
       else
         end_time = start_month.end_of_week
       end
-      occured = IncidentReport.where("current_status = 'Ongoing' AND occurrence_time <= ? AND occurrence_time >= ?", end_time, start_time)
-      recovered = IncidentReport.where("current_status = 'Recovered' AND recovery_time <= ? AND recovery_time >= ?", end_time, start_time)
-      resolved = IncidentReport.where("current_status = 'Resolved' AND resolved_time <= ? AND resolved_time >= ?", end_time, start_time)
+      occured = IncidentReport.where("occurrence_time <= ? AND occurrence_time >= ?", end_time, start_time)
+      recovered = IncidentReport.where("recovery_time <= ? AND recovery_time >= ?", end_time, start_time)
+      resolved = IncidentReport.where("resolved_time <= ? AND resolved_time >= ?", end_time, start_time)
       
       total_occured = occured.blank? ? 0 : occured.count
       total_recovered = recovered.blank? ? 0 : recovered.count
