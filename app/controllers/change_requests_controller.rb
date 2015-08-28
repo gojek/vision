@@ -8,14 +8,14 @@ class ChangeRequestsController < ApplicationController
   def index
     if params[:tag]
       @q = ChangeRequest.ransack(params[:q])
-      @change_requests = @q.result(distinct: true).tagged_with(params[:tag]).order(created_at: :desc).page(params[:page]).per(params[:per_page])
+      @change_requests = @q.result(distinct: true).tagged_with(params[:tag]).order(id: :desc).page(params[:page]).per(params[:per_page])
     elsif params[:tag_list]
       @q = ChangeRequest.ransack(params[:q])
-      @change_requests = @q.result(distinct: true).tagged_with(params[:tag_list]).order(created_at: :desc).page(params[:page]).per(params[:per_page])
+      @change_requests = @q.result(distinct: true).tagged_with(params[:tag_list]).order(id: :desc).page(params[:page]).per(params[:per_page])
     else
       #populate all CR if release_manager
       @q = ChangeRequest.ransack(params[:q])
-      @change_requests = @q.result(distinct: true).order(created_at: :desc).page(params[:page]).per(params[:per_page])
+      @change_requests = @q.result(distinct: true).order(id: :desc).page(params[:page]).per(params[:per_page])
     end
     @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
     #@n = Notifier.notify
