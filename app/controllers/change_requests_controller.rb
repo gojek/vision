@@ -89,10 +89,10 @@ class ChangeRequestsController < ApplicationController
         end
         #Notify
         Notifier.cr_notify(current_user, @change_request, 'new_cr')
-        #Thread.new do
-         # UserMailer.notif_email(@change_request.user, @change_request, @status).deliver_now
-          #ActiveRecord::Base.connection.close
-        #end
+        Thread.new do
+          UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
+          ActiveRecord::Base.connection.close
+        end
         #SendNotifEmailJob.set(wait: 20.seconds).perform_later(@change_request.user, @change_request, @status)
         flash[:create_cr_notice] = 'Change request was successfully created.'
         format.html { redirect_to @change_request }
