@@ -25,7 +25,7 @@ class IncidentReport < ActiveRecord::Base
   validates :rank, presence: true, inclusion: { in: 1..5, message: '%{ value } is not a valid value' }
   validate  :validate_recovery_time, :if => :recovery_time? 
   validate  :validate_resolution_time, :if => :resolved_time? 
-  validate  :validate_detection_time
+  validate  :validate_detection_time, :if => :detection_time?
 
   def user_name
     user ? user.name : ''

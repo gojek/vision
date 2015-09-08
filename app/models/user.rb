@@ -74,7 +74,7 @@ class User < ActiveRecord::Base
   end
 
   def fresh_token
-    refresh! if expired?
+    refresh! if (expired? || token == nil)
     token
   end
 
