@@ -61,14 +61,14 @@
     <div class="col-sm-4 invoice-col">
       <b>Incident Report #<%= @incident_report.id %></b><br/>
       <br/>
-      <b>Occurance Time:</b> <%= @incident_report.occurrence_time.to_s(:db) %><br/>
-      <b>Detection Time:</b>  <%= @incident_report.detection_time.to_s(:db) %><br/>
+      <b>Occurance Time:</b> <%= @incident_report.occurrence_time.to_s(:long) %><br/>
+      <b>Detection Time:</b>  <%= @incident_report.detection_time.to_s(:long) %><br/>
       <% unless @incident_report.recovery_time.blank? %> 
-      <b>Recovery Time:</b>  <%= @incident_report.recovery_time.to_s(:db) %><br>
+      <b>Recovery Time:</b>  <%= @incident_report.recovery_time.to_s(:long) %><br>
       <b>Recovery Duration:</b>  <%= @incident_report.recovery_duration %> minutes<br>
         <% end %>
       <%if @incident_report.resolved_time != nil %>
-      <b>Resolve Time:</b>  <%= @incident_report.resolved_time.to_s(:db) %><br>
+      <b>Resolve Time:</b>  <%= @incident_report.resolved_time.to_s(:long) %><br>
       <% end %>
       <% if @incident_report.recovery_duration.blank? %>
       <b>Resolution Duration:</b>  <%= @incident_report.resolution_duration %> minutes
