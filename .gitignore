@@ -29,4 +29,3 @@ coverage
 /coverage/*.html
 /coverage/*.json
 /coverage/*
-Gemfile
