@@ -35,6 +35,10 @@ gem 'omniauth-google-oauth2'
 gem 'google-api-client', :require => 'google/api_client'
 gem 'httpclient'
 
+# server-related
+gem 'dotenv' # to allow loading environment variable locally by file
+gem 'foreman' # to load environment variable, foreman start/foreman rails c
+
 # data representation
 gem 'ransack'
 gem 'kaminari'
