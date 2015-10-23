@@ -21,3 +21,9 @@
 
 *.swp
 *.swo
+
+coverage
+/coverage/*.html
+/coverage/*.json
+/coverage/*
+Gemfile
