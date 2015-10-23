@@ -26,3 +26,6 @@ coverage
 /coverage/*.html
 /coverage/*.json
 /coverage/*
+
+# Ignore bower components
+/vendor
