@@ -147,7 +147,7 @@ describe ChangeRequestsController do
   end
 
   describe 'release manager acces' do
-     let(:user) {FactoryGirl.create(:release_manager)}
+    let(:user) {FactoryGirl.create(:release_manager)}
     before :each do
       @request.env['devise.mapping'] = Devise.mappings[:user]
       @cr = FactoryGirl.create(:change_request)

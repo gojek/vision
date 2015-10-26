@@ -63,5 +63,26 @@ FactoryGirl.define do
     factory :invalid_change_request do
         scope "Scope"
     end
+
+    before(:create) do |cr|
+      implementer = FactoryGirl.create(:implementer)
+      cr.implementers << implementer
+
+      tester = FactoryGirl.create(:tester)
+      cr.testers << tester
+    end
+
+    after(:create) do |cr|
+      cr.implementers.each do |implementer|
+        implementer.change_request_id = cr.id
+        implementer.save!
+      end
+
+      cr.testers.each do |tester|
+        tester.change_request_id = cr.id
+        tester.save!
+      end
+    end
+
   end
 end
