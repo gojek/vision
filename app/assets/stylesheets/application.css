@@ -12,6 +12,7 @@
  *
  *= require_tree .
  *= require_self
+ *= require bootstrap/dist/css/bootstrap
  *= require admin-lte/plugins/select2/select2
  *= require admin-lte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min
  *= require eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min
