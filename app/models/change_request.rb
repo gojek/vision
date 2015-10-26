@@ -34,6 +34,7 @@ class ChangeRequest < ActiveRecord::Base
   validate :deploy_date, :if => :schedule_change_date? && :planned_completion?
   validate :grace_period_date, :if => :grace_period_date_starts? && :grace_period_end
   #validates :change_summary, :priority, :category, :cr_type, :change_requirement, :business_justification, :requestor_position, :requestor_name, presence: true
+  
   aasm do 
     state :submitted, :initial => true
     state :scheduled
