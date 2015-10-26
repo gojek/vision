@@ -16,7 +16,6 @@ gem 'bootstrap-kaminari-views'
 gem 'jquery-turbolinks'
 gem 'jquery-ui-rails'
 gem "simple_calendar", "~> 1.1.0"
-gem 'bootstrap-sass', '~> 3.3.5'
 gem 'fullcalendar-rails'
 gem 'momentjs-rails'
 gem 'nprogress-rails'
