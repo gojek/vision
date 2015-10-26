@@ -9,7 +9,7 @@ class ChangeRequestStatusesController < ApplicationController
       @status.status = 'scheduled'
       if @status.save
         @change_request.schedule!
-        UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
+        UserMailer.notif_email(@change_request.user, @change_request, @status).deliver_now
         Notifier.cr_notify(current_user, @change_request, 'cr_scheduled')
       end
     else
@@ -24,7 +24,7 @@ class ChangeRequestStatusesController < ApplicationController
     	@status.status = 'deployed'
     	if @status.save
         @change_request.deploy!
-        UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
+        UserMailer.notif_email(@change_request.user, @change_request, @status).deliver_now
         Notifier.cr_notify(current_user, @change_request, 'cr_deployed')
       end
     end
@@ -37,7 +37,7 @@ class ChangeRequestStatusesController < ApplicationController
       @status.status = 'rollbacked'
       if @status.save
         @change_request.rollback!
-         UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
+         UserMailer.notif_email(@change_request.user, @change_request, @status).deliver_now
         Notifier.cr_notify(current_user, @change_request, 'cr_rollbacked')
       else
         flash[:change_status_notice] = 'Reason must be filled to Rollback CR'
@@ -52,7 +52,7 @@ class ChangeRequestStatusesController < ApplicationController
       @status.status = 'cancelled'
       if @status.save
         @change_request.cancel!
-        UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
+        UserMailer.notif_email(@change_request.user, @change_request, @status).deliver_now
         Notifier.cr_notify(current_user, @change_request, 'cr_cancelled')
       else
         flash[:change_status_notice] = 'Reason must be filled Cancel CR'        
@@ -66,7 +66,7 @@ class ChangeRequestStatusesController < ApplicationController
       @status = @change_request.change_request_statuses.new(change_request_status_params)
       @status.status = 'closed'
       if @status.save
-        UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
+        UserMailer.notif_email(@change_request.user, @change_request, @status).deliver_now
         @change_request.close!
         Notifier.cr_notify(current_user, @change_request, 'cr_closed')
       end
@@ -80,7 +80,7 @@ class ChangeRequestStatusesController < ApplicationController
       @status.status = 'rejected'
       if @status.save
         @change_request.reject!
-          UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
+          UserMailer.notif_email(@change_request.user, @change_request, @status).deliver_now
           Notifier.cr_notify(current_user, @change_request, 'cr_final_rejected')
       else
         flash[:change_status_notice] = 'Reason must be filled to Reject CR'
@@ -95,7 +95,7 @@ class ChangeRequestStatusesController < ApplicationController
       @status.status = 'submitted'
       if @status.save
         @change_request.submit!
-        UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
+        UserMailer.notif_email(@change_request.user, @change_request, @status).deliver_now
         #no need to notify, because it same with new cr
       end
     end

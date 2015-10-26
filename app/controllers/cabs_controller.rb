@@ -22,7 +22,7 @@ class CabsController < ApplicationController
       @cr_list = params[:cr_list].split(",")
 		  ChangeRequest.where(:id => @cr_list).update_all(:cab_id => @cab.id)
       Thread.new do
-        UserMailer.cab_email(@cab).deliver
+        UserMailer.cab_email(@cab).deliver_now
         ActiveRecord::Base.connection.close
       end
       flash[:create_cab_notice] = 'CAB successfully arranged'      
