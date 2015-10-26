@@ -36,5 +36,8 @@ module Vision
     *.svg *.eot *.woff *.ttf *.png *.jpg *.jpeg *.gif)
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+    # add bower components to it
+    config.assets.paths << Rails.root.join("vendor", "assets", "components")
   end
 end
