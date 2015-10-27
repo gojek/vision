@@ -85,9 +85,16 @@ Rails.application.configure do
     domain: "gmail.com",
     authentication: "plain",
     enable_startttls_auto: true,
-    user_name:'narendra.hanif@veritrans.co.id',
-    password: 'veritrans'
+    user_name: ENV['GMAIL_USERNAME_DEV'],
+    password: ENV['GMAIL_PASSWORD_DEV']
     #user_name: ENV['GMAIL_USERNAME_DEV'],
     #password: ENV['GMAIL_PASSWORD_DEV']
   }
+  Rails.application.config.middleware.use ExceptionNotification::Rack,
+  :email => {
+    :email_prefix => "[VISION] ",
+    :sender_address => %{"vision-notifier" <narendra.hanif@veritrans.co.id>},
+    :exception_recipients => %w{muhammad.idham@veritrans.co.id}
+  }
+
 end

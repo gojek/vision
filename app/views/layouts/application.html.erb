@@ -1,26 +1,22 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Vision</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
-	<div id="wrapper">
-        <!-- Navigation -->
-        <% if current_user!=nil%>
-        <%= render 'pages/nav' %>
-        <div id="page-wrapper">
-      
-        <div class="container-fluid">
-                  <%= yield %>
+  <head>
+    <title>Vision</title>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+  </head>
+  <% if current_user!=nil%>
+    <body class="skin-blue sidebar-mini sidebar-collapse " >
+    	<div class="wrapper">
+        
+          <%= render 'pages/nav' %>
+        
+        <div class="content-wrapper">
+          <%= yield %>
         </div>
-    </div>
-        <% end %>
-        <!-- Page Content -->
-        <%= yield :login %>
-
-	</div>
-</body>
+      </div>
+    </body>
+  <% end %>
+   <%= yield :login %>
 </html>

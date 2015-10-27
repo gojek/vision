@@ -9,6 +9,9 @@ FactoryGirl.define do
     is_admin false
     name 'patrick star'
     locked_at nil
+    token '123456'
+    refresh_token '123456'
+    expired_at Time.now+1.hour
 
     factory :admin do
         is_admin true

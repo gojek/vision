@@ -1,19 +1,28 @@
+require 'net/http'
+require 'json'
+
 # a model representing user
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :trackable, :lockable,
+  devise :trackable, :lockable, :timeoutable,  
          :omniauthable, omniauth_providers: [:google_oauth2]
+  acts_as_reader
   ROLES = %w(requestor approver release_manager)
+  ADMIN = %w(Admin User)
   validates :role, inclusion: { in: ROLES,
-                                message: '%{value} is not a valid role' }
+                              message: '%{value} is not a valid role' }
   validates :email, presence: true
   has_many :IncidentReports
   has_many :ChangeRequests
-  has_many :comments
+  has_and_belongs_to_many :collaborate_change_requests, :class_name => 'ChangeRequest'
+  has_many :Comments
+  has_many :notifications
+  has_many :Approvers, :dependent => :destroy
   validates :email, format: { with: /\b[A-Z0-9._%a-z\-]+@veritrans\.co\.id\z/,
                   message: "must be a veritrans account" }
   validates :email, uniqueness: true
+
 
   def account_active?
     locked_at.nil?
@@ -21,6 +30,10 @@ class User < ActiveRecord::Base
 
   def active_for_authentication?
     super && account_active?
+  end
+
+  def timeout_in
+    1.day
   end
 
   def self.from_omniauth(auth)
@@ -35,5 +48,50 @@ class User < ActiveRecord::Base
   def self.find_version_author(version)
     find(version.terminator)
   end
+
+  def token_to_params
+    {'refresh_token' => refresh_token,
+    'client_id' => ENV['GOOGLE_API_KEY'],
+    'client_secret' => ENV['GOOGLE_API_SECRET'],
+    'grant_type' => 'refresh_token'}
+  end
+
+  def request_token_from_google
+    url = URI('https://accounts.google.com/o/oauth2/token')
+    Net::HTTP.post_form(url, self.token_to_params)
+  end
+
+  def refresh!
+    response = request_token_from_google
+    data = JSON.parse(response.body)
+    update_attributes(
+      token: data['access_token'],
+      expired_at: Time.now + (data['expires_in'].to_i).seconds)
+  end
+
+  def expired?
+    expired_at < Time.now
+  end
+
+  def fresh_token
+    refresh! if expired?
+    token
+  end
+
+  #refer to https://developers.google.com/oauthplayground and https://github.com/nahi/httpclient/blob/master/sample/howto.rb
+  def get_contacts 
+    client = HTTPClient.new()
+    target = 'https://www.google.com/m8/feeds/contacts/default/full/'
+    token = 'Bearer ' + self.fresh_token
+    response = client.get(target, nil, {'Gdata-version' => '3.0', 'Authorization' => token}).body
+    response
+    xml = Nokogiri.XML(response)
+    all_contact = []
+    xml.xpath('//gd:email').each do |entry|
+      all_contact.push(entry['address'])
+    end
+    all_contact
+  end
+
 end
  

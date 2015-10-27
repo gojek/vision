@@ -9,27 +9,33 @@ describe User do
 		expect(other_user).to be_valid
 		expect(another_user).to be_valid
 	end
+
 	it "is invalid with role other than approver, requestor, release_manager" do
 		user = FactoryGirl.build(:user, role: 'jagoan')
 		expect(user).to have(1).errors_on(:role)
 	end
+
 	it "is valid with a veritrans email" do 
 		user = FactoryGirl.build(:user)
 		expect(user).to be_valid
 	end
+
 	it "is invalid without an email address" do
 		user = FactoryGirl.build(:user, email: nil)
 		expect(user).to have(2).errors_on(:email)
 	end
+
 	it "is invalid with a duplicate email address" do
 		user = FactoryGirl.create(:user, email: 'patrick@veritrans.co.id')
 		other_user = FactoryGirl.build(:user, email: 'patrick@veritrans.co.id')
 		expect(other_user).to have(1).errors_on(:email)
 	end
+
 	it "is invalid with a non-veritrans email" do
 		user = FactoryGirl.build(:user, email: 'squidward@gmail.com')
 		expect(user).to have(1).errors_on(:email)
 	end
+
 	it "returns true if account is not locked" do
 		user = FactoryGirl.create(:user)
 		expect(user.account_active?).to eq true
@@ -67,4 +73,31 @@ describe User do
 		expect(user.role).to eq 'requestor'
 		expect(user.is_admin).to eq false
 	end
+
+	it "expired? method will return true if user token has been expired" do
+		user = FactoryGirl.create(:user, :expired_at => Time.now - 1.hour)
+		expect(user.expired?).to eq true
+	end
+
+	it "expired? method will return false if user token has not been expired" do
+		user = FactoryGirl.create(:user, :expired_at => Time.now + 1.hour)
+		expect(user.expired?).to eq false
+	end
+
+	
+	it "fresh_token method will return current token if not expired" do
+		user = FactoryGirl.create(:user)
+		expect(user.fresh_token).to eq '123456'
+	end
+
+	it "fresh_token method will refresh token and return new token if token expired" do
+		user = FactoryGirl.create(:user, :expired_at => Time.now - 1.hour)
+		stub_request(:post, 'https://accounts.google.com/o/oauth2/token').with(headers: {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).to_return(status:200, body: '{"access_token":
+											  "45678",
+											 "token_type":"Bearer",
+											 "expires_in":3600,
+											 "id_token":"id"}', headers: {})
+		expect(user.fresh_token).to eq '45678'
+	end
+
 end
