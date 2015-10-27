@@ -1,6 +1,6 @@
 
-<%= form_for @user  do |f| %>
-  <% if flash[:registered_succesfully] != nil %>
+
+<% if flash[:registered_succesfully] != nil %>
     <div class="alert alert-success">
       <%= flash[:registered_succesfully] %>
     </div>
@@ -14,15 +14,25 @@
       </ul>
     </div>
   <% end %>
-  <div class="field">
-    <%=f.label :role %><br />
-    <%=f.select :role, options_for_select(User::ROLES,@user.role), {}, {class: 'form-control'} %><br/>
-  </div>
-  <div class="field">
-    <%=f.label :position %><br />
-    <%=f.text_field :position,class: 'form-control' %><br/>
-  </div>
-  <div class="actions">
-    <%= f.submit "Submit", class: 'btn btn-primary'%>
-  </div>
-<% end %>
+  <!-- form start -->
+  <%= form_for @user do |f| %>
+    <div class="box-body">
+      <div class="form-group">
+       <label>Role</label>
+        <%=f.select :role, options_for_select(User::ROLES,@user.role), {}, {class: 'form-control select2'} %>
+      </div>
+      <div class="form-group">
+         <label>Position</label>
+          <%=f.text_field :position,class: 'form-control' %>
+      </div>
+      <div class="form-group">
+        <%= select_tag(:is_admin, options_for_select([['Admin',true], ['User',false]], selected: @user.is_admin), {class: 'form-control select2'}) %>
+        
+      </div>
+    </div><!-- /.box-body -->
+    <div class="box-footer">
+      <%= f.submit "Submit", class: 'btn btn-flat btn-primary pull-right'%>
+    </div><!-- /.box-footer -->
+  <% end %>
+
+

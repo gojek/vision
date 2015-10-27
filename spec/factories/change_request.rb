@@ -2,8 +2,8 @@ FactoryGirl.define do
   factory :change_request do
     change_summary "Change Summary"
     priority "Low"
-    category "Other"
-    cr_type "Other"
+    type_install_uninstall true
+    category_server true
     change_requirement "Change Requirement"
     business_justification "Business Justification"
     requestor_name "Patrick"
@@ -27,6 +27,10 @@ FactoryGirl.define do
     grace_period_end {Time.now}
     implementation_notes "Implementation Notes"
     grace_period_notes "Grace Period Notes"
+    definition_of_success "Success"
+    definition_of_failed " Failed"
+    category_application true
+    type_other "other type"
 
     factory :submitted_change_request do
       aasm_state 'submitted'
