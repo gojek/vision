@@ -17,6 +17,7 @@
 /tmp
 
 # Ignore application configuration
+.DS_Store
 /config/application.yml
 
 # Ignore bower components
