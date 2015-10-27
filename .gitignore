@@ -17,4 +17,5 @@
 /tmp
 
 # Ignore application configuration
+.DS_Store
 /config/application.yml
