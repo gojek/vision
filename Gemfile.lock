@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/spohlenz/tinymce-rails.git
+  revision: f4b993c9912fd34dbd44b5165b4d5f4165294fda
+  specs:
+    tinymce-rails (4.2.3)
+      railties (>= 3.1.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -41,12 +48,24 @@ GEM
       activerecord (>= 3.2, < 5)
     addressable (2.3.8)
     arel (6.0.0)
+    autoparse (0.3.3)
+      addressable (>= 2.3.1)
+      extlib (>= 0.9.15)
+      multi_json (>= 1.0.0)
+    autoprefixer-rails (5.2.1.1)
+      execjs
+      json
     bcrypt (3.1.10)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     bootstrap-kaminari-views (0.0.5)
       kaminari (>= 0.13)
       rails (>= 3.1)
+    bootstrap-sass (3.3.5.1)
+      autoprefixer-rails (>= 5.0.0.1)
+      sass (>= 3.3.0)
+    bootstrap-wysihtml5-rails (0.3.3.7)
+      railties (>= 3.0)
     builder (3.2.2)
     byebug (5.0.0)
       columnize (= 0.9.0)
@@ -59,6 +78,7 @@ GEM
     childprocess (0.5.6)
       ffi (~> 1.0, >= 1.0.11)
     cocoon (1.2.6)
+    coderay (1.1.0)
     coffee-rails (4.1.0)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0, < 5.0)
@@ -67,6 +87,8 @@ GEM
       execjs
     coffee-script-source (1.9.1.1)
     columnize (0.9.0)
+    crack (0.4.2)
+      safe_yaml (~> 1.0.0)
     database_cleaner (1.4.1)
     debug_inspector (0.0.2)
     devise (3.5.1)
@@ -80,7 +102,11 @@ GEM
     diffy (3.0.7)
     docile (1.1.5)
     erubis (2.7.0)
+    exception_notification (4.1.1)
+      actionmailer (>= 3.0.4)
+      activesupport (>= 3.0.4)
     execjs (2.5.2)
+    extlib (0.9.16)
     factory_girl (4.2.0)
       activesupport (>= 3.0.0)
     factory_girl_rails (4.2.1)
@@ -95,9 +121,25 @@ GEM
       thor (~> 0.14)
     font-awesome-rails (4.3.0.0)
       railties (>= 3.2, < 5.0)
+    fullcalendar-rails (2.3.1.0)
+      jquery-rails (>= 3.1.1, < 5.0.0)
+      momentjs-rails (~> 2.8, >= 2.8.4)
     globalid (0.3.5)
       activesupport (>= 4.1.0)
+    google-api-client (0.8.2)
+      activesupport (>= 3.2)
+      addressable (~> 2.3)
+      autoparse (~> 0.3)
+      extlib (~> 0.9)
+      faraday (~> 0.9)
+      launchy (~> 2.4)
+      multi_json (~> 1.10)
+      retriable (~> 1.4)
+      signet (~> 0.6)
     hashie (3.4.2)
+    html_truncator (0.4.1)
+      nokogiri (~> 1.5)
+    httpclient (2.6.0.1)
     i18n (0.7.0)
     jbuilder (2.3.0)
       activesupport (>= 3.0.0, < 5)
@@ -122,14 +164,18 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
+    method_source (0.8.2)
     mime-types (2.6.1)
     mini_portile (0.6.2)
     minitest (5.7.0)
+    momentjs-rails (2.10.3)
+      railties (>= 3.1)
     multi_json (1.11.1)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
+    nprogress-rails (0.1.6.7)
     oauth2 (1.0.0)
       faraday (>= 0.8, < 0.10)
       jwt (~> 1.0)
@@ -153,6 +199,10 @@ GEM
     pg (0.18.2)
     polyamorous (1.2.0)
       activerecord (>= 3.0)
+    pry (0.10.1)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
     rack (1.6.2)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -175,8 +225,6 @@ GEM
       rails-deprecated_sanitizer (>= 1.0.1)
     rails-html-sanitizer (1.0.2)
       loofah (~> 2.0)
-    rails4-autocomplete (1.1.1)
-      rails (>= 3.0)
     rails_12factor (0.0.3)
       rails_serve_static_assets
       rails_stdout_logging
@@ -198,6 +246,7 @@ GEM
     request_store (1.1.0)
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
+    retriable (1.4.1)
     rspec-core (2.14.8)
     rspec-expectations (2.14.5)
       diff-lcs (>= 1.1.3, < 2.0)
@@ -212,6 +261,7 @@ GEM
       rspec-mocks (~> 2.14.0)
     ruby-ole (1.2.11.8)
     rubyzip (1.1.7)
+    safe_yaml (1.0.4)
     sass (3.4.14)
     sass-rails (5.0.3)
       railties (>= 4.0.0, < 5.0)
@@ -227,6 +277,14 @@ GEM
       multi_json (~> 1.0)
       rubyzip (~> 1.0)
       websocket (~> 1.0)
+    signet (0.6.1)
+      addressable (~> 2.3)
+      extlib (~> 0.9)
+      faraday (~> 0.9)
+      jwt (~> 1.5)
+      multi_json (~> 1.10)
+    simple_calendar (1.1.10)
+      rails (>= 3.0)
     simplecov (0.10.0)
       docile (~> 1.1.0)
       json (~> 1.8)
@@ -234,6 +292,7 @@ GEM
     simplecov-html (0.10.0)
     simplecov-rcov (0.2.3)
       simplecov (>= 0.4.1)
+    slop (3.6.0)
     spreadsheet (1.0.3)
       ruby-ole (>= 1.0)
     spring (1.3.6)
@@ -247,8 +306,6 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (1.4.1)
-    tinymce-rails (4.1.6)
-      railties (>= 3.1.1)
     to_xls-rails (1.3.1)
       spreadsheet (>= 0.8.5)
     turbolinks (2.5.3)
@@ -258,6 +315,8 @@ GEM
     uglifier (2.7.1)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    unread (0.6.1)
+      activerecord (>= 3)
     warden (1.2.3)
       rack (>= 1.0)
     web-console (2.1.3)
@@ -265,6 +324,9 @@ GEM
       binding_of_caller (>= 0.7.2)
       railties (>= 4.0)
       sprockets-rails (>= 2.0, < 4.0)
+    webmock (1.21.0)
+      addressable (>= 2.3.6)
+      crack (>= 0.3.2)
     websocket (1.2.2)
     xpath (2.0.0)
       nokogiri (~> 1.3)
@@ -276,6 +338,8 @@ DEPENDENCIES
   aasm
   acts-as-taggable-on
   bootstrap-kaminari-views
+  bootstrap-sass (~> 3.3.5)
+  bootstrap-wysihtml5-rails
   byebug
   capybara
   cocoon
@@ -283,36 +347,48 @@ DEPENDENCIES
   database_cleaner
   devise
   diffy
+  exception_notification
   factory_girl_rails (~> 4.2.1)
   faker
   figaro
   font-awesome-rails
+  fullcalendar-rails
+  google-api-client
+  html_truncator (~> 0.2)
+  httpclient
   jbuilder (~> 2.0)
   jquery-rails
   jquery-turbolinks
   jquery-ui-rails
   kaminari
   launchy
+  momentjs-rails
+  nokogiri
+  nprogress-rails
+  omniauth
   omniauth-google-oauth2
   paper_trail (~> 4.0.0.rc)
   pg
+  pry
   rails (= 4.2.1)
-  rails4-autocomplete
   rails_12factor
   ransack
   rspec-rails (~> 2.14.0)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   selenium-webdriver
+  simple_calendar (~> 1.1.0)
   simplecov
   simplecov-rcov
   spring
   sqlite3
-  tinymce-rails
+  tinymce-rails!
   to_xls-rails
   turbolinks
   uglifier (>= 1.3.0)
+  unread
   web-console (~> 2.0)
+  webmock
 
 BUNDLED WITH
    1.10.3

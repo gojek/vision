@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150728065633) do
+ActiveRecord::Schema.define(version: 20150827053852) do
 
   create_table "approvers", force: :cascade do |t|
     t.string   "name"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 20150728065633) do
     t.datetime "updated_at",        null: false
     t.integer  "user_id"
     t.boolean  "approve"
+    t.text     "reject_reason"
   end
 
   add_index "approvers", ["change_request_id"], name: "index_approvers_on_change_request_id"
@@ -28,10 +29,12 @@ ActiveRecord::Schema.define(version: 20150728065633) do
 
   create_table "cabs", force: :cascade do |t|
     t.datetime "meet_date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.string   "room"
     t.text     "notes"
+    t.string   "participant"
+    t.string   "event_id"
   end
 
   add_index "cabs", ["meet_date"], name: "index_cabs_on_meet_date", unique: true
@@ -62,8 +65,6 @@ ActiveRecord::Schema.define(version: 20150728065633) do
   create_table "change_requests", force: :cascade do |t|
     t.string   "change_summary"
     t.string   "priority"
-    t.string   "category"
-    t.string   "cr_type"
     t.text     "change_requirement"
     t.text     "business_justification"
     t.string   "requestor_position"
@@ -110,10 +111,20 @@ ActiveRecord::Schema.define(version: 20150728065633) do
     t.boolean  "type_configuration_change"
     t.boolean  "type_emergency_change"
     t.string   "type_other"
+    t.text     "other_dependency"
+    t.datetime "closed_date"
   end
 
   add_index "change_requests", ["cab_id"], name: "index_change_requests_on_cab_id"
   add_index "change_requests", ["user_id"], name: "index_change_requests_on_user_id"
+
+  create_table "change_requests_users", id: false, force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "change_request_id"
+  end
+
+  add_index "change_requests_users", ["change_request_id"], name: "index_change_requests_users_on_change_request_id"
+  add_index "change_requests_users", ["user_id"], name: "index_change_requests_users_on_user_id"
 
   create_table "comments", force: :cascade do |t|
     t.text     "body"
@@ -168,11 +179,37 @@ ActiveRecord::Schema.define(version: 20150728065633) do
     t.string   "current_status"
     t.string   "measurer_status"
     t.integer  "user_id"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.datetime "resolved_time"
+    t.decimal  "resolution_duration"
+    t.decimal  "recovery_duration"
+  end
+
+  add_index "incident_reports", ["user_id"], name: "index_incident_reports_on_user_id"
+
+  create_table "notifications", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "change_request_id"
+    t.integer  "incident_report_id"
+    t.boolean  "read"
+    t.string   "message"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
   end
 
-  add_index "incident_reports", ["user_id"], name: "index_incident_reports_on_user_id"
+  add_index "notifications", ["change_request_id"], name: "index_notifications_on_change_request_id"
+  add_index "notifications", ["incident_report_id"], name: "index_notifications_on_incident_report_id"
+  add_index "notifications", ["user_id"], name: "index_notifications_on_user_id"
+
+  create_table "read_marks", force: :cascade do |t|
+    t.integer  "readable_id"
+    t.string   "readable_type", null: false
+    t.integer  "user_id",       null: false
+    t.datetime "timestamp"
+  end
+
+  add_index "read_marks", ["user_id", "readable_type", "readable_id"], name: "index_read_marks_on_user_id_and_readable_type_and_readable_id"
 
   create_table "taggings", force: :cascade do |t|
     t.integer  "tag_id"
@@ -222,19 +259,21 @@ ActiveRecord::Schema.define(version: 20150728065633) do
     t.string   "provider"
     t.boolean  "is_admin"
     t.string   "position"
+    t.string   "token"
+    t.string   "refresh_token"
+    t.datetime "expired_at"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true
 
   create_table "versions", force: :cascade do |t|
-    t.string   "item_type",      null: false
-    t.integer  "item_id",        null: false
-    t.string   "event",          null: false
+    t.string   "item_type",  null: false
+    t.integer  "item_id",    null: false
+    t.string   "event",      null: false
     t.string   "whodunnit"
     t.text     "object"
     t.datetime "created_at"
-    t.text     "object_changes"
   end
 
   add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
