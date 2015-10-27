@@ -9,11 +9,44 @@
 //
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
-//
 //= require jquery
+//= require jquery.turbolinks
 //= require jquery_ujs
 //= require jquery-ui
-//= require autocomplete-rails
-//= require_tree .
-//= require cocoon
+//= require Sortable
+//= require depends_on
+//= require admin-lte/plugins/select2/select2.full
+//= require moment/min/moment.min
 //= require tinymce
+//= require eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min
+//= require cocoon
+//= require admin-lte
+//= require bootstrap-sprockets
+//= require moment
+//= require nprogress
+//= require nprogress-turbolinks
+//= require fullcalendar
+//= require amcharts
+//= require pie
+//= require serial
+//= require light
+//= require Chart.js/Chart.min
+
+//= require daterangepicker
+//= require turbolinks
+NProgress.configure({
+ 
+
+});
+$(function(){
+  $(".select2").select2();
+  //$(".select2-tag").val(["cr@veritrans.co.id", "stig@veritrans.co.id"]);
+  //$(".select2-tag").select2({
+  	//tags: true,
+  	//tokenSeparators: [',', ' ']
+  //});
+  $('.datetimepicker').datetimepicker({
+    format: "yyyy-mm-dd"
+  });
+});
+$(document).on('page:fetch',   function() { NProgress.set(0.3); });

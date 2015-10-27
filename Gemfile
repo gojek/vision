@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+# Bundle edge Rails insteadhttps://developers.google.com/oauthplayground: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'
 # Use sqlite3 as the database for Active Record
 #gem 'sqlite3'
@@ -11,6 +11,7 @@ gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.1.0'
+gem 'bootstrap-wysihtml5-rails'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
@@ -24,7 +25,6 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'devise'
 gem 'font-awesome-rails'
-
 gem 'ransack'
 gem 'kaminari'
 gem 'bootstrap-kaminari-views'
@@ -34,12 +34,27 @@ gem 'paper_trail', '~> 4.0.0.rc'
 gem 'omniauth-google-oauth2'
 gem 'diffy'
 gem "cocoon"
-gem 'tinymce-rails'
 gem 'acts-as-taggable-on'
-gem 'rails4-autocomplete'
 gem 'jquery-ui-rails'
 gem 'aasm'
 gem "figaro"
+gem "simple_calendar", "~> 1.1.0"
+gem 'bootstrap-sass', '~> 3.3.5'
+gem "html_truncator", "~>0.2"
+gem 'exception_notification'
+gem 'fullcalendar-rails'
+gem 'momentjs-rails'
+gem 'pry'
+gem 'google-api-client', :require => 'google/api_client'
+gem 'omniauth'
+gem 'tinymce-rails', :git => 'https://github.com/spohlenz/tinymce-rails.git'
+gem 'httpclient'
+#xml parser
+gem 'nokogiri'
+gem 'nprogress-rails'
+gem 'unread'
+
+
 group :production do
 	gem 'pg'
 	gem 'rails_12factor'
@@ -72,4 +87,5 @@ group :test do
 	gem "selenium-webdriver"
 	gem "simplecov"
 	gem 'simplecov-rcov'
+	gem 'webmock'
 end

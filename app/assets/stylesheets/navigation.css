@@ -1,0 +1,27 @@
+.main-header {
+	position: fixed !important;
+	z-index: 3000 !important;
+	width: 100% !important;
+	margin-bottom: 50px;
+}
+
+.logo {
+	z-index: 2000 !important;
+}
+
+.main-sidebar {
+	position: fixed !important;
+	z-index: 1000 !important;
+}
+
+.content-wrapper {
+	margin-top: 50px;
+}
+
+@media screen and (max-width: 768px){
+  
+  *[class*='content-header']{
+    margin-top:100px;
+  }
+  
+}

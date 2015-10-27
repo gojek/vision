@@ -96,6 +96,7 @@ describe CabsController do
 				user = FactoryGirl.create(:user)
 				@cr = FactoryGirl.create(:change_request, user: user)
 				@cr_list = [@cr.id]
+				CabsController.any_instance.stub(:arrange_google_calendar) {true}
 			end
 
 			it 'saves the new cab in the database' do
@@ -165,6 +166,36 @@ describe CabsController do
 				@cab.reload
 				expect(@cab.meet_date.to_i).to_not eq(time.to_i)
 			end
+		end
+	end
+
+	it 'get_cabs will return all cab in json format ' do 
+		cab = FactoryGirl.create(:cab)
+		get :get_cabs
+		expect(response.body).to eq '[{"id":%s,"title":"CAB %s","start":"%s","end":"%s","url":"http://test.host/cabs/%s"}]' % [cab.id, cab.id, cab.meet_date.to_time.iso8601, cab.meet_date.to_time.iso8601, cab.id]
+
+	end
+
+	it "get_change_requests will return current cab's change requests in json format" do
+		cab = FactoryGirl.create(:cab)
+		change_request = FactoryGirl.create(:change_request, cab: cab)
+		get :get_change_requests, id: cab
+		expect(response.body).to eq '[{"id":%s,"title":"%s","start":"%s","end":"%s","url":"http://test.host/change_requests/%s"}]' % [change_request.id, change_request.change_summary, change_request.schedule_change_date.to_time.iso8601, change_request.planned_completion.to_time.iso8601, change_request.id]
+	end
+
+	describe 'POST #update_change_request' do
+		it 'save new planned completiom and schedule change date params for change request' do
+			end_date = Time.now + 1.hour
+			start_date = Time.now
+			cab = FactoryGirl.create(:cab)
+			change_request = FactoryGirl.create(:change_request, cab: cab)
+			post :update_change_requests, id:cab,
+				start1: start_date, end1: end_date
+			change_request.reload
+			expect(change_request.planned_completion.to_s).to eq(end_date.to_s)
+			expect(change_request.schedule_change_date.to_s).to eq(start_date.to_s)
+
+
 		end
 	end
 

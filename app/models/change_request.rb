@@ -1,25 +1,38 @@
 class ChangeRequest < ActiveRecord::Base
   include AASM
   belongs_to :user
+  acts_as_readable :on => :updated_at
+  has_and_belongs_to_many :collaborators, :class_name =>'User'
   has_many :testers, dependent: :destroy
   has_many :implementers, dependent: :destroy
   has_many :change_request_statuses, dependent: :destroy
   has_many :approvers, dependent: :destroy
   has_many :comments, dependent: :destroy
+  has_many :notifications
   belongs_to :cab
   scope :cab_free, -> {where(cab_id: nil)}
   acts_as_taggable
   has_paper_trail class_name: 'ChangeRequestVersion'
   SCOPE = %w(Major Minor)
+  PRIORITY = %w(Critical Urgent High Normal Low)
   validates :scope,
-            inclusion: { in: SCOPE, message: '%{ value } is not a valid scope' }
+            inclusion: { in: SCOPE, message: '%{value} is not a valid scope' }
+  validates :priority,
+            inclusion: { in: PRIORITY, message: '%{value} is not a valid scope' }
   STATUS = %w(submitted scheduled rollbacked cancelled rejected deployed closed)
-  #validates :requestor_name, :requestor_position, :change_summary, :priority, :category, :cr_type, :change_requirement, :business_justification, :note, :analysis, :solution, :impact, :scope, :design,
-           # :backup, :testing_environment_avaible, :testing_procedure, :testing_notes, :schedule_change_date, :planned_completion, :grace_period_starts, :grace_period_end, :implementation_notes, :grace_period_notes,
-          #  :user_id, :net, :db, :os, presence: true
-  accepts_nested_attributes_for :implementers, :allow_destroy => true
+
+  validates :requestor_name, :requestor_position, :change_summary, :priority,:change_requirement, :business_justification, :analysis, :solution, :impact, :scope, :design,
+            :backup, :testing_procedure, :testing_notes, :schedule_change_date, :planned_completion, :definition_of_success, :definition_of_failed, presence: true
+  validates_inclusion_of :testing_environment_available, :in => [true, false]
+  accepts_nested_attributes_for :implementers, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :testers, :allow_destroy => true
   accepts_nested_attributes_for :approvers, :allow_destroy => true
+  validate :at_least_one_category
+  validate :at_least_one_type
+  validates :implementers, presence: true
+  validate :tester_required
+  validate :deploy_date, :if => :schedule_change_date? && :planned_completion?
+  validate :grace_period_date, :if => :grace_period_date_starts? && :grace_period_end
   #validates :change_summary, :priority, :category, :cr_type, :change_requirement, :business_justification, :requestor_position, :requestor_name, presence: true
   aasm do 
     state :submitted, :initial => true
@@ -45,22 +58,73 @@ class ChangeRequest < ActiveRecord::Base
       transitions :from => :scheduled, :to => :cancelled
     end
     event :close do 
-      transitions :from => [:submitted, :rejected, :deployed, :rollbacked, :cancelled, :scheduled], :to => :closed
+      transitions :from => [:submitted, :rejected, :rollbacked, :cancelled, :scheduled], :to => :closed, after: :failed_change_request
+      transitions :from => :deployed, :to => :closed, after: :success_change_request
     end
     event :submit do 
       transitions :form => :cancelled, :to => :submitted 
     end
   end
-  
+
+  def failed_change_request
+    self.status = 'failed'
+    self.closed_date = Time.now
+  end
+
+  def success_change_request
+    self.status = 'success'
+    self.closed_date = Time.now
+  end
+
+  def at_least_one_category
+    if [self.category_application, self.category_other, self.category_server, self.category_user_access,self.category_network_equipment].reject(&:blank?).size == 0
+      errors[:base] << ("Please choose at least one category.")
+    end
+  end
+  def tester_required
+    if self.testing_environment_available && self.testers.size == 0
+      errors[:base] << ("Testers can't be blank. ")
+    end
+  end
+
+  def at_least_one_type
+    if [self.type_security_update, self.type_install_uninstall, self.type_configuration_change, self.type_emergency_change,self.type_other].reject(&:blank?).size == 0
+      errors[:base] << ("Please choose at least one type.")
+    end
+  end
+
+  def no_implementers(attributes)
+    attributes[:implementers_id]
+  end   
+    
   def approvers_count
     self.approvers.where(approve: true).count 
+  end
+
+  def rejects_count
+    self.approvers.where(approve: false).count 
+  end
+   def deploy_date
+    errors.add("Deploy date", "is invalid.") unless schedule_change_date < planned_completion
+  end
+
+  def grace_period_date
+    errors.add("Grace Period time", "is invlaid") unless grace_period_starts < grace_period_end
   end
   
   def approvable?
     self.approvers.where(approve: true).count >= CONFIG[:minimum_approval]
   end
 
-  def all_type
+  def previous_cr
+     ChangeRequest.where(["id > ?", id]).first
+  end
+
+  def next_cr
+    ChangeRequest.where(["id < ?", id]).last
+  end
+
+  def all_category
     type_array = []
     self.category_application ? type_array.push('Application') : nil
     self.category_network_equipment ? type_array.push('Network Equipment') : nil
@@ -70,7 +134,7 @@ class ChangeRequest < ActiveRecord::Base
     type_array.join(', ')
   end
 
-  def all_category
+  def all_type
     category_array = []
     self.type_security_update ? category_array.push('Security Update') : nil
     self.type_install_uninstall ? category_array.push('Install Uninstall') : nil
@@ -78,6 +142,48 @@ class ChangeRequest < ActiveRecord::Base
     self.type_emergency_change ? category_array.push('Emergency Change') : nil
     self.type_other.blank? ? nil : category_array.push(self.type_other)
     category_array.join(', ')
+  end
+  def arrange_google_calendar(current_user)
+    attendees = []
+    @participants = self.cab.participant.split(",")
+    @participants.each do |participant|
+      attendees.push({'email' => participant}) unless participant.blank? 
+    end
+  
+    event = {
+      'summary' => self.change_summary,
+      'location' => 'Veritrans',
+      'start' => {
+        'dateTime' => self.schedule_change_date.iso8601,
+        'timeZone' => 'Asia/Jakarta',
+      },
+      'end' => {
+        'dateTime' => self.planned_completion.iso8601,
+        'timeZone' => 'Asia/Jakarta',
+      },
+      'attendees' => attendees
+    }
+
+    client = Google::APIClient.new
+    client.authorization.access_token = current_user.fresh_token
+    service = client.discovered_api('calendar', 'v3')
+    results = client.execute!(
+      :api_method => service.events.insert,
+      :parameters => {
+        :calendarId => 'primary', :sendNotifications => 'true'},
+      :body_object => event)
+    event = results.data
+
+  end
+
+  def lifetime
+    if(closed_date?)
+      s = closed_date - self.created_at
+    else
+      s = Time.now - self.created_at
+    end
+    dhms = [60,60,24].reduce([s]) { |m,o| m.unshift(m.shift.divmod(o)).flatten }
+    result = dhms[0].to_s + " Days, " + dhms[1].to_s + " Hours, " + dhms[2].to_s + " minutes." 
   end
 
 end
