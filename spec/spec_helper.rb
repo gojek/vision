@@ -8,7 +8,6 @@ require 'rspec/autorun'
 require 'webmock/rspec'
 WebMock.disable_net_connect!(allow_localhost: true)
 
-
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
@@ -18,6 +17,57 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
+  config.before(:each) do
+    cal_response_json = File.read(File.expand_path("../webmocks/calendar_response.json", __FILE__))
+    cal_add_response_json = File.read(File.expand_path("../webmocks/add_calendar.json", __FILE__))
+    get_cal_response_json = File.read(File.expand_path("../webmocks/get_calendar.json", __FILE__))
+    contact_response_xml = File.read(File.expand_path("../webmocks/contact_response.xml", __FILE__))
+
+    # get calendar
+    stub_request(:get, "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest")
+      .with(headers: {'Accept'=>'*/*'})
+      .to_return(status: 200, body: cal_response_json, headers: {
+        'Content-location' => 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest',
+        'Server' => 'GSE',
+        'Content-type' => 'application/json',
+        'charset' => 'UTF-8'
+    })
+
+    # add to calendar
+    stub_request(:post, "https://www.googleapis.com/calendar/v3/calendars/primary/events?sendNotifications=true")
+      .with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip',
+                      'Authorization'=>'Bearer 123456', 'Cache-Control'=>'no-store',
+                      'Content-Type'=>'application/json'})
+      .to_return(status: 200, body: cal_add_response_json, headers: {
+        'Server' => 'GSE',
+        'Content-type' => 'application/json'
+    })
+
+    # get contacts
+    stub_request(:get, "https://www.google.com/m8/feeds/contacts/default/full/").
+      with(:headers => {'Accept'=>'*/*', 'Authorization'=>'Bearer 123456',
+                        'Gdata-Version'=>'3.0',
+                        'User-Agent'=>'HTTPClient/1.0 (2.6.0.1, ruby 2.2.2 (2015-04-13))'})
+      .to_return(:status => 200, :body => contact_response_xml, :headers => {})
+
+    # delete calendar
+    stub_request(:delete, "https://www.googleapis.com/calendar/v3/calendars/primary/events/?sendNotifications=true").
+      with(:headers => {'Accept'=>'*/*', 'Authorization'=>'Bearer 123456'})
+      .to_return(:status => 200, :body => "", :headers => {})
+
+    # get/read calendar
+    stub_request(:get, "https://www.googleapis.com/calendar/v3/calendars/primary/events/")
+      .with(headers: {'Accept'=>'*/*', 'Authorization'=>'Bearer 123456'})
+      .to_return(status: 200, body: get_cal_response_json, headers: {
+        'Server' => 'GSE',
+        'Content-type' => 'application/json'
+    })
+
+    # put calendar
+    stub_request(:put, "https://www.googleapis.com/calendar/v3/calendars/primary/events/?sendNotifications=true")
+      .with(headers: {'Accept'=>'*/*', 'Authorization'=>'Bearer 123456'})
+      .to_return(status: 200, body: "", headers: {})
+  end
   # ## Mock Framework
   #
   # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
