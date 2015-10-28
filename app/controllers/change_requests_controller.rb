@@ -145,15 +145,18 @@ class ChangeRequestsController < ApplicationController
                         .page(params[:page]).per(params[:per_page])
   end
   def approve
-    approver = Approver.where(change_request_id: @change_request.id).where(user_id: current_user.id)
-    approver.update_all(:approve => true)
-    if approver.empty?
+    approver = Approver.where(change_request_id: @change_request.id, user_id: current_user.id).first
+    if approver.nil?
       flash[:not_eligible_notice] = 'You are not eligible to approve this Change Request'
     else
+      approver.approve = true
+      approver.approval_date = Time.current
+      approver.save!
       Notifier.cr_notify(current_user, @change_request, 'cr_approved')
       flash[:status_changed_notice] = 'Change Request Approved'
     end
     redirect_to @change_request
+    return
   end
 
   def reject
