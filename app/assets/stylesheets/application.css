@@ -12,7 +12,6 @@
  *
  *= require_tree .
  *= require_self
- *= require bootstrap/dist/css/bootstrap
  *= require admin-lte/plugins/select2/select2
  *= require admin-lte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min
  *= require eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min
@@ -22,7 +21,6 @@
  *= require nprogress
  *= require nprogress-bootstrap
  *= require bootstrap-social/bootstrap-social
- *= require font-awesome/css/font-awesome 
  */
 #nprogress .spinner-icon{
 	border-top-color:#fff !important;
