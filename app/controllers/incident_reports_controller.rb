@@ -43,8 +43,8 @@ require 'notifier.rb'
 
   def create
     @incident_report = current_user.IncidentReports.build(incident_report_params)
-    (@incident_report.recovery_time)? @incident_report.recovery_duration = (@incident_report.recovery_time - @incident_report.occurrence_time)/60 : 0
-    (@incident_report.resolved_time)? @incident_report.resolution_duration = (@incident_report.resolved_time - @incident_report.occurrence_time)/60 : 0
+    @incident_report.recovery_duration = (@incident_report.recovery_time)? (@incident_report.recovery_time - @incident_report.occurrence_time)/60 : 0
+    @incident_report.resolution_duration = (@incident_report.resolved_time)? (@incident_report.resolved_time - @incident_report.occurrence_time)/60 : 0
     @incident_report.set_current_status
     respond_to do |format|
       if @incident_report.save
