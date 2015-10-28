@@ -17,12 +17,12 @@
  *= require admin-lte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min
  *= require eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min
  *= require admin-lte
- *= require font-awesome
  *= require admin-lte/dist/css/skins/skin-blue
  *= require fullcalendar
  *= require nprogress
  *= require nprogress-bootstrap
  *= require bootstrap-social/bootstrap-social
+ *= require font-awesome/css/font-awesome 
  */
 #nprogress .spinner-icon{
 	border-top-color:#fff !important;
