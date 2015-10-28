@@ -13,8 +13,12 @@ class ChangeRequestsController < ApplicationController
       @q = ChangeRequest.ransack(params[:q])
       @change_requests = @q.result(distinct: true).tagged_with(params[:tag_list]).order(id: :desc).page(params[:page]).per(params[:per_page])
     else
-      #populate all CR if release_manager
-      @q = ChangeRequest.ransack(params[:q])
+      if current_user.role == 'release_manager' || current_user.role == 'approver'
+        #populate all CR if release_manager/approver
+        @q = ChangeRequest.ransack(params[:q])
+      else
+        @q = ChangeRequest.where(user_id: current_user.id).ransack(params[:q])
+      end
       @change_requests = @q.result(distinct: true).order(id: :desc).page(params[:page]).per(params[:per_page])
     end
     @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
