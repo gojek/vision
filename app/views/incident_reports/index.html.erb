@@ -52,12 +52,7 @@ $(function(){
 
               </tr>
               <% @incident_reports.each do |incident_report| %>
-
-              <% if current_user.have_read?(incident_report) %>
-                  <tr bgcolor="#F4F4F4">
-              <% else %>
                   <tr>
-              <%end%>
                       <td><%= incident_report.id %></td>
                       <td><%= incident_report.service_impact %></td>
                       <td><%=raw incident_report.problem_details %></td>
