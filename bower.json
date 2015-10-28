@@ -19,6 +19,7 @@
     "admin-lte": "~2.2.0",
     "eonasdan-bootstrap-datetimepicker": "~4.15.35",
     "Chart.js": "~1.0.2",
-    "bootstrap": "~3.3.5"
+    "bootstrap": "~3.3.5",
+    "bootstrap-social": "4.10.1"
   }
 }
