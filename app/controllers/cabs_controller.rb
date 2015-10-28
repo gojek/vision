@@ -17,7 +17,9 @@ class CabsController < ApplicationController
 	def create
 		@cab = Cab.new(cab_params)
     @participants = cab_params[:participant]
-    @cab.participant = (@participants.reject { |c| c.empty? }).join(',')
+    if @participants.is_a?(Array) && @participants.any?
+      @cab.participant = (@participants.reject { |c| c.empty? }).join(',')
+    end
 		if @cab.save
       @cr_list = params[:cr_list].split(",")
 		  ChangeRequest.where(:id => @cr_list).update_all(:cab_id => @cab.id)
@@ -51,7 +53,10 @@ class CabsController < ApplicationController
 	end
 
 	def update
-    @participants = cab_params[:participant]
+    @participants = cab_params[:participant] 
+    @participants = @cab.participant unless @participants.is_a?(Array)
+    @participants = [] unless @cab.participant.is_a?(Array)
+
     if @cab.update(cab_params)
       #change participant from array to string
       @cab.participant = (@participants.reject { |c| c.empty? }).join(',')
@@ -154,7 +159,9 @@ class CabsController < ApplicationController
     client.authorization.access_token = current_user.fresh_token
     service = client.discovered_api('calendar', 'v3')
     result = client.execute(:api_method => service.events.delete,
-                        :parameters => {'calendarId' => 'primary', 'eventId' => @cab.event_id, :sendNotifications => 'true'})
+      :parameters => {'calendarId' => 'primary', 
+                      'eventId' => @cab.event_id, 
+                      :sendNotifications => 'true'})
   end
 
 
