@@ -106,11 +106,11 @@ class ChangeRequest < ActiveRecord::Base
     self.approvers.where(approve: false).count 
   end
    def deploy_date
-    errors.add("Deploy date", "is invalid.") unless schedule_change_date < planned_completion
+    errors.add(:deploy_date, "is invalid.") unless schedule_change_date < planned_completion
   end
 
   def grace_period_date
-    errors.add("Grace Period time", "is invlaid") unless grace_period_starts < grace_period_end
+    errors.add(:grace_period_time, "is invalid") unless grace_period_starts < grace_period_end
   end
   
   def approvable?
