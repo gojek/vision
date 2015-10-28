@@ -145,7 +145,7 @@ describe ChangeRequestsController do
         put :approve, id: @cr
         @approval.reload
         expect(@approval.approve).to eq true
-        expect(@approval.approval_date).to_no be_nil
+        expect(@approval.approval_date).to_not be_nil
         expect(@approval.approval_date.class).to eq(ActiveSupport::TimeWithZone)
       end 
     end
