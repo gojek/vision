@@ -157,7 +157,7 @@ class ChangeRequestsController < ApplicationController
   end
 
   def reject
-    approver = Approver.where(change_request_id: @change_request.id).where(user_id: current_user.id)
+    approver = Approver.where(change_request_id: @change_request.id, user_id: current_user.id)
     reject_reason = params["reject_reason"]
     if approver.empty?
       flash[:not_eligible_notice] = 'You are not eligible to reject this Change Request'
@@ -281,10 +281,21 @@ class ChangeRequestsController < ApplicationController
     end
 
     def change_request_params
-      params.require(:change_request).permit(:change_summary, :priority, :db, :os, :net, :category, :cr_type, :change_requirement, :business_justification, :requestor_position, :note, :analysis, :solution, :impact, :scope, :design, :backup,:testing_environment_available, :testing_procedure, :testing_notes, :schedule_change_date, :planned_completion, :grace_period_starts, :grace_period_end, :implementation_notes, :grace_period_notes, :requestor_name,
-        :definition_of_success, :definition_of_failed, :category_application, :category_network_equipment,:category_server, :category_user_access,
-        :category_other,:other_dependency,:solving_duration, :type_security_update,:type_install_uninstall, :type_configuration_change, :type_emergency_change, :type_other,
-        implementers_attributes: [:id, :name, :position, :_destroy], testers_attributes: [:id, :name, :position, :_destroy], :tag_list => [], :collaborators_list => [])
+      params.require(:change_request).permit(:change_summary, :priority, :db,
+            :os, :net, :category, :cr_type, :change_requirement,
+            :business_justification, :requestor_position, :note, :analysis,
+            :solution, :impact, :scope, :design, :backup,
+            :testing_environment_available, :testing_procedure, :testing_notes,
+            :schedule_change_date, :planned_completion, :grace_period_starts,
+            :grace_period_end, :implementation_notes, :grace_period_notes,
+            :requestor_name, :definition_of_success, :definition_of_failed,
+            :category_application, :category_network_equipment,:category_server, :category_user_access,
+            :category_other,:other_dependency,:solving_duration,
+            :type_security_update,:type_install_uninstall,
+            :type_configuration_change, :type_emergency_change, :type_other,
+            implementers_attributes: [:id, :name, :position, :_destroy],
+            testers_attributes: [:id, :name, :position, :_destroy],
+            :tag_list => [], :collaborators_list => [])
     end
 
     def owner_required
