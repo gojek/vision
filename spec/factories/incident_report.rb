@@ -3,8 +3,8 @@ FactoryGirl.define do
     service_impact "Service impact"
     problem_details "Problem details"
     how_detected "How detected"
-    occurrence_time {Time.now}
-    detection_time {Time.now}
+    occurrence_time {3.days.ago}
+    detection_time {2.days.ago}
     recovery_time  {Time.now}
     source "Internal"
     rank 1
