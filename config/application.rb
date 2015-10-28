@@ -39,5 +39,8 @@ module Vision
 
     # add bower components to it
     config.assets.paths << Rails.root.join("vendor", "assets", "bower_components")
+
+    # add fonts
+    config.assets.paths << Rails.root.join("app", "assets", "fonts")
   end
 end
