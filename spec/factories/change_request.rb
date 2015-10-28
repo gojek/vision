@@ -22,9 +22,9 @@ FactoryGirl.define do
     testing_procedure "Procedure"
     testing_notes "Notes"
     schedule_change_date {Time.now}
-    planned_completion {Time.now}
+    planned_completion {3.days.from_now}
     grace_period_starts {Time.now}
-    grace_period_end {Time.now}
+    grace_period_end {3.days.from_now}
     implementation_notes "Implementation Notes"
     grace_period_notes "Grace Period Notes"
     definition_of_success "Success"
@@ -60,7 +60,7 @@ FactoryGirl.define do
         aasm_state 'closed'
     end
 
-    factory :invalid_change_request do
+    trait :invalid_change_request do
         scope "Scope"
     end
 
