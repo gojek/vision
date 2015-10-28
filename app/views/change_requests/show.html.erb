@@ -369,9 +369,9 @@
                   <td><%= app.user.position %></td>
                   <td>
                     <%if  app.approve == nil  %>
-                      waiting for approval
+                      Waiting for approval
                     <%elsif app.approve %>
-                      approved
+                      Approved on <%= app.approval_date.to_s(:long) %>
                     <%else%>
                        <a id="popoverOption" class="btn" href="#" data-content="<%= app.reject_reason%>" rel="popover" data-placement="bottom" data-original-title="Reject Reason" style='padding:0px'>Rejected</a>
                     <%end %>

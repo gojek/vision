@@ -27,7 +27,7 @@ describe IncidentReport do
 	end
 	it 'is invalid without a detection time' do 
 		incident_report = FactoryGirl.build(:incident_report, detection_time: nil)
-		expect(incident_report).to have(1).errors_on(:detection_time)
+		expect(incident_report).to have(2).errors_on(:detection_time)
 	end
 	it "is invalid without a recovery time" do 
 		incident_report = FactoryGirl.build(:incident_report, recovery_time: nil)
@@ -69,10 +69,6 @@ describe IncidentReport do
 	it "is invalid without a rank" do 
 		incident_report = FactoryGirl.build(:incident_report, rank: nil)
 		expect(incident_report).to have(2).errors_on(:rank)
-	end
-	it "is invalid with current status other than recovered ongoing" do
-		incident_report = FactoryGirl.build(:incident_report, current_status: 'status')
-		expect(incident_report).to have(1).errors_on(:current_status)
 	end
 	it "is invalid with concern of recurrence other than low medium high" do
 		incident_report = FactoryGirl.build(:incident_report, recurrence_concern: 'very_high')
