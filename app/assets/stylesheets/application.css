@@ -21,7 +21,8 @@
  *= require admin-lte/dist/css/skins/skin-blue
  *= require fullcalendar
  *= require nprogress
-*= require nprogress-bootstrap
+ *= require nprogress-bootstrap
+ *= require bootstrap-social/bootstrap-social
  */
 #nprogress .spinner-icon{
 	border-top-color:#fff !important;
