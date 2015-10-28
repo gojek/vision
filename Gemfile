@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 # Bundle edge Rails insteadhttps://developers.google.com/oauthplayground: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'
 gem 'sdoc', '~> 0.4.0', group: :doc
+gem 'unicorn'
 
 # resource-related
 gem 'sass-rails', '~> 5.0'
