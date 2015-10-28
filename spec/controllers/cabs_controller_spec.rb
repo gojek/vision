@@ -180,7 +180,7 @@ describe CabsController do
 		cab = FactoryGirl.create(:cab)
 		change_request = FactoryGirl.create(:change_request, cab: cab)
 		get :get_change_requests, id: cab
-		expect(response.body).to eq '[{"id":%s,"title":"%s","start":"%s","end":"%s","url":"http://test.host/change_requests/%s"}]' % [change_request.id, change_request.change_summary, change_request.schedule_change_date.to_time.iso8601, change_request.planned_completion.to_time.iso8601, change_request.id]
+		expect(response.body).to eq '[{"id":%s,"title":"%s","start":"%s","end":"%s"}]' % [change_request.id, change_request.change_summary, change_request.schedule_change_date.to_time.iso8601, change_request.planned_completion.to_time.iso8601, change_request.id]
 	end
 
 	describe 'POST #update_change_request' do
