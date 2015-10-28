@@ -11,6 +11,7 @@ class IncidentReport < ActiveRecord::Base
   MEASURER_STATUS = %w(Implemented Development)
   SOURCE = %w(Internal External)
   RECURRENCE_CONCERN = %w(Low Medium High)
+
   has_many :notifications
   validates :service_impact, :problem_details, :how_detected, :occurrence_time,
             :detection_time, :loss_related, :occurred_reason,
@@ -23,8 +24,11 @@ class IncidentReport < ActiveRecord::Base
   validates :recurrence_concern, presence: true,
             inclusion: { in: RECURRENCE_CONCERN, message: '%{ value } is not a valid value' }
   validates :rank, presence: true, inclusion: { in: 1..5, message: '%{ value } is not a valid value' }
-  validate  :validate_recovery_time, :if => :recovery_time? 
-  validate  :validate_resolution_time, :if => :resolved_time? 
+
+  # recovery and resolve may be the same, but it does not necessarily to be like that
+  # recovery is temporary solution, resolved is life-time solution
+  validate  :validate_recovery_time
+  validate  :validate_resolution_time, if: :resolved_time?
   validate  :validate_detection_time
 
   def user_name
@@ -44,14 +48,25 @@ class IncidentReport < ActiveRecord::Base
   end
 
   def validate_recovery_time
-    errors.add("Recovery Time", "is invalid.") unless  recovery_time > occurrence_time && recovery_time > detection_time
+    if occurrence_time.nil? ||
+        recovery_time.nil? ||
+        detection_time.nil? || 
+        !(recovery_time > occurrence_time && recovery_time > detection_time)
+      errors.add(:recovery_time, "is invalid")
+    end
   end
 
   def validate_resolution_time
-    errors.add("Resolved Time", "is invalid.") unless  resolved_time > occurrence_time && resolved_time > detection_time 
+    if resolved_time.nil? || occurrence_time.nil? || detection_time.nil? ||
+        !(resolved_time > occurrence_time && resolved_time > detection_time)
+      errors.add(:resolved_time, "is invalid")
+    end
   end
+
   def validate_detection_time
-    errors.add("Detection Time", "is invalid") unless detection_time > occurrence_time
+    if occurrence_time.nil? || detection_time.nil? || (detection_time < occurrence_time)
+      errors.add(:detection_time, "is invalid") 
+    end
   end
 
   def set_current_status
