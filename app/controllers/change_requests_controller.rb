@@ -13,8 +13,12 @@ class ChangeRequestsController < ApplicationController
       @q = ChangeRequest.ransack(params[:q])
       @change_requests = @q.result(distinct: true).tagged_with(params[:tag_list]).order(id: :desc).page(params[:page]).per(params[:per_page])
     else
-      #populate all CR if release_manager
-      @q = ChangeRequest.ransack(params[:q])
+      if current_user.role == 'release_manager' || current_user.role == 'approver'
+        #populate all CR if release_manager/approver
+        @q = ChangeRequest.ransack(params[:q])
+      else
+        @q = ChangeRequest.where(user_id: current_user.id).ransack(params[:q])
+      end
       @change_requests = @q.result(distinct: true).order(id: :desc).page(params[:page]).per(params[:per_page])
     end
     @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
@@ -86,7 +90,7 @@ class ChangeRequestsController < ApplicationController
         #Notify
         Notifier.cr_notify(current_user, @change_request, 'new_cr')
         #Thread.new do
-         # UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
+         # UserMailer.notif_email(@change_request.user, @change_request, @status).deliver_now
           #ActiveRecord::Base.connection.close
         #end
         #SendNotifEmailJob.set(wait: 20.seconds).perform_later(@change_request.user, @change_request, @status)
@@ -141,19 +145,22 @@ class ChangeRequestsController < ApplicationController
                         .page(params[:page]).per(params[:per_page])
   end
   def approve
-    approver = Approver.where(change_request_id: @change_request.id).where(user_id: current_user.id)
-    approver.update_all(:approve => true)
-    if approver.empty?
+    approver = Approver.where(change_request_id: @change_request.id, user_id: current_user.id).first
+    if approver.nil?
       flash[:not_eligible_notice] = 'You are not eligible to approve this Change Request'
     else
+      approver.approve = true
+      approver.approval_date = Time.current
+      approver.save!
       Notifier.cr_notify(current_user, @change_request, 'cr_approved')
       flash[:status_changed_notice] = 'Change Request Approved'
     end
     redirect_to @change_request
+    return
   end
 
   def reject
-    approver = Approver.where(change_request_id: @change_request.id).where(user_id: current_user.id)
+    approver = Approver.where(change_request_id: @change_request.id, user_id: current_user.id)
     reject_reason = params["reject_reason"]
     if approver.empty?
       flash[:not_eligible_notice] = 'You are not eligible to reject this Change Request'
@@ -277,10 +284,21 @@ class ChangeRequestsController < ApplicationController
     end
 
     def change_request_params
-      params.require(:change_request).permit(:change_summary, :priority, :db, :os, :net, :category, :cr_type, :change_requirement, :business_justification, :requestor_position, :note, :analysis, :solution, :impact, :scope, :design, :backup,:testing_environment_available, :testing_procedure, :testing_notes, :schedule_change_date, :planned_completion, :grace_period_starts, :grace_period_end, :implementation_notes, :grace_period_notes, :requestor_name,
-        :definition_of_success, :definition_of_failed, :category_application, :category_network_equipment,:category_server, :category_user_access,
-        :category_other,:other_dependency,:solving_duration, :type_security_update,:type_install_uninstall, :type_configuration_change, :type_emergency_change, :type_other,
-        implementers_attributes: [:id, :name, :position, :_destroy], testers_attributes: [:id, :name, :position, :_destroy], :tag_list => [], :collaborators_list => [])
+      params.require(:change_request).permit(:change_summary, :priority, :db,
+            :os, :net, :category, :cr_type, :change_requirement,
+            :business_justification, :requestor_position, :note, :analysis,
+            :solution, :impact, :scope, :design, :backup,
+            :testing_environment_available, :testing_procedure, :testing_notes,
+            :schedule_change_date, :planned_completion, :grace_period_starts,
+            :grace_period_end, :implementation_notes, :grace_period_notes,
+            :requestor_name, :definition_of_success, :definition_of_failed,
+            :category_application, :category_network_equipment,:category_server, :category_user_access,
+            :category_other,:other_dependency,:solving_duration,
+            :type_security_update,:type_install_uninstall,
+            :type_configuration_change, :type_emergency_change, :type_other,
+            implementers_attributes: [:id, :name, :position, :_destroy],
+            testers_attributes: [:id, :name, :position, :_destroy],
+            :tag_list => [], :collaborators_list => [])
     end
 
     def owner_required

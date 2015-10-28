@@ -13,6 +13,7 @@
 //= require jquery.turbolinks
 //= require jquery_ujs
 //= require jquery-ui
+//= require bootstrap/dist/js/bootstrap
 //= require Sortable
 //= require depends_on
 //= require admin-lte/plugins/select2/select2.full
@@ -21,7 +22,6 @@
 //= require eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min
 //= require cocoon
 //= require admin-lte
-//= require bootstrap-sprockets
 //= require moment
 //= require nprogress
 //= require nprogress-turbolinks
