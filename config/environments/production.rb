@@ -94,7 +94,7 @@ Rails.application.configure do
   :email => {
     :email_prefix => "[VISION] ",
     :sender_address => %{"vision-notifier" <vision@veritrans.co.id>},
-    :exception_recipients => %w{turbo@veritrans.co.id}
+    :exception_recipients => %w{turbo@veritrans.co.id vision@veritrans.co.id}
   }
 
 end
