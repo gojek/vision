@@ -17,7 +17,16 @@
 /tmp
 
 # Ignore application configuration
+.DS_Store
 /config/application.yml
+
+*.swp
+*.swo
+
+coverage
+/coverage/*.html
+/coverage/*.json
+/coverage/*
 
 # Ignore bower components
 /vendor
