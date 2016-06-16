@@ -11,9 +11,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160616050438) do
+ActiveRecord::Schema.define(version: 20160616063007) do
 
-  create_table "approvers", force: :cascade do |t|
+  create_table "approvals", force: :cascade do |t|
     t.string   "name"
     t.string   "position"
     t.integer  "change_request_id"
@@ -21,12 +21,12 @@ ActiveRecord::Schema.define(version: 20160616050438) do
     t.datetime "updated_at",        null: false
     t.integer  "user_id"
     t.boolean  "approve"
-    t.text     "reject_reason"
+    t.text     "notes"
     t.datetime "approval_date"
   end
 
-  add_index "approvers", ["change_request_id"], name: "index_approvers_on_change_request_id"
-  add_index "approvers", ["user_id"], name: "index_approvers_on_user_id"
+  add_index "approvals", ["change_request_id"], name: "index_approvals_on_change_request_id"
+  add_index "approvals", ["user_id"], name: "index_approvals_on_user_id"
 
   create_table "cabs", force: :cascade do |t|
     t.datetime "meet_date"
