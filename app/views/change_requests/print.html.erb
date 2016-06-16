@@ -5,7 +5,7 @@
 </head>
 <section class="content">
   <div class='row'>
-    <div class='col-lg-12'>   
+    <div class='col-lg-12'>
         <h3> Change Request #<%= @change_request.id %>  </h3>
       <div class="box box-default table-bordered" >
         <div class="box-header with-border">
@@ -284,7 +284,7 @@
                     <%elsif app.approve %>
                       approved
                     <%else%>
-                       <a id="popoverOption" class="btn" href="#" data-content="<%= app.reject_reason%>" rel="popover" data-placement="bottom" data-original-title="Reject Reason" style='padding:0px'>Rejected</a>
+                       <a id="popoverOption" class="btn" href="#" data-content="<%= app.notes%>" rel="popover" data-placement="bottom" data-original-title="Reject Reason" style='padding:0px'>Rejected</a>
                     <%end %>
                   </td>
                   <td></td>
@@ -397,7 +397,7 @@
           </div><!--table-responsive -->
         </div><!--box-body-->
       </div><!--box-->
-    </div><!--col-->  
+    </div><!--col-->
   </div><!--row-->
 </section><!--/content-->
 <div class="modal fade" id="reject" tabindex="-1" role="dialog" aria-labelledby="ScheduleModalLabel" aria-hidden="true" style="display: none;">
@@ -415,8 +415,8 @@
           <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
           <%= submit_tag 'Reject', class: "btn btn-danger btn-flat" %>
         </div>
-        
-        <%end %>  
+
+        <%end %>
       </div>
       <!-- /.modal-content -->
   </div>
@@ -442,7 +442,7 @@ table{
 
 .box{
   page-break-inside: avoid !important;
- 
+
 }
 .table{
   page-break-inside: avoid !important;

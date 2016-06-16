@@ -4,7 +4,7 @@
     Change Requests
     <%= link_to  new_change_request_path, class: 'btn btn-flat btn-primary pull-right'  do %>
          <i class="fa fa-plus"></i> <strong>New Change Request</strong>
-    <%end %> 
+    <%end %>
      <a href="#" data-toggle="control-sidebar" class="btn btn-flat btn-primary pull-right"><i class="fa fa-filter"></i><span><strong> Filter</strong></span></a>
     </h1>
 </section>
@@ -23,7 +23,7 @@
       <div class="box">
         <div class="box-header with-border">
           <h3 class="box-title">Change Request List</h3>
-        
+
         </div><!-- /.box-header -->
         <div class="box-body table-responsive">
           <table class="table table-hover">
@@ -42,18 +42,18 @@
                 <th>Lifetime</th>
                 <th colspan="3">Action</th>
             </tr>
-            <% @change_requests.each do |change_request| %> 
+            <% @change_requests.each do |change_request| %>
               <tr>
                 <td><%= change_request.id %></td>
                 <td><%=raw change_request.change_summary %></td>
-                
+
                 <td><%=raw change_request.created_at.to_s(:long) %></td>
                 <td><%=raw HTML_Truncator.truncate(change_request.business_justification, 10) %>
                 <td><%=raw change_request.priority%></td>
                 <td><%=raw change_request.all_category %></td>
                 <td><%=raw change_request.all_type %></td>
                 <td><%= change_request.aasm_state %></td>
-                <td><%= change_request.approvers.count %></td>
+                <td><%= change_request.approvals.count %></td>
                 <td><%= change_request.approvers_count %></td>
                 <td><%= change_request.rejects_count %></td>
                 <td><%= change_request.lifetime %></td>
@@ -79,7 +79,7 @@
     </div>
 
 </div>
- <aside class="control-sidebar control-sidebar-light">                
+ <aside class="control-sidebar control-sidebar-light">
   <!-- Tab panes -->
   <div class="tab-content">
     <!-- Home tab content -->
@@ -90,17 +90,17 @@
           <div class="form-group">
             Network Equipment
             <%= select :q, :category_network_equipment_true, [['Yes', 1], ['No', 0]], { include_blank: 'All', selected: params[:q] ? params[:q][:category_network_equipment_true] : '' } %>
-            
+
           </div>
           <div class="form-group">
             Application
             <%= select :q, :category_application_true, [['Yes', 1], ['No', 0]], { include_blank: 'All', selected: params[:q] ? params[:q][:category_application_true] : '' } %>
-            
+
           </div>
           <div class="form-group">
             Server
             <%= select :q, :category_server_true, [['Yes', 1], ['No', 0]], { include_blank: 'All', selected: params[:q] ? params[:q][:category_server_true] : '' } %>
-            
+
           </div>
           <div class="form-group">
             User Access
@@ -114,17 +114,17 @@
           <div class="form-group">
             Security Update
             <%= select :q, :type_security_update_true, [['Yes', 1], ['No', 0]], { include_blank: 'All', selected: params[:q] ? params[:q][:type_security_update_true] : '' } %>
-            
+
           </div>
           <div class="form-group">
             Application
             <%= select :q, :type_emergency_change_true, [['Yes', 1], ['No', 0]], { include_blank: 'All', selected: params[:q] ? params[:q][:type_emergency_change_true] : '' } %>
-            
+
           </div>
           <div class="form-group">
             Server
             <%= select :q, :type_configuration_change_true, [['Yes', 1], ['No', 0]], { include_blank: 'All', selected: params[:q] ? params[:q][:type_configuration_change_true] : '' } %>
-            
+
           </div>
           <div class="form-group">
             User Access
@@ -147,7 +147,7 @@
             <%= f.label :change_requirement %>
             <%= f.search_field :change_requirement_cont, class: 'form-control'%>
           </div>
-         
+
           <div class="form-group">
             <%= f.label :business_justification %>
             <%= f.search_field :business_justification_cont, class: 'form-control'%>
@@ -220,11 +220,11 @@
           <%= f.submit class: 'btn btn-primary pull-left' %>
         <%end%>
         <%= search_form_for @q do |f| %>
-        
+
          <%= f.submit 'Reset', class: 'btn btn-primary pull-right' %>
         <% end %>
         <br>
-      
+
     </div><!-- /.tab-pane -->
     <!-- Stats tab content -->
   </div>

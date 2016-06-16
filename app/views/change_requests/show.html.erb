@@ -1,7 +1,7 @@
 
 <section class="content-header">
   <h1>
-  Change Request #<%= @change_request.id %>  
+  Change Request #<%= @change_request.id %>
     <% if @change_request.aasm_state == 'cancelled' || @change_request.aasm_state == 'rollbacked' || @change_request.aasm_state == 'rejected' %>
       <div class= "pull-right label label-danger" >
     <% elsif @change_request.aasm_state == 'deployed' %>
@@ -30,7 +30,7 @@
       <%= link_to "Next >", @change_request.next_cr,  class: "btn btn-flat btn-primary" %>
     <%end%>
   </span>
-   
+
 </section><!--/content-header-->
 <br><br>
 <section class="content">
@@ -72,12 +72,14 @@
   <% if current_user.role=='approver' && @eligible_to_approve %>
     <div class='approve-status form-group'>
       <% if @approved == nil %>
-        <%= link_to  approve_path(@change_request.id), data: { method: :put, confirm: 'Are you sure you want to approve this Change Request?' }, class: 'btn btn-success'  do %>
+        <!-- Approve Button -->
+        <button class="btn btn-success" data-toggle="modal" data-target="#accept">
           <i class="fa fa-check fa-fw"></i>Approve
-        <%end %><!--/link_to approve--> 
+        </button>
+        <!-- Reject Button -->
         <button class="btn btn-danger" data-toggle="modal" data-target="#reject">
           <i class="fa fa-times fa-fw"></i>Reject
-        </button> 
+        </button>
       <% elsif @approved %>
         <div class="label label-primary"> Approved by you </div>
       <% else %>
@@ -96,7 +98,7 @@
     </div>
   <% end %><!--/release_manager action-->
   <div class='row'>
-    <div class='col-lg-6 col-xs-12'>        
+    <div class='col-lg-6 col-xs-12'>
       <div class="box box-default">
         <div class="box-header with-border">
           <h3 class="box-title">Change Summary</h3>
@@ -216,7 +218,7 @@
         </div><!--/box-header-->
       </div><!--/box-->
 
-      
+
     </div><!--/col-->
 
     <div class="col-lg-6 col-xs-12">
@@ -363,21 +365,21 @@
                 </tr>
               </thead>
               <tbody>
-                <% @change_request.approvers.each do |app| %>
+                <% @change_request.approvals.each do |app| %>
                 <tr>
                   <td><%= app.user.name %></td>
                   <td><%= app.user.position %></td>
                   <td>
                     <%if app.approve %>
                       <% if app.approval_date %>
-                        Approved on <%= app.approval_date.to_s(:long) %>
+                        <a id="popoverOption" class="btn" href="#" data-content="<%= app.notes%>" rel="popover" data-placement="bottom" data-original-title="Accept Note" style='padding:0px'>Approved on <%= app.approval_date.to_s(:long) %></a>
                       <% else %>
                         Approved
                       <% end %>
                     <% elsif app.approve.nil? %>
                       Waiting for approval
                     <%elsif app.approve == false %>
-                       <a id="popoverOption" class="btn" href="#" data-content="<%= app.reject_reason%>" rel="popover" data-placement="bottom" data-original-title="Reject Reason" style='padding:0px'>Rejected</a>
+                       <a id="popoverOption" class="btn" href="#" data-content="<%= app.notes%>" rel="popover" data-placement="bottom" data-original-title="Reject Reason" style='padding:0px'>Rejected</a>
                     <%end %>
                   </td>
                 </tr>
@@ -484,7 +486,7 @@
           </div><!--table-responsive -->
         </div><!--box-body-->
       </div><!--box-->
-    </div><!--col-->  
+    </div><!--col-->
   </div><!--row-->
 
   <div class='row'>
@@ -515,7 +517,7 @@
 
         </div><!--/box-body-->
         <div class="box-footer">
-            <div class="form-group">              
+            <div class="form-group">
               <%= form_for ([@change_request, @change_request.comments.build]) do |f| %>
                 <%= f.text_area :body, class:"form-control" %>
                 <br>
@@ -527,11 +529,35 @@
         </div><!--/box-footer-->
       </div><!--/box-->
     </div><!--/col-->
-    <div class="col-lg-6 col-xs-12">      
+    <div class="col-lg-6 col-xs-12">
       <%= render 'version', document: @change_request %>
     </div><!--/col-->
   </div><!--/row-->
 </section><!--/content-->
+<!-- modal for accept notes -->
+<div class="modal fade" id="accept" tabindex="-1" role="dialog" aria-labelledby="ScheduleModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+      <div class="modal-content">
+        <%= form_tag(approve_path) do %>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h4 class="modal-title" id="myModalLabel">Accept Change Request </h4>
+        </div>
+        <div class="modal-body">
+          <%= text_field_tag 'notes',nil, class: 'form-control'%>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
+          <%= submit_tag 'Accept', class: "btn btn-success btn-flat" %>
+        </div>
+
+        <%end %>
+      </div>
+      <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- modal for reject reason -->
 <div class="modal fade" id="reject" tabindex="-1" role="dialog" aria-labelledby="ScheduleModalLabel" aria-hidden="true" style="display: none;">
   <div class="modal-dialog">
       <div class="modal-content">
@@ -541,14 +567,14 @@
           <h4 class="modal-title" id="myModalLabel">Reject Change Request </h4>
         </div>
         <div class="modal-body">
-          <%= text_field_tag 'reject_reason',nil, class: 'form-control'%>
+          <%= text_field_tag 'notes',nil, class: 'form-control'%>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
           <%= submit_tag 'Reject', class: "btn btn-danger btn-flat" %>
         </div>
-        
-        <%end %>  
+
+        <%end %>
       </div>
       <!-- /.modal-content -->
   </div>

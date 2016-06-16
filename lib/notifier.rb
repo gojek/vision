@@ -2,7 +2,7 @@ class Notifier
   def self.cr_notify(whodunnit, change_request, message)
     notification_receiver = []
     #get the cr approver
-    notification_receiver = notification_receiver + change_request.approvers.collect(&:user)   
+    notification_receiver = notification_receiver + change_request.approvals.collect(&:user)   
 
     #get the cr collaborators
     notification_receiver = notification_receiver + change_request.collaborators

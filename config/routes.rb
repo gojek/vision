@@ -1,10 +1,10 @@
 Rails.application.routes.draw do
- 
+
 
   get 'cobas/new'
 
   resources :comments
-  
+
   get 'change_requests/tags/:tag', to: 'change_requests#index', as: :tag
   get 'incident_reports/tags/:tag', to: 'incident_reports#index', as: :incident_report_tag
   get 'change_requests/:id/graceperiod' => 'change_requests#edit_grace_period_notes', :as => 'graceperiod'
@@ -17,9 +17,9 @@ Rails.application.routes.draw do
   post 'change_requests/:id/schedule' => 'change_request_statuses#schedule', :as => 'schedule'
   post 'change_requests/:id/submit' => 'change_request_statuses#submit', :as => 'submit'
   resources :change_requests do
-    
-    resources :comments 
-    collection do 
+
+    resources :comments
+    collection do
           get :deleted # <= this
     end
     #collection do
@@ -66,15 +66,15 @@ Rails.application.routes.draw do
   post 'users' => 'users#create'
   get 'users/edit/:id' => 'users#edit', :as => 'edit'
   get 'change_requests/:id/print' => 'change_requests#print', :as => 'print'
-  devise_for :users, skip: [:sessions], controllers: { omniauth_callbacks: "users/omniauth_callbacks" } 
+  devise_for :users, skip: [:sessions], controllers: { omniauth_callbacks: "users/omniauth_callbacks" }
   devise_scope :user do
     get 'sign_in', :to => 'pages#signin', :as => :new_user_session
     delete 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
-  end 
+  end
   resources :pages
   resources :users
   resources :incident_reports do
-      collection do 
+      collection do
           get :deleted # <= this
       end
       resources :versions, only: [:destroy] do
@@ -92,10 +92,10 @@ resources :versions, only: [] do
   root to: 'pages#index'
   put 'lock_user/:id' => 'users#lock_user', :as => 'lock_user'
   put 'unlock_user/:id' => 'users#unlock_user', :as => 'unlock_user'
-  put 'approve/:id' => 'change_requests#approve', :as =>'approve'
+  post 'approve/:id' => 'change_requests#approve', :as =>'approve'
   post 'reject/:id' => 'change_requests#reject', :as =>'reject'
-  
- 
+
+
 
 
 
