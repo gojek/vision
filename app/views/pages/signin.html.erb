@@ -15,10 +15,9 @@
                     </div>
                     <% end %>
         <!-- lockscreen credentials (contains the form) -->
-           <%= link_to user_omniauth_authorize_path('google_oauth2'), class:'btn btn-block btn-social btn-google' do %>
+           <%= link_to user_google_oauth2_omniauth_authorize_path, class:'btn btn-block btn-social btn-google' do %>
                         <i class="fa fa-google-plus"></i> Sign in with Google <% end %>
 
     </div><!-- /.center -->
   </body>
 <%end %>
-

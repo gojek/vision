@@ -31,7 +31,7 @@ gem 'paper_trail', '~> 4.0.0.rc'
 
 # oauth
 gem 'omniauth-google-oauth2'
-gem 'google-api-client', :require => 'google/api_client'
+gem 'google-api-client', '0.9'
 gem 'httpclient'
 
 # server-related
