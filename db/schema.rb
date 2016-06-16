@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151028044905) do
+ActiveRecord::Schema.define(version: 20160616050438) do
 
   create_table "approvers", force: :cascade do |t|
     t.string   "name"
@@ -206,11 +206,12 @@ ActiveRecord::Schema.define(version: 20151028044905) do
   create_table "read_marks", force: :cascade do |t|
     t.integer  "readable_id"
     t.string   "readable_type", null: false
-    t.integer  "user_id",       null: false
+    t.integer  "reader_id",     null: false
     t.datetime "timestamp"
+    t.string   "reader_type"
   end
 
-  add_index "read_marks", ["user_id", "readable_type", "readable_id"], name: "index_read_marks_on_user_id_and_readable_type_and_readable_id"
+  add_index "read_marks", ["reader_id", "reader_type", "readable_type", "readable_id"], name: "read_marks_reader_readable_index"
 
   create_table "taggings", force: :cascade do |t|
     t.integer  "tag_id"
