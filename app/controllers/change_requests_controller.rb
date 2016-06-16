@@ -30,9 +30,9 @@ class ChangeRequestsController < ApplicationController
     @change_request_status = ChangeRequestStatus.new
     @change_request.mark_as_read! :for => current_user
     Notifier.cr_read(current_user,@change_request)
-    approve = Approver.where(change_request_id: @change_request.id).where(user_id: current_user.id).first
+    approve = Approval.where(change_request_id: @change_request.id).where(user_id: current_user.id).first
     @eligible_to_approve = true
-    if(approve == nil) 
+    if(approve == nil)
       #approver for change request with current user id not present, so the user not eligible
       @eligible_to_approve = false
     else
@@ -59,7 +59,7 @@ class ChangeRequestsController < ApplicationController
 
   def edit_grace_period_notes
   end
-  
+
   def edit_implementation_notes
   end
 
@@ -69,7 +69,7 @@ class ChangeRequestsController < ApplicationController
 
   def create
     @change_request = current_user.ChangeRequests.build(change_request_params)
-    
+
     respond_to do |format|
       if @change_request.save
         @collaborators_list = params[:collaborators_list]? params[:collaborators_list] : []
@@ -82,7 +82,7 @@ class ChangeRequestsController < ApplicationController
         @status = @change_request.change_request_statuses.new(:status => 'submitted')
         @status.save
         @approvers.each do |approver|
-          @approval = Approver.new
+          @approval = Approval.new
           @approval.user_id = approver.id
           @approval.change_request_id = @change_request.id
           @approval.save
@@ -145,12 +145,16 @@ class ChangeRequestsController < ApplicationController
                         .page(params[:page]).per(params[:per_page])
   end
   def approve
-    approver = Approver.where(change_request_id: @change_request.id, user_id: current_user.id).first
+    approver = Approval.where(change_request_id: @change_request.id, user_id: current_user.id).first
+    accept_note = params["notes"]
     if approver.nil?
       flash[:not_eligible_notice] = 'You are not eligible to approve this Change Request'
+    elsif accept_note.blank?
+      flash[:reject_reason_notice] = 'You must fill accept notes'
     else
       approver.approve = true
       approver.approval_date = Time.current
+      approver.notes = accept_note
       approver.save!
       Notifier.cr_notify(current_user, @change_request, 'cr_approved')
       flash[:status_changed_notice] = 'Change Request Approved'
@@ -160,24 +164,24 @@ class ChangeRequestsController < ApplicationController
   end
 
   def reject
-    approver = Approver.where(change_request_id: @change_request.id, user_id: current_user.id)
-    reject_reason = params["reject_reason"]
+    approver = Approval.where(change_request_id: @change_request.id, user_id: current_user.id)
+    reject_reason = params["notes"]
     if approver.empty?
       flash[:not_eligible_notice] = 'You are not eligible to reject this Change Request'
     elsif reject_reason.blank?
       flash[:reject_reason_notice] = 'You must fill reject reason'
     else
       Notifier.cr_notify(current_user, @change_request, 'cr_rejected')
-      approver.update_all(:approve => false, :reject_reason => reject_reason)
+      approver.update_all(:approve => false, :notes => reject_reason)
       flash[:status_changed_notice] = 'Change Request Rejected'
     end
     redirect_to @change_request
   end
 
   respond_to :json
-  def change_requests_by_success_rate 
+  def change_requests_by_success_rate
     #default status is weekly
-    status = 'weekly' 
+    status = 'weekly'
     start_time = Time.now.beginning_of_month
     end_time = Time.now.end_of_month
     if(params[:start_time])
@@ -250,7 +254,7 @@ class ChangeRequestsController < ApplicationController
       if start_month.end_of_month > end_time
         end_month = end_time
       else
-        end_month = start_month.end_of_month 
+        end_month = start_month.end_of_month
       end
       if tag==nil
         success = ChangeRequest.where("status = 'success' AND closed_date <= ? AND closed_date >= ?",end_month, start_month)
@@ -317,5 +321,5 @@ class ChangeRequestsController < ApplicationController
     def not_closed_required
       redirect_to change_requests_path unless !@change_request.closed?
     end
-    
+
 end

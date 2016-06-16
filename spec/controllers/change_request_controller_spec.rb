@@ -59,9 +59,9 @@ describe ChangeRequestsController do
         it 'saves the new CR in the database' do
           expect{
             attributes = FactoryGirl.attributes_for(:change_request).merge({
-              implementers_attributes: [FactoryGirl.attributes_for(:implementer)], 
+              implementers_attributes: [FactoryGirl.attributes_for(:implementer)],
               testers_attributes: [FactoryGirl.attributes_for(:tester)]})
-            post :create, change_request: attributes 
+            post :create, change_request: attributes
           }.to change(ChangeRequest, :count).by(1)
           cr = ChangeRequest.first
           expect(cr.implementers.count).to eq(1)
@@ -70,14 +70,14 @@ describe ChangeRequestsController do
 
         it 'create new approver(s) for the new CR in the database' do
           CONFIG[:minimum_approval].times do |i|
-            FactoryGirl.create(:approver)
+            FactoryGirl.create(:approval)
           end
           expect{
             attributes = FactoryGirl.attributes_for(:change_request).merge({
-              implementers_attributes: [FactoryGirl.attributes_for(:implementer)], 
+              implementers_attributes: [FactoryGirl.attributes_for(:implementer)],
               testers_attributes: [FactoryGirl.attributes_for(:tester)]})
             post :create, change_request: attributes
-          }.to change(Approver, :count).by(CONFIG[:minimum_approval])
+          }.to change(Approval, :count).by(CONFIG[:minimum_approval])
         end
       end
 
@@ -91,11 +91,11 @@ describe ChangeRequestsController do
     end
 
     describe 'PATCH #update' do
-      before :each do 
+      before :each do
         @cr = FactoryGirl.create(:change_request, user: user)
       end
       context 'valid attributes' do
-        it "change @cr attributes" do 
+        it "change @cr attributes" do
           note = "Note 1"
           update_attributes = FactoryGirl.attributes_for(:change_request, note: note)
           expect(update_attributes[:note]).to eq(note)
@@ -104,17 +104,17 @@ describe ChangeRequestsController do
           expect(@cr.note).to eq(note)
         end
       end
-      context 'invalid attributes' do 
-        it "doesnt change the @cr attribute" do 
+      context 'invalid attributes' do
+        it "doesnt change the @cr attribute" do
           scope = 'scope'
-          patch :update, id: @cr, 
+          patch :update, id: @cr,
           change_request: FactoryGirl.attributes_for(:change_request, scope: scope)
           @cr .reload
           expect(@cr.scope). to_not eq(scope)
         end
       end
     end
-    describe 'DELETE # destroy' do 
+    describe 'DELETE # destroy' do
       before :each do
         @cr = FactoryGirl.create(:change_request,user:user)
       end
@@ -127,11 +127,11 @@ describe ChangeRequestsController do
   end
 
   describe 'approver access' do
-    let(:user) {FactoryGirl.create(:approver)}
+    let(:user) {FactoryGirl.create(:approval)}
     before :each do
       @request.env['devise.mapping'] = Devise.mappings[:user]
       @cr = FactoryGirl.create(:change_request, user: user)
-      @approval = Approver.create(user_id: user.id, change_request_id: @cr.id)
+      @approval = Approval.create(user_id: user.id, change_request_id: @cr.id)
       sign_in user
     end
      describe 'GET #index' do
@@ -147,14 +147,14 @@ describe ChangeRequestsController do
         expect(@approval.approve).to eq true
         expect(@approval.approval_date).to_not be_nil
         expect(@approval.approval_date.class).to eq(ActiveSupport::TimeWithZone)
-      end 
+      end
     end
      describe 'PUT #reject' do
       it 'will change approval to reject' do
-        put :reject, id: @cr.id, reject_reason: "Want to reject it for profit"
+        put :reject, id: @cr.id, notes: "Want to reject it for profit"
         @approval.reload
         expect(@approval.approve).to eq false
-      end 
+      end
     end
   end
 
@@ -163,7 +163,7 @@ describe ChangeRequestsController do
     before :each do
       @request.env['devise.mapping'] = Devise.mappings[:user]
       @cr = FactoryGirl.create(:change_request, user: user)
-      @approval = Approver.create(user_id: user.id, change_request_id: @cr.id)
+      @approval = Approval.create(user_id: user.id, change_request_id: @cr.id)
       sign_in user
     end
      describe 'GET #index' do

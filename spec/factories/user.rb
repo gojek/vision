@@ -21,7 +21,7 @@ FactoryGirl.define do
         role 'release_manager'
     end
 
-    factory :approver do
+    factory :approval do
         role 'approver'
     end
   end
