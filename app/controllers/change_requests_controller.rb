@@ -48,6 +48,7 @@ class ChangeRequestsController < ApplicationController
     @users = User.all.collect(&:name)
     @current_tags = []
     @current_collaborators = []
+    @current_approvers = []
   end
 
   def edit
@@ -55,6 +56,11 @@ class ChangeRequestsController < ApplicationController
     @current_tags = @change_request.tag_list
     @users = User.all.collect(&:name)
     @current_collaborators = @change_request.collaborators.collect(&:name)
+    @approvers_id = @change_request.approvals.collect(&:user_id)
+    @current_approvers = []
+    @approvers_id.each do |approver_id|
+      @current_approvers << User.find(approver_id).name
+    end
   end
 
   def edit_grace_period_notes
@@ -78,14 +84,21 @@ class ChangeRequestsController < ApplicationController
           @change_request.collaborators << User.find_by(name: collaborator)
         end
 
-        @approvers = User.where(role: "approver")
+        @approvers_list = params[:approvers_list]? params[:approvers_list] : []
+        @new_list = []
+        @approvers_list.each do |approver|
+         @new_list << User.find_by(name: approver)
+        end
+
+        #@approvers = User.where(role: "approver")
         @status = @change_request.change_request_statuses.new(:status => 'submitted')
         @status.save
-        @approvers.each do |approver|
+        @new_list.each do |approver|
           @approval = Approval.new
           @approval.user_id = approver.id
           @approval.change_request_id = @change_request.id
           @approval.save
+          @change_request.approvals << @approval
         end
         #Notify
         Notifier.cr_notify(current_user, @change_request, 'new_cr')
@@ -111,11 +124,29 @@ class ChangeRequestsController < ApplicationController
   def update
     respond_to do |format|
       if @change_request.update(change_request_params)
+        #Collaborators section
         @collaborators_list = params[:collaborators_list]? params[:collaborators_list] : []
         @change_request.collaborators.delete_all
         @collaborators_list.each do |collaborator|
           @change_request.collaborators << User.find_by(name: collaborator)
         end
+
+        #Approvals section
+        @change_request.approvals.delete_all
+
+        @approvers_list = params[:approvers_list]? params[:approvers_list] : []
+        @new_list = []
+        @approvers_list.each do |approver|
+         @new_list << User.find_by(name: approver)
+        end
+        @new_list.each do |approver|
+          @approval = Approval.new
+          @approval.user_id = approver.id
+          @approval.change_request_id = @change_request.id
+          @approval.save
+          @change_request.approvals << @approval
+        end
+        
         Notifier.cr_notify(current_user, @change_request, 'update_cr')
         flash[:update_cr_notice] = 'Change request was successfully updated.'
         format.html { redirect_to @change_request }
