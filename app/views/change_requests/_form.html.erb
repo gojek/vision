@@ -90,7 +90,7 @@
                 </div><!--/col-->
                 <% if @change_request.errors.messages[:priority] %>
                   <div class="field form-group has-error">
-                <%else %>  
+                <%else %>
                   <div class="field form-group">
                 <% end %>
                     <%= f.label :priority %>
@@ -100,7 +100,7 @@
               <div class="col-md-6">
                 <% if @change_request.errors.messages[:requestor_name] %>
                   <div class="field form-group has-error">
-                <%else %>  
+                <%else %>
                   <div class="field form-group">
                 <% end %>
                     <%= f.label :requestor_name %><br>
@@ -108,7 +108,7 @@
                   </div><!--/field-->
                 <% if @change_request.errors.messages[:requestor_position] %>
                   <div class="field form-group has-error">
-                <%else %>  
+                <%else %>
                   <div class="field form-group">
                 <% end %>
                     <%= f.label :requestor_position %><br>
@@ -122,7 +122,12 @@
                   <label>Collaborators</label><br>
                     <%= select_tag "collaborators_list" ,options_for_select(@users), class: 'select2-collaborate form-control', multiple:true %>
                 </div><!--/field-->
-                
+                <div class="field form-group">
+                  <label>Approvers</label><br>
+                    <%= select_tag "approvers_list" ,options_for_select(User.where(role: 'approver').collect(&:name)), class: 'select2-approve form-control', multiple:true %>
+                </div><!--/field-->
+
+
               </div><!--/col-->
             </div><!--/box-body-->
           </div> <!--/box-->
@@ -135,7 +140,7 @@
                 <div class="box-body">
                   <% if @change_request.errors.messages[:change_requirement] %>
                     <div class="field form-group has-error">
-                  <%else %>  
+                  <%else %>
                     <div class="field form-group">
                   <% end %>
                       <%= f.label :change_requirement %><br>
@@ -143,7 +148,7 @@
                     </div><!--field-->
                   <% if @change_request.errors.messages[:business_justification] %>
                     <div class="field form-group has-error">
-                  <%else %>  
+                  <%else %>
                     <div class="field form-group">
                   <% end %>
                       <%= f.label :business_justification %><br>
@@ -190,7 +195,7 @@
               <div class="col-md-6">
                 <% if @change_request.errors.messages[:analysis] %>
                   <div class="field form-group has-error">
-                <%else %>  
+                <%else %>
                   <div class="field form-group">
                 <% end %>
                     <%= f.label :analysis %><br>
@@ -198,7 +203,7 @@
                   </div><!--/field-->
                 <% if @change_request.errors.messages[:solution] %>
                   <div class="field form-group has-error">
-                <%else %>  
+                <%else %>
                   <div class="field form-group">
                 <% end %>
                     <%= f.label :solution %><br>
@@ -208,7 +213,7 @@
               <div class="col-md-6">
                 <% if @change_request.errors.messages[:impact] %>
                   <div class="field form-group has-error">
-                <%else %>  
+                <%else %>
                   <div class="field form-group">
                 <% end %>
                     <%= f.label :impact %><br>
@@ -216,7 +221,7 @@
                   </div>
                 <% if @change_request.errors.messages[:scope] %>
                   <div class="field form-group has-error">
-                <%else %>  
+                <%else %>
                   <div class="field form-group">
                 <% end %>
                     <%= f.label :scope %><br>
@@ -233,7 +238,7 @@
               <div class="col-md-6">
                 <% if @change_request.errors.messages[:design] %>
                   <div class="field form-group has-error">
-                <%else %>  
+                <%else %>
                   <div class="field form-group">
                 <% end %>
                     <%= f.label :design %><br>
@@ -241,7 +246,7 @@
                   </div><!--/field-->
                 <% if @change_request.errors.messages[:backup] %>
                   <div class="field form-group has-error">
-                <%else %>  
+                <%else %>
                   <div class="field form-group">
                 <% end %>
                     <%= f.label :backup %><br>
@@ -251,7 +256,7 @@
               <div class="col-md-6">
                 <% if @change_request.errors.messages[:definition_of_success] %>
                   <div class="field form-group has-error">
-                <%else %>  
+                <%else %>
                   <div class="field form-group">
                 <% end %>
                     <%= f.label :definition_of_success %><br>
@@ -259,7 +264,7 @@
                   </div><!--/field-->
                 <% if @change_request.errors.messages[:definition_of_failed] %>
                   <div class="field form-group has-error">
-                <%else %>  
+                <%else %>
                   <div class="field form-group">
                 <% end %>
                     <%= f.label :definition_of_failure %><br>
@@ -268,14 +273,14 @@
               </div><!--/col-->
             </div><!--/box-body-->
           </div><!--/box-->
-        </div><!--/tab-pane-->  
+        </div><!--/tab-pane-->
         <div class="tab-pane fade" id="testing">
           <div class="box box-default">
             <div class="box-header with border"></div>
             <div class="box-body">
               <% if @change_request.errors.messages[:testing_environment_available] %>
                 <div class="field form-group has-error">
-              <%else %>  
+              <%else %>
                 <div class="field form-group">
               <% end %>
                   <label>Testing in Test/Development Environment Available</label>
@@ -287,7 +292,7 @@
               <div class='col-md-6'>
                 <% if @change_request.errors.messages[:testing_procedure] %>
                   <div class="field form-group has-error">
-                <%else %>  
+                <%else %>
                   <div class="field form-group">
                 <% end %>
                     <%= f.label :testing_procedure %><br>
@@ -295,7 +300,7 @@
                   </div>
                 <% if @change_request.errors.messages[:testing_notes] %>
                   <div class="field form-group has-error">
-                <%else %>  
+                <%else %>
                   <div class="field form-group">
                 <% end %>
                     <%= f.label :testing_notes %><br>
@@ -322,7 +327,7 @@
                 <div class="box-body">
                     <% if @change_request.errors.messages[:schedule_change_date] %>
                       <div class="field form-group has-error">
-                    <%else %>  
+                    <%else %>
                       <div class="field form-group">
                     <% end %>
                         <%= f.label :schedule_change_date %><br>
@@ -330,12 +335,12 @@
                       </div><!--/field-->
                     <% if @change_request.errors.messages[:planned_completion] %>
                       <div class="field form-group has-error">
-                    <%else %>  
+                    <%else %>
                       <div class="field form-group">
                     <% end %>
                         <%= f.label :planned_completion %><br>
                         <%= f.datetime_select :planned_completion, :default => Time.now %>
-                      </div><!--/field--> 
+                      </div><!--/field-->
                     <div class="field form-group">
                       <%= f.label :implementation_notes %><br>
                       <%= f.text_area :implementation_notes, class: "form-control tinymce" %>
@@ -354,7 +359,7 @@
                   <div class="field form-group">
                     <%= f.label :grace_period_end %><br>
                     <%= f.datetime_select :grace_period_end%>
-                  </div><!--/field-->      
+                  </div><!--/field-->
                   <div class="field form-group">
                     <%= f.label :grace_period_notes %><br>
                     <%= f.text_area :grace_period_notes, class: "form-control tinymce" %>
@@ -376,10 +381,10 @@
               </div><!--implementers-->
             </div><!--/box-body-->
           </div>  <!--/box-->
-        </div><!--/tab-pane-->        
+        </div><!--/tab-pane-->
       </div><!--tab-content-->
       <br>
-    
+
     </div><!--/col-->
   </div><!--/row-->
 <% end %>
@@ -424,6 +429,15 @@
     <% end %>
     $(".select2-collaborate").val(collaborators);
     $(".select2-collaborate").select2({
+      tokenSeparators: [',', ' ']
+    });
+    var approvers = []
+    <% @current_approvers.each do |approver| %>
+      var p = '<%= approver %>';
+      approvers.push(p);
+    <% end %>
+    $(".select2-approve").val(approvers);
+    $(".select2-approve").select2({
       tokenSeparators: [',', ' ']
     });
   });
