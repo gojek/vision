@@ -58,6 +58,8 @@ gem 'tinymce-rails', :git => 'https://github.com/spohlenz/tinymce-rails.git'
 # xml parser
 gem 'nokogiri'
 
+# gem 'pg'
+
 group :production do
 	gem 'pg'
 	gem 'rails_12factor'
