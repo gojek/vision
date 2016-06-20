@@ -115,6 +115,13 @@ class ChangeRequestsController < ApplicationController
         @current_tags = []
         @users = User.all.collect(&:name)
         @current_collaborators = []
+
+        @approvers_list = params[:approvers_list]? params[:approvers_list] : []
+        @current_approvers = []
+        @approvers_list.each do |approver|
+         @current_approvers << User.find_by(name: approver)
+        end
+
         format.html { render :new }
         format.json { render json: @change_request.errors, status: :unprocessable_entity }
       end
@@ -146,7 +153,7 @@ class ChangeRequestsController < ApplicationController
           @approval.save
           @change_request.approvals << @approval
         end
-        
+
         Notifier.cr_notify(current_user, @change_request, 'update_cr')
         flash[:update_cr_notice] = 'Change request was successfully updated.'
         format.html { redirect_to @change_request }
@@ -156,6 +163,7 @@ class ChangeRequestsController < ApplicationController
         @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
         @users = User.all.collect(&:name)
         @current_collaborators = @change_request.collaborators.collect(&:name)
+        @current_approvers = @change_request.approvals.collect(&:name)
         format.html { render :edit }
         format.json { render json: @change_request.errors, status: :unprocessable_entity }
       end
