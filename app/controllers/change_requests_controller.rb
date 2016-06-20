@@ -49,6 +49,10 @@ class ChangeRequestsController < ApplicationController
     @current_tags = []
     @current_collaborators = []
     @current_approvers = []
+
+    @test_users = User.all.collect{|u| [u.name, u.id]}
+    @current_implementers = []
+    @current_testers = []
   end
 
   def edit
@@ -56,6 +60,9 @@ class ChangeRequestsController < ApplicationController
     @current_tags = @change_request.tag_list
     @users = User.all.collect(&:name)
     @current_collaborators = @change_request.collaborators.collect(&:name)
+    @current_implementers = @change_request.implementers.collect{|u| u.id}
+    @current_testers = @change_request.testers.collect{|u| u.id}
+    @test_users = User.all.collect{|u| [u.name, u.id]}
     @approvers_id = @change_request.approvals.collect(&:user_id)
     @current_approvers = []
     @approvers_id.each do |approver_id|
@@ -78,6 +85,18 @@ class ChangeRequestsController < ApplicationController
 
     respond_to do |format|
       if @change_request.save
+        @testers_list = params[:testers_list]? params[:testers_list] : []
+        @change_request.testers = []
+        @testers_list.each do |tester_id|
+          @change_request.testers << User.find(tester_id)
+        end
+
+        @implementers_list = params[:implementers_list]? params[:implementers_list] : []
+        @change_request.implementers = []
+        @implementers_list.each do |implementer_id|
+          @change_request.implementers << User.find(implementer_id)
+        end
+
         @collaborators_list = params[:collaborators_list]? params[:collaborators_list] : []
         @change_request.collaborators = []
         @collaborators_list.each do |collaborator|
@@ -115,7 +134,11 @@ class ChangeRequestsController < ApplicationController
         @current_tags = []
         @users = User.all.collect(&:name)
         @current_collaborators = []
+        @test_users = User.all.collect{|u| [u.name, u.id]}
+        @current_implementers = @implementers_list
+        @current_testers = @testers_list
 
+        @current_approvers = []
         @approvers_list = params[:approvers_list]? params[:approvers_list] : []
         @current_approvers = []
         @approvers_list.each do |approver|
@@ -131,6 +154,18 @@ class ChangeRequestsController < ApplicationController
   def update
     respond_to do |format|
       if @change_request.update(change_request_params)
+        @testers_list = params[:testers_list]? params[:testers_list] : []
+        @change_request.testers = []
+        @testers_list.each do |tester_id|
+          @change_request.testers << User.find(tester_id)
+        end
+
+        @implementers_list = params[:implementers_list]? params[:implementers_list] : []
+        @change_request.implementers = []
+        @implementers_list.each do |implementer_id|
+          @change_request.implementers << User.find(implementer_id)
+        end
+
         #Collaborators section
         @collaborators_list = params[:collaborators_list]? params[:collaborators_list] : []
         @change_request.collaborators.delete_all
@@ -163,7 +198,10 @@ class ChangeRequestsController < ApplicationController
         @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
         @users = User.all.collect(&:name)
         @current_collaborators = @change_request.collaborators.collect(&:name)
-        @current_approvers = @change_request.approvals.collect(&:name)
+        @current_approvers = @change_request.approvals.collect{|a| a.user.name}
+        @current_implementers = @change_request.implementers.collect{|u| u.id}
+        @current_testers = @change_request.testers.collect{|u| u.id}
+        @test_users = User.all.collect{|u| [u.name, u.id]}
         format.html { render :edit }
         format.json { render json: @change_request.errors, status: :unprocessable_entity }
       end
