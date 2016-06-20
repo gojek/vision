@@ -83,19 +83,36 @@ class ChangeRequestsController < ApplicationController
   def create
     @change_request = current_user.ChangeRequests.build(change_request_params)
 
+    #Validating approver list
+    @approvers_list = params[:approvers_list]? params[:approvers_list] : []
+    @change_request.approvals = []
+    if @approvers_list.any?
+      @approvers_list.each do |approver|
+        @tmp_user = User.find_by(name: approver)
+        @approval = Approval.new
+        @approval.user_id = @tmp_user.id
+        @approval.change_request_id = @change_request.id
+        @approval.save
+       @change_request.approvals << @approval
+      end
+    end
+
+    #Validating implementers list
+    @implementers_list = params[:implementers_list]? params[:implementers_list] : []
+    @change_request.implementers = []
+    @implementers_list.each do |implementer_id|
+      @change_request.implementers << User.find(implementer_id)
+    end
+
+    #Validating testers list
+    @testers_list = params[:testers_list]? params[:testers_list] : []
+    @change_request.testers = []
+    @testers_list.each do |tester_id|
+      @change_request.testers << User.find(tester_id)
+    end
+
     respond_to do |format|
       if @change_request.save
-        @testers_list = params[:testers_list]? params[:testers_list] : []
-        @change_request.testers = []
-        @testers_list.each do |tester_id|
-          @change_request.testers << User.find(tester_id)
-        end
-
-        @implementers_list = params[:implementers_list]? params[:implementers_list] : []
-        @change_request.implementers = []
-        @implementers_list.each do |implementer_id|
-          @change_request.implementers << User.find(implementer_id)
-        end
 
         @collaborators_list = params[:collaborators_list]? params[:collaborators_list] : []
         @change_request.collaborators = []
@@ -103,22 +120,9 @@ class ChangeRequestsController < ApplicationController
           @change_request.collaborators << User.find_by(name: collaborator)
         end
 
-        @approvers_list = params[:approvers_list]? params[:approvers_list] : []
-        @new_list = []
-        @approvers_list.each do |approver|
-         @new_list << User.find_by(name: approver)
-        end
-
-        #@approvers = User.where(role: "approver")
         @status = @change_request.change_request_statuses.new(:status => 'submitted')
         @status.save
-        @new_list.each do |approver|
-          @approval = Approval.new
-          @approval.user_id = approver.id
-          @approval.change_request_id = @change_request.id
-          @approval.save
-          @change_request.approvals << @approval
-        end
+
         #Notify
         Notifier.cr_notify(current_user, @change_request, 'new_cr')
         Thread.new do
@@ -135,15 +139,15 @@ class ChangeRequestsController < ApplicationController
         @users = User.all.collect(&:name)
         @current_collaborators = []
         @test_users = User.all.collect{|u| [u.name, u.id]}
-        @current_implementers = @implementers_list
-        @current_testers = @testers_list
+        @current_implementers = params[:implementers_list]? params[:implementers_list] : []
+        @current_testers = params[:testers_list]? params[:testers_list] : []
 
-        @current_approvers = []
-        @approvers_list = params[:approvers_list]? params[:approvers_list] : []
-        @current_approvers = []
-        @approvers_list.each do |approver|
-         @current_approvers << User.find_by(name: approver)
-        end
+        @current_approvers = params[:approvers_list]? params[:approvers_list] : []
+        # @approvers_list =
+        # @current_approvers = []
+        # @approvers_list.each do |approver|
+        #  @current_approvers << User.find_by(name: approver)
+        # end
 
         format.html { render :new }
         format.json { render json: @change_request.errors, status: :unprocessable_entity }
@@ -152,19 +156,49 @@ class ChangeRequestsController < ApplicationController
   end
 
   def update
+    #Approvals section
+    @change_request.approvals.delete_all
+
+    @approvers_list = params[:approvers_list]? params[:approvers_list] : []
+    @change_request.approvals = []
+    if @approvers_list.any?
+      @approvers_list.each do |approver|
+        @tmp_user = User.find_by(name: approver)
+        @approval = Approval.new
+        @approval.user_id = @tmp_user.id
+        @approval.change_request_id = @change_request.id
+        @approval.save
+       @change_request.approvals << @approval
+      end
+    end
+
+    #Validating testers
+    @testers_list = params[:testers_list]? params[:testers_list] : []
+    @change_request.testers = []
+    @testers_list.each do |tester_id|
+      @change_request.testers << User.find(tester_id)
+    end
+
+    #Validating implementers
+    @implementers_list = params[:implementers_list]? params[:implementers_list] : []
+    @change_request.implementers = []
+    @implementers_list.each do |implementer_id|
+      @change_request.implementers << User.find(implementer_id)
+    end
+
     respond_to do |format|
       if @change_request.update(change_request_params)
-        @testers_list = params[:testers_list]? params[:testers_list] : []
-        @change_request.testers = []
-        @testers_list.each do |tester_id|
-          @change_request.testers << User.find(tester_id)
-        end
+        # @testers_list = params[:testers_list]? params[:testers_list] : []
+        # @change_request.testers = []
+        # @testers_list.each do |tester_id|
+        #   @change_request.testers << User.find(tester_id)
+        # end
 
-        @implementers_list = params[:implementers_list]? params[:implementers_list] : []
-        @change_request.implementers = []
-        @implementers_list.each do |implementer_id|
-          @change_request.implementers << User.find(implementer_id)
-        end
+        # @implementers_list = params[:implementers_list]? params[:implementers_list] : []
+        # @change_request.implementers = []
+        # @implementers_list.each do |implementer_id|
+        #   @change_request.implementers << User.find(implementer_id)
+        # end
 
         #Collaborators section
         @collaborators_list = params[:collaborators_list]? params[:collaborators_list] : []
@@ -173,21 +207,21 @@ class ChangeRequestsController < ApplicationController
           @change_request.collaborators << User.find_by(name: collaborator)
         end
 
-        #Approvals section
-        @change_request.approvals.delete_all
-
-        @approvers_list = params[:approvers_list]? params[:approvers_list] : []
-        @new_list = []
-        @approvers_list.each do |approver|
-         @new_list << User.find_by(name: approver)
-        end
-        @new_list.each do |approver|
-          @approval = Approval.new
-          @approval.user_id = approver.id
-          @approval.change_request_id = @change_request.id
-          @approval.save
-          @change_request.approvals << @approval
-        end
+        # #Approvals section
+        # @change_request.approvals.delete_all
+        #
+        # @approvers_list = params[:approvers_list]? params[:approvers_list] : []
+        # @change_request.approvals = []
+        # if @approvers_list.any?
+        #   @approvers_list.each do |approver|
+        #     @tmp_user = User.find_by(name: approver)
+        #     @approval = Approval.new
+        #     @approval.user_id = @tmp_user.id
+        #     @approval.change_request_id = @change_request.id
+        #     @approval.save
+        #    @change_request.approvals << @approval
+        #   end
+        # end
 
         Notifier.cr_notify(current_user, @change_request, 'update_cr')
         flash[:update_cr_notice] = 'Change request was successfully updated.'
