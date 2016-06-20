@@ -4,11 +4,9 @@ class ChangeRequest < ActiveRecord::Base
   acts_as_readable :on => :updated_at
   has_and_belongs_to_many :collaborators, :class_name =>'User'
   has_and_belongs_to_many :testers, join_table: :testers, class_name: :User
-  # has_many :testers, dependent: :destroy
-  has_many :implementers, dependent: :destroy
-  has_many :testers, dependent: :destroy
   has_and_belongs_to_many :implementers, join_table: :implementers, class_name: :User
   # has_many :implementers, dependent: :destroy
+  # has_many :testers, dependent: :destroy
   has_many :change_request_statuses, dependent: :destroy
   has_many :approvals, dependent: :destroy
   has_many :comments, dependent: :destroy
