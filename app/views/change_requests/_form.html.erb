@@ -310,10 +310,10 @@
               <div class='col-md-6'>
                 <h3>Tester</h3>
                 <div id="testers">
-                  <%= f.fields_for :testers do |tes| %>
-                   <%= render 'tester_fields', :f => tes %>
-                  <% end %>
-                  <%= link_to_add_association 'add tester', f, :testers %>
+                  <div class="field form-group">
+                    <label>Testers</label><br>
+                      <%= select_tag "testers_list" ,options_for_select(@test_users), class: 'select2-tester form-control', style: 'width: 100%' , multiple:true %>
+                  </div><!--/field-->
                 </div><!--/nested form for testers-->
               </div><!--/col-->
             </div><!--box-body-->
@@ -374,10 +374,10 @@
             </div>
             <div class='box-body'>
               <div id="implementers">
-                <%= f.fields_for :implementers do |imp| %>
-                  <%= render 'implementer_fields', :f => imp %>
-                <% end %>
-                <%= link_to_add_association 'add implementer', f, :implementers %>
+                <div class="field form-group">
+                  <label>Implementers</label><br>
+                    <%= select_tag "implementers_list" ,options_for_select(@test_users), class: 'select2-implementer form-control', style: 'width: 100%;', multiple:true %>
+                </div><!--/field-->
               </div><!--implementers-->
             </div><!--/box-body-->
           </div>  <!--/box-->
@@ -419,6 +419,26 @@
     $(".select2-tag").val(tags);
     $(".select2-tag").select2({
       tags: true,
+      tokenSeparators: [',', ' ']
+    });
+
+    var testers = []
+    <% @current_testers.each do |tester| %>
+      var p = '<%= tester %>';
+      testers.push(p);
+    <% end %>
+    $(".select2-tester").val(testers);
+    $(".select2-tester").select2({
+      tokenSeparators: [',', ' ']
+    });
+
+    var implementers = []
+    <% @current_implementers.each do |implementer| %>
+      var p = '<%= implementer %>';
+      implementers.push(p);
+    <% end %>
+    $(".select2-implementer").val(implementers);
+    $(".select2-implementer").select2({
       tokenSeparators: [',', ' ']
     });
 
