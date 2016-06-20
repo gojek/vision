@@ -6,6 +6,9 @@ class ChangeRequest < ActiveRecord::Base
   has_and_belongs_to_many :testers, join_table: :testers, class_name: :User
   # has_many :testers, dependent: :destroy
   has_many :implementers, dependent: :destroy
+  has_many :testers, dependent: :destroy
+  has_and_belongs_to_many :implementers, join_table: :implementers, class_name: :User
+  # has_many :implementers, dependent: :destroy
   has_many :change_request_statuses, dependent: :destroy
   has_many :approvals, dependent: :destroy
   has_many :comments, dependent: :destroy
@@ -30,9 +33,9 @@ class ChangeRequest < ActiveRecord::Base
   accepts_nested_attributes_for :approvals, :allow_destroy => true
   validate :at_least_one_category
   validate :at_least_one_type
-  validates :implementers, presence: true
+  # validates :implementers, presence: true
+  # validate :tester_required
   #validates :approvals, presence: true
-  validate :tester_required
   validate :deploy_date, :if => :schedule_change_date? && :planned_completion?
   validate :grace_period_date, :if => :grace_period_date_starts? && :grace_period_end
   #validates :change_summary, :priority, :category, :cr_type, :change_requirement, :business_justification, :requestor_position, :requestor_name, presence: true
