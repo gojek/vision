@@ -31,6 +31,7 @@ class ChangeRequest < ActiveRecord::Base
   validate :at_least_one_category
   validate :at_least_one_type
   validates :implementers, presence: true
+  #validates :approvals, presence: true
   validate :tester_required
   validate :deploy_date, :if => :schedule_change_date? && :planned_completion?
   validate :grace_period_date, :if => :grace_period_date_starts? && :grace_period_end
