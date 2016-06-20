@@ -122,7 +122,11 @@
                   <label>Collaborators</label><br>
                     <%= select_tag "collaborators_list" ,options_for_select(@users), class: 'select2-collaborate form-control', multiple:true %>
                 </div><!--/field-->
-                <div class="field form-group">
+                <% if @change_request.errors.messages[:approvals] %>
+                  <div class="field form-group has-error">
+                <% else %>
+                  <div class="field form-group">
+                <% end %>
                   <label>Approvers</label><br>
                     <%= select_tag "approvers_list" ,options_for_select(User.where(role: 'approver').collect(&:name)), class: 'select2-approve form-control', multiple:true %>
                 </div><!--/field-->
