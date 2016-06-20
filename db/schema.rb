@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160616095627) do
+ActiveRecord::Schema.define(version: 20160620023020) do
 
   create_table "approvals", force: :cascade do |t|
     t.integer  "change_request_id"
@@ -237,9 +237,11 @@ ActiveRecord::Schema.define(version: 20160616095627) do
     t.integer  "change_request_id"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
+    t.integer  "user_id"
   end
 
   add_index "testers", ["change_request_id"], name: "index_testers_on_change_request_id"
+  add_index "testers", ["user_id"], name: "index_testers_on_user_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "email",              default: "", null: false
