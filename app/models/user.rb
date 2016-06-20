@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
   has_many :IncidentReports
   has_many :ChangeRequests
   has_and_belongs_to_many :collaborate_change_requests, :class_name => 'ChangeRequest'
-  has_and_belongs_to_many :ChangeRequests, join_table: :testers, class_name: :ChangeRequest
+  has_and_belongs_to_many :test_change_requests, join_table: :testers, class_name: :ChangeRequest
   has_many :Comments
   has_many :notifications
   has_many :Approvals, :dependent => :destroy
