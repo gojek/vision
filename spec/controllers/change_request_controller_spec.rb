@@ -68,7 +68,7 @@ describe ChangeRequestsController do
           expect(cr.testers.count).to eq(1)
         end
 
-        it 'create new approver(s) for the new CR in the database' do
+        it 'create new approval(s) for the new CR in the database' do
           CONFIG[:minimum_approval].times do |i|
             FactoryGirl.create(:approval)
           end
