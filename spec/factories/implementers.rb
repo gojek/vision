@@ -1,6 +1,5 @@
 FactoryGirl.define do
-  factory :implementer do
-    name        "Adam Pahlevi Baihaqi"
-    position    "Software Engineer"
+  factory :implementer_lama do
+    user_id 1
   end
 end

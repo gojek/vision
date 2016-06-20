@@ -127,12 +127,11 @@ describe ChangeRequestsController do
   end
 
   describe 'approver access' do
-    let(:user) {FactoryGirl.create(:approval)}
+    let(:user) {FactoryGirl.create(:approver)}
     before :each do
       @request.env['devise.mapping'] = Devise.mappings[:user]
       @cr = FactoryGirl.create(:change_request, user: user)
-      @approval = Approval.create(user_id: user.id, change_request_id: @cr.id)
-      sign_in user
+      @approval = Approval.create(user: user, change_request: @cr)
     end
      describe 'GET #index' do
      it "populate all current user's Change Request if no param is passed" do
