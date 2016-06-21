@@ -16,9 +16,7 @@ ActiveRecord::Schema.define(version: 20160620024943) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "approvers", force: :cascade do |t|
-    t.string   "name"
-    t.string   "position"
+  create_table "approvals", force: :cascade do |t|
     t.integer  "change_request_id"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
@@ -28,8 +26,8 @@ ActiveRecord::Schema.define(version: 20160620024943) do
     t.datetime "approval_date"
   end
 
-  add_index "approvers", ["change_request_id"], name: "index_approvers_on_change_request_id", using: :btree
-  add_index "approvers", ["user_id"], name: "index_approvers_on_user_id", using: :btree
+  add_index "approvals", ["change_request_id"], name: "index_approvals_on_change_request_id", using: :btree
+  add_index "approvals", ["user_id"], name: "index_approvals_on_user_id", using: :btree
 
   create_table "cabs", force: :cascade do |t|
     t.datetime "meet_date"
@@ -151,6 +149,7 @@ ActiveRecord::Schema.define(version: 20160620024943) do
   end
 
   add_index "implementers", ["change_request_id"], name: "index_implementers_on_change_request_id", using: :btree
+  add_index "implementers", ["user_id"], name: "index_implementers_on_user_id", using: :btree
 
   create_table "incident_report_versions", force: :cascade do |t|
     t.string   "item_type",       null: false
@@ -247,6 +246,7 @@ ActiveRecord::Schema.define(version: 20160620024943) do
   end
 
   add_index "testers", ["change_request_id"], name: "index_testers_on_change_request_id", using: :btree
+  add_index "testers", ["user_id"], name: "index_testers_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",              default: "", null: false
@@ -285,17 +285,19 @@ ActiveRecord::Schema.define(version: 20160620024943) do
 
   add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
 
-  add_foreign_key "approvers", "change_requests"
-  add_foreign_key "approvers", "users"
+  add_foreign_key "approvals", "change_requests"
+  add_foreign_key "approvals", "users"
   add_foreign_key "change_request_statuses", "change_requests"
   add_foreign_key "change_requests", "cabs"
   add_foreign_key "change_requests", "users"
   add_foreign_key "comments", "change_requests"
   add_foreign_key "comments", "users"
   add_foreign_key "implementers", "change_requests"
+  add_foreign_key "implementers", "users"
   add_foreign_key "incident_reports", "users"
   add_foreign_key "notifications", "change_requests"
   add_foreign_key "notifications", "incident_reports"
   add_foreign_key "notifications", "users"
   add_foreign_key "testers", "change_requests"
+  add_foreign_key "testers", "users"
 end
