@@ -98,22 +98,11 @@
                   </div><!--/field-->
               </div><!--/col-->
               <div class="col-md-6">
-                <% if @change_request.errors.messages[:requestor_name] %>
-                  <div class="field form-group has-error">
-                <%else %>
-                  <div class="field form-group">
-                <% end %>
-                    <%= f.label :requestor_name %><br>
-                    <%= f.text_field :requestor_name, class: 'form-control' %>
-                  </div><!--/field-->
-                <% if @change_request.errors.messages[:requestor_position] %>
-                  <div class="field form-group has-error">
-                <%else %>
-                  <div class="field form-group">
-                <% end %>
-                    <%= f.label :requestor_position %><br>
-                    <%= f.text_field :requestor_position, class: 'form-control' %>
-                  </div><!--/field-->
+                <div class="field form-group">
+                  <%= f.label :requestor_name %><br>
+                  <%= f.text_field :requestor_name, value: current_user.name, class: 'form-control', readonly: :readonly %>
+                </div><!--/field-->
+
                 <div class="field form-group">
                   <label>Tag</label><br>
                     <%= f.select :tag_list, options_for_select(@tags), {}, {class: 'select2-tag form-control', multiple:'multiple'} %>
