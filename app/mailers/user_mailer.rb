@@ -13,11 +13,11 @@ class UserMailer < ApplicationMailer
       @deploy  = change_request.schedule_change_date.to_s(:long)
     end
 
-    @recepients = User.where(:role => ['approver','release_manager'])
-    if @recepients.count > 1
-      approvers = @recepients.collect(&:email).join(",")
+    @recipients = change_request.approvals.collect{|a| a.user.email}
+    if @recipients.count > 1
+      approvers = @recipients.join(",")
     else
-      approvers = @recepients.collect(&:email)
+      approvers = @recipients
     end
     mail(to: [@user.email,approvers], subject:'Change Request Status Changed')
   end
@@ -26,13 +26,13 @@ class UserMailer < ApplicationMailer
     @room = cab.room
     @notes = cab.notes
     @change_requests = cab.change_requests
-    @recepients = User.where(:role => ['approver','release_manager'])
-    @all_recepients = @recepients.collect(&:email)
-    @change_requests.each do |change_request| 
+    @all_recepients = []
+    @change_requests.each do |change_request|
       @all_recepients.push(change_request.user.email)
+      @all_recipients.push(change_request.approvals.collect{|a| a.user.email})
     end
-    approvers = @all_recepients.join(",")
-    mail(to: approvers, subject:'New CAB Meeting')
+    all_rec = @all_recepients.uniq.join(",")
+    mail(to: all_rec, subject:'New CAB Meeting')
   end
 
 end
