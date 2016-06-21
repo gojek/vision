@@ -111,7 +111,7 @@
             <thead>
               <tr>
                 <th><strong>Requestor's name:</strong>
-                  <%= @change_request.requestor_name %>
+                  <%= @change_request.user.name %>
                 </th>
                 <th><strong>Request date:</strong>
                   <%= @change_request.created_at.to_s(:long) %>
@@ -161,8 +161,8 @@
               </thead>
               <tbody>
                 <tr>
-                  <td><%= @change_request.requestor_name %></td>
-                  <td><%= @change_request.requestor_position %></td>
+                  <td><%= @change_request.user.name %></td>
+                  <td><%= @change_request.user.position %></td>
                 </tr>
               </tbody>
             </table>
