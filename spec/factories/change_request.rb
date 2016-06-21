@@ -74,5 +74,10 @@ FactoryGirl.define do
       approval = FactoryGirl.create(:approval)
       cr.approvals << approval
     end
+
+    after(:build) do |cr|
+      approval = FactoryGirl.create(:approval)
+      cr.approvals << approval
+    end
   end
 end
