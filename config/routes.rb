@@ -84,7 +84,7 @@ Rails.application.routes.draw do
         end
       end
   end
-resources :versions, only: [] do
+  resources :versions, only: [] do
     member do
       patch :bringback  # <= and that
     end
