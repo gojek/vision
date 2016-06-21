@@ -58,10 +58,9 @@ describe ChangeRequestsController do
       context 'with valid attributes' do
         it 'saves the new CR in the database' do
           expect{
-            attributes = FactoryGirl.attributes_for(:change_request).merge({
-              implementers_attributes: [FactoryGirl.attributes_for(:implementer)],
-              testers_attributes: [FactoryGirl.attributes_for(:tester)]})
-            post :create, change_request: attributes
+            approver = FactoryGirl.create(:approver)
+            attributes = FactoryGirl.attributes_for(:change_request)
+            post :create, change_request: attributes, implementers_list: [approver.id], testers_list: [approver.id] , approvers_list: [approver.name]
           }.to change(ChangeRequest, :count).by(1)
           cr = ChangeRequest.first
           expect(cr.implementers.count).to eq(1)
@@ -73,10 +72,9 @@ describe ChangeRequestsController do
             FactoryGirl.create(:approval)
           end
           expect{
-            attributes = FactoryGirl.attributes_for(:change_request).merge({
-              implementers_attributes: [FactoryGirl.attributes_for(:implementer)],
-              testers_attributes: [FactoryGirl.attributes_for(:tester)]})
-            post :create, change_request: attributes
+            approver = FactoryGirl.create(:approver)
+            attributes = FactoryGirl.attributes_for(:change_request)
+            post :create, change_request: attributes, implementers_list: [approver.id], testers_list: [approver.id] , approvers_list: [approver.name]
           }.to change(Approval, :count).by(CONFIG[:minimum_approval])
         end
       end
@@ -97,9 +95,10 @@ describe ChangeRequestsController do
       context 'valid attributes' do
         it "change @cr attributes" do
           note = "Note 1"
+          approver = FactoryGirl.create(:approver)
           update_attributes = FactoryGirl.attributes_for(:change_request, note: note)
           expect(update_attributes[:note]).to eq(note)
-          patch :update , id: @cr.id, change_request: update_attributes
+          patch :update , id: @cr.id, change_request: update_attributes, implementers_list: [approver.id], testers_list: [approver.id] , approvers_list: [approver.name]
           @cr.reload
           expect(@cr.note).to eq(note)
         end
@@ -130,6 +129,7 @@ describe ChangeRequestsController do
     let(:user) {FactoryGirl.create(:approver)}
     before :each do
       @request.env['devise.mapping'] = Devise.mappings[:user]
+      sign_in user
       @cr = FactoryGirl.create(:change_request, user: user)
       @approval = Approval.create(user: user, change_request: @cr)
     end
@@ -141,7 +141,8 @@ describe ChangeRequestsController do
     end
     describe 'PUT #approve' do
       it 'will change approval to approve' do
-        put :approve, id: @cr
+        put :approve, id: @cr, notes: "good"
+
         @approval.reload
         expect(@approval.approve).to eq true
         expect(@approval.approval_date).to_not be_nil
