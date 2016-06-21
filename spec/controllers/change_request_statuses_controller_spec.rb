@@ -12,14 +12,13 @@ describe ChangeRequestStatusesController do
       #cr.stub(:approvable?).and_return(true)
       user = FactoryGirl.create(:user)
       cr = FactoryGirl.create(:submitted_change_request, user: user)
-      CONFIG[:minimum_approval].times do |i|
-        FactoryGirl.create(:approval)
+			count_approvals = cr.approvals.count
+      @approvals =  cr.approvals
+      @approvals.each do |approval|
+        approval.update(approve: true)
       end
-      @approvers = User.where(role: "approver")
-      @approvers.each do |approver|
-        @approval = Approval.create(user_id: approver.id, change_request_id: cr.id, approve: true)
-      end
-      expect(cr.approvers_count).to eq CONFIG[:minimum_approval]
+			cr.reload
+      expect(cr.approvers_count).to eq count_approvals
       post :schedule, id: cr, change_request_status: {:status => 'scheduled'}
       cr.reload
       expect(cr.aasm_state).to eq 'scheduled'

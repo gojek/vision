@@ -8,6 +8,7 @@ class ChangeRequestStatusesController < ApplicationController
       @status = @change_request.change_request_statuses.new(change_request_status_params)
       @status.status = 'scheduled'
       if @status.save
+				@test = "ledig"
         @change_request.schedule!
         UserMailer.notif_email(@change_request.user, @change_request, @status).deliver_now
         Notifier.cr_notify(current_user, @change_request, 'cr_scheduled')
@@ -45,7 +46,7 @@ class ChangeRequestStatusesController < ApplicationController
     end
     redirect_to @change_request
   end
-  
+
   def cancel
     if @change_request.may_cancel?
       @status = @change_request.change_request_statuses.new(change_request_status_params)
@@ -55,12 +56,12 @@ class ChangeRequestStatusesController < ApplicationController
         UserMailer.notif_email(@change_request.user, @change_request, @status).deliver_now
         Notifier.cr_notify(current_user, @change_request, 'cr_cancelled')
       else
-        flash[:change_status_notice] = 'Reason must be filled Cancel CR'        
+        flash[:change_status_notice] = 'Reason must be filled Cancel CR'
       end
     end
     redirect_to @change_request
   end
-  
+
   def close
     if @change_request.may_close?
       @status = @change_request.change_request_statuses.new(change_request_status_params)
@@ -103,18 +104,18 @@ class ChangeRequestStatusesController < ApplicationController
   end
 
   private
-  
+
   def set_change_request
   	@change_request = ChangeRequest.find(params[:id])
   end
-  
+
   def change_request_status_params
   	params.require(:change_request_status).permit(:reason)
   end
-  
+
   def authorized_user_required
     redirect_to @change_request unless
     current_user.role == 'release_manager' || current_user.is_admin
   end
-  
+
 end
