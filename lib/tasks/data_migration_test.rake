@@ -6,13 +6,12 @@ namespace :data_migration_test do
     #iterating all implementer records
     Implementer.all.each do |implementer|
       count = count + 1
-      puts "#{count}. Searching user with name #{implementer.name}"
       #matching
       user = User.find_by(name: implementer.name)
       if user == nil
-        puts 'User is not found'
+        puts "#{implementer.name} is not found".colorize(:light_red)
       else
-        puts 'User is found'
+        puts "#{implementer.name} is found".colorize(:light_green)
         count_success = count_success + 1
       end
     end
@@ -27,7 +26,6 @@ namespace :data_migration_test do
     #iterating all implementer records
     Implementer.all.each do |implementer|
       count = count + 1
-      puts "#{count}. Searching user with name #{implementer.name}"
       #generate pattern to be used
       names = ""
       implementer.name.downcase.split.each do |word|
@@ -40,12 +38,12 @@ namespace :data_migration_test do
       #matching
       users = User.where("lower(name) LIKE (?)", "%#{names}%")
       if users.count == 0
-        puts 'User is not found'
+        puts "#{implementer.name} is not found".colorize(:light_red)
       elsif users.count > 1
-        puts 'Multiple users are found'
+        puts "#{implementer.name} found with multiple matching user".colorize(:light_yellow)
         count_multiple_find = count_multiple_find + 1
       else
-        puts 'User is found'
+        puts "#{implementer.name} is found".colorize(:light_green)
         count_success = count_success + 1
       end
     end
@@ -59,13 +57,12 @@ namespace :data_migration_test do
     #iterating all tester records
     Tester.all.each do |tester|
       count = count + 1
-      puts "#{count}. Searching user with name #{tester.name}"
       #matching
       user = User.find_by(name: tester.name)
       if user == nil
-        puts 'User is not found'
+        puts "#{tester.name} is not found".colorize(:light_red)
       else
-        puts 'User is found'
+        puts "#{tester.name} is found".colorize(:light_green)
         count_success = count_success + 1
       end
     end
@@ -80,7 +77,6 @@ namespace :data_migration_test do
     #iterating all tester records
     Tester.all.each do |tester|
       count = count + 1
-      puts "#{count}. Searching user with name #{tester.name}"
       #generate pattern to be used
       names = ""
       tester.name.downcase.split.each do |word|
@@ -93,12 +89,12 @@ namespace :data_migration_test do
       #matching
       users = User.where("lower(name) LIKE (?)", "%#{names}%")
       if users.count == 0
-        puts 'User is not found'
+        puts "#{tester.name} is not found".colorize(:light_red)
       elsif users.count > 1
-        puts 'Multiple users are found'
+        puts "#{tester.name} found with multiple matching user".colorize(:light_yellow)
         count_multiple_find = count_multiple_find + 1
       else
-        puts 'User is found'
+        puts "#{tester.name} is found".colorize(:light_green)
         count_success = count_success + 1
       end
     end
