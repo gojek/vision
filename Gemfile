@@ -58,7 +58,11 @@ gem 'tinymce-rails', :git => 'https://github.com/spohlenz/tinymce-rails.git'
 # xml parser
 gem 'nokogiri'
 
+#database
 gem 'pg'
+
+#coloring std out
+gem 'colorize'
 
 group :production do
 

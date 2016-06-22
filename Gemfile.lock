@@ -80,6 +80,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.10.0)
+    colorize (0.7.7)
     concurrent-ruby (1.0.2)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
@@ -364,6 +365,7 @@ DEPENDENCIES
   capybara
   cocoon
   coffee-rails (~> 4.1.0)
+  colorize
   database_cleaner
   devise
   diffy
@@ -412,4 +414,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   1.12.1
+   1.12.5
