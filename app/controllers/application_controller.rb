@@ -5,14 +5,14 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :check_user
   require 'notifier.rb'
-  
+
   def check_user
   	token_required! unless current_user==nil
   end
 
   def token_required!
-  	sign_out current_user unless current_user.token != nil 
-  end 
- 
- 
+  	sign_out current_user unless current_user.token != nil
+  end
+
+
 end

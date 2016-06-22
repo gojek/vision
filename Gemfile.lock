@@ -361,6 +361,7 @@ GEM
     simplecov-html (0.10.0)
     simplecov-rcov (0.2.3)
       simplecov (>= 0.4.1)
+    slack-notifier (1.5.1)
     slop (3.6.0)
     spreadsheet (1.1.2)
       ruby-ole (>= 1.0)
@@ -469,6 +470,7 @@ DEPENDENCIES
   simple_calendar (~> 1.1.0)
   simplecov
   simplecov-rcov
+  slack-notifier
   spring
   sunspot_rails
   sunspot_solr

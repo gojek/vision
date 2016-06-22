@@ -66,6 +66,9 @@ gem 'pg'
 # coloring std out
 gem 'colorize'
 
+#slack notification
+gem 'slack-notifier'
+
 # full-text search
 gem 'sunspot_rails'
 gem 'sunspot_solr'

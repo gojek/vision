@@ -5,6 +5,8 @@ class ChangeRequestsController < ApplicationController
   before_action :not_closed_required, only: [:destroy]
   before_action :submitted_required, only: [:edit]
   require 'notifier.rb'
+  require 'slack-notif.rb'
+
   def index
     if params[:tag]
       @q = ChangeRequest.ransack(params[:q])
@@ -116,6 +118,8 @@ class ChangeRequestsController < ApplicationController
 
         #Notify
         Notifier.cr_notify(current_user, @change_request, 'new_cr')
+        link = url_for @change_request
+        SlackNotif.notif_new_request @change_request, link
         Thread.new do
           UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
           ActiveRecord::Base.connection.close
