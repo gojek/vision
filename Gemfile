@@ -69,6 +69,7 @@ gem 'colorize'
 #slack notification
 gem 'slack-ruby-client'
 
+
 # full-text search
 gem 'sunspot_rails'
 gem 'sunspot_solr'
