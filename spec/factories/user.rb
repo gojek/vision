@@ -25,17 +25,4 @@ FactoryGirl.define do
         role 'approver'
     end
   end
-
-  factory :user2 do
-    sequence(:email) { |n| "asd.asd#{n}@veritrans.co.id" }
-    role 'requestor'
-    provider 'google_oauth2'
-    uid '123457'
-    is_admin false
-    name 'asd asd'
-    locked_at nil
-    token '123457'
-    refresh_token '123457'
-    expired_at Time.now+1.hour
-  end
 end
