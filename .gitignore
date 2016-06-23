@@ -29,3 +29,10 @@ coverage
 /coverage/*.html
 /coverage/*.json
 /coverage/*
+
+# Ignore bower components
+/vendor
+
+.ruby-version
+lib/tasks/approval.rb
+vision.dump
