@@ -117,7 +117,7 @@
                   <div class="field form-group">
                 <% end %>
                   <label>Approvers</label><br>
-                    <%= select_tag "approvers_list" ,options_for_select(User.where(role: 'approver').collect(&:name)), class: 'select2-approve form-control', multiple:true %>
+                    <%= select_tag "approvers_list" ,options_for_select(@users), class: 'select2-approve form-control', multiple:true %>
                 </div><!--/field-->
 
 
@@ -305,7 +305,7 @@
                 <div id="testers">
                   <div class="field form-group">
                     <label>Testers</label><br>
-                      <%= select_tag "testers_list" ,options_for_select(@test_users), class: 'select2-tester form-control', style: 'width: 100%' , multiple:true %>
+                      <%= select_tag "testers_list" ,options_for_select(@users), class: 'select2-tester form-control', style: 'width: 100%' , multiple:true %>
                   </div><!--/field-->
                 </div><!--/nested form for testers-->
               </div><!--/col-->
@@ -369,7 +369,7 @@
               <div id="implementers">
                 <div class="field form-group">
                   <label>Implementers</label><br>
-                    <%= select_tag "implementers_list" ,options_for_select(@test_users), class: 'select2-implementer form-control', style: 'width: 100%;', multiple:true %>
+                    <%= select_tag "implementers_list" ,options_for_select(@users), class: 'select2-implementer form-control', style: 'width: 100%;', multiple:true %>
                 </div><!--/field-->
               </div><!--implementers-->
             </div><!--/box-body-->
