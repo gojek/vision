@@ -81,7 +81,7 @@ class ChangeRequestsController < ApplicationController
   def create
     @change_request = current_user.ChangeRequests.build(change_request_params)
 
-    #Validating approver list
+    #Populating approver list
     @approvers_list = params[:approvers_list]? params[:approvers_list] : []
     @change_request.approvals = []
     @approvers_list.each do |approver|
@@ -90,14 +90,14 @@ class ChangeRequestsController < ApplicationController
       @change_request.approvals << @approval
     end
 
-    #Validating implementers list
+    #Populating implementers list
     @implementers_list = params[:implementers_list]? params[:implementers_list] : []
     @change_request.implementers = []
     @implementers_list.each do |implementer_id|
       @change_request.implementers << User.find(implementer_id)
     end
 
-    #Validating testers list
+    #Populating testers list
     @testers_list = params[:testers_list]? params[:testers_list] : []
     @change_request.testers = []
     @testers_list.each do |tester_id|
@@ -143,9 +143,11 @@ class ChangeRequestsController < ApplicationController
   end
 
   def update
-    #Approvals section
+
+    #Remove all current approvals assigning
     @change_request.approvals.delete_all
 
+    #Populating approvers list
     @approvers_list = params[:approvers_list]? params[:approvers_list] : []
     @change_request.approvals = []
     @approvers_list.each do |approver|
@@ -154,14 +156,14 @@ class ChangeRequestsController < ApplicationController
       @change_request.approvals << @approval
     end
 
-    #Validating testers
+    #Populating testers list
     @testers_list = params[:testers_list]? params[:testers_list] : []
     @change_request.testers = []
     @testers_list.each do |tester_id|
       @change_request.testers << User.find(tester_id)
     end
 
-    #Validating implementers
+    #Populating implementers list
     @implementers_list = params[:implementers_list]? params[:implementers_list] : []
     @change_request.implementers = []
     @implementers_list.each do |implementer_id|
