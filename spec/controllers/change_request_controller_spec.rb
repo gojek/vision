@@ -19,7 +19,7 @@ describe ChangeRequestsController do
 
     describe 'GET #index' do
       it "populate all current user's Change Request if no param is passed" do
-        cr = FactoryGirl.create(:change_request, user_id: 1)
+        cr = FactoryGirl.create(:change_request, user: user)
         other_cr = FactoryGirl.create(:change_request)
         get :index
         expect(assigns(:change_requests)).to match_array([cr])
