@@ -135,11 +135,6 @@ class ChangeRequestsController < ApplicationController
         @current_testers = params[:testers_list]? params[:testers_list] : []
 
         @current_approvers = params[:approvers_list]? params[:approvers_list] : []
-        # @approvers_list =
-        # @current_approvers = []
-        # @approvers_list.each do |approver|
-        #  @current_approvers << User.find_by(name: approver)
-        # end
 
         format.html { render :new }
         format.json { render json: @change_request.errors, status: :unprocessable_entity }
@@ -175,17 +170,6 @@ class ChangeRequestsController < ApplicationController
 
     respond_to do |format|
       if @change_request.update(change_request_params)
-        # @testers_list = params[:testers_list]? params[:testers_list] : []
-        # @change_request.testers = []
-        # @testers_list.each do |tester_id|
-        #   @change_request.testers << User.find(tester_id)
-        # end
-
-        # @implementers_list = params[:implementers_list]? params[:implementers_list] : []
-        # @change_request.implementers = []
-        # @implementers_list.each do |implementer_id|
-        #   @change_request.implementers << User.find(implementer_id)
-        # end
 
         #Collaborators section
         @collaborators_list = params[:collaborators_list]? params[:collaborators_list] : []
@@ -193,22 +177,6 @@ class ChangeRequestsController < ApplicationController
         @collaborators_list.each do |collaborator|
           @change_request.collaborators << User.find_by(name: collaborator)
         end
-
-        # #Approvals section
-        # @change_request.approvals.delete_all
-        #
-        # @approvers_list = params[:approvers_list]? params[:approvers_list] : []
-        # @change_request.approvals = []
-        # if @approvers_list.any?
-        #   @approvers_list.each do |approver|
-        #     @tmp_user = User.find_by(name: approver)
-        #     @approval = Approval.new
-        #     @approval.user_id = @tmp_user.id
-        #     @approval.change_request_id = @change_request.id
-        #     @approval.save
-        #    @change_request.approvals << @approval
-        #   end
-        # end
 
         Notifier.cr_notify(current_user, @change_request, 'update_cr')
         flash[:update_cr_notice] = 'Change request was successfully updated.'
@@ -299,16 +267,6 @@ class ChangeRequestsController < ApplicationController
     else
       result = change_request_by_success_rate_monthly(start_time, end_time, tag)
     end
-    #success = ChangeRequest.where('status == "success" AND closed_date <= ? AND closed_date >= ?',end_time, start_time)
-    #failed = ChangeRequest.where('status == "failed" AND closed_date <= ? AND closed_date >= ?', end_time, start_time)
-
-    #total_success = success.blank? ? 0 : success.count
-    #total_failed = failed.blank? ? 0 : failed.count
-    #result = []
-    #result << {
-      #success: total_success,
-      #failed: total_failed
-    #}
     render :text => result.to_json
   end
 
