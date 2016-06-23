@@ -84,15 +84,10 @@ class ChangeRequestsController < ApplicationController
     #Validating approver list
     @approvers_list = params[:approvers_list]? params[:approvers_list] : []
     @change_request.approvals = []
-    if @approvers_list.any?
-      @approvers_list.each do |approver|
-        @tmp_user = User.find_by(name: approver)
-        @approval = Approval.new
-        @approval.user_id = @tmp_user.id
-        @approval.change_request_id = @change_request.id
-        @approval.save
-       @change_request.approvals << @approval
-      end
+    @approvers_list.each do |approver|
+      @tmp_user = User.find_by(name: approver)
+      @approval = Approval.create(user: @tmp_user, change_request: @change_request)
+      @change_request.approvals << @approval
     end
 
     #Validating implementers list
@@ -158,15 +153,10 @@ class ChangeRequestsController < ApplicationController
 
     @approvers_list = params[:approvers_list]? params[:approvers_list] : []
     @change_request.approvals = []
-    if @approvers_list.any?
-      @approvers_list.each do |approver|
-        @tmp_user = User.find_by(name: approver)
-        @approval = Approval.new
-        @approval.user_id = @tmp_user.id
-        @approval.change_request_id = @change_request.id
-        @approval.save
-       @change_request.approvals << @approval
-      end
+    @approvers_list.each do |approver|
+      @tmp_user = User.find_by(name: approver)
+      @approval = Approval.create(user: @tmp_user, change_request: @change_request)
+      @change_request.approvals << @approval
     end
 
     #Validating testers
