@@ -1,10 +1,11 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
+  require 'mentioner.rb'
   #before_action :set_comment, only: [:show, :edit, :update, :destroy]
 
   # GET /comments
   # GET /comments.json
- 
+
 
   # POST /comments
   # POST /comments.json
@@ -16,6 +17,8 @@ class CommentsController < ApplicationController
     respond_to do |format|
       if @comment.save
         Notifier.cr_notify(current_user, @cr, 'comment_cr')
+        mentionees =  Mentioner.process_mentions(@comment)
+
         format.html { redirect_to @cr}
         format.json { render :show, status: :created, location: @comment }
       else
