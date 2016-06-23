@@ -45,12 +45,11 @@ class ChangeRequestsController < ApplicationController
   def new
     @change_request = ChangeRequest.new
     @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
-    @users = User.all.collect(&:name)
     @current_tags = []
     @current_collaborators = []
     @current_approvers = []
 
-    @test_users = User.all.collect{|u| [u.name, u.id]}
+    @users = User.all.collect{|u| [u.name, u.id]}
     @current_implementers = []
     @current_testers = []
   end
@@ -58,11 +57,10 @@ class ChangeRequestsController < ApplicationController
   def edit
     @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
     @current_tags = @change_request.tag_list
-    @users = User.all.collect(&:name)
     @current_collaborators = @change_request.collaborators.collect(&:name)
     @current_implementers = @change_request.implementers.collect{|u| u.id}
     @current_testers = @change_request.testers.collect{|u| u.id}
-    @test_users = User.all.collect{|u| [u.name, u.id]}
+    @users = User.all.collect{|u| [u.name, u.id]}
     @approvers_id = @change_request.approvals.collect(&:user_id)
     @current_approvers = []
     @approvers_id.each do |approver_id|
@@ -136,9 +134,8 @@ class ChangeRequestsController < ApplicationController
       else
         @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
         @current_tags = []
-        @users = User.all.collect(&:name)
         @current_collaborators = []
-        @test_users = User.all.collect{|u| [u.name, u.id]}
+        @users = User.all.collect{|u| [u.name, u.id]}
         @current_implementers = params[:implementers_list]? params[:implementers_list] : []
         @current_testers = params[:testers_list]? params[:testers_list] : []
 
@@ -230,12 +227,11 @@ class ChangeRequestsController < ApplicationController
       else
         @current_tags = @change_request.tag_list
         @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
-        @users = User.all.collect(&:name)
         @current_collaborators = @change_request.collaborators.collect(&:name)
         @current_approvers = @change_request.approvals.collect{|a| a.user.name}
         @current_implementers = @change_request.implementers.collect{|u| u.id}
         @current_testers = @change_request.testers.collect{|u| u.id}
-        @test_users = User.all.collect{|u| [u.name, u.id]}
+        @users = User.all.collect{|u| [u.name, u.id]}
         format.html { render :edit }
         format.json { render json: @change_request.errors, status: :unprocessable_entity }
       end
