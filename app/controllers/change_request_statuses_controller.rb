@@ -8,7 +8,6 @@ class ChangeRequestStatusesController < ApplicationController
       @status = @change_request.change_request_statuses.new(change_request_status_params)
       @status.status = 'scheduled'
       if @status.save
-				@test = "ledig"
         @change_request.schedule!
         UserMailer.notif_email(@change_request.user, @change_request, @status).deliver_now
         Notifier.cr_notify(current_user, @change_request, 'cr_scheduled')
