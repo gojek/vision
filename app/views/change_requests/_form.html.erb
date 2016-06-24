@@ -90,7 +90,7 @@
                 </div><!--/col-->
                 <% if @change_request.errors.messages[:priority] %>
                   <div class="field form-group has-error">
-                <%else %>  
+                <%else %>
                   <div class="field form-group">
                 <% end %>
                     <%= f.label :priority %>
@@ -98,22 +98,11 @@
                   </div><!--/field-->
               </div><!--/col-->
               <div class="col-md-6">
-                <% if @change_request.errors.messages[:requestor_name] %>
-                  <div class="field form-group has-error">
-                <%else %>  
-                  <div class="field form-group">
-                <% end %>
-                    <%= f.label :requestor_name %><br>
-                    <%= f.text_field :requestor_name, class: 'form-control' %>
-                  </div><!--/field-->
-                <% if @change_request.errors.messages[:requestor_position] %>
-                  <div class="field form-group has-error">
-                <%else %>  
-                  <div class="field form-group">
-                <% end %>
-                    <%= f.label :requestor_position %><br>
-                    <%= f.text_field :requestor_position, class: 'form-control' %>
-                  </div><!--/field-->
+                <div class="field form-group">
+                  <%= f.label :requestor_name %><br>
+                  <%= f.text_field :requestor_name, value: current_user.name, class: 'form-control', readonly: :readonly %>
+                </div><!--/field-->
+
                 <div class="field form-group">
                   <label>Tag</label><br>
                     <%= f.select :tag_list, options_for_select(@tags), {}, {class: 'select2-tag form-control', multiple:'multiple'} %>
@@ -122,7 +111,16 @@
                   <label>Collaborators</label><br>
                     <%= select_tag "collaborators_list" ,options_for_select(@users), class: 'select2-collaborate form-control', multiple:true %>
                 </div><!--/field-->
-                
+                <% if @change_request.errors.messages[:approvals] %>
+                  <div class="field form-group has-error">
+                <% else %>
+                  <div class="field form-group">
+                <% end %>
+                  <label>Approvers</label><br>
+                    <%= select_tag "approvers_list" ,options_for_select(@users), class: 'select2-approve form-control', multiple:true %>
+                </div><!--/field-->
+
+
               </div><!--/col-->
             </div><!--/box-body-->
           </div> <!--/box-->
@@ -135,7 +133,7 @@
                 <div class="box-body">
                   <% if @change_request.errors.messages[:change_requirement] %>
                     <div class="field form-group has-error">
-                  <%else %>  
+                  <%else %>
                     <div class="field form-group">
                   <% end %>
                       <%= f.label :change_requirement %><br>
@@ -143,7 +141,7 @@
                     </div><!--field-->
                   <% if @change_request.errors.messages[:business_justification] %>
                     <div class="field form-group has-error">
-                  <%else %>  
+                  <%else %>
                     <div class="field form-group">
                   <% end %>
                       <%= f.label :business_justification %><br>
@@ -190,7 +188,7 @@
               <div class="col-md-6">
                 <% if @change_request.errors.messages[:analysis] %>
                   <div class="field form-group has-error">
-                <%else %>  
+                <%else %>
                   <div class="field form-group">
                 <% end %>
                     <%= f.label :analysis %><br>
@@ -198,7 +196,7 @@
                   </div><!--/field-->
                 <% if @change_request.errors.messages[:solution] %>
                   <div class="field form-group has-error">
-                <%else %>  
+                <%else %>
                   <div class="field form-group">
                 <% end %>
                     <%= f.label :solution %><br>
@@ -208,7 +206,7 @@
               <div class="col-md-6">
                 <% if @change_request.errors.messages[:impact] %>
                   <div class="field form-group has-error">
-                <%else %>  
+                <%else %>
                   <div class="field form-group">
                 <% end %>
                     <%= f.label :impact %><br>
@@ -216,7 +214,7 @@
                   </div>
                 <% if @change_request.errors.messages[:scope] %>
                   <div class="field form-group has-error">
-                <%else %>  
+                <%else %>
                   <div class="field form-group">
                 <% end %>
                     <%= f.label :scope %><br>
@@ -233,7 +231,7 @@
               <div class="col-md-6">
                 <% if @change_request.errors.messages[:design] %>
                   <div class="field form-group has-error">
-                <%else %>  
+                <%else %>
                   <div class="field form-group">
                 <% end %>
                     <%= f.label :design %><br>
@@ -241,7 +239,7 @@
                   </div><!--/field-->
                 <% if @change_request.errors.messages[:backup] %>
                   <div class="field form-group has-error">
-                <%else %>  
+                <%else %>
                   <div class="field form-group">
                 <% end %>
                     <%= f.label :backup %><br>
@@ -251,7 +249,7 @@
               <div class="col-md-6">
                 <% if @change_request.errors.messages[:definition_of_success] %>
                   <div class="field form-group has-error">
-                <%else %>  
+                <%else %>
                   <div class="field form-group">
                 <% end %>
                     <%= f.label :definition_of_success %><br>
@@ -259,7 +257,7 @@
                   </div><!--/field-->
                 <% if @change_request.errors.messages[:definition_of_failed] %>
                   <div class="field form-group has-error">
-                <%else %>  
+                <%else %>
                   <div class="field form-group">
                 <% end %>
                     <%= f.label :definition_of_failure %><br>
@@ -268,14 +266,14 @@
               </div><!--/col-->
             </div><!--/box-body-->
           </div><!--/box-->
-        </div><!--/tab-pane-->  
+        </div><!--/tab-pane-->
         <div class="tab-pane fade" id="testing">
           <div class="box box-default">
             <div class="box-header with border"></div>
             <div class="box-body">
               <% if @change_request.errors.messages[:testing_environment_available] %>
                 <div class="field form-group has-error">
-              <%else %>  
+              <%else %>
                 <div class="field form-group">
               <% end %>
                   <label>Testing in Test/Development Environment Available</label>
@@ -287,7 +285,7 @@
               <div class='col-md-6'>
                 <% if @change_request.errors.messages[:testing_procedure] %>
                   <div class="field form-group has-error">
-                <%else %>  
+                <%else %>
                   <div class="field form-group">
                 <% end %>
                     <%= f.label :testing_procedure %><br>
@@ -295,7 +293,7 @@
                   </div>
                 <% if @change_request.errors.messages[:testing_notes] %>
                   <div class="field form-group has-error">
-                <%else %>  
+                <%else %>
                   <div class="field form-group">
                 <% end %>
                     <%= f.label :testing_notes %><br>
@@ -305,10 +303,10 @@
               <div class='col-md-6'>
                 <h3>Tester</h3>
                 <div id="testers">
-                  <%= f.fields_for :testers do |tes| %>
-                   <%= render 'tester_fields', :f => tes %>
-                  <% end %>
-                  <%= link_to_add_association 'add tester', f, :testers %>
+                  <div class="field form-group">
+                    <label>Testers</label><br>
+                      <%= select_tag "testers_list" ,options_for_select(@users), class: 'select2-tester form-control', style: 'width: 100%' , multiple:true %>
+                  </div><!--/field-->
                 </div><!--/nested form for testers-->
               </div><!--/col-->
             </div><!--box-body-->
@@ -322,7 +320,7 @@
                 <div class="box-body">
                     <% if @change_request.errors.messages[:schedule_change_date] %>
                       <div class="field form-group has-error">
-                    <%else %>  
+                    <%else %>
                       <div class="field form-group">
                     <% end %>
                         <%= f.label :schedule_change_date %><br>
@@ -330,12 +328,12 @@
                       </div><!--/field-->
                     <% if @change_request.errors.messages[:planned_completion] %>
                       <div class="field form-group has-error">
-                    <%else %>  
+                    <%else %>
                       <div class="field form-group">
                     <% end %>
                         <%= f.label :planned_completion %><br>
                         <%= f.datetime_select :planned_completion, :default => Time.now %>
-                      </div><!--/field--> 
+                      </div><!--/field-->
                     <div class="field form-group">
                       <%= f.label :implementation_notes %><br>
                       <%= f.text_area :implementation_notes, class: "form-control tinymce" %>
@@ -354,7 +352,7 @@
                   <div class="field form-group">
                     <%= f.label :grace_period_end %><br>
                     <%= f.datetime_select :grace_period_end%>
-                  </div><!--/field-->      
+                  </div><!--/field-->
                   <div class="field form-group">
                     <%= f.label :grace_period_notes %><br>
                     <%= f.text_area :grace_period_notes, class: "form-control tinymce" %>
@@ -369,17 +367,17 @@
             </div>
             <div class='box-body'>
               <div id="implementers">
-                <%= f.fields_for :implementers do |imp| %>
-                  <%= render 'implementer_fields', :f => imp %>
-                <% end %>
-                <%= link_to_add_association 'add implementer', f, :implementers %>
+                <div class="field form-group">
+                  <label>Implementers</label><br>
+                    <%= select_tag "implementers_list" ,options_for_select(@users), class: 'select2-implementer form-control', style: 'width: 100%;', multiple:true %>
+                </div><!--/field-->
               </div><!--implementers-->
             </div><!--/box-body-->
           </div>  <!--/box-->
-        </div><!--/tab-pane-->        
+        </div><!--/tab-pane-->
       </div><!--tab-content-->
       <br>
-    
+
     </div><!--/col-->
   </div><!--/row-->
 <% end %>
@@ -417,6 +415,26 @@
       tokenSeparators: [',', ' ']
     });
 
+    var testers = []
+    <% @current_testers.each do |tester| %>
+      var p = '<%= tester %>';
+      testers.push(p);
+    <% end %>
+    $(".select2-tester").val(testers);
+    $(".select2-tester").select2({
+      tokenSeparators: [',', ' ']
+    });
+
+    var implementers = []
+    <% @current_implementers.each do |implementer| %>
+      var p = '<%= implementer %>';
+      implementers.push(p);
+    <% end %>
+    $(".select2-implementer").val(implementers);
+    $(".select2-implementer").select2({
+      tokenSeparators: [',', ' ']
+    });
+
     var collaborators = []
     <% @current_collaborators.each do |collaborator| %>
       var p = '<%= collaborator %>';
@@ -424,6 +442,15 @@
     <% end %>
     $(".select2-collaborate").val(collaborators);
     $(".select2-collaborate").select2({
+      tokenSeparators: [',', ' ']
+    });
+    var approvers = []
+    <% @current_approvers.each do |approver| %>
+      var p = '<%= approver %>';
+      approvers.push(p);
+    <% end %>
+    $(".select2-approve").val(approvers);
+    $(".select2-approve").select2({
       tokenSeparators: [',', ' ']
     });
   });

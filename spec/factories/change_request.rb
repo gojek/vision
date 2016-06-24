@@ -65,24 +65,19 @@ FactoryGirl.define do
     end
 
     before(:create) do |cr|
-      implementer = FactoryGirl.create(:implementer)
+      implementer = FactoryGirl.create(:user)
       cr.implementers << implementer
 
-      tester = FactoryGirl.create(:tester)
+      tester = FactoryGirl.create(:user)
       cr.testers << tester
+
+      approval = FactoryGirl.create(:approval)
+      cr.approvals << approval
     end
 
-    after(:create) do |cr|
-      cr.implementers.each do |implementer|
-        implementer.change_request_id = cr.id
-        implementer.save!
-      end
-
-      cr.testers.each do |tester|
-        tester.change_request_id = cr.id
-        tester.save!
-      end
+    after(:build) do |cr|
+      approval = FactoryGirl.create(:approval)
+      cr.approvals << approval
     end
-
   end
 end

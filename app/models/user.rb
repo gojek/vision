@@ -5,7 +5,7 @@ require 'json'
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :trackable, :lockable, :timeoutable,  
+  devise :trackable, :lockable, :timeoutable,
          :omniauthable, omniauth_providers: [:google_oauth2]
   acts_as_reader
   ROLES = %w(requestor approver release_manager)
@@ -16,9 +16,11 @@ class User < ActiveRecord::Base
   has_many :IncidentReports
   has_many :ChangeRequests
   has_and_belongs_to_many :collaborate_change_requests, :class_name => 'ChangeRequest'
+  has_and_belongs_to_many :implement_change_requests, join_table: :implementers, class_name: :ChangeRequest
+  has_and_belongs_to_many :test_change_requests, join_table: :testers, class_name: :ChangeRequest
   has_many :Comments
   has_many :notifications
-  has_many :Approvers, :dependent => :destroy
+  has_many :Approvals, :dependent => :destroy
   validates :email, format: { with: /\b[A-Z0-9._%a-z\-]+@veritrans\.co\.id\z/,
                   message: "must be a veritrans account" }
   validates :email, uniqueness: true
@@ -79,7 +81,7 @@ class User < ActiveRecord::Base
   end
 
   #refer to https://developers.google.com/oauthplayground and https://github.com/nahi/httpclient/blob/master/sample/howto.rb
-  def get_contacts 
+  def get_contacts
     client = HTTPClient.new()
     target = 'https://www.google.com/m8/feeds/contacts/default/full/'
     token = 'Bearer ' + self.fresh_token
@@ -94,4 +96,3 @@ class User < ActiveRecord::Base
   end
 
 end
- 
