@@ -1,9 +1,9 @@
 defaults: &defaults
-  minimum_approval: 1
+  
 
 development:
   <<: *defaults
-  minimum_approval: 1
+
   something: "tes"
 
 test:
