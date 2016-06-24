@@ -57,15 +57,11 @@ class ChangeRequestsController < ApplicationController
   def edit
     @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
     @current_tags = @change_request.tag_list
-    @current_collaborators = @change_request.collaborators.collect(&:name)
+    @current_collaborators = @change_request.collaborators.collect{|u| u.id}
     @current_implementers = @change_request.implementers.collect{|u| u.id}
     @current_testers = @change_request.testers.collect{|u| u.id}
     @users = User.all.collect{|u| [u.name, u.id]}
-    @approvers_id = @change_request.approvals.collect(&:user_id)
-    @current_approvers = []
-    @approvers_id.each do |approver_id|
-      @current_approvers << User.find(approver_id).name
-    end
+    @current_approvers = @change_request.approvals.collect(&:user_id)
   end
 
   def edit_grace_period_notes
@@ -109,8 +105,8 @@ class ChangeRequestsController < ApplicationController
 
         @collaborators_list = params[:collaborators_list]? params[:collaborators_list] : []
         @change_request.collaborators = []
-        @collaborators_list.each do |collaborator|
-          @change_request.collaborators << User.find_by(name: collaborator)
+        @collaborators_list.each do |collaborator_id|
+          @change_request.collaborators << User.find(collaborator_id)
         end
 
         @status = @change_request.change_request_statuses.new(:status => 'submitted')
@@ -129,11 +125,10 @@ class ChangeRequestsController < ApplicationController
       else
         @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
         @current_tags = []
-        @current_collaborators = []
         @users = User.all.collect{|u| [u.name, u.id]}
+        @current_collaborators = params[:collaborators_list]? params[:collaborators_list] : []
         @current_implementers = params[:implementers_list]? params[:implementers_list] : []
         @current_testers = params[:testers_list]? params[:testers_list] : []
-
         @current_approvers = params[:approvers_list]? params[:approvers_list] : []
 
         format.html { render :new }
@@ -151,7 +146,7 @@ class ChangeRequestsController < ApplicationController
     @approvers_list = params[:approvers_list]? params[:approvers_list] : []
     @change_request.approvals = []
     @approvers_list.each do |approver|
-      @tmp_user = User.find_by(name: approver)
+      @tmp_user = User.find(approver)
       @approval = Approval.create(user: @tmp_user, change_request: @change_request)
       @change_request.approvals << @approval
     end
@@ -176,8 +171,8 @@ class ChangeRequestsController < ApplicationController
         #Collaborators section
         @collaborators_list = params[:collaborators_list]? params[:collaborators_list] : []
         @change_request.collaborators.delete_all
-        @collaborators_list.each do |collaborator|
-          @change_request.collaborators << User.find_by(name: collaborator)
+        @collaborators_list.each do |collaborator_id|
+          @change_request.collaborators << User.find(collaborator_id)
         end
 
         Notifier.cr_notify(current_user, @change_request, 'update_cr')
@@ -187,7 +182,7 @@ class ChangeRequestsController < ApplicationController
       else
         @current_tags = @change_request.tag_list
         @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
-        @current_collaborators = @change_request.collaborators.collect(&:name)
+        @current_collaborators = @change_request.implementers.collect{|u| u.id}
         @current_approvers = @change_request.approvals.collect{|a| a.user.name}
         @current_implementers = @change_request.implementers.collect{|u| u.id}
         @current_testers = @change_request.testers.collect{|u| u.id}
