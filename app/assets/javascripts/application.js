@@ -30,8 +30,13 @@
 //= require serial
 //= require light
 //= require Chart.js/Chart.min
+<<<<<<< dd8a56e342e1510e68883e9fe307583c95669d30
 //= require data-confirm-modal
 
+=======
+//= require jquery.atwho
+//= require jquery.caret
+>>>>>>> Refactor the autocomplete to be better in functionality
 //= require daterangepicker
 //= require turbolinks
 //= require bootstrap-toggle
