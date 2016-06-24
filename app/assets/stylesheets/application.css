@@ -22,6 +22,8 @@
  *= require nprogress-bootstrap
  *= require bootstrap-social/bootstrap-social
  *= require bootstrap-toggle
+ *= require jquery.atwho
+
  */
 #nprogress .spinner-icon{
 	border-top-color:#fff !important;
