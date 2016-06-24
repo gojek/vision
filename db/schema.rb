@@ -11,22 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151028044905) do
+ActiveRecord::Schema.define(version: 20160620024943) do
 
-  create_table "approvers", force: :cascade do |t|
-    t.string   "name"
-    t.string   "position"
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "approvals", force: :cascade do |t|
     t.integer  "change_request_id"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
     t.integer  "user_id"
     t.boolean  "approve"
-    t.text     "reject_reason"
+    t.text     "notes"
     t.datetime "approval_date"
   end
 
-  add_index "approvers", ["change_request_id"], name: "index_approvers_on_change_request_id"
-  add_index "approvers", ["user_id"], name: "index_approvers_on_user_id"
+  add_index "approvals", ["change_request_id"], name: "index_approvals_on_change_request_id", using: :btree
+  add_index "approvals", ["user_id"], name: "index_approvals_on_user_id", using: :btree
 
   create_table "cabs", force: :cascade do |t|
     t.datetime "meet_date"
@@ -38,7 +39,7 @@ ActiveRecord::Schema.define(version: 20151028044905) do
     t.string   "event_id"
   end
 
-  add_index "cabs", ["meet_date"], name: "index_cabs_on_meet_date", unique: true
+  add_index "cabs", ["meet_date"], name: "index_cabs_on_meet_date", unique: true, using: :btree
 
   create_table "change_request_statuses", force: :cascade do |t|
     t.string   "status"
@@ -48,7 +49,7 @@ ActiveRecord::Schema.define(version: 20151028044905) do
     t.integer  "change_request_id"
   end
 
-  add_index "change_request_statuses", ["change_request_id"], name: "index_change_request_statuses_on_change_request_id"
+  add_index "change_request_statuses", ["change_request_id"], name: "index_change_request_statuses_on_change_request_id", using: :btree
 
   create_table "change_request_versions", force: :cascade do |t|
     t.string   "item_type",       null: false
@@ -61,7 +62,7 @@ ActiveRecord::Schema.define(version: 20151028044905) do
     t.text     "object_changes"
   end
 
-  add_index "change_request_versions", ["item_type", "item_id"], name: "index_change_request_versions_on_item_type_and_item_id"
+  add_index "change_request_versions", ["item_type", "item_id"], name: "index_change_request_versions_on_item_type_and_item_id", using: :btree
 
   create_table "change_requests", force: :cascade do |t|
     t.string   "change_summary"
@@ -116,16 +117,16 @@ ActiveRecord::Schema.define(version: 20151028044905) do
     t.datetime "closed_date"
   end
 
-  add_index "change_requests", ["cab_id"], name: "index_change_requests_on_cab_id"
-  add_index "change_requests", ["user_id"], name: "index_change_requests_on_user_id"
+  add_index "change_requests", ["cab_id"], name: "index_change_requests_on_cab_id", using: :btree
+  add_index "change_requests", ["user_id"], name: "index_change_requests_on_user_id", using: :btree
 
   create_table "change_requests_users", id: false, force: :cascade do |t|
     t.integer "user_id"
     t.integer "change_request_id"
   end
 
-  add_index "change_requests_users", ["change_request_id"], name: "index_change_requests_users_on_change_request_id"
-  add_index "change_requests_users", ["user_id"], name: "index_change_requests_users_on_user_id"
+  add_index "change_requests_users", ["change_request_id"], name: "index_change_requests_users_on_change_request_id", using: :btree
+  add_index "change_requests_users", ["user_id"], name: "index_change_requests_users_on_user_id", using: :btree
 
   create_table "comments", force: :cascade do |t|
     t.text     "body"
@@ -135,8 +136,8 @@ ActiveRecord::Schema.define(version: 20151028044905) do
     t.datetime "updated_at",        null: false
   end
 
-  add_index "comments", ["change_request_id"], name: "index_comments_on_change_request_id"
-  add_index "comments", ["user_id"], name: "index_comments_on_user_id"
+  add_index "comments", ["change_request_id"], name: "index_comments_on_change_request_id", using: :btree
+  add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
 
   create_table "implementers", force: :cascade do |t|
     t.string   "name"
@@ -144,9 +145,11 @@ ActiveRecord::Schema.define(version: 20151028044905) do
     t.integer  "change_request_id"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
+    t.integer  "user_id"
   end
 
-  add_index "implementers", ["change_request_id"], name: "index_implementers_on_change_request_id"
+  add_index "implementers", ["change_request_id"], name: "index_implementers_on_change_request_id", using: :btree
+  add_index "implementers", ["user_id"], name: "index_implementers_on_user_id", using: :btree
 
   create_table "incident_report_versions", force: :cascade do |t|
     t.string   "item_type",       null: false
@@ -160,7 +163,7 @@ ActiveRecord::Schema.define(version: 20151028044905) do
     t.text     "object_changes"
   end
 
-  add_index "incident_report_versions", ["item_type", "item_id"], name: "index_incident_report_versions_on_item_type_and_item_id"
+  add_index "incident_report_versions", ["item_type", "item_id"], name: "index_incident_report_versions_on_item_type_and_item_id", using: :btree
 
   create_table "incident_reports", force: :cascade do |t|
     t.string   "service_impact"
@@ -187,7 +190,7 @@ ActiveRecord::Schema.define(version: 20151028044905) do
     t.decimal  "recovery_duration"
   end
 
-  add_index "incident_reports", ["user_id"], name: "index_incident_reports_on_user_id"
+  add_index "incident_reports", ["user_id"], name: "index_incident_reports_on_user_id", using: :btree
 
   create_table "notifications", force: :cascade do |t|
     t.integer  "user_id"
@@ -199,18 +202,19 @@ ActiveRecord::Schema.define(version: 20151028044905) do
     t.datetime "updated_at",         null: false
   end
 
-  add_index "notifications", ["change_request_id"], name: "index_notifications_on_change_request_id"
-  add_index "notifications", ["incident_report_id"], name: "index_notifications_on_incident_report_id"
-  add_index "notifications", ["user_id"], name: "index_notifications_on_user_id"
+  add_index "notifications", ["change_request_id"], name: "index_notifications_on_change_request_id", using: :btree
+  add_index "notifications", ["incident_report_id"], name: "index_notifications_on_incident_report_id", using: :btree
+  add_index "notifications", ["user_id"], name: "index_notifications_on_user_id", using: :btree
 
   create_table "read_marks", force: :cascade do |t|
     t.integer  "readable_id"
     t.string   "readable_type", null: false
-    t.integer  "user_id",       null: false
+    t.integer  "reader_id",     null: false
     t.datetime "timestamp"
+    t.string   "reader_type"
   end
 
-  add_index "read_marks", ["user_id", "readable_type", "readable_id"], name: "index_read_marks_on_user_id_and_readable_type_and_readable_id"
+  add_index "read_marks", ["reader_id", "reader_type", "readable_type", "readable_id"], name: "read_marks_reader_readable_index", using: :btree
 
   create_table "taggings", force: :cascade do |t|
     t.integer  "tag_id"
@@ -222,15 +226,15 @@ ActiveRecord::Schema.define(version: 20151028044905) do
     t.datetime "created_at"
   end
 
-  add_index "taggings", ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "taggings_idx", unique: true
-  add_index "taggings", ["taggable_id", "taggable_type", "context"], name: "index_taggings_on_taggable_id_and_taggable_type_and_context"
+  add_index "taggings", ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "taggings_idx", unique: true, using: :btree
+  add_index "taggings", ["taggable_id", "taggable_type", "context"], name: "index_taggings_on_taggable_id_and_taggable_type_and_context", using: :btree
 
   create_table "tags", force: :cascade do |t|
     t.string  "name"
     t.integer "taggings_count", default: 0
   end
 
-  add_index "tags", ["name"], name: "index_tags_on_name", unique: true
+  add_index "tags", ["name"], name: "index_tags_on_name", unique: true, using: :btree
 
   create_table "testers", force: :cascade do |t|
     t.string   "name"
@@ -238,9 +242,11 @@ ActiveRecord::Schema.define(version: 20151028044905) do
     t.integer  "change_request_id"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
+    t.integer  "user_id"
   end
 
-  add_index "testers", ["change_request_id"], name: "index_testers_on_change_request_id"
+  add_index "testers", ["change_request_id"], name: "index_testers_on_change_request_id", using: :btree
+  add_index "testers", ["user_id"], name: "index_testers_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",              default: "", null: false
@@ -265,8 +271,8 @@ ActiveRecord::Schema.define(version: 20151028044905) do
     t.datetime "expired_at"
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree
 
   create_table "versions", force: :cascade do |t|
     t.string   "item_type",  null: false
@@ -277,6 +283,21 @@ ActiveRecord::Schema.define(version: 20151028044905) do
     t.datetime "created_at"
   end
 
-  add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
+  add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
 
+  add_foreign_key "approvals", "change_requests"
+  add_foreign_key "approvals", "users"
+  add_foreign_key "change_request_statuses", "change_requests"
+  add_foreign_key "change_requests", "cabs"
+  add_foreign_key "change_requests", "users"
+  add_foreign_key "comments", "change_requests"
+  add_foreign_key "comments", "users"
+  add_foreign_key "implementers", "change_requests"
+  add_foreign_key "implementers", "users"
+  add_foreign_key "incident_reports", "users"
+  add_foreign_key "notifications", "change_requests"
+  add_foreign_key "notifications", "incident_reports"
+  add_foreign_key "notifications", "users"
+  add_foreign_key "testers", "change_requests"
+  add_foreign_key "testers", "users"
 end

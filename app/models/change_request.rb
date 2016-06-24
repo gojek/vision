@@ -3,10 +3,12 @@ class ChangeRequest < ActiveRecord::Base
   belongs_to :user
   acts_as_readable :on => :updated_at
   has_and_belongs_to_many :collaborators, :class_name =>'User'
-  has_many :testers, dependent: :destroy
-  has_many :implementers, dependent: :destroy
+  has_and_belongs_to_many :testers, join_table: :testers, class_name: :User
+  has_and_belongs_to_many :implementers, join_table: :implementers, class_name: :User
+  # has_many :implementers, dependent: :destroy
+  # has_many :testers, dependent: :destroy
   has_many :change_request_statuses, dependent: :destroy
-  has_many :approvers, dependent: :destroy
+  has_many :approvals, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :notifications
   belongs_to :cab
@@ -21,21 +23,23 @@ class ChangeRequest < ActiveRecord::Base
             inclusion: { in: PRIORITY, message: '%{value} is not a valid scope' }
   STATUS = %w(submitted scheduled rollbacked cancelled rejected deployed closed)
 
-  validates :requestor_name, :requestor_position, :change_summary, :priority,:change_requirement, :business_justification, :analysis, :solution, :impact, :scope, :design,
+  validates :change_summary, :priority,:change_requirement, :business_justification, :analysis, :solution, :impact, :scope, :design,
             :backup, :testing_procedure, :testing_notes, :schedule_change_date, :planned_completion, :definition_of_success, :definition_of_failed, presence: true
   validates_inclusion_of :testing_environment_available, :in => [true, false]
   accepts_nested_attributes_for :implementers, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :testers, :allow_destroy => true
-  accepts_nested_attributes_for :approvers, :allow_destroy => true
+  accepts_nested_attributes_for :approvals, :allow_destroy => true
   validate :at_least_one_category
   validate :at_least_one_type
   validates :implementers, presence: true
-  validate :tester_required
+  # validate :tester_required
+  validates :testers, presence: true
+  validates :approvals, presence: true
   validate :deploy_date, :if => :schedule_change_date? && :planned_completion?
   validate :grace_period_date, :if => :grace_period_date_starts? && :grace_period_end
   #validates :change_summary, :priority, :category, :cr_type, :change_requirement, :business_justification, :requestor_position, :requestor_name, presence: true
-  
-  aasm do 
+
+  aasm do
     state :submitted, :initial => true
     state :scheduled
     state :deployed
@@ -43,27 +47,27 @@ class ChangeRequest < ActiveRecord::Base
     state :cancelled
     state :closed
     state :rejected
-    event :schedule do 
+    event :schedule do
       transitions :from => :submitted, :to => :scheduled, :guard => :approvable?
     end
-    event :reject do 
+    event :reject do
       transitions :from => :submitted, :to => :rejected
     end
     event :deploy do
       transitions :from => :scheduled, :to => :deployed
     end
-    event :rollback do 
+    event :rollback do
       transitions :from => [:scheduled, :deployed], :to => :rollbacked
     end
-    event :cancel do 
+    event :cancel do
       transitions :from => :scheduled, :to => :cancelled
     end
-    event :close do 
+    event :close do
       transitions :from => [:submitted, :rejected, :rollbacked, :cancelled, :scheduled], :to => :closed, after: :failed_change_request
       transitions :from => :deployed, :to => :closed, after: :success_change_request
     end
-    event :submit do 
-      transitions :form => :cancelled, :to => :submitted 
+    event :submit do
+      transitions :form => :cancelled, :to => :submitted
     end
   end
 
@@ -96,14 +100,14 @@ class ChangeRequest < ActiveRecord::Base
 
   def no_implementers(attributes)
     attributes[:implementers_id]
-  end   
-    
+  end
+
   def approvers_count
-    self.approvers.where(approve: true).count 
+    self.approvals.where(approve: true).count
   end
 
   def rejects_count
-    self.approvers.where(approve: false).count 
+    self.approvals.where(approve: false).count
   end
    def deploy_date
     errors.add(:deploy_date, "is invalid.") unless schedule_change_date < planned_completion
@@ -112,9 +116,9 @@ class ChangeRequest < ActiveRecord::Base
   def grace_period_date
     errors.add(:grace_period_time, "is invalid") unless grace_period_starts < grace_period_end
   end
-  
+
   def approvable?
-    self.approvers.where(approve: true).count >= CONFIG[:minimum_approval]
+    self.approvals.where(approve: true).count == self.approvals.count
   end
 
   def previous_cr
@@ -148,9 +152,9 @@ class ChangeRequest < ActiveRecord::Base
     attendees = []
     @participants = self.cab.participant.split(",")
     @participants.each do |participant|
-      attendees.push({'email' => participant}) unless participant.blank? 
+      attendees.push({'email' => participant}) unless participant.blank?
     end
-  
+
     event = {
       'summary' => self.change_summary,
       'location' => 'Veritrans',
@@ -184,8 +188,8 @@ class ChangeRequest < ActiveRecord::Base
       s = Time.now - self.created_at
     end
     dhms = [60,60,24].reduce([s]) { |m,o| m.unshift(m.shift.divmod(o)).flatten }
-    result = dhms[0].to_s + " Days, " + dhms[1].to_s + " Hours, " + dhms[2].to_s + " minutes." 
+    result = dhms[0].to_s + " Days, " + dhms[1].to_s + " Hours, " + dhms[2].to_s + " minutes."
   end
 
-end
 
+end

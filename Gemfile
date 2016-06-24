@@ -31,7 +31,7 @@ gem 'paper_trail', '~> 4.0.0.rc'
 
 # oauth
 gem 'omniauth-google-oauth2'
-gem 'google-api-client', :require => 'google/api_client'
+gem 'google-api-client', '~> 0.8.2', require: 'google/api_client'
 gem 'httpclient'
 
 # server-related
@@ -58,23 +58,34 @@ gem 'tinymce-rails', :git => 'https://github.com/spohlenz/tinymce-rails.git'
 # xml parser
 gem 'nokogiri'
 
+#database
+gem 'pg'
+
+#coloring std out
+gem 'colorize'
+
 group :production do
-	gem 'pg'
+
 	gem 'rails_12factor'
 end
 
+group :development do
+
+	# Access an IRB console on exception pages or by using <%= console %> in views
+  gem 'web-console', '~> 2.0'
+end
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
-  gem 'sqlite3'
   gem "rspec-rails", "~> 2.14.0"
   gem "factory_girl_rails", "~> 4.2.1"
   # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 2.0'
+  #
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 end
+
 
 group :test do
 	gem "faker"
