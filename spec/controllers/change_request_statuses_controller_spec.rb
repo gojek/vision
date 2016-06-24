@@ -9,17 +9,16 @@ describe ChangeRequestStatusesController do
 
   describe 'POST #schedule' do
     it 'will able to change the state to scheduled if current state is submitted and has reached approval limit' do
-      #cr.stub(:approvable?).and_return(true)  
+      #cr.stub(:approvable?).and_return(true)
       user = FactoryGirl.create(:user)
       cr = FactoryGirl.create(:submitted_change_request, user: user)
-      CONFIG[:minimum_approval].times do |i|
-        FactoryGirl.create(:approver)
+			count_approvals = cr.approvals.count
+      @approvals =  cr.approvals
+      @approvals.each do |approval|
+        approval.update(approve: true)
       end
-      @approvers = User.where(role: "approver")
-      @approvers.each do |approver|
-        @approval = Approver.create(user_id: approver.id, change_request_id: cr.id, approve: true)
-      end
-      expect(cr.approvers_count).to eq CONFIG[:minimum_approval]
+			cr.reload
+      expect(cr.approvers_count).to eq count_approvals
       post :schedule, id: cr, change_request_status: {:status => 'scheduled'}
       cr.reload
       expect(cr.aasm_state).to eq 'scheduled'
@@ -58,14 +57,14 @@ describe ChangeRequestStatusesController do
       cr.reload
       expect(cr.aasm_state).to eq 'rollbacked'
     end
-    it 'wont able to change  the state to rollbacked if current state rejected' do 
+    it 'wont able to change  the state to rollbacked if current state rejected' do
        user = FactoryGirl.create(:user)
       cr = FactoryGirl.create(:rejected_change_request,user: user)
       post :rollback , id: cr, change_request_status:{:status => 'rollbacked', :reason =>'reason'}
       cr.reload
       expect(cr.aasm_state).to eq 'rejected'
     end
-    it 'wont able to change the state to rollbacked if reason is not filled' do 
+    it 'wont able to change the state to rollbacked if reason is not filled' do
       user = FactoryGirl.create(:user)
       cr = FactoryGirl.create(:deployed_change_request,user: user)
       post :rollback , id: cr, change_request_status:{:status => 'rollbacked'}

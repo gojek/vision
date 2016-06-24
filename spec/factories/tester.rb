@@ -1,6 +1,5 @@
 FactoryGirl.define do
-  factory :tester do
-    name      "Muhammad Idham"
-    position  "Software Engineer"
+  factory :tester_lama do
+    user_id 1
   end
 end
