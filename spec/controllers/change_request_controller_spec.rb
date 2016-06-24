@@ -60,7 +60,7 @@ describe ChangeRequestsController do
           expect{
             approver = FactoryGirl.create(:approver)
             attributes = FactoryGirl.attributes_for(:change_request)
-            post :create, change_request: attributes, implementers_list: [approver.id], testers_list: [approver.id] , approvers_list: [approver.name]
+            post :create, change_request: attributes, implementers_list: [approver.id], testers_list: [approver.id] , approvers_list: [approver.id]
           }.to change(ChangeRequest, :count).by(1)
           cr = ChangeRequest.first
           expect(cr.implementers.count).to eq(1)
@@ -74,7 +74,7 @@ describe ChangeRequestsController do
           expect{
             approver = FactoryGirl.create(:approver)
             attributes = FactoryGirl.attributes_for(:change_request)
-            post :create, change_request: attributes, implementers_list: [approver.id], testers_list: [approver.id] , approvers_list: [approver.name]
+            post :create, change_request: attributes, implementers_list: [approver.id], testers_list: [approver.id] , approvers_list: [approver.id]
 
           }.to change(Approval, :count).by(1)
         end
@@ -99,7 +99,7 @@ describe ChangeRequestsController do
           approver = FactoryGirl.create(:approver)
           update_attributes = FactoryGirl.attributes_for(:change_request, note: note)
           expect(update_attributes[:note]).to eq(note)
-          patch :update , id: @cr.id, change_request: update_attributes, implementers_list: [approver.id], testers_list: [approver.id] , approvers_list: [approver.name]
+          patch :update , id: @cr.id, change_request: update_attributes, implementers_list: [approver.id], testers_list: [approver.id] , approvers_list: [approver.id]
           @cr.reload
           expect(@cr.note).to eq(note)
         end
