@@ -85,7 +85,7 @@ class ChangeRequestsController < ApplicationController
     @approvers_list = params[:approvers_list]? params[:approvers_list] : []
     @change_request.approvals = []
     @approvers_list.each do |approver|
-      @tmp_user = User.find_by(name: approver)
+      @tmp_user = User.find(approver)
       @approval = Approval.create(user: @tmp_user, change_request: @change_request)
       @change_request.approvals << @approval
     end
