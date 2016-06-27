@@ -15,7 +15,7 @@ describe User do
 		expect(user).to have(1).errors_on(:role)
 	end
 
-	it "is valid with a veritrans email" do 
+	it "is valid with a veritrans email" do
 		user = FactoryGirl.build(:user)
 		expect(user).to be_valid
 	end
@@ -84,7 +84,7 @@ describe User do
 		expect(user.expired?).to eq false
 	end
 
-	
+
 	it "fresh_token method will return current token if not expired" do
 		user = FactoryGirl.create(:user)
 		expect(user.fresh_token).to eq '123456'
@@ -98,6 +98,12 @@ describe User do
 											 "expires_in":3600,
 											 "id_token":"id"}', headers: {})
 		expect(user.fresh_token).to eq '45678'
+	end
+
+	it "have_notifications will return true if the user have unread notifications" do
+		user = FactoryGirl.create(:user)
+		notification = FactoryGirl.create(:notification, user: user)
+		expect(user.notifications.cr.unread.count).to eq 1
 	end
 
 end
