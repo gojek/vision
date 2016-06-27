@@ -1,8 +1,10 @@
 class Notifier
+
   def self.cr_notify(whodunnit, change_request, message)
+
     notification_receiver = []
     #get the cr approver
-    notification_receiver = notification_receiver + change_request.approvals.collect(&:user)   
+    notification_receiver = notification_receiver + change_request.approvals.collect(&:user)
 
     #get the cr collaborators
     notification_receiver = notification_receiver + change_request.collaborators
@@ -58,6 +60,15 @@ class Notifier
     id = user.id
     ir_id = incident_report.id
     Notification.where(:user_id => id, :incident_report_id => ir_id).update_all(:read => true)
+  end
+
+  def self.all_read(user)
+    user.notifications.cr.each do |cr|
+      cr.update(read: true)
+    end
+    user.notifications.ir.each do |ir|
+      ir.update(read: true)
+    end
   end
 
 end
