@@ -50,6 +50,7 @@ class ChangeRequestsController < ApplicationController
     @current_approvers = []
 
     @users = User.all.collect{|u| [u.name, u.id]}
+    @approvers = User.where(role: 'approver').collect{|u| [u.name, u.id]}
     @current_implementers = []
     @current_testers = []
   end
