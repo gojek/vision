@@ -303,7 +303,12 @@
               <div class='col-md-6'>
                 <h3>Tester</h3>
                 <div id="testers">
-                  <div class="field form-group">
+                  <% if @change_request.errors.messages[:testers] %>
+                    <div class="field form-group has-error">
+                  <% else %>
+                    <div class="field form-group">
+                  <% end %>
+                  <!-- <div class="field form-group"> -->
                     <label>Testers</label><br>
                       <%= select_tag "testers_list" ,options_for_select(@users), class: 'select2-tester form-control', style: 'width: 100%' , multiple:true %>
                   </div><!--/field-->
@@ -367,7 +372,12 @@
             </div>
             <div class='box-body'>
               <div id="implementers">
-                <div class="field form-group">
+                <!-- <div class="field form-group"> -->
+                <% if @change_request.errors.messages[:implementers] %>
+                  <div class="field form-group has-error">
+                <% else %>
+                  <div class="field form-group">
+                <% end %>
                   <label>Implementers</label><br>
                     <%= select_tag "implementers_list" ,options_for_select(@users), class: 'select2-implementer form-control', style: 'width: 100%;', multiple:true %>
                 </div><!--/field-->
