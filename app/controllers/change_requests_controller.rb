@@ -5,7 +5,7 @@ class ChangeRequestsController < ApplicationController
   before_action :not_closed_required, only: [:destroy]
   before_action :submitted_required, only: [:edit]
   require 'notifier.rb'
-  require 'slack-notif.rb'
+  require 'slack_notif.rb'
 
   def index
     if params[:tag]
