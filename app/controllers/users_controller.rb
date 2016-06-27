@@ -1,7 +1,7 @@
 #
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :admin_required 
+  before_action :admin_required, except:[:clear_notifications]
   skip_before_action :admin_required, only:[:approver]
 
   def index
@@ -9,7 +9,7 @@ class UsersController < ApplicationController
     @users = @q.result(distinct: true).page(params[:page])
              .per(params[:per_page])
   end
-  
+
   def edit
     @user = User.find params[:id]
 
@@ -25,6 +25,13 @@ class UsersController < ApplicationController
     else
       render action: 'edit'
     end
+  end
+
+
+  def clear_notifications
+    user = User.find(params[:user])
+    Notifier.all_read(user)
+    redirect_to request.referer
   end
   
   def lock_user
