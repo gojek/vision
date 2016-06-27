@@ -9,8 +9,9 @@ class SlackNotif
       if approver.slack_username.blank?
         next if self.search_username(approver) == nil
       end
+      message = "New <#{link}|change request> needs your approvals"
       attachment = {
-        fallback: "New change <#{link}|request> needs your approvals",
+        fallback: message,
         color: "#439FE0",
         title: change_request.change_summary,
         title_link: link,
@@ -28,7 +29,7 @@ class SlackNotif
         footer: "VT-Vision",
         ts: change_request.created_at.to_datetime.to_f.round
       }
-      self.client.chat_postMessage(channel: "@#{approver.slack_username}", text: "New change request needs your approval", attachments: [attachment])
+      self.client.chat_postMessage(channel: "@#{approver.slack_username}", text: message, attachments: [attachment])
     end
   end
 
