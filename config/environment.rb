@@ -7,3 +7,7 @@ Rails.application.initialize!
 ActionView::Base.field_error_proc = Proc.new do |html_tag, instance|
   html_tag.html_safe
 end
+
+Slack.configure do |config|
+  config.token = ENV['SLACK_API_TOKEN']
+end
