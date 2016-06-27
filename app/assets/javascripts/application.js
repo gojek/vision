@@ -30,11 +30,12 @@
 //= require serial
 //= require light
 //= require Chart.js/Chart.min
+//= require data-confirm-modal
 
 //= require daterangepicker
 //= require turbolinks
 NProgress.configure({
- 
+
 
 });
 $(function(){

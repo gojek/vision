@@ -135,12 +135,8 @@ GEM
       thor (~> 0.14)
     foreman (0.82.0)
       thor (~> 0.19.1)
-<<<<<<< HEAD
     formatador (0.2.5)
     fullcalendar-rails (2.6.1.0)
-=======
-    fullcalendar-rails (2.8.0.0)
->>>>>>> 8f7d64e6 (Installing and generating cucumber files)
       jquery-rails (>= 4.0.5, < 5.0.0)
       jquery-ui-rails (>= 5.0.2)
       momentjs-rails (>= 2.9.0)

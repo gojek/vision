@@ -1,7 +1,7 @@
 #
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :admin_required, except:[:clear_notifications]
+  before_action :admin_required
   skip_before_action :admin_required, only:[:approver]
 
   def index
@@ -27,13 +27,6 @@ class UsersController < ApplicationController
     end
   end
 
-
-  def clear_notifications
-    user = User.find(params[:user])
-    Notifier.all_read(user)
-    redirect_to request.referer
-  end
-  
   def lock_user
     @user = User.find params[:id]
     @user.update_attribute(:locked_at, Time.current)

@@ -62,7 +62,7 @@ class Notifier
     Notification.where(:user_id => id, :incident_report_id => ir_id).update_all(:read => true)
   end
 
-  def self.all_read(user)
+  def self.mark_all_as_read(user)
     user.notifications.cr.each do |cr|
       cr.update(read: true)
     end
