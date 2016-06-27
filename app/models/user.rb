@@ -95,4 +95,7 @@ class User < ActiveRecord::Base
     all_contact
   end
 
+  def have_notifications
+    (notifications.cr.unread.count != 0 || notifications.ir.unread.count != 0)
+  end
 end
