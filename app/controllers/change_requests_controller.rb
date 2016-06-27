@@ -62,6 +62,7 @@ class ChangeRequestsController < ApplicationController
     @current_implementers = @change_request.implementers.collect{|u| u.id}
     @current_testers = @change_request.testers.collect{|u| u.id}
     @users = User.all.collect{|u| [u.name, u.id]}
+    @approvers = User.where(role: 'approver').collect{|u| [u.name, u.id]}
     @current_approvers = @change_request.approvals.collect(&:user_id)
   end
 
@@ -127,6 +128,7 @@ class ChangeRequestsController < ApplicationController
         @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
         @current_tags = []
         @users = User.all.collect{|u| [u.name, u.id]}
+        @approvers = User.where(role: 'approver').collect{|u| [u.name, u.id]}
         @current_collaborators = params[:collaborators_list]? params[:collaborators_list] : []
         @current_implementers = params[:implementers_list]? params[:implementers_list] : []
         @current_testers = params[:testers_list]? params[:testers_list] : []
@@ -188,6 +190,7 @@ class ChangeRequestsController < ApplicationController
         @current_implementers = @change_request.implementers.collect{|u| u.id}
         @current_testers = @change_request.testers.collect{|u| u.id}
         @users = User.all.collect{|u| [u.name, u.id]}
+        @approvers = User.where(role: 'approver').collect{|u| [u.name, u.id]}
         format.html { render :edit }
         format.json { render json: @change_request.errors, status: :unprocessable_entity }
       end
