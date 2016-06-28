@@ -65,6 +65,9 @@ FactoryGirl.define do
     end
 
     before(:create) do |cr|
+      collaborator = FactoryGirl.create(:user)
+      cr.collaborators << collaborator
+
       implementer = FactoryGirl.create(:user)
       cr.implementers << implementer
 
