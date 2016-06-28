@@ -6,7 +6,6 @@ describe NotificationsController do
     @request.env["devise.mapping"] = Devise.mappings[:user]
     sign_in user
     request.env["HTTP_REFERER"] = "vt-vision.com"
-
   end
   describe "GET #clear_notifications" do
 
