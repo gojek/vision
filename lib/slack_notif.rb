@@ -15,6 +15,10 @@ class SlackNotif
         title_link: link,
         fields: [
           {
+            title: "Business Justification",
+            value: change_request.business_justification,
+            short: false
+          },{
             title: "Priority",
             value: change_request.priority,
             short: true
