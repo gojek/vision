@@ -6,9 +6,7 @@ class SlackNotif
   def self.notif_new_request (change_request,link)
     approvers = change_request.approvals.collect{|app| app.user}
     approvers.each do |approver|
-      if approver.slack_username.blank?
-        next if self.search_username(approver) == nil
-      end
+      next if approver.slack_username.blank?
       message = "New <#{link}|change request> needs your approvals"
       attachment = {
         fallback: message,
@@ -31,15 +29,5 @@ class SlackNotif
       }
       self.client.chat_postMessage(channel: "@#{approver.slack_username}", text: message, attachments: [attachment])
     end
-  end
-
-  def self.search_username(user)
-    self.client.users_list.members.each do |u|
-      if user.email == u.profile.email
-        user.slack_username = u.name
-        return u.name
-      end
-    end
-    return nil
   end
 end
