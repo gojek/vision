@@ -45,6 +45,7 @@ class User < ActiveRecord::Base
       user.name = auth[:info][:name]
       user.role = 'requestor'
       user.is_admin = false
+      user.slack_username = get_slack_username
     end
   end
 
@@ -96,6 +97,16 @@ class User < ActiveRecord::Base
     all_contact
   end
 
+  def get_slack_username
+    client = Slack::Web::Client.new
+    u.name = ''
+    client.users_list.members.each do |u|
+      if email == u.profile.email
+        return u.name
+      end
+    end
+    u.name
+  end
   def have_notifications?
     (notifications.cr.unread.count != 0 || notifications.ir.unread.count != 0)
   end
