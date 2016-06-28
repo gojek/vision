@@ -68,9 +68,6 @@ describe ChangeRequestsController do
         end
 
         it 'create new approval(s) for the new CR in the database' do
-          # CONFIG[:minimum_approval].times do |i|
-          #   FactoryGirl.create(:approval)
-          # end
           expect{
             approver = FactoryGirl.create(:approver)
             attributes = FactoryGirl.attributes_for(:change_request)

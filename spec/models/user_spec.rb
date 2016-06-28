@@ -100,10 +100,10 @@ describe User do
 		expect(user.fresh_token).to eq '45678'
 	end
 
-	it "have_notifications will return true if the user have unread notifications" do
+	it "have_notifications? will return true if the user have unread notifications" do
 		user = FactoryGirl.create(:user)
 		notification = FactoryGirl.create(:notification, user: user)
-		expect(user.notifications.cr.unread.count).to eq 1
+		expect(user.have_notifications?).to eq true
 	end
 
 end
