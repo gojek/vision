@@ -173,4 +173,5 @@ describe User do
 			expect(user.have_notifications?).to eq false
 		end
 	end
+
 end
