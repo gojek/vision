@@ -65,7 +65,9 @@ describe User do
 
 	it "will register new user based on the auth from omniauth if user not registered" do
 		auth = {:provider => 'google_oauth2', :uid => '123456', :info => {:email => 'patrick@veritrans.co.id', :name => 'patrick star'}}
+		WebMock.allow_net_connect!
 		user = User.from_omniauth(auth)
+		WebMock.disable_net_connect!
 		expect(user.provider).to eq auth[:provider]
 		expect(user.uid).to eq auth[:uid]
 		expect(user.email).to eq auth[:info][:email]
