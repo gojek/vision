@@ -18,9 +18,7 @@ class Mentioner
     mentionees = self.find_mentionees_by_handles(handles)
 
     return mentionees
-    # mentionees.each do |mentionee|
-    #   puts mentionee.name
-    # end
+
   end
 
   def self.yay
