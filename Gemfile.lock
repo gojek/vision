@@ -8,7 +8,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    aasm (4.10.1)
+    aasm (4.11.0)
     actionmailer (4.2.1)
       actionpack (= 4.2.1)
       actionview (= 4.2.1)
@@ -82,10 +82,27 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.10.0)
-    colorize (0.7.7)
+    colorize (0.8.0)
     concurrent-ruby (1.0.2)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
+    cucumber (2.4.0)
+      builder (>= 2.1.2)
+      cucumber-core (~> 1.5.0)
+      cucumber-wire (~> 0.0.1)
+      diff-lcs (>= 1.1.3)
+      gherkin (~> 4.0)
+      multi_json (>= 1.7.5, < 2.0)
+      multi_test (>= 0.1.2)
+    cucumber-core (1.5.0)
+      gherkin (~> 4.0)
+    cucumber-rails (1.4.3)
+      capybara (>= 1.1.2, < 3)
+      cucumber (>= 1.3.8, < 3)
+      mime-types (>= 1.16, < 4)
+      nokogiri (~> 1.5)
+      railties (>= 3, < 5)
+    cucumber-wire (0.0.1)
     database_cleaner (1.5.3)
     debug_inspector (0.0.2)
     devise (4.1.1)
@@ -123,6 +140,7 @@ GEM
       jquery-rails (>= 4.0.5, < 5.0.0)
       jquery-ui-rails (>= 5.0.2)
       momentjs-rails (>= 2.9.0)
+    gherkin (4.0.0)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
     google-api-client (0.8.6)
@@ -203,6 +221,7 @@ GEM
     momentjs-rails (2.11.1)
       railties (>= 3.1)
     multi_json (1.12.1)
+    multi_test (0.1.2)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
     nokogiri (1.6.8)
@@ -318,11 +337,11 @@ GEM
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
-    selenium-webdriver (2.53.3)
+    selenium-webdriver (2.53.4)
       childprocess (~> 0.5)
       rubyzip (~> 1.0)
       websocket (~> 1.0)
-    signet (0.7.2)
+    signet (0.7.3)
       addressable (~> 2.3)
       faraday (~> 0.9)
       jwt (~> 1.5)
@@ -340,10 +359,10 @@ GEM
     spreadsheet (1.1.2)
       ruby-ole (>= 1.0)
     spring (1.7.1)
-    sprockets (3.6.0)
+    sprockets (3.6.2)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
-    sprockets-rails (3.0.4)
+    sprockets-rails (3.1.1)
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
@@ -393,6 +412,7 @@ DEPENDENCIES
   cocoon
   coffee-rails (~> 4.1.0)
   colorize
+  cucumber-rails
   database_cleaner
   devise
   diffy
