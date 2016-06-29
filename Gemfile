@@ -74,6 +74,7 @@ group :development do
 end
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+	gem 'cucumber-rails', require: false
   gem 'byebug'
   gem 'rspec-rails', '~> 2.14.0'
   gem 'factory_girl_rails', '~> 4.2.1'
