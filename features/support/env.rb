@@ -5,7 +5,10 @@
 # files.
 
 require 'cucumber/rails'
+<<<<<<< b59c0977242b88bf742c5172176160a7b668d228
 require 'sunspot_test/cucumber'
+=======
+>>>>>>> Resolved conflict when cherrypicking
 
 # Capybara defaults to CSS3 selectors rather than XPath.
 # If you'd prefer to use XPath, just uncomment this line and adjust any
@@ -56,3 +59,7 @@ end
 # The :transaction strategy is faster, but might give you threading problems.
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
 Cucumber::Rails::Database.javascript_strategy = :truncation
+<<<<<<< b59c0977242b88bf742c5172176160a7b668d228
+=======
+
+>>>>>>> Resolved conflict when cherrypicking
