@@ -7,7 +7,7 @@ When /^I press button "(.*?)"$/ do |button|
 end
 
 When /^I input "(.*?)" in field "(.*?)"$/ do |value, field_name|
-
+  pending
 end
 
 Then /^I am in homepage$/ do
