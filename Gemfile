@@ -29,7 +29,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'devise'
 
 # file managment
-gem 'paper_trail', '~> 4.0.0.rc'
+gem 'paper_trail', '~> 4.1'
 
 # oauth
 gem 'omniauth-google-oauth2'
@@ -103,7 +103,7 @@ group :test do
   gem 'capybara'
   gem 'database_cleaner'
   gem 'launchy'
-  gem 'selenium-webdriver'
+  gem 'selenium-webdriver', "~> 2.53.1"
   gem 'simplecov'
   gem 'simplecov-rcov'
   gem 'webmock'

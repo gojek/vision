@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/spohlenz/tinymce-rails.git
-  revision: d4b003a4ebc90ecf2bd783f9da4468bed633d0cb
+  revision: 4cbaab8b885cc4ba800cec88377733cba8a12e2f
   specs:
-    tinymce-rails (4.3.13)
+    tinymce-rails (4.4.0)
       railties (>= 3.1.1)
 
 GEM
@@ -83,7 +83,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.10.0)
-    colorize (0.8.0)
+    colorize (0.8.1)
     concurrent-ruby (1.0.2)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
@@ -108,7 +108,7 @@ GEM
       railties (>= 3.0)
     database_cleaner (1.5.3)
     debug_inspector (0.0.2)
-    devise (4.1.1)
+    devise (4.2.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0, < 5.1)
@@ -234,12 +234,12 @@ GEM
       mini_portile2 (~> 2.1.0)
       pkg-config (~> 1.1.7)
     nprogress-rails (0.1.6.7)
-    oauth2 (1.0.0)
+    oauth2 (1.2.0)
       faraday (>= 0.8, < 0.10)
       jwt (~> 1.0)
       multi_json (~> 1.3)
       multi_xml (~> 0.5)
-      rack (~> 1.2)
+      rack (>= 1.2, < 3)
     omniauth (1.3.1)
       hashie (>= 1.2, < 4)
       rack (>= 1.0, < 3)
@@ -253,7 +253,7 @@ GEM
       omniauth (~> 1.2)
     orm_adapter (0.5.0)
     os (0.9.6)
-    paper_trail (4.0.2)
+    paper_trail (4.2.0)
       activerecord (>= 3.0, < 6.0)
       activesupport (>= 3.0, < 6.0)
       request_store (~> 1.1)
@@ -337,8 +337,8 @@ GEM
     rubyzip (1.2.0)
     safe_yaml (1.0.4)
     sass (3.4.22)
-    sass-rails (5.0.4)
-      railties (>= 4.0.0, < 5.0)
+    sass-rails (5.0.5)
+      railties (>= 4.0.0, < 6)
       sass (~> 3.1)
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
@@ -357,9 +357,9 @@ GEM
       multi_json (~> 1.10)
     simple_calendar (1.1.10)
       rails (>= 3.0)
-    simplecov (0.11.2)
+    simplecov (0.12.0)
       docile (~> 1.1.0)
-      json (~> 1.8)
+      json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.0)
     simplecov-rcov (0.2.3)
@@ -375,8 +375,8 @@ GEM
     slop (3.6.0)
     spreadsheet (1.1.2)
       ruby-ole (>= 1.0)
-    spring (1.7.1)
-    sprockets (3.6.2)
+    spring (1.7.2)
+    sprockets (3.6.3)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
     sprockets-rails (3.1.1)
@@ -400,8 +400,9 @@ GEM
       hitimes
     to_xls-rails (1.3.1)
       spreadsheet (>= 0.8.5)
-    turbolinks (2.5.3)
-      coffee-rails
+    turbolinks (5.0.0)
+      turbolinks-source (~> 5)
+    turbolinks-source (5.0.0)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (3.0.0)
@@ -440,6 +441,7 @@ DEPENDENCIES
   bootstrap-wysihtml5-rails
   byebug
   capybara
+  capybara-screenshot
   cocoon
   coffee-rails (~> 4.1.0)
   colorize
@@ -470,7 +472,7 @@ DEPENDENCIES
   nprogress-rails
   omniauth
   omniauth-google-oauth2
-  paper_trail (~> 4.0.0.rc)
+  paper_trail (~> 4.1)
   pg
   pry
   rails (= 4.2.1)
@@ -479,7 +481,7 @@ DEPENDENCIES
   rspec-rails (~> 2.14.0)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
-  selenium-webdriver
+  selenium-webdriver (~> 2.53.1)
   simple_calendar (~> 1.1.0)
   simplecov
   simplecov-rcov
