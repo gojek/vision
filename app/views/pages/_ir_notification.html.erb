@@ -2,7 +2,7 @@
   <a  href="#" data-toggle="dropdown">
     Incident Report
      <% if current_user.notifications.ir.unread.count > 0 %>
-     <span class="label label-success"><%= current_user.notifications.ir.unread.count%></span>
+     <span id="notif-ir" class="label label-success"><%= current_user.notifications.ir.unread.count%></span>
      <% n_ir = current_user.notifications.ir.unread %>
   </a>
   <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
@@ -11,7 +11,7 @@
         <% if n_ir.new_incident.count > 0 %>
         <li>
             <a href="#collapse1" data-toggle="collapse" data-parent="#accordion">
-             <%= n_ir.new_incident.count %> New Incident 
+             <%= n_ir.new_incident.count %> New Incident
             </a>
           <ul class="collapse" id="collapse1">
                <% n_ir.new_incident.each do |notif| %>
