@@ -21,7 +21,7 @@
         <%= render 'pages/notification' %>
         <%= render 'pages/ir_notification' %>
         <% if current_user.have_notifications? %>
-        <li> <%= link_to "", notifications_clear_notifications_path, class: "glyphicon glyphicon-remove", data: {confirm: "Are you sure you want to clear all notifications?"} %> </li>
+        <li> <%= link_to "", notifications_clear_notifications_path, class: "glyphicon glyphicon-remove", data: {confirm: "Are you sure you want to clear all notifications?"}, id: "clear-notification" %> </li>
         <% end %>
         <li class='dropdown user user-menu'>
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
