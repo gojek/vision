@@ -1,6 +1,7 @@
 FactoryGirl.define do
   factory :change_request do
-    change_summary "Change Summary"
+    # change_summary "Change Summary"
+    sequence(:change_summary) { |n| "Change Summary #{n}" }
     priority "Low"
     type_install_uninstall true
     category_server true
