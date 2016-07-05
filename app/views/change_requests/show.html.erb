@@ -372,14 +372,14 @@
                   <td>
                     <%if app.approve %>
                       <% if app.approval_date %>
-                        <a id="popoverOption" class="btn" href="#" data-content="<%= app.notes%>" rel="popover" data-placement="bottom" data-original-title="Accept Note" style='padding:0px'>Approved on <%= app.approval_date.to_s(:long) %></a>
+                        <a id="popoverOption" class="btn" href="#" data-content="<%= app.notes %>" rel="popover" data-placement="bottom" data-original-title="Accept Note" style='padding:0px'>Approved on <%= app.approval_date.to_s(:long) %></a>
                       <% else %>
-                        <a id="popoverOption" class="btn" href="#" data-content="<%= app.notes%>" rel="popover" data-placement="bottom" data-original-title="Accept Note" style='padding:0px'>Approved</a>
+                        <a id="popoverOption" class="btn" href="#" data-content="<%= app.notes %>" rel="popover" data-placement="bottom" data-original-title="Accept Note" style='padding:0px'>Approved</a>
                       <% end %>
                     <% elsif app.approve.nil? %>
                       Waiting for approval
                     <%elsif app.approve == false %>
-                       <a id="popoverOption" class="btn" href="#" data-content="<%= app.notes%>" rel="popover" data-placement="bottom" data-original-title="Reject Reason" style='padding:0px'>Rejected</a>
+                       <a id="popoverOption" class="btn" href="#" data-content="<%= app.notes %>" rel="popover" data-placement="bottom" data-original-title="Reject Reason" style='padding:0px'>Rejected</a>
                     <%end %>
                   </td>
                 </tr>

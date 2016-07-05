@@ -1,7 +1,7 @@
 #
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :admin_required 
+  before_action :admin_required
   skip_before_action :admin_required, only:[:approver]
 
   def index
@@ -9,7 +9,7 @@ class UsersController < ApplicationController
     @users = @q.result(distinct: true).page(params[:page])
              .per(params[:per_page])
   end
-  
+
   def edit
     @user = User.find params[:id]
 
@@ -26,7 +26,7 @@ class UsersController < ApplicationController
       render action: 'edit'
     end
   end
-  
+
   def lock_user
     @user = User.find params[:id]
     @user.update_attribute(:locked_at, Time.current)
