@@ -4,6 +4,8 @@ describe ChangeRequestsController do
 
   describe 'requestor access' do
     let(:user) {FactoryGirl.create(:user)}
+    let(:change_request) {FactoryGirl.create(:change_request, user: user)}
+    let(:approver) {FactoryGirl.create(:approver)}
     before :each do
       @request.env['devise.mapping'] = Devise.mappings[:user]
       sign_in user
@@ -11,25 +13,23 @@ describe ChangeRequestsController do
 
     describe 'GET #show' do
       it 'assigns the requested Change Request to @CR' do
-        cr = FactoryGirl.create(:change_request)
-        get :show, id: cr
-        expect(assigns(:change_request)).to eq cr
+        get :show, id: change_request
+        expect(assigns(:change_request)).to eq change_request
       end
     end
 
     describe 'GET #index' do
       it "populate all current user's Change Request if no param is passed" do
-        cr = FactoryGirl.create(:change_request, user: user)
         other_cr = FactoryGirl.create(:change_request)
         get :index
-        expect(assigns(:change_requests)).to match_array([cr])
+        expect(assigns(:change_requests)).to match_array([change_request])
       end
 
       it "populate current user's Change Request based on tag that selected" do
-        cr = FactoryGirl.create(:change_request, user: user, tag_list: 'tag')
+        change_request.update(tag_list: 'tag')
         other_cr = FactoryGirl.create(:change_request, user: user)
         get :index, tag: 'tag'
-        expect(assigns(:change_requests)).to match_array([cr])
+        expect(assigns(:change_requests)).to match_array([change_request])
       end
     end
 
@@ -42,9 +42,8 @@ describe ChangeRequestsController do
 
     describe 'GET #edit' do
       it 'assigns the requested ChangeRequest to @change_request if current user is the owner of the requested ChangeRequest' do
-        cr = FactoryGirl.create(:change_request, user: user)
-        get :edit, id: cr
-        expect(assigns(:change_request)).to eq cr
+        get :edit, id: change_request
+        expect(assigns(:change_request)).to eq change_request
       end
 
       it 'will redirect to Change Request List if current user is the owner of the requested ChangeRequest' do
@@ -56,10 +55,9 @@ describe ChangeRequestsController do
 
     describe 'POST #create' do
       context 'with valid attributes' do
+        let(:attributes) {FactoryGirl.attributes_for(:change_request)}
         it 'saves the new CR in the database' do
           expect{
-            approver = FactoryGirl.create(:approver)
-            attributes = FactoryGirl.attributes_for(:change_request)
             post :create, change_request: attributes, implementers_list: [approver.id], testers_list: [approver.id] , approvers_list: [approver.id]
           }.to change(ChangeRequest, :count).by(1)
           cr = ChangeRequest.first
@@ -69,10 +67,7 @@ describe ChangeRequestsController do
 
         it 'create new approval(s) for the new CR in the database' do
           expect{
-            approver = FactoryGirl.create(:approver)
-            attributes = FactoryGirl.attributes_for(:change_request)
             post :create, change_request: attributes, implementers_list: [approver.id], testers_list: [approver.id] , approvers_list: [approver.id]
-
           }.to change(Approval, :count).by(1)
         end
       end
@@ -87,27 +82,23 @@ describe ChangeRequestsController do
     end
 
     describe 'PATCH #update' do
-      before :each do
-        @cr = FactoryGirl.create(:change_request, user: user)
-      end
       context 'valid attributes' do
         it "change @cr attributes" do
           note = "Note 1"
-          approver = FactoryGirl.create(:approver)
           update_attributes = FactoryGirl.attributes_for(:change_request, note: note)
           expect(update_attributes[:note]).to eq(note)
-          patch :update , id: @cr.id, change_request: update_attributes, implementers_list: [approver.id], testers_list: [approver.id] , approvers_list: [approver.id]
-          @cr.reload
-          expect(@cr.note).to eq(note)
+          patch :update , id: change_request.id, change_request: update_attributes, implementers_list: [approver.id], testers_list: [approver.id] , approvers_list: [approver.id]
+          change_request.reload
+          expect(change_request.note).to eq(note)
         end
       end
       context 'invalid attributes' do
         it "doesnt change the @cr attribute" do
           scope = 'scope'
-          patch :update, id: @cr,
+          patch :update, id: change_request,
           change_request: FactoryGirl.attributes_for(:change_request, scope: scope)
-          @cr .reload
-          expect(@cr.scope). to_not eq(scope)
+          change_request.reload
+          expect(change_request.scope). to_not eq(scope)
         end
       end
     end
