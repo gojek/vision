@@ -1,7 +1,7 @@
 <div class= "nested-fields panel panel-default panel-body" >
   <div class="field">
     <%= f.label :name %>
-    <%= f.collection_select :user_id, User.where("role = 'approver' "),:id,:name, include_blank: true %>
+    <%= f.collection_select :user_id, User.approvers,:id,:name, include_blank: true %>
   </div>
   <div class="field">
     <%= f.label :position %>
