@@ -103,6 +103,8 @@ GEM
       nokogiri (~> 1.5)
       railties (>= 3, < 5)
     cucumber-wire (0.0.1)
+    data-confirm-modal (1.2.0)
+      railties (>= 3.0)
     database_cleaner (1.5.3)
     debug_inspector (0.0.2)
     devise (4.1.1)
@@ -413,6 +415,7 @@ DEPENDENCIES
   coffee-rails (~> 4.1.0)
   colorize
   cucumber-rails
+  data-confirm-modal
   database_cleaner
   devise
   diffy

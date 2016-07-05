@@ -49,7 +49,7 @@ gem 'aasm'
 gem 'figaro'
 gem 'html_truncator', '~>0.2'
 gem 'unread'
-
+gem 'data-confirm-modal'
 gem 'exception_notification'
 gem 'pry'
 gem 'omniauth'
