@@ -244,6 +244,26 @@ class ChangeRequestsController < ApplicationController
     redirect_to @change_request
   end
 
+  def duplicate
+    @old_change_request = ChangeRequest.find(params[:id])
+    @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
+    @current_tags = @old_change_request.tag_list
+    @current_collaborators = @old_change_request.collaborators.collect{|u| u.id}
+    @current_implementers = @old_change_request.implementers.collect{|u| u.id}
+    @current_testers = @old_change_request.testers.collect{|u| u.id}
+    @users = User.all.collect{|u| [u.name, u.id]}
+    @current_approvers = @old_change_request.approvals.collect(&:user_id)
+    @change_request = @old_change_request.dup
+
+    # Clear certain fields
+    @change_request.schedule_change_date = nil
+    @change_request.planned_completion = nil
+    @change_request.grace_period_starts = nil
+    @change_request.grace_period_end = nil
+    render 'new'
+
+  end
+  
   respond_to :json
   def change_requests_by_success_rate
     #default status is weekly
