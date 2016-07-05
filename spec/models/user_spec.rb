@@ -114,4 +114,16 @@ describe User do
 		expect(approvers).to include(approver1)
 		expect(approvers).to include(approver2)
 	end
+	describe "User.have_notifications?" do
+		it "should return true if the user have unread notifications" do
+			user = FactoryGirl.create(:user)
+			notification = FactoryGirl.create(:notification, user: user, read: false)
+			expect(user.have_notifications?).to eq true
+		end
+		it "should return false if the user does not have unread notifications" do
+			user = FactoryGirl.create(:user)
+			notification = FactoryGirl.create(:notification, user: user, read: true)
+			expect(user.have_notifications?).to eq false
+		end
+	end
 end
