@@ -1,9 +1,6 @@
 # Vision
 
-Vision was made with contributions from:
-
-1. Muhammad Idham
-2. Adam Pahlevi Baihaqi
+Vision was made with contributions from everyone found in git commit history.
 
 ## Architecture
 

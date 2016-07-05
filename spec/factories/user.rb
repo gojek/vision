@@ -5,7 +5,7 @@ FactoryGirl.define do
     sequence(:email) { |n| "patrick#{n}@veritrans.co.id" }
     role 'requestor'
     provider 'google_oauth2'
-    uid '123456'
+    sequence(:uid) { |n| "#{n}"}
     is_admin false
     name 'patrick star'
     locked_at nil
