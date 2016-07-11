@@ -56,7 +56,7 @@
           <h3 class="box-title">Change Request List</h3>
 
         </div><!-- /.box-header -->
-        <div class="box-body table-responsive" style="overflow-x: scroll; height: 80vh">
+        <div class="box-body table-responsive" style="overflow-x: scroll; height: 70vh">
           <table class="table table-hover">
             <tr>
                 <th>Request ID</th>
@@ -112,159 +112,159 @@
     </div>
 
 </div>
- <aside class="control-sidebar control-sidebar-light" style="height: 100vh; overflow-y: scroll">
+ <aside class="control-sidebar control-sidebar-light"  style="height: 100vh; overflow: hidden" >
   <!-- Tab panes -->
   <div class="tab-content">
     <!-- Home tab content -->
     <div class="tab-pane active" id="control-sidebar-home-tab">
-      <h3 class="control-sidebar-heading">Filter</h3>
+      <h2 class="control-sidebar-heading">Filter</h2>
         <%= search_form_for @q do |f| %>
-        <label>Change Request Category</label>
-          <div class="form-group">
-            Network Equipment
-            <%= select :q, :category_network_equipment_true, [['Yes', 1], ['No', 0]], { include_blank: 'All', selected: params[:q] ? params[:q][:category_network_equipment_true] : '' } %>
+        <div id="overflow" style="display: block; height: 80vh; overflow-y: scroll; ">
+          <label>Change Request Category</label>
+            <div class="form-group">
+              Network Equipment
+              <%= select :q, :category_network_equipment_true, [['Yes', 1], ['No', 0]], { include_blank: 'All', selected: params[:q] ? params[:q][:category_network_equipment_true] : '' } %>
 
-          </div>
-          <div class="form-group">
-            Application
-            <%= select :q, :category_application_true, [['Yes', 1], ['No', 0]], { include_blank: 'All', selected: params[:q] ? params[:q][:category_application_true] : '' } %>
+            </div>
+            <div class="form-group">
+              Application
+              <%= select :q, :category_application_true, [['Yes', 1], ['No', 0]], { include_blank: 'All', selected: params[:q] ? params[:q][:category_application_true] : '' } %>
 
-          </div>
-          <div class="form-group">
-            Server
-            <%= select :q, :category_server_true, [['Yes', 1], ['No', 0]], { include_blank: 'All', selected: params[:q] ? params[:q][:category_server_true] : '' } %>
+            </div>
+            <div class="form-group">
+              Server
+              <%= select :q, :category_server_true, [['Yes', 1], ['No', 0]], { include_blank: 'All', selected: params[:q] ? params[:q][:category_server_true] : '' } %>
 
-          </div>
-          <div class="form-group">
-            User Access
-            <%= select :q, :category_user_access_true, [['Yes', 1], ['No', 0]], { include_blank: 'All', selected: params[:q] ? params[:q][:category_user_access_true] : '' } %>
-          </div>
-          <div class="form-group">
-            Other Category
-            <%= f.search_field :category_other_cont, class: 'form-control'%>
-          </div>
-          <label>Change Request Type</label>
-          <div class="form-group">
-            Security Update
-            <%= select :q, :type_security_update_true, [['Yes', 1], ['No', 0]], { include_blank: 'All', selected: params[:q] ? params[:q][:type_security_update_true] : '' } %>
+            </div>
+            <div class="form-group">
+              User Access
+              <%= select :q, :category_user_access_true, [['Yes', 1], ['No', 0]], { include_blank: 'All', selected: params[:q] ? params[:q][:category_user_access_true] : '' } %>
+            </div>
+            <div class="form-group">
+              Other Category
+              <%= f.search_field :category_other_cont, class: 'form-control'%>
+            </div>
+            <label>Change Request Type</label>
+            <div class="form-group">
+              Security Update
+              <%= select :q, :type_security_update_true, [['Yes', 1], ['No', 0]], { include_blank: 'All', selected: params[:q] ? params[:q][:type_security_update_true] : '' } %>
 
-          </div>
-          <div class="form-group">
-            Application
-            <%= select :q, :type_emergency_change_true, [['Yes', 1], ['No', 0]], { include_blank: 'All', selected: params[:q] ? params[:q][:type_emergency_change_true] : '' } %>
+            </div>
+            <div class="form-group">
+              Application
+              <%= select :q, :type_emergency_change_true, [['Yes', 1], ['No', 0]], { include_blank: 'All', selected: params[:q] ? params[:q][:type_emergency_change_true] : '' } %>
 
-          </div>
-          <div class="form-group">
-            Server
-            <%= select :q, :type_configuration_change_true, [['Yes', 1], ['No', 0]], { include_blank: 'All', selected: params[:q] ? params[:q][:type_configuration_change_true] : '' } %>
+            </div>
+            <div class="form-group">
+              Server
+              <%= select :q, :type_configuration_change_true, [['Yes', 1], ['No', 0]], { include_blank: 'All', selected: params[:q] ? params[:q][:type_configuration_change_true] : '' } %>
 
-          </div>
-          <div class="form-group">
-            User Access
-            <%= select :q, :type_install_uninstall_true, [['Yes', 1], ['No', 0]], { include_blank: 'All', selected: params[:q] ? params[:q][:type_install_uninstall_true] : '' } %>
-          </div>
-          <div class="form-group">
-            Other Type
-            <%= f.search_field :type_other_cont, class: 'form-control'%>
-          </div>
+            </div>
+            <div class="form-group">
+              User Access
+              <%= select :q, :type_install_uninstall_true, [['Yes', 1], ['No', 0]], { include_blank: 'All', selected: params[:q] ? params[:q][:type_install_uninstall_true] : '' } %>
+            </div>
+            <div class="form-group">
+              Other Type
+              <%= f.search_field :type_other_cont, class: 'form-control'%>
+            </div>
 
-          <div class="form-group">
-              <%= f.label :status %>
-              <%= f.select :aasm_state_eq, options_for_select([['Any','']] + ChangeRequest::STATUS, params[:q]? params[:q][:aasm_state_eq] : 'Any' ), {}, {class: 'form-control select2'} %>
-          </div>
-          <div class="form-group">
-            <%= f.label :priority %>
-            <%= f.select :priority_eq, options_for_select([['Any','']] + ChangeRequest::PRIORITY, params[:q]? params[:q][:priority_eq] : 'Any' ), {}, {class: 'form-control select2'} %>
-          </div>
-          <div class="form-group">
-            <%= f.label :change_requirement %>
-            <%= f.search_field :change_requirement_cont, class: 'form-control'%>
-          </div>
+            <div class="form-group">
+                <%= f.label :status %>
+                <%= f.select :aasm_state_eq, options_for_select([['Any','']] + ChangeRequest::STATUS, params[:q]? params[:q][:aasm_state_eq] : 'Any' ), {}, {class: 'form-control select2'} %>
+            </div>
+            <div class="form-group">
+              <%= f.label :priority %>
+              <%= f.select :priority_eq, options_for_select([['Any','']] + ChangeRequest::PRIORITY, params[:q]? params[:q][:priority_eq] : 'Any' ), {}, {class: 'form-control select2'} %>
+            </div>
+            <div class="form-group">
+              <%= f.label :change_requirement %>
+              <%= f.search_field :change_requirement_cont, class: 'form-control'%>
+            </div>
 
-          <div class="form-group">
-            <%= f.label :business_justification %>
-            <%= f.search_field :business_justification_cont, class: 'form-control'%>
-          </div>
-          <div class="form-group">
-            <%= f.label :analysis %>
-            <%= f.search_field :analysis_cont, class: 'form-control'%>
-          </div>
-          <div class="form-group">
-            <%= f.label :impact %>
-            <%= f.search_field :impact_cont, class: 'form-control'%>
-          </div>
-           <div class="form-group">
-            <%= f.label :scope %>
-            <%= f.select :scope_eq, options_for_select([['Any','']] + ChangeRequest::SCOPE, params[:q]? params[:q][:scope_eq] : 'Any' ), {}, {class: 'form-control select2'} %>
-          </div>
-           <div class="form-group">
-            <%= f.label :design %>
-            <%= f.search_field :design_cont, class: 'form-control'%>
-          </div>
-          <div class="form-group">
-            <%= f.label :backup %>
-            <%= f.search_field :backup_cont, class: 'form-control'%>
-          </div>
-          <div class="form-group">
-            <%= f.label :net %>
-            <%= f.search_field :net_cont, class: 'form-control'%>
-          </div>
-          <div class="form-group">
-            <%= f.label :db %>
-            <%= f.search_field :db_cont, class: 'form-control'%>
-          </div>
-          <div class="form-group">
-            <%= f.label :os %>
-            <%= f.search_field :os_cont, class: 'form-control'%>
-          </div>
-           <div class="form-group">
-            <%= f.label :created_at_between %><br>
-            from: <%= f.datetime_select :created_at_gteq, :include_blank => true, class: 'form-control' %><br>
-            until: <%= f.datetime_select :created_at_lteq,:include_blank => true, class: 'form-control' %>
-          </div>
-           <div class="form-group">
-            <%= f.label :schedule_change_date_between %><br>
-            from: <%= f.datetime_select :schedule_change_date_gteq, :include_blank => true, class: 'form-control' %><br>
-            until: <%= f.datetime_select :schedule_change_date_lteq,:include_blank => true, class: 'form-control' %>
-          </div>
-          <div class="form-group">
-            <%= f.label :planned_completion_between %><br>
-            from: <%= f.datetime_select :planned_completion_gteq, :include_blank => true, class: 'form-control' %><br>
-            until: <%= f.datetime_select :planned_completion_lteq,:include_blank => true, class: 'form-control' %>
-          </div>
-          <div class="form-group">
-            <%= f.label :grace_period_starts_between %><br>
-            from: <%= f.datetime_select :grace_period_starts_gteq, :include_blank => true, class: 'form-control' %><br>
-            until: <%= f.datetime_select :grace_period_starts_lteq,:include_blank => true, class: 'form-control' %>
-          </div>
-          <div class="form-group">
-            <%= f.label :grace_period_date_end_between %><br>
-            from: <%= f.datetime_select :grace_period_end_gteq, :include_blank => true, class: 'form-control' %><br>
-            until: <%= f.datetime_select :grace_period_end_lteq,:include_blank => true, class: 'form-control' %>
-          </div>
-          <div class="form-group">
-            <%= f.label :grace_period_notes %>
-            <%= f.search_field :grace_period_notes_cont, class: 'form-control'%>
-          </div>
-          <div class="form-group">
-            <%= f.label :tagged_with %>
-            <%= select_tag "tag_list" ,options_for_select(@tags), class: 'select2-tag form-control', multiple:true %>
-          </div>
-          <%= f.submit class: 'btn btn-primary pull-left' %>
-        <%end%>
-        <%= search_form_for @q do |f| %>
-
-         <%= f.submit 'Reset', class: 'btn btn-primary pull-right' %>
-        <% end %>
-        <br>
-
+            <div class="form-group">
+              <%= f.label :business_justification %>
+              <%= f.search_field :business_justification_cont, class: 'form-control'%>
+            </div>
+            <div class="form-group">
+              <%= f.label :analysis %>
+              <%= f.search_field :analysis_cont, class: 'form-control'%>
+            </div>
+            <div class="form-group">
+              <%= f.label :impact %>
+              <%= f.search_field :impact_cont, class: 'form-control'%>
+            </div>
+             <div class="form-group">
+              <%= f.label :scope %>
+              <%= f.select :scope_eq, options_for_select([['Any','']] + ChangeRequest::SCOPE, params[:q]? params[:q][:scope_eq] : 'Any' ), {}, {class: 'form-control select2'} %>
+            </div>
+             <div class="form-group">
+              <%= f.label :design %>
+              <%= f.search_field :design_cont, class: 'form-control'%>
+            </div>
+            <div class="form-group">
+              <%= f.label :backup %>
+              <%= f.search_field :backup_cont, class: 'form-control'%>
+            </div>
+            <div class="form-group">
+              <%= f.label :net %>
+              <%= f.search_field :net_cont, class: 'form-control'%>
+            </div>
+            <div class="form-group">
+              <%= f.label :db %>
+              <%= f.search_field :db_cont, class: 'form-control'%>
+            </div>
+            <div class="form-group">
+              <%= f.label :os %>
+              <%= f.search_field :os_cont, class: 'form-control'%>
+            </div>
+             <div class="form-group">
+              <%= f.label :created_at_between %><br>
+              from: <%= f.datetime_select :created_at_gteq, :include_blank => true, class: 'form-control' %><br>
+              until: <%= f.datetime_select :created_at_lteq,:include_blank => true, class: 'form-control' %>
+            </div>
+             <div class="form-group">
+              <%= f.label :schedule_change_date_between %><br>
+              from: <%= f.datetime_select :schedule_change_date_gteq, :include_blank => true, class: 'form-control' %><br>
+              until: <%= f.datetime_select :schedule_change_date_lteq,:include_blank => true, class: 'form-control' %>
+            </div>
+            <div class="form-group">
+              <%= f.label :planned_completion_between %><br>
+              from: <%= f.datetime_select :planned_completion_gteq, :include_blank => true, class: 'form-control' %><br>
+              until: <%= f.datetime_select :planned_completion_lteq,:include_blank => true, class: 'form-control' %>
+            </div>
+            <div class="form-group">
+              <%= f.label :grace_period_starts_between %><br>
+              from: <%= f.datetime_select :grace_period_starts_gteq, :include_blank => true, class: 'form-control' %><br>
+              until: <%= f.datetime_select :grace_period_starts_lteq,:include_blank => true, class: 'form-control' %>
+            </div>
+            <div class="form-group">
+              <%= f.label :grace_period_date_end_between %><br>
+              from: <%= f.datetime_select :grace_period_end_gteq, :include_blank => true, class: 'form-control' %><br>
+              until: <%= f.datetime_select :grace_period_end_lteq,:include_blank => true, class: 'form-control' %>
+            </div>
+            <div class="form-group">
+              <%= f.label :grace_period_notes %>
+              <%= f.search_field :grace_period_notes_cont, class: 'form-control'%>
+            </div>
+            <div class="form-group">
+              <%= f.label :tagged_with %>
+              <%= select_tag "tag_list" ,options_for_select(@tags), class: 'select2-tag form-control', multiple:true %>
+            </div>
+          <br>
+      </div><!-- /.overflow -->
+        <%= f.submit class: 'btn btn-primary pull-left' %>
+      <%end%>
+      <%= search_form_for @q do |f| %>
+       <%= f.submit 'Reset', class: 'btn btn-primary pull-right' %>
+      <% end %>
     </div><!-- /.tab-pane -->
     <!-- Stats tab content -->
   </div>
 </aside><!-- /.control-sidebar -->
 <!-- Add the sidebar's background. This div must be placed
      immediately after the control sidebar -->
-<div class='control-sidebar-bg'></div>
+<!-- <div class='control-sidebar-bg'></div> -->
 
 <script>
   $(function() {
