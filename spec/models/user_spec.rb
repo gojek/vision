@@ -3,8 +3,8 @@ require 'spec_helper'
 describe User do
 	it "is valid with one of these role : approver, requestor, release_manager" do
 		user = FactoryGirl.build(:user)
-		other_user = FactoryGirl.build(:user, role: 'approver')
-		another_user = FactoryGirl.build(:user, role: 'release_manager')
+		other_user = FactoryGirl.build(:approver)
+		another_user = FactoryGirl.build(:release_manager)
 		expect(user).to be_valid
 		expect(other_user).to be_valid
 		expect(another_user).to be_valid
@@ -100,6 +100,20 @@ describe User do
 		expect(user.fresh_token).to eq '45678'
 	end
 
+	it "should return list of all approvers if User.approvers is called" do
+		approver1 = FactoryGirl.create(:approver)
+		approver2 = FactoryGirl.create(:approver)
+		user = FactoryGirl.create(:user)
+		release_manager = FactoryGirl.create(:release_manager)
+		approvers = User.approvers
+		approvers.each do |approver|
+			expect(approver.role).to eq 'approver'
+		end
+		expect(approvers).to_not include(user)
+		expect(approvers).to_not include(release_manager)
+		expect(approvers).to include(approver1)
+		expect(approvers).to include(approver2)
+	end
 	describe "User.have_notifications?" do
 		it "should return true if the user have unread notifications" do
 			user = FactoryGirl.create(:user)
