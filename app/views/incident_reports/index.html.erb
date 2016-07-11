@@ -30,7 +30,7 @@ $(function(){
             <div class="box-header with-border">
               <h3 class="box-title">Incident Report List</h3>
             </div><!-- /.box-header -->
-          <div class="box-body table-responsive">
+          <div class="box-body table-responsive" style="overflow-x: scroll; height: 70vh">
             <table class="table table-hover">
               <tr>
                    <th>Report ID</th>
@@ -90,7 +90,7 @@ $(function(){
         </div>
     </div>
 </section>
- <aside class="control-sidebar control-sidebar-light">
+ <aside class="control-sidebar control-sidebar-light" style="height: 100vh; overflow: hidden" >
         <!-- Create the tabs -->
     <!-- Tab panes -->
     <div class="tab-content">
@@ -98,6 +98,7 @@ $(function(){
       <div class="tab-pane active" id="control-sidebar-home-tab">
         <h3 class="control-sidebar-heading">Filter</h3>
          <%= search_form_for @q do |f| %>
+          <div id="overflow" style="display: block; height: 80vh; overflow-y: scroll">
               <div class="form-group">
               <%= f.label :service_impact %>
               <%= f.search_field :service_impact_cont, class: 'form-control'%>
@@ -147,12 +148,12 @@ $(function(){
                 <%= f.label :tagged_with %>
                 <%= select_tag "tag_list" ,options_for_select(@tags), class: 'select2-tag form-control', multiple:true %>
               </div>
-              <%= f.submit class: 'btn btn-primary pull-left' %>
-
-              <% end %>
-              <%= search_form_for @q do |f| %>
-               <%= f.submit 'Reset', class: 'btn btn-primary pull-right' %>
-              <% end %>
+          </div><!-- /.overflow -->
+            <%= f.submit class: 'btn btn-primary pull-left' %>
+          <% end %>
+          <%= search_form_for @q do |f| %>
+           <%= f.submit 'Reset', class: 'btn btn-primary pull-right' %>
+          <% end %>
         </div><!-- /.tab-pane -->
       <!-- Stats tab content -->
     </div>
