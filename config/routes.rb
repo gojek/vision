@@ -16,11 +16,13 @@ Rails.application.routes.draw do
   post 'change_requests/:id/final_reject' => 'change_request_statuses#final_reject', :as => 'final_reject'
   post 'change_requests/:id/schedule' => 'change_request_statuses#schedule', :as => 'schedule'
   post 'change_requests/:id/submit' => 'change_request_statuses#submit', :as => 'submit'
+
   resources :change_requests do
 
     resources :comments
     collection do
           get :deleted # <= this
+          get :search #=> 'change_requests#search', :as => 'search'
     end
     #collection do
       #get :autocomplete_tag_name
@@ -31,7 +33,9 @@ Rails.application.routes.draw do
         patch :rollback, to: 'cr_versions#rollback'
       end
     end
+
   end
+
   resources :cr_versions, only: [] do
     member do
       patch :bringback  # <= and that
