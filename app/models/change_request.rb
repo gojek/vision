@@ -39,6 +39,28 @@ class ChangeRequest < ActiveRecord::Base
   validate :grace_period_date, :if => :grace_period_date_starts? && :grace_period_end
   #validates :change_summary, :priority, :category, :cr_type, :change_requirement, :business_justification, :requestor_position, :requestor_name, presence: true
 
+  searchable do
+    text :change_summary
+    text :change_requirement
+    text :business_justification
+    text :note
+    text :os
+    text :db
+    text :net
+    text :other_dependency
+    text :analysis
+    text :solution
+    text :impact
+    text :design
+    text :backup
+    text :definition_of_success
+    text :definition_of_failed
+    text :testing_procedure
+    text :testing_notes
+    text :implementation_notes
+    text :grace_period_notes
+  end
+
   aasm do
     state :submitted, :initial => true
     state :scheduled
