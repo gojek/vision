@@ -102,10 +102,6 @@ class ChangeRequestsController < ApplicationController
     @change_request.testers << User.find(tester_id)
   end
 
-  def search
-    puts params[:q]
-  end
-
     respond_to do |format|
       if @change_request.save
 
@@ -142,6 +138,10 @@ class ChangeRequestsController < ApplicationController
         format.json { render json: @change_request.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def search
+    @results = ChangeRequest.solr_search{fulltext params[:search]}.results
   end
 
   def update
