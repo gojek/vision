@@ -42,3 +42,6 @@ config/database.yml
 coverage/*
 .byebug_history
 .keep
+
+# Ignore solr data
+solr/data

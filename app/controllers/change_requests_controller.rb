@@ -99,8 +99,12 @@ class ChangeRequestsController < ApplicationController
     @testers_list = params[:testers_list]? params[:testers_list] : []
     @change_request.testers = []
     @testers_list.each do |tester_id|
-      @change_request.testers << User.find(tester_id)
-    end
+    @change_request.testers << User.find(tester_id)
+  end
+
+  def search
+    puts params[:q]
+  end
 
     respond_to do |format|
       if @change_request.save

@@ -65,6 +65,10 @@ gem 'pg'
 # coloring std out
 gem 'colorize'
 
+# full-text search
+gem 'sunspot_rails'
+gem 'sunspot_solr'
+
 group :production do
   gem 'rails_12factor'
 end
