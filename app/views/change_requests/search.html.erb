@@ -1,4 +1,16 @@
 <% require "html_truncator" %>
+<script type="text/javascript">
+  function noenter() {
+    var x = document.forms["search-form"]["search-box"].value;
+    if (window.event.keyCode == 13){
+      if (x == null || x == ""){
+        return false;
+      } else {
+        return true;
+      }
+    }
+  }
+</script>
 <section class="content-header">
   <h1>
     Search Change Requests
@@ -12,14 +24,14 @@
     <div class="col-xs-12">
       <div class="box box-default">
         <div class="box-header with-border">
-          <%= form_tag search_change_requests_path, method: :get do%>
+          <%= form_tag search_change_requests_path, method: :get, id: 'search-form'  do%>
               <div class="input-group">
                 <span class="input-group-btn">
                   <button type="button" class="btn btn-default" aria-label="Left Align">
                     <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                   </button>
                 </span>
-                <%= text_field_tag :search, params[:search], class: 'form-control', autofocus: :autofocus%>
+                <%= text_field_tag :search, params[:search], class: 'form-control', autofocus: :autofocus, id: 'search-box', onkeypress: 'return noenter()'%>
               </div><!-- /input-group -->
           <% end %>
         </div><!--/box-header-->
