@@ -53,6 +53,18 @@ describe ChangeRequestsController do
       end
     end
 
+  	describe 'GET #duplicate' do
+  		it 'will create a duplicate change request with empty implementation and grace period dates' do
+  		  get :duplicate, id: change_request
+        expect(assigns(:change_request)).to_not be_valid
+        expect(assigns(:change_request)).to be_a_new(ChangeRequest)
+        expect(assigns(:change_request).schedule_change_date).to be nil
+        expect(assigns(:change_request).planned_completion).to be nil
+        expect(assigns(:change_request).grace_period_starts).to be nil
+        expect(assigns(:change_request).grace_period_end).to be nil
+  		end
+  	end
+
     describe 'POST #create' do
       context 'with valid attributes' do
         let(:attributes) {FactoryGirl.attributes_for(:change_request)}
@@ -161,6 +173,5 @@ describe ChangeRequestsController do
         expect(assigns(:change_requests)).to match_array([@cr])
       end
     end
-
   end
 end
