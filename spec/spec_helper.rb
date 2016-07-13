@@ -6,6 +6,8 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
 require 'webmock/rspec'
+require 'sunspot/rails/spec_helper'
+
 WebMock.disable_net_connect!(allow_localhost: true)
 
 # Requires supporting ruby files with custom matchers and macros, etc,
@@ -18,6 +20,8 @@ ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
   config.before(:each) do
+    ::Sunspot.session = ::Sunspot::Rails::StubSessionProxy.new(::Sunspot.session)
+
     cal_response_json = File.read(File.expand_path("../webmocks/calendar_response.json", __FILE__))
     cal_add_response_json = File.read(File.expand_path("../webmocks/add_calendar.json", __FILE__))
     get_cal_response_json = File.read(File.expand_path("../webmocks/get_calendar.json", __FILE__))
@@ -68,6 +72,11 @@ RSpec.configure do |config|
       .with(headers: {'Accept'=>'*/*', 'Authorization'=>'Bearer 123456'})
       .to_return(status: 200, body: "", headers: {})
   end
+
+  config.after(:each) do
+    ::Sunspot.session = ::Sunspot.session.original_session
+  end
+
   # ## Mock Framework
   #
   # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
