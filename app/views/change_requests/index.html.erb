@@ -26,8 +26,14 @@
         </div><!--/box-header-->
         <div class="box-body">
           <%= form_tag search_change_requests_path, method: :get do%>
-              <%= text_field_tag :search, nil, {class: 'form-control'}%>
-              <%= submit_tag nil, style: "visibility: hidden;"%>
+              <div class="input-group">
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" aria-label="Left Align">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                  </button>
+                </span>
+                <%= text_field_tag :search, params[:search], class: 'form-control', autofocus: :autofocus%>
+              </div><!-- /input-group -->
           <% end %>
         </div><!-- /.box-body -->
       </div>
