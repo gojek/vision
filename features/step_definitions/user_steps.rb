@@ -1,5 +1,6 @@
 Given /^I am logged in$/ do
-  login_as FactoryGirl.create(:user)
+  @current_user = FactoryGirl.create(:user)
+  login_as @current_user
 end
 
 Given /^a user named "(.*?)"$/ do |name|
@@ -13,4 +14,4 @@ end
 Given /^I am logged in as approver$/ do
   @approver = FactoryGirl.create(:approver)
   login_as @approver
-end 
+end
