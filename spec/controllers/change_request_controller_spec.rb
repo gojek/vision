@@ -114,11 +114,10 @@ describe ChangeRequestsController do
     end
 
     describe 'GET #search' do
-      it 'search change request using solr_search'
-      # do
-      #   get :search, search: "asd"
-      #   expect(ChangeRequest).to receive(:solr_search)
-      # end
+      it 'search change request using solr_search' do
+        expect(ChangeRequest).to receive(:solr_search)
+        get :search, search: "asd"
+      end
 
       it 'redirect to index if search a blank string' do
         get :search, search: ""
