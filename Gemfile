@@ -84,6 +84,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 2.14.0'
   gem 'factory_girl_rails', '~> 4.2.1'
   gem 'guard-rspec', require: false
+  gem 'sunspot_test'
   # Access an IRB console on exception pages or by using <%= console %> in views
   #
 
