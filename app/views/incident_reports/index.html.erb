@@ -11,7 +11,7 @@ $(function(){
     <%= link_to  new_incident_report_path, class: 'btn btn-flat btn-primary pull-right'  do %>
          <i class="fa fa-plus"></i> <strong>New Incident Report</strong>
     <%end %>
-    <a href="#" data-toggle="control-sidebar" class="btn btn-flat btn-primary pull-right"><i class="fa fa-filter"></i><span><strong> Filter</strong></span></a>
+    <a href="#" data-toggle="control-sidebar" class="btn btn-flat btn-primary pull-right" id='filter-button'><i class="fa fa-filter"></i><span><strong> Filter</strong></span></a>
     </h1>
 </section>
 <section class="content">
@@ -90,11 +90,12 @@ $(function(){
         </div>
     </div>
 </section>
- <aside class="control-sidebar control-sidebar-light" style="height: 100vh; overflow: hidden" >
+ <aside class="control-sidebar control-sidebar-light" style="height: 100vh; overflow: hidden" id='sidebar-pane'>
         <!-- Create the tabs -->
     <!-- Tab panes -->
     <div class="tab-content">
       <!-- Home tab content -->
+      <a href='#' data-toggle='control-sidebar'> <i class='glyphicon glyphicon-remove pull-right'></i> </a>
       <div class="tab-pane active" id="control-sidebar-home-tab">
         <h3 class="control-sidebar-heading">Filter</h3>
          <%= search_form_for @q do |f| %>
@@ -163,10 +164,23 @@ $(function(){
 <div class='control-sidebar-bg'></div>
 
 <script>
+  var o = $.AdminLTE.options.controlSidebarOptions;
+  var sidebar = $(o.selector);
   $(function() {
     $(".select2-tag").select2({
       tags: true,
       tokenSeparators: [',', ' ']
     });
-  })
+  });
+  jQuery(function($){
+    $('body').click(function(e){
+      if (sidebar.hasClass('control-sidebar-open')){
+        var clickedOn = $(e.target);
+        if (!clickedOn.parents().andSelf().is('#sidebar-pane') && !clickedOn.parents().andSelf().is('#filter-button')){
+          sidebar.removeClass('control-sidebar-open');
+        }
+      }
+    });
+  });
+
 </script>
