@@ -142,11 +142,12 @@ class ChangeRequestsController < ApplicationController
 
   def search
     if params[:search].blank?
-      redirect_to change_requests_path
+      redirect_to change_requests path
     end
     @search = ChangeRequest.solr_search do
       fulltext params[:search], highlight: true
       order_by :created_at, :desc
+      paginate page: params[:page] || 1, per_page: 10
     end
   end
 

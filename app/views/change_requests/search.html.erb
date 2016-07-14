@@ -36,18 +36,18 @@
           <% end %>
         </div><!--/box-header-->
         <div class="box-body">
-          <%= @search.hits.count %> results found
+          <span><%= "Page #{params[:page]} of " if params[:page] %><%= @search.total %> results found</span>
           <ul class="products-list product-list-in-box">
-            <% @search.each_hit_with_result do |hit, change_request| %>
+            <% @search.hits.each do |hit| %>
             <li class="item">
-                <%= link_to(change_request) do %>
+                <%= link_to({controller: 'change_requests', action: 'show', id: hit.primary_key}) do %>
                   <h4>
-                    <b><%=raw change_request.change_summary %></b>
-                    <span class="pull-right"><%=raw change_request.created_at.to_s(:long) %></span>
+                    <b><%=raw hit.stored(:change_summary).first %></b>
+                    <span class="pull-right"><%=raw hit.stored(:created_at).to_s(:long) %></span>
                   </h4>
                 <% end %>
                 <span>
-                  <%= raw hit.highlight(nil).format{|match_words| content_tag(:b, match_words)} %>
+                  <%= raw hit.highlight(nil).format{|match_words| content_tag(:b, match_words, style: "color: DarkGreen")} %>
                 </span>
             </li>
             <% end %>
@@ -55,7 +55,7 @@
           </ul>
         </div><!-- /.box-body -->
         <div class="box-footer clearfix">
-             <!-- paginate @results, :theme => 'twitter-bootstrap-3' -->
+             <%= paginate @search.hits, :theme => 'twitter-bootstrap-3' %>
         </div>
       </div>
     </div>
