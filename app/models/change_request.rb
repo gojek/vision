@@ -59,7 +59,7 @@ class ChangeRequest < ActiveRecord::Base
     text :testing_notes, stored: true
     text :implementation_notes, stored: true
     text :grace_period_notes, stored: true
-    time :created_at
+    time :created_at, stored: true
   end
 
   aasm do
