@@ -15,10 +15,12 @@ class Mentioner
 
   def self.process_mentions(mentioner)
     handles = self.extract_handles_from_mentioner(mentioner)
-    mentionees = self.find_mentionees_by_handles(handles)
-
+    if !handles.nil?
+      mentionees = self.find_mentionees_by_handles(handles)
+    else
+      mentionees = nil
+    end
     return mentionees
-
   end
 
   def self.yay
