@@ -34,11 +34,13 @@ describe Mentioner do
 
   describe 'Mentioner.process_mentions' do
     it 'should call extract_handles_from_mentioner method' do
- 
+      expect(Mentioner).to receive(:extract_handles_from_mentioner).with(comment_with_mention)
+      Mentioner.process_mentions(comment_with_mention)
     end
 
     it 'should call find_mentionees_by_handles' do
-
+      expect(Mentioner).to receive(:find_mentionees_by_handles)
+      Mentioner.process_mentions(comment_with_mention)
     end
   end
 
