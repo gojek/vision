@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+ruby "2.1.5"
 
 # Bundle edge Rails insteadhttps://developers.google.com/oauthplayground: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'
