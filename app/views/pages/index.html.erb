@@ -1,6 +1,6 @@
 <section class='content-header'>
     <h1>Dashboard</h1>
-    
+
 </section>
 <section class='content'>
   <div class='row'>
@@ -35,7 +35,7 @@
               <div class='row'>
                 <div class='col-lg-12'>
                   <div id="source-chart" width="300" height="300"></div>
-                  <div id="chartdiv"></div>               
+                  <div id="chartdiv"></div>
                 </div>
               </div>
             </div>
@@ -46,7 +46,7 @@
             <div class='box-header with-border'>
               <h3 class='box-title'>Average Time</h3>
               <div class='box-tools'>
-                
+
               <!--   <button id='reset'>reset</button> -->
               </div>
              </div>
@@ -142,7 +142,7 @@
   width   : 100%;
   height    : 500px;
   font-size : 11px;
-}   
+}
 #average-chart {
   width   : 100%;
   height    : 500px;
@@ -152,7 +152,7 @@
   width   : 100%;
   height    : 500px;
   font-size : 11px;
-}                  
+}
 #deployment-chart {
   width   : 100%;
   height    : 500px;
@@ -160,17 +160,12 @@
 }
 .deployment-tag-filter {
   width : 300px;
-}                   
+}
 </style>
 <script>
   function loadSourceChart(url) {
     $.get(url, function(data, status){
       var pieData = jQuery.parseJSON(data)
-      //var ctx = document.getElementById("source-chart").getContext("2d");
-      //if(window.myPie != null) {
-        //window.myPie.destroy();
-      //}
-      //window.myPie = new Chart(ctx).Pie(pieData);
       var chart = AmCharts.makeChart( "source-chart", {
         "titles": [
             {
@@ -194,7 +189,9 @@
         "startEffect": "easeOutSine",
         "sequencedAnimation": false,
         "startDuration": 0.5
-      } );
+      });
+      if(pieData[1][0].value === 0 && pieData[1][1].value === 0)
+          chart.addLabel(0, '50%', 'There are no incident reports in the specfied periods','center');
     });
   };
 
@@ -230,78 +227,88 @@
           "lineAlpha": 0.2,
           "type": "column",
           "valueField": "resolution_duration"
+        }],
+        "guides": [],
+        "valueAxes": [
+          {
+            "id": "ValueAxis-1",
+          }
+        ],
+        "allLabels": [],
+        "balloon": {},
+        "dataProvider": barChartData[1],
+        "export": {
+          "enabled": true
         }
-          ],
-          "guides": [],
-          "valueAxes": [
-            {
-              "id": "ValueAxis-1",
-            }
-          ],
-          "allLabels": [],
-          "balloon": {},
-          "dataProvider": barChartData[1],
-            "export": {
-              "enabled": true
-             }
-        });
+      });
+      isEmpty = true;
+      for (bar of barChartData[1]) {
+        isEmpty = isEmpty && bar.recovery_duration == 0 && bar.resolution_duration == 0;
+      }
+      if(isEmpty)
+        chart.addLabel(0, '50%', 'There are no incident reports in the specfied periods','center');
     });
   };
 
   function loadNumberChart(url) {
-      $.get(url, function(data, status){
-        var numberBarData = jQuery.parseJSON(data);
-        var chart = AmCharts.makeChart("number-chart", {
-          "titles": [
-            {
-              "text": numberBarData[0].title,
-              "size": 15
-            }
-          ],
-          "startDuration": 1.5,
-          "type": "serial",
-             "theme": "light",
-          "categoryField": "label",
-          "categoryAxis": {
-            "gridPosition": "start",
-            "position": "left"
-          },
-          "trendLines": [],
-          "graphs": [
-            {
-            "balloonText": "Incident Occured: <b>[[value]]</b>",
-            "fillAlphas": 0.8,
-            "lineAlpha": 0.2,
-            "type": "column",
-            "valueField": "occured_number"
-          } ,{
-            "balloonText": "Incident Recovered: <b>[[value]]</b>",
-            "fillAlphas": 0.8,
-            "lineAlpha": 0.2,
-            "type": "column",
-            "valueField": "recovered_number"
-          } ,{
-            "balloonText": "Incident Resolved: <b>[[value]]</b>",
-            "fillAlphas": 0.8,
-            "lineAlpha": 0.2,
-            "type": "column",
-            "valueField": "resolved_number"
+    $.get(url, function(data, status){
+      var numberBarData = jQuery.parseJSON(data);
+      var chart = AmCharts.makeChart("number-chart", {
+        "titles": [
+          {
+            "text": numberBarData[0].title,
+            "size": 15
           }
-          ],
-          "guides": [],
-          "valueAxes": [
-            {
-              "id": "ValueAxis-1",
-            }
-          ],
-          "allLabels": [],
-          "balloon": {},
-          "dataProvider": numberBarData[1],
-            "export": {
-              "enabled": true
-             }
-        });
+        ],
+        "startDuration": 1.5,
+        "type": "serial",
+        "theme": "light",
+        "categoryField": "label",
+        "categoryAxis": {
+          "gridPosition": "start",
+          "position": "left"
+        },
+        "trendLines": [],
+        "graphs": [
+          {
+          "balloonText": "Incident Occured: <b>[[value]]</b>",
+          "fillAlphas": 0.8,
+          "lineAlpha": 0.2,
+          "type": "column",
+          "valueField": "occured_number"
+        } ,{
+          "balloonText": "Incident Recovered: <b>[[value]]</b>",
+          "fillAlphas": 0.8,
+          "lineAlpha": 0.2,
+          "type": "column",
+          "valueField": "recovered_number"
+        } ,{
+          "balloonText": "Incident Resolved: <b>[[value]]</b>",
+          "fillAlphas": 0.8,
+          "lineAlpha": 0.2,
+          "type": "column",
+          "valueField": "resolved_number"
+        }],
+        "guides": [],
+        "valueAxes": [
+          {
+            "id": "ValueAxis-1",
+          }
+        ],
+        "allLabels": [],
+        "balloon": {},
+        "dataProvider": numberBarData[1],
+          "export": {
+            "enabled": true
+           }
       });
+      isEmpty = true;
+      for (bar of numberBarData[1]) {
+        isEmpty = isEmpty && bar.occured_number == 0 && bar.recovered_number == 0 && bar.resolved_number == 0;
+      }
+      if(isEmpty)
+        chart.addLabel(0, '50%', 'There are no incident reports in the specfied periods','center');
+    });
   };
 
   function loadDeploymentChart(url) {
@@ -318,6 +325,7 @@
         "guides" : [],
         "startDuration": 1,
         "type": "serial",
+        "allLabels": [],
         "theme": "light",
           "dataProvider": stackChartData[1],
           "valueAxes": [{
@@ -353,7 +361,18 @@
           },
           "export": {
             "enabled": true
-           }
+          },
+          "listeners": [{
+            "event": "drawn",
+            "method": function(event){
+              isEmpty = true;
+              for (bar of stackChartData[1]) {
+                isEmpty = isEmpty && bar.success == 0 && bar.failed == 0;
+              }
+              if(isEmpty)
+                event.chart.addLabel(0, '50%', 'There are no change requests deployment in this periods','center');
+            }
+          }]
       });
     });
   };
@@ -386,13 +405,13 @@
       if(tag!=null) {
         url = url+'&tag='+tag;
       }
-      
+
       loadDeploymentChart(url);
     });
 
 	};
 
-  $(document).ready(function() { 
+  $(document).ready(function() {
     $('#selected_month').datetimepicker({
         viewMode: 'years',
         format: 'MM/YYYY'
@@ -417,7 +436,7 @@
         },
         timePicker: true,
         timePicker24Hour: true
-      }, 
+      },
       function(start, end) {
         $('#daterange span').html(start.format('YYYY-MM-DD hh:mm A') + ' - ' + end.format('YYYY-MM-DD hh:mm A'));
         var url = "<%=incident_reports_by_source_path %>";
@@ -458,4 +477,3 @@
   });
 
 </script>
-
