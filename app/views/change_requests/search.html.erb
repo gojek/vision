@@ -47,7 +47,7 @@
                   </h4>
                 <% end %>
                 <span>
-                  <%= raw hit.highlight(nil).format{|match_words| content_tag(:b, match_words, style: "color: DarkGreen")} %>
+                  <%= sanitize(hit.highlight(nil).format{|match_words| content_tag(:b, match_words, style: "color: DarkGreen")}, tags: ['b'], attributes: ['style']) %>
                 </span>
             </li>
             <% end %>
