@@ -104,7 +104,7 @@ class User < ActiveRecord::Base
         return u.name
       end
     end
-    name = nil
+    nil
   end
   def have_notifications?
     (notifications.cr.unread.count != 0 || notifications.ir.unread.count != 0)
