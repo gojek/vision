@@ -100,6 +100,7 @@ Rails.application.routes.draw do
   get 'duplicate/:id' => 'change_requests#duplicate', :as => 'duplicate'
   get 'search/:q' => 'change_requests#search', :as => 'search'
 
+  get 'notifications/index' => 'notifications#index'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

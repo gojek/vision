@@ -18,8 +18,24 @@
     </a>
     <div class="navbar-custom-menu">
       <ul class="nav navbar-nav">
-        <%= render 'pages/notification' %>
-        <%= render 'pages/ir_notification' %>
+        <li>
+        <%= link_to notifications_index_path(type: 'cr') do%>
+          Change Request
+          <% if current_user.notifications.cr.unread.count > 0 %>
+            <span id="notif-cr" class="label label-success"><%= current_user.notifications.cr.unread.count%></span>
+          <% end %>
+        <% end %>
+        </li>
+        <li>
+        <%= link_to notifications_index_path(type: 'ir') do%>
+          Incident Report
+          <% if current_user.notifications.ir.unread.count > 0 %>
+            <span id="notif-ir" class="label label-success"><%= current_user.notifications.ir.unread.count%></span>
+          <% end %>
+        <% end %>
+        </li>
+        <!-- <%= render 'pages/notification' %>
+        <%= render 'pages/ir_notification' %> -->
         <% if current_user.have_notifications? %>
         <li> <%= link_to "", notifications_clear_notifications_path, class: "glyphicon glyphicon-remove", data: {confirm: "Are you sure you want to clear all notifications?"}, id: "clear-notification" %> </li>
         <% end %>
