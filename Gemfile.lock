@@ -87,6 +87,8 @@ GEM
       execjs
     coffee-script-source (1.10.0)
     colorize (0.8.1)
+    comma (3.2.4)
+      activesupport (>= 3.0.0)
     concurrent-ruby (1.0.2)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
@@ -449,6 +451,7 @@ DEPENDENCIES
   cocoon
   coffee-rails (~> 4.1.0)
   colorize
+  comma (~> 3.2.1)
   cucumber-rails
   data-confirm-modal
   database_cleaner
