@@ -22,6 +22,10 @@ class ChangeRequestsController < ApplicationController
     #@n = Notifier.notify
   end
 
+  def export_csv
+    render csv: ChangeRequest.all, filename: 'change_requests'
+  end
+
   def show
     @version = @change_request.versions
     @change_request_status = ChangeRequestStatus.new
