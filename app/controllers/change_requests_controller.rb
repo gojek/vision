@@ -149,7 +149,7 @@ class ChangeRequestsController < ApplicationController
     end
     @search = ChangeRequest.solr_search do
       fulltext params[:search], highlight: true
-      order_by :created_at, :desc
+      order_by(:created_at, :desc)
       paginate page: params[:page] || 1, per_page: 10
     end
   end
