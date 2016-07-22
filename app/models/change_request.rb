@@ -32,12 +32,10 @@ class ChangeRequest < ActiveRecord::Base
   validate :at_least_one_category
   validate :at_least_one_type
   validates :implementers, presence: true
-  # validate :tester_required
   validates :testers, presence: true
   validates :approvals, presence: true
   validate :deploy_date, :if => :schedule_change_date? && :planned_completion?
   validate :grace_period_date, :if => :grace_period_date_starts? && :grace_period_end
-  #validates :change_summary, :priority, :category, :cr_type, :change_requirement, :business_justification, :requestor_position, :requestor_name, presence: true
 
   searchable do
     text :change_summary, stored: true
@@ -92,6 +90,43 @@ class ChangeRequest < ActiveRecord::Base
     event :submit do
       transitions :form => :cancelled, :to => :submitted
     end
+  end
+
+  comma do
+    change_summary 'change summary'
+    all_category 'category'
+    all_type 'type'
+    priority
+    user name: 'requestor'
+    tag_list 'tags' do |tag_list| tag_list.join(';') end
+    collaborators do |collaborators| collaborators.collect(&:name).join(';') end
+    approvals 'approvers' do |approvals| approvals.collect(&:user).collect(&:name).join(';') end
+    change_requirement 'change requirement'
+    business_justification 'business justification'
+    note
+    os 'operating system dependency'
+    db 'database dependency'
+    net 'network dependency'
+    other_dependency 'other dependency'
+    analysis
+    solution
+    impact
+    scope
+    design
+    backup
+    definition_of_success 'definition of success'
+    definition_of_failed 'definition of failed'
+    testing_environment_available to_s: 'testing environment available'
+    testing_procedure 'testing procedure'
+    testing_notes 'testing notes'
+    testers do |testers| testers.collect(&:name).join(';') end
+    schedule_change_date to_s: 'schedule change date'
+    planned_completion to_s: 'planned completion'
+    implementation_notes to_s: 'implementation notes'
+    grace_period_starts to_s: 'grace period starts'
+    grace_period_end to_s: 'grace period end'
+    grace_period_notes to_s: 'grace period notes'
+    implementers do |implementers| implementers.collect(&:name).join(';') end
   end
 
   def failed_change_request
