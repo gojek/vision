@@ -10,7 +10,7 @@ $(function(){
     Incident Report
     <%= link_to  new_incident_report_path, class: 'btn btn-flat btn-primary pull-right'  do %>
          <i class="fa fa-plus"></i> <strong>New Incident Report</strong>
-    <%end %> 
+    <%end %>
     <a href="#" data-toggle="control-sidebar" class="btn btn-flat btn-primary pull-right"><i class="fa fa-filter"></i><span><strong> Filter</strong></span></a>
     </h1>
 </section>
@@ -48,7 +48,7 @@ $(function(){
                     <th><%= sort_link(@q, :rank) %></th>
                     <th>Reported by</th>
                     <th>last edited</th>
-                    <th colspan="3"></th>
+                    <th colspan="3">Actions</th>
 
               </tr>
               <% @incident_reports.each do |incident_report| %>
@@ -69,10 +69,10 @@ $(function(){
                       <td><%= incident_report.rank %></td>
                       <td><%= incident_report.user.name %></td>
                       <td><%= incident_report.updated_at.to_s(:long) %></td>
-                      <td><%= link_to 'Show', incident_report %></td>
+                      <td><%= link_to '', incident_report, class: 'glyphicon glyphicon-eye-open' %></td>
                       <%if current_user==incident_report.user || current_user.is_admin %>
-                      <td><%= link_to 'Edit', edit_incident_report_path(incident_report) %></td>
-                      <td><%= link_to 'Delete', incident_report, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                      <td><%= link_to '', edit_incident_report_path(incident_report), class: 'glyphicon glyphicon-edit'  %></td>
+                      <td><%= link_to '', incident_report, method: :delete, data: { confirm: 'Are you sure?' }, class: 'glyphicon glyphicon-trash' %></td>
                       <% else %>
                       <td></td>
                       <td></td>
@@ -90,7 +90,7 @@ $(function(){
         </div>
     </div>
 </section>
- <aside class="control-sidebar control-sidebar-light">                
+ <aside class="control-sidebar control-sidebar-light">
         <!-- Create the tabs -->
     <!-- Tab panes -->
     <div class="tab-content">
@@ -169,5 +169,3 @@ $(function(){
     });
   })
 </script>
-
-
