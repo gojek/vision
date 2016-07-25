@@ -14,7 +14,7 @@
 <section class="content-header">
   <h1>
     Change Requests
-    <%= link_to  csv_change_requests_path, class: 'btn btn-flat btn-primary pull-right', target: '_blank' do %>
+    <%= link_to  "#{export_csv_change_requests_path}?#{request.GET.to_query}" , class: 'btn btn-flat btn-primary pull-right', target: '_blank' do %>
          <i class="fa  fa-file-text"></i> <strong>Export to csv</strong>
     <% end %>
     <%= link_to  new_change_request_path, class: 'btn btn-flat btn-primary pull-right'  do %>
