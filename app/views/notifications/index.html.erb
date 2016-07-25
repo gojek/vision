@@ -25,66 +25,68 @@
           <div class='tab-content'>
             <div id='change_request' class='tab-pane fade in <%= 'active' if @active == 'cr' %>'>
               <div class='row'>
+                <% if @have_cr_notif %>
                 <div class='col-sm-10 col-sm-offset-1'>
                   <ul class='nav nav-tabs'>
-                    <li class='active'> <a href='#new_cr' data-toggle="tab"> New
-                      <% if @new_cr.count > 0 %>
+                    <% if @new_cr.count > 0 %>
+                    <li class='<%= 'active' if @tabactive[0]%>'> <a href='#new_cr' data-toggle="tab"> New
                       <span class="label label-success"> <%= @new_cr.count%></span>
-                      <% end %>
                     </a></li>
-                    <li > <a href='#update_cr' data-toggle="tab"> Updated
-                      <% if @update_cr.count > 0 %>
+                    <% end %>
+                    <% if @update_cr.count > 0 %>
+                    <li class='<%= 'active' if @tabactive[1]%>'> <a href='#update_cr' data-toggle="tab"> Updated
                       <span class="label label-success"><%= @update_cr.count%></span>
-                      <% end %>
                     </a></li>
-                    <li> <a href='#cr_approved' data-toggle="tab">Approved
-                      <% if @approved.count > 0 %>
+                    <% end %>
+                    <% if @approved.count > 0 %>
+                    <li class='<%= 'active' if @tabactive[2]%>'> <a href='#cr_approved' data-toggle="tab">Approved
                       <span class="label label-success"><%= @approved.count%></span>
-                      <% end %>
                     </a></li>
-                    <li> <a href='#cr_rejected' data-toggle="tab">Rejected
-                      <% if @rejected.count > 0 %>
+                    <% end %>
+                    <% if @rejected.count > 0 %>
+                    <li class='<%= 'active' if @tabactive[3]%>'> <a href='#cr_rejected' data-toggle="tab">Rejected
                       <span class="label label-success"><%= @rejected.count%></span>
-                      <% end %>
                     </a></li>
-                    <li> <a href='#cr_final_rejected' data-toggle="tab">Final Rejected
-                      <% if @final_rejected.count > 0 %>
+                    <% end %>
+                    <% if @final_rejected.count > 0 %>
+                    <li class='<%= 'active' if @tabactive[4]%>'> <a href='#cr_final_rejected' data-toggle="tab">Final Rejected
                       <span class="label label-success"><%= @final_rejected.count%></span>
-                      <% end %>
                     </a></li>
-                    <li> <a href='#cr_cancelled' data-toggle="tab">Cancelled
+                    <% end %>
                       <% if @cancelled.count > 0 %>
+                    <li class='<%= 'active' if @tabactive[5]%>'> <a href='#cr_cancelled' data-toggle="tab">Cancelled
                       <span class="label label-success"><%= @cancelled.count%></span>
-                      <% end %>
                     </a></li>
-                    <li> <a href='#cr_scheduled' data-toggle="tab">Scheduled
-                      <% if @scheduled.count > 0 %>
+                    <% end %>
+                    <% if @scheduled.count > 0 %>
+                    <li class='<%= 'active' if @tabactive[6]%>'> <a href='#cr_scheduled' data-toggle="tab">Scheduled
                       <span class="label label-success"><%= @scheduled.count%></span>
-                      <% end %>
                     </a></li>
-                    <li> <a href='#cr_deployed' data-toggle="tab">Deployed
-                      <% if @deployed.count > 0 %>
+                    <% end %>
+                    <% if @deployed.count > 0 %>
+                    <li class='<%= 'active' if @tabactive[7]%>'> <a href='#cr_deployed' data-toggle="tab">Deployed
                       <span class="label label-success"><%= @deployed.count%></span>
-                      <% end %>
                     </a></li>
-                    <li> <a href='#cr_closed' data-toggle="tab">Closed
-                      <% if @closed.count > 0 %>
+                    <% end %>
+                    <% if @closed.count > 0 %>
+                    <li class='<%= 'active' if @tabactive[8]%>'> <a href='#cr_closed' data-toggle="tab">Closed
                       <span class="label label-success"><%= @closed.count%></span>
-                      <% end %>
                     </a></li>
-                    <li> <a href='#cr_rollbacked' data-toggle="tab">Rollbacked
-                      <% if @rollbacked.count > 0 %>
+                    <% end %>
+                    <% if @rollbacked.count > 0 %>
+                    <li class='<%= 'active' if @tabactive[9]%>'> <a href='#cr_rollbacked' data-toggle="tab">Rollbacked
                       <span class="label label-success"><%= @rollbacked.count%></span>
-                      <% end %></a></li>
-                    <li> <a href='#comment_cr' data-toggle="tab">Comments
-                      <% if @comment.count > 0 %>
-                      <span class="label label-success"><%= @comment.count%></span>
-                      <% end %>
                     </a></li>
+                    <% end %>
+                    <% if @comment.count > 0 %>
+                    <li class='<%= 'active' if @tabactive[10]%>'> <a href='#comment_cr' data-toggle="tab">Comments
+                      <span class="label label-success"><%= @comment.count%></span>
+                    </a></li>
+                    <% end %>
                   </ul>
                 </div>
                 <div class='tab-content'>
-                  <div id='new_cr' class='tab-pane fade in active col-sm-10 col-sm-offset-1'>
+                  <div id='new_cr' class='tab-pane fade in col-sm-10 col-sm-offset-1 <%='active' if @tabactive[0]%>'>
                     <table class="table table-hover">
                       <tr>
                         <th> ID </th>
@@ -102,7 +104,7 @@
                       <% end %>
                     </table>
                   </div>
-                  <div id='update_cr' class='tab-pane fade in col-sm-10 col-sm-offset-1'>
+                  <div id='update_cr' class='tab-pane fade in col-sm-10 col-sm-offset-1 <%='active' if @tabactive[1]%>'>
                     <table class="table table-hover">
                       <tr>
                         <th> ID </th>
@@ -120,7 +122,7 @@
                       <% end %>
                     </table>
                   </div>
-                  <div id='cr_approved' class='tab-pane fade in col-sm-10 col-sm-offset-1'>
+                  <div id='cr_approved' class='tab-pane fade in col-sm-10 col-sm-offset-1 <%='active' if @tabactive[2]%>'>
                     <table class="table table-hover">
                       <tr>
                         <th> ID </th>
@@ -138,7 +140,7 @@
                       <% end %>
                     </table>
                   </div>
-                  <div id='cr_rejected' class='tab-pane fade in col-sm-10 col-sm-offset-1'>
+                  <div id='cr_rejected' class='tab-pane fade in col-sm-10 col-sm-offset-1 <%='active' if @tabactive[3]%>'>
                     <table class="table table-hover">
                       <tr>
                         <th> ID </th>
@@ -156,7 +158,7 @@
                       <% end %>
                     </table>
                   </div>
-                  <div id='cr_final_rejected' class='tab-pane fade in col-sm-10 col-sm-offset-1'>
+                  <div id='cr_final_rejected' class='tab-pane fade in col-sm-10 col-sm-offset-1 <%='active' if @tabactive[4]%>'>
                     <table class="table table-hover">
                       <tr>
                         <th> ID </th>
@@ -174,7 +176,7 @@
                       <% end %>
                     </table>
                   </div>
-                  <div id='cr_cancelled' class='tab-pane fade in col-sm-10 col-sm-offset-1'>
+                  <div id='cr_cancelled' class='tab-pane fade in col-sm-10 col-sm-offset-1 <%='active' if @tabactive[5]%>'>
                     <table class="table table-hover">
                       <tr>
                         <th> ID </th>
@@ -192,7 +194,7 @@
                       <% end %>
                     </table>
                   </div>
-                  <div id='cr_scheduled' class='tab-pane fade in col-sm-10 col-sm-offset-1'>
+                  <div id='cr_scheduled' class='tab-pane fade in col-sm-10 col-sm-offset-1 <%='active' if @tabactive[6]%>'>
                     <table class="table table-hover">
                       <tr>
                         <th> ID </th>
@@ -210,7 +212,7 @@
                       <% end %>
                     </table>
                   </div>
-                  <div id='cr_deployed' class='tab-pane fade in col-sm-10 col-sm-offset-1'>
+                  <div id='cr_deployed' class='tab-pane fade in col-sm-10 col-sm-offset-1 <%='active' if @tabactive[7]%>'>
                     <table class="table table-hover">
                       <tr>
                         <th> ID </th>
@@ -228,7 +230,7 @@
                       <% end %>
                     </table>
                   </div>
-                  <div id='cr_closed' class='tab-pane fade in col-sm-10 col-sm-offset-1'>
+                  <div id='cr_closed' class='tab-pane fade in col-sm-10 col-sm-offset-1 <%='active' if @tabactive[8]%>'>
                     <table class="table table-hover">
                       <tr>
                         <th> ID </th>
@@ -246,7 +248,7 @@
                       <% end %>
                     </table>
                   </div>
-                  <div id='cr_rollbacked' class='tab-pane fade in col-sm-10 col-sm-offset-1'>
+                  <div id='cr_rollbacked' class='tab-pane fade in col-sm-10 col-sm-offset-1 <%='active' if @tabactive[9]%>'>
                     <table class="table table-hover">
                       <tr>
                         <th> ID </th>
@@ -264,7 +266,7 @@
                       <% end %>
                     </table>
                   </div>
-                  <div id='comment_cr' class='tab-pane fade in col-sm-10 col-sm-offset-1'>
+                  <div id='comment_cr' class='tab-pane fade in col-sm-10 col-sm-offset-1 <%='active' if @tabactive[10]%>'>
                     <table class="table table-hover">
                       <tr>
                         <th> ID </th>
@@ -283,26 +285,33 @@
                     </table>
                   </div>
                 </div>
+                <% else %>
+                <div class='col-sm-10 col-sm-offset-1'>
+                  <p> Nothing to display here </p>
+                </div>
+                <% end %>
               </div>
             </div>
-            <div id='incident_report' class='tab-pane fade in <%= 'active' if @active != 'cr' %>'>
+
+            <div id='incident_report'  class='tab-pane fade in <%= 'active' if @active != 'cr' %>'>
               <div class='row'>
+                <% if @have_ir_notif %>
                 <div class='col-sm-10 col-sm-offset-1'>
                   <ul class='nav nav-tabs'>
-                    <li class='active'> <a href='#new_ir' data-toggle="tab"> New
-                      <% if @new_ir.count > 0 %>
+                    <% if @new_ir.count > 0 %>
+                    <li class='<%='active' if @iractive[0]%>'> <a href='#new_ir' data-toggle="tab"> New
                       <span class="label label-success"> <%= @new_ir.count%></span>
-                      <% end %>
                     </a></li>
-                    <li> <a href='#resolved_ir' data-toggle="tab"> Resolved
-                      <% if @resolved_ir.count > 0 %>
+                    <% end %>
+                    <% if @resolved_ir.count > 0 %>
+                    <li class='<%='active' if @iractive[1]%>'> <a href='#resolved_ir' data-toggle="tab"> Resolved
                       <span class="label label-success"> <%= @resolved_ir.count%></span>
-                      <% end %>
                     </a></li>
+                    <% end %>
                   </ul>
                 </div>
                 <div class='tab-content'>
-                  <div id='new_ir' class='tab-pane fade in active col-sm-10 col-sm-offset-1'>
+                  <div id='new_ir' class='tab-pane fade in col-sm-10 col-sm-offset-1 <%='active' if @iractive[0]%>'>
                     <table class="table table-hover">
                       <tr>
                         <th> ID </th>
@@ -320,7 +329,7 @@
                       <% end %>
                     </table>
                   </div>
-                  <div id='resolved_ir' class='tab-pane fade in col-sm-10 col-sm-offset-1'>
+                  <div id='resolved_ir' class='tab-pane fade in col-sm-10 col-sm-offset-1 <%='active' if @iractive[1]%>'>
                     <table class="table table-hover">
                       <tr>
                         <th> ID </th>
@@ -339,6 +348,11 @@
                     </table>
                   </div>
                 </div>
+                <% else %>
+                <div class='col-sm-10 col-sm-offset-1'>
+                  <p> Nothing to display here </p>
+                </div>
+                <% end %>
               </div>
             </div>
           </div>
