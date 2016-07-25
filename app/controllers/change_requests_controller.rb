@@ -19,11 +19,24 @@ class ChangeRequestsController < ApplicationController
       @change_requests = @q.result(distinct: true).order(id: :desc).page(params[:page]).per(params[:per_page])
     end
     @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
-    #@n = Notifier.notify
   end
 
   def export_csv
-    render csv: ChangeRequest.all, filename: 'change_requests'
+    @change_requests = []
+    if params[:tag_list]
+      @q = ChangeRequest.ransack(params[:q])
+      @change_requests = @q.result(distinct: true).tagged_with(params[:tag_list]).order(id: :desc)
+    elsif params[:q]
+      if current_user.role == 'release_manager' || current_user.role == 'approver'
+        @q = ChangeRequest.ransack(params[:q])
+      else
+        @q = ChangeRequest.where(user_id: current_user.id).ransack(params[:q])
+      end
+       @change_requests = @q.result(distinct: true).order(id: :desc)
+    else
+      @change_requests = ChangeRequest.all
+    end
+    render csv: @change_requests, filename: 'change_requests'
   end
 
   def show
