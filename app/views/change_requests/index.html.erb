@@ -41,6 +41,7 @@
                 <th>Reject</th>
                 <th>Lifetime</th>
                 <th colspan="3">Action</th>
+                <th> </th>
             </tr>
             <% @change_requests.each do |change_request| %>
               <tr>
@@ -57,18 +58,18 @@
                 <td><%= change_request.approvers_count %></td>
                 <td><%= change_request.rejects_count %></td>
                 <td><%= change_request.lifetime %></td>
-                <td><%= link_to 'Show', change_request %></td>
+                <td><%= link_to '', change_request, class: 'glyphicon glyphicon-eye-open' %></td>
                 <%if (current_user==change_request.user || current_user.is_admin || current_user.role=='release_manager' || current_user.collaborate_change_requests.include?(change_request) ) && (!change_request.closed?)%>
-                <td><%= link_to 'Edit', edit_change_request_path(change_request) %></td>
+                <td><%= link_to '', edit_change_request_path(change_request), class: 'glyphicon glyphicon-edit' %></td>
                 <% else %>
                 <td></td>
                 <% end %>
                 <% if current_user==change_request.user || current_user.is_admin %>
-                <td><%= link_to 'Destroy', change_request, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                <td><%= link_to '', change_request, method: :delete, class: 'glyphicon glyphicon-trash', data: { confirm: 'Are you sure?' } %></td>
                 <% else %>
                 <td></td>
                 <% end %>
-                <td> <%= link_to 'Duplicate', duplicate_path(change_request)%></td>
+                <td> <%= link_to '', duplicate_path(change_request), class: 'glyphicon glyphicon-duplicate'%></td>
             </tr>
             <% end %>
           </table>
