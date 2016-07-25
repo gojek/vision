@@ -36,7 +36,7 @@ class ChangeRequestsController < ApplicationController
     else
       @change_requests = ChangeRequest.all
     end
-    render csv: @change_requests, filename: 'change_requests'
+    render csv: @change_requests, filename: 'change_requests', force_quotes: true
   end
 
   def show
