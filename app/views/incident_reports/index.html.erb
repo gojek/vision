@@ -30,7 +30,7 @@ $(function(){
             <div class="box-header with-border">
               <h3 class="box-title">Incident Report List</h3>
             </div><!-- /.box-header -->
-          <div class="box-body table-responsive" style="overflow-x: scroll; height: 70vh">
+          <div class="box-body table-responsive" style="overflow-x: auto; height: 70vh">
             <table class="table table-hover">
               <tr>
                    <th>Report ID</th>
@@ -99,7 +99,7 @@ $(function(){
       <div class="tab-pane active" id="control-sidebar-home-tab">
         <h3 class="control-sidebar-heading">Filter</h3>
          <%= search_form_for @q do |f| %>
-          <div id="overflow" style="display: block; height: 80vh; overflow-y: scroll">
+          <div id="overflow" style="display: block; height: 80vh; overflow-y: auto">
               <div class="form-group">
               <%= f.label :service_impact %>
               <%= f.search_field :service_impact_cont, class: 'form-control'%>
