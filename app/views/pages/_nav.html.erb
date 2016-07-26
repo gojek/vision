@@ -19,7 +19,7 @@
     <div class="navbar-custom-menu">
       <ul class="nav navbar-nav">
         <li>
-        <%= link_to notifications_index_path(type: 'cr') do%>
+        <%= link_to notifications_index_path(type: 'cr'), id: 'notif-cr-button' do%>
           Change Request
           <% if current_user.notifications.cr.unread.count > 0 %>
             <span id="notif-cr" class="label label-success"><%= current_user.notifications.cr.unread.count%></span>
@@ -27,7 +27,7 @@
         <% end %>
         </li>
         <li>
-        <%= link_to notifications_index_path(type: 'ir') do%>
+        <%= link_to notifications_index_path(type: 'ir'), id: 'notif-ir-button' do%>
           Incident Report
           <% if current_user.notifications.ir.unread.count > 0 %>
             <span id="notif-ir" class="label label-success"><%= current_user.notifications.ir.unread.count%></span>
