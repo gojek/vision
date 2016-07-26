@@ -41,7 +41,7 @@ class NotificationsController < ApplicationController
         @tabactive[8] = true
       elsif !@rollbacked.empty?
         @tabactive[9] = true
-      elsif !@COMMENT.empty?
+      elsif !@comment.empty?
         @tabactive[10] = true
       else
         @have_cr_notif = false
