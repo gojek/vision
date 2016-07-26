@@ -254,7 +254,7 @@ class ChangeRequestsController < ApplicationController
     @users = User.all.collect{|u| [u.name, u.id]}
     @current_approvers = @old_change_request.approvals.collect(&:user_id)
     @change_request = @old_change_request.dup
-
+    @approvers = User.approvers.collect{|u| [u.name, u.id]}
     # Clear certain fields
     @change_request.schedule_change_date = nil
     @change_request.planned_completion = nil
@@ -263,7 +263,7 @@ class ChangeRequestsController < ApplicationController
     render 'new'
 
   end
-  
+
   respond_to :json
   def change_requests_by_success_rate
     #default status is weekly
