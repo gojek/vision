@@ -66,7 +66,7 @@ Rails.application.routes.draw do
   post 'users' => 'users#create'
   get 'users/edit/:id' => 'users#edit', :as => 'edit'
   get 'change_requests/:id/print' => 'change_requests#print', :as => 'print'
-  
+
   devise_for :users, skip: [:sessions], controllers: { omniauth_callbacks: "users/omniauth_callbacks" }
   devise_scope :user do
     get 'sign_in', :to => 'pages#signin', :as => :new_user_session
@@ -97,7 +97,7 @@ Rails.application.routes.draw do
   post 'approve/:id' => 'change_requests#approve', :as =>'approve'
   post 'reject/:id' => 'change_requests#reject', :as =>'reject'
   get 'notifications/clear_notifications' => 'notifications#clear_notifications'
-
+  get 'duplicate/:id' => 'change_requests#duplicate', :as => 'duplicate'
 
 
   # The priority is based upon order of creation: first created -> highest priority.
