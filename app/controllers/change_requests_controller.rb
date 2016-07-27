@@ -99,8 +99,8 @@ class ChangeRequestsController < ApplicationController
     @testers_list = params[:testers_list]? params[:testers_list] : []
     @change_request.testers = []
     @testers_list.each do |tester_id|
-      @change_request.testers << User.find(tester_id)
-    end
+    @change_request.testers << User.find(tester_id)
+  end
 
     respond_to do |format|
       if @change_request.save
@@ -137,6 +137,17 @@ class ChangeRequestsController < ApplicationController
         format.html { render :new }
         format.json { render json: @change_request.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def search
+    if params[:search].blank?
+      redirect_to change_requests_path
+    end
+    @search = ChangeRequest.solr_search do
+      fulltext params[:search], highlight: true
+      order_by :created_at, :desc
+      paginate page: params[:page] || 1, per_page: 10
     end
   end
 
