@@ -13,4 +13,5 @@ Feature: Duplicate Change request
   Given I am in the change requests index page
   When I click on the duplicate link
   Then I should be redirected to a new change request page
+  And I should be the requestor of the CR
   And all field should be filled in except implementation and grace period dates
