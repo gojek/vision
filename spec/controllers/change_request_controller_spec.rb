@@ -58,6 +58,7 @@ describe ChangeRequestsController do
   		  get :duplicate, id: change_request
         expect(assigns(:change_request)).to_not be_valid
         expect(assigns(:change_request)).to be_a_new(ChangeRequest)
+        expect(assigns(:change_request).user).to eq user
         expect(assigns(:change_request).schedule_change_date).to be nil
         expect(assigns(:change_request).planned_completion).to be nil
         expect(assigns(:change_request).grace_period_starts).to be nil
