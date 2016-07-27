@@ -18,6 +18,10 @@ Then(/^I should be redirected to a new change request page$/) do
   page.should have_content("Implementation")
 end
 
+Then(/^I should be the requestor of the CR$/) do
+  expect(page).to have_field("change_request_requestor_name", with: @current_user.name)
+end
+
 Then(/^all field should be filled in except implementation and grace period dates$/) do
   expect(page).to have_field("change_request_change_summary", with: @cr.change_summary)
   page.find_link('Implementation').click
