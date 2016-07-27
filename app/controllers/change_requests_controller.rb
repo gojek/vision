@@ -256,6 +256,7 @@ class ChangeRequestsController < ApplicationController
     @change_request = @old_change_request.dup
     @approvers = User.approvers.collect{|u| [u.name, u.id]}
     # Clear certain fields
+    @change_request.user = current_user
     @change_request.schedule_change_date = nil
     @change_request.planned_completion = nil
     @change_request.grace_period_starts = nil
