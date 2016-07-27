@@ -125,6 +125,18 @@ describe ChangeRequestsController do
           }.to change(ChangeRequest, :count).by(-1)
       end
     end
+
+    describe 'GET #search' do
+      it 'search change request using solr_search' do
+        expect(ChangeRequest).to receive(:solr_search)
+        get :search, search: "asd"
+      end
+
+      it 'redirect to index if search a blank string' do
+        get :search, search: ""
+        expect(response).to redirect_to(change_requests_path)
+      end
+    end
   end
 
   describe 'approver access' do
