@@ -10,7 +10,7 @@ class ChangeRequest < ActiveRecord::Base
   has_many :change_request_statuses, dependent: :destroy
   has_many :approvals, dependent: :destroy
   has_many :comments, dependent: :destroy
-  has_many :notifications
+  has_many :notifications, dependent: :destroy
   belongs_to :cab
   scope :cab_free, -> {where(cab_id: nil)}
   acts_as_taggable
