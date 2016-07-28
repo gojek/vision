@@ -22,7 +22,7 @@ describe ChangeRequestsController do
       it "populate all current user's Change Request if no param is passed" do
         other_cr = FactoryGirl.create(:change_request)
         get :index
-        expect(assigns(:change_requests)).to match_array([change_request])
+        expect(assigns(:change_requests)).to match_array([change_request, other_cr])
       end
 
       it "populate current user's Change Request based on tag that selected" do
