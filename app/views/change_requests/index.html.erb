@@ -89,26 +89,14 @@
                 <td><%= change_request.approvers_count %></td>
                 <td><%= change_request.rejects_count %></td>
                 <td><%= change_request.lifetime %></td>
-                <td>
-                  <%= link_to change_request do %>
-                    <i class='glyphicon glyphicon-eye-open'><span style='display: none'> Show </span></i>
-                  <% end %>
-                </td>
+                <td><%= link_to '', change_request, class: 'glyphicon glyphicon-eye-open' , id: 'show'%></td>
                 <%if (current_user==change_request.user || current_user.is_admin || current_user.role=='release_manager' || current_user.collaborate_change_requests.include?(change_request) ) && (!change_request.closed?)%>
-                <td>
-                  <%= link_to edit_change_request_path(change_request) do %>
-                    <i class='glyphicon glyphicon-edit'><span style='display: none'> Edit </span></i>
-                  <% end %>
-                </td>
+                <td><%= link_to '', edit_change_request_path(change_request), class: 'glyphicon glyphicon-edit', id: 'edit' %></td>
                 <% else %>
                 <td></td>
                 <% end %>
                 <% if current_user==change_request.user || current_user.is_admin %>
-                <td>
-                  <%= link_to change_request, method: :delete, data: { confirm: 'Are you sure?' } do%>
-                    <i class='glyphicon glyphicon-trash'><span style='display: none'> Delete </span></i>
-                  <% end %>
-                </td>
+                <td><%= link_to '', change_request, method: :delete, class: 'glyphicon glyphicon-trash', id: 'delete', data: { confirm: 'Are you sure?' } %></td>
                 <% else %>
                 <td></td>
                 <% end %>
