@@ -58,7 +58,7 @@
                     <%= f.label :change_summary %><br>
                     <%= f.text_field :change_summary, class: 'form-control' %>
                   </div><!--/field-->
-                <div class='col-md-6 form-group' style='padding-left:0'>
+                <div class='col-md-6 form-group' style='padding-left:0 ; border-right: 1px solid #d9d9d9'>
                   <%= f.label :category %><br>
                   <%= f.check_box :category_application %>
                   <%= f.label :application %><br>
@@ -276,11 +276,8 @@
               <%else %>
                 <div class="field form-group">
               <% end %>
-                  <label>Testing in Test/Development Environment Available</label>
-                  <%= f.radio_button :testing_environment_available, "true" %>
-                  <%= label_tag(:testing_environment_available, "YES") %>
-                  <%= f.radio_button :testing_environment_available, "false" %>
-                  <%= label_tag(:testing_environment_available, "NO") %>
+                  <label>Testing in Test/Development Environment Available?</label>
+                  <%= f.check_box :testing_environment_available, checked: true, data: {toggle: :toggle, on: "YES", off: "NO", onstyle: 'success', offstyle: 'danger'}%>
                 </div><!--/field-->
               <div class='col-md-6'>
                 <% if @change_request.errors.messages[:testing_procedure] %>
@@ -395,6 +392,7 @@
 <script>
   $(document).ready(function () {
     $('body').attr("data-no-turbolink", "true");
+    $('input[type="checkbox"].toggle').bootstrapToggle(); // assumes the checkboxes have the class "toggle"
     $('#save').click(function() {
       unsaved = false;
     });
