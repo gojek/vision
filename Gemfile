@@ -20,6 +20,7 @@ gem 'simple_calendar', '~> 1.1.0'
 gem 'fullcalendar-rails'
 gem 'momentjs-rails'
 gem 'nprogress-rails'
+gem 'bootstrap-toggle-rails'
 
 # api-related
 gem 'jbuilder', '~> 2.0'
