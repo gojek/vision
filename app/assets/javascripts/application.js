@@ -34,6 +34,7 @@
 
 //= require daterangepicker
 //= require turbolinks
+//= require bootstrap-toggle
 NProgress.configure({
 
 

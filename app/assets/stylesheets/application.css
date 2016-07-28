@@ -21,6 +21,7 @@
  *= require nprogress
  *= require nprogress-bootstrap
  *= require bootstrap-social/bootstrap-social
+ *= require bootstrap-toggle
  */
 #nprogress .spinner-icon{
 	border-top-color:#fff !important;
@@ -31,7 +32,7 @@
 	padding: 5px;
 	background-color: #367fa9;
 	left:10px;
-	right: initial !important; 
+	right: initial !important;
 
 }
 
@@ -43,5 +44,5 @@
 z-index: 200000;
 }
 #nprogress .bar {
-  background: #fff !important; 
+  background: #fff !important;
 }

@@ -58,6 +58,7 @@ GEM
     bootstrap-kaminari-views (0.0.5)
       kaminari (>= 0.13)
       rails (>= 3.1)
+    bootstrap-toggle-rails (2.2.1.0)
     bootstrap-wysihtml5-rails (0.3.3.8)
       railties (>= 3.0)
     builder (3.2.2)
@@ -421,6 +422,7 @@ DEPENDENCIES
   aasm
   acts-as-taggable-on
   bootstrap-kaminari-views
+  bootstrap-toggle-rails
   bootstrap-wysihtml5-rails
   byebug
   capybara
@@ -479,6 +481,9 @@ DEPENDENCIES
   unread
   web-console (~> 2.0)
   webmock
+
+RUBY VERSION
+   ruby 2.1.5p273
 
 BUNDLED WITH
    1.12.5
