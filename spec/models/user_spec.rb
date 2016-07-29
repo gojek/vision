@@ -1,54 +1,59 @@
 require 'spec_helper'
 
 describe User do
+	let(:user) {FactoryGirl.create(:user)}
+
+	before :all do
+		UserList = Struct.new("UserList", :members)
+		Profile = Struct.new("Profile", :email)
+		UserSlack = Struct.new("UserSlack", :name, :profile)
+	end
+
 	it "is valid with one of these role : approver, requestor, release_manager" do
-		user = FactoryGirl.build(:user)
-		other_user = FactoryGirl.build(:approver)
-		another_user = FactoryGirl.build(:release_manager)
+		other_user = FactoryGirl.build(:user, role: 'approver')
+		another_user = FactoryGirl.build(:user, role: 'release_manager')
 		expect(user).to be_valid
 		expect(other_user).to be_valid
 		expect(another_user).to be_valid
 	end
 
 	it "is invalid with role other than approver, requestor, release_manager" do
-		user = FactoryGirl.build(:user, role: 'jagoan')
+		user.role = 'jagoan'
 		expect(user).to have(1).errors_on(:role)
 	end
 
 	it "is valid with a veritrans email" do
-		user = FactoryGirl.build(:user)
 		expect(user).to be_valid
 	end
 
 	it "is invalid without an email address" do
-		user = FactoryGirl.build(:user, email: nil)
+		user.email = nil
 		expect(user).to have(2).errors_on(:email)
 	end
 
 	it "is invalid with a duplicate email address" do
-		user = FactoryGirl.create(:user, email: 'patrick@veritrans.co.id')
+		user.email = 'patrick@veritrans.co.id'
+		user.save
 		other_user = FactoryGirl.build(:user, email: 'patrick@veritrans.co.id')
 		expect(other_user).to have(1).errors_on(:email)
 	end
 
 	it "is invalid with a non-veritrans email" do
-		user = FactoryGirl.build(:user, email: 'squidward@gmail.com')
+		user.email = 'squidward@gmail.com'
 		expect(user).to have(1).errors_on(:email)
 	end
 
 	it "returns true if account is not locked" do
-		user = FactoryGirl.create(:user)
 		expect(user.account_active?).to eq true
 		expect(user.active_for_authentication?).to eq true
 	end
 	it "returns false if account is locked" do
-		user = FactoryGirl.create(:user, locked_at: Time.now)
+		user.locked_at = Time.now
 		expect(user.account_active?).to eq false
 		expect(user.active_for_authentication?).to eq false
 	end
 
 	it "have find_version_author method that will return User who do the version" do
-		user = FactoryGirl.create(:user)
 		version = IncidentReportVersion.new(
 			item_type: 'IncidentReport',
 			item_id: 1,
@@ -57,24 +62,65 @@ describe User do
 		expect(User.find_version_author(version)).to eq user
 	end
 
-	it "will find the user based on the auth from omniauth if user already registered" do
-		user = FactoryGirl.create(:user)
-		auth = {:provider => 'google_oauth2', :uid => user.uid}
-		expect(User.from_omniauth(auth)).to eq user
+	describe 'omniauth authentication user' do
+		before :all do
+			@slack_username = 'patrick.star'
+			user_slack = UserSlack.new(@slack_username, Profile.new('patrick@veritrans.co.id'))
+			@users_list = UserList.new([user_slack])
+		end
+
+		before :each do
+			Slack::Web::Client.any_instance.stub(users_list: @users_list)
+		end
+
+		it "will find the user based on the auth from omniauth if user already registered" do
+			user = FactoryGirl.create(:user)
+			auth = {:provider => 'google_oauth2', :uid => '123456'}
+			expect(User.from_omniauth(auth)).to eq user
+		end
+
+		it "will register new user based on the auth from omniauth if user not registered" do
+			auth = {:provider => 'google_oauth2', :uid => '123456', :info => {:email => 'patrick@veritrans.co.id', :name => 'patrick star'}}
+			WebMock.allow_net_connect!
+			user = User.from_omniauth(auth)
+			WebMock.disable_net_connect!
+			expect(user.provider).to eq auth[:provider]
+			expect(user.uid).to eq auth[:uid]
+			expect(user.email).to eq auth[:info][:email]
+			expect(user.name).to eq auth[:info][:name]
+			expect(user.role).to eq 'requestor'
+			expect(user.slack_username).to eq @slack_username
+			expect(user.is_admin).to eq false
+		end
 	end
 
-	it "will register new user based on the auth from omniauth if user not registered" do
-		auth = {:provider => 'google_oauth2', :uid => '123456', :info => {:email => 'patrick@veritrans.co.id', :name => 'patrick star'}}
-		WebMock.allow_net_connect!
-		user = User.from_omniauth(auth)
-		WebMock.disable_net_connect!
-		expect(user.provider).to eq auth[:provider]
-		expect(user.uid).to eq auth[:uid]
-		expect(user.email).to eq auth[:info][:email]
-		expect(user.name).to eq auth[:info][:name]
-		expect(user.role).to eq 'requestor'
-		expect(user.is_admin).to eq false
+	describe 'get slack username' do
+		context 'when there is no user with the email in slack veritrans' do
+			before :each do
+				user_slack = UserSlack.new('salah', Profile.new('e' + user.email))
+				@users_list = UserList.new([user_slack])
+				Slack::Web::Client.any_instance.stub(users_list: @users_list)
+			end
+
+			it 'will return nil' do
+				expect(user.send(:get_slack_username)).to eq nil
+			end
+		end
+
+		context 'when the user has been logged in to slack veritrans' do
+			before :each do
+				@slack_username = 'patrick.star'
+				user_slack = UserSlack.new(@slack_username, Profile.new(user.email))
+				@users_list = UserList.new([user_slack])
+				Slack::Web::Client.any_instance.stub(users_list: @users_list)
+			end
+
+			it 'will return the username' do
+				expect(user.send(:get_slack_username)).to eq @slack_username
+			end
+		end
 	end
+
 
 	it "expired? method will return true if user token has been expired" do
 		user = FactoryGirl.create(:user, :expired_at => Time.now - 1.hour)
@@ -88,7 +134,6 @@ describe User do
 
 
 	it "fresh_token method will return current token if not expired" do
-		user = FactoryGirl.create(:user)
 		expect(user.fresh_token).to eq '123456'
 	end
 
