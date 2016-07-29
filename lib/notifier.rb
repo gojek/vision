@@ -26,7 +26,6 @@ class Notifier
     	Notification.create({
     		user: receiver,
     		change_request: change_request,
-    		read: false,
     		message: message
     		})
     end
@@ -44,31 +43,21 @@ class Notifier
   		Notification.create({
   			user: receiver,
   			incident_report: incident_report,
-  			read: false,
   			message: message
   			})
 	  end
 	end
 
   def self.cr_read(user,change_request)
-    id = user.id
-    cr_id = change_request.id
-    Notification.where(:user_id => id,:change_request_id => cr_id).update_all(:read => true)
+    user.notifications.where(change_request: change_request).delete_all
   end
 
   def self.ir_read(user, incident_report)
-    id = user.id
-    ir_id = incident_report.id
-    Notification.where(:user_id => id, :incident_report_id => ir_id).update_all(:read => true)
+    user.notifications.where(incident_report: incident_report).delete_all
   end
 
   def self.mark_all_as_read(user)
-    user.notifications.cr.each do |cr|
-      cr.update(read: true)
-    end
-    user.notifications.ir.each do |ir|
-      ir.update(read: true)
-    end
+    user.notifications.delete_all
   end
 
 end

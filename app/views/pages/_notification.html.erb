@@ -1,9 +1,9 @@
 <li class="dropdown dropdown-accordion messages-menu" data-accordion="#accordion">
   <a  href="#" data-toggle="dropdown">
     Change Request
-    <% if current_user.notifications.cr.unread.count > 0 %>
-     <span id="notif-cr" class="label label-success"><%= current_user.notifications.cr.unread.count%></span>
-     <% n_cr = current_user.notifications.cr.unread %>
+    <% if current_user.notifications.cr.count > 0 %>
+     <span id="notif-cr" class="label label-success"><%= current_user.notifications.cr.count%></span>
+     <% n_cr = current_user.notifications.cr %>
     </a>
   <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
     <li>

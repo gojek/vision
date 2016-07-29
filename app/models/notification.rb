@@ -2,7 +2,6 @@ class Notification < ActiveRecord::Base
   belongs_to :user
   belongs_to :change_request
   belongs_to :incident_report
-  scope :unread, -> { where(:read => false) }
   scope :cr, -> { where(:incident_report_id => nil) }
   scope :new_cr, -> {where(:message => 'new_cr')}
   scope :update_cr, -> {where(:message => 'update_cr')}

@@ -40,33 +40,31 @@ describe Notifier do
   end
 
   describe "Notifier.cr_read" do
-    it 'should change the change request notification read attribute to true' do
-      notification = FactoryGirl.create(:notification, user: user, change_request: change_request, read: false)
+    it 'should delete the specified change request notification' do
+      notification = FactoryGirl.create(:notification, user: user, change_request: change_request)
+      expect(user.notifications.cr.count).to eq 1
       Notifier.cr_read(user, change_request)
-      notification.reload
-      expect(notification.read).to eq true
+      expect(user.notifications.cr.count).to eq 0
     end
   end
 
   describe "Notifier.ir_read" do
-    it 'should change the incident report notification read attribute to true' do
-      notification = FactoryGirl.create(:notification, user: user, incident_report: incident_report, read: false)
+    it 'should delete the specified incident report notification' do
+      notification = FactoryGirl.create(:notification, user: user, incident_report: incident_report)
+      expect(user.notifications.ir.count).to eq 1
       Notifier.ir_read(user, incident_report)
-      notification.reload
-      expect(notification.read).to eq true
+      expect(user.notifications.ir.count).to eq 0
     end
 
   end
 
   describe "Notifier.mark_all_as_read" do
-    it 'should change all notification read attribute to true' do
-      notif_cr = FactoryGirl.create(:notification, user: user, change_request: change_request, read: false)
-      notif_ir = FactoryGirl.create(:notification, user: user, incident_report: incident_report, read: false)
+    it 'should delete the current user all notifications' do
+      notif_cr = FactoryGirl.create(:notification, user: user, change_request: change_request)
+      notif_ir = FactoryGirl.create(:notification, user: user, incident_report: incident_report)
+      expect(user.notifications.count).to eq 2
       Notifier.mark_all_as_read(user)
-      notif_cr.reload
-      notif_ir.reload
-      expect(notif_cr.read).to eq true
-      expect(notif_ir.read).to eq true
+      expect(user.notifications.count).to eq 0
     end
 
   end
