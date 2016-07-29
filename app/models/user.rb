@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
   validates :email, format: { with: /\b[A-Z0-9._%a-z\-]+@veritrans\.co\.id\z/,
                   message: "must be a veritrans account" }
   validates :email, uniqueness: true
-  scope :approvers, -> {where(role: 'approver')} 
+  scope :approvers, -> {where(role: 'approver')}
 
 
   def account_active?
@@ -107,6 +107,6 @@ class User < ActiveRecord::Base
     nil
   end
   def have_notifications?
-    (notifications.cr.unread.count != 0 || notifications.ir.unread.count != 0)
+    (notifications.cr.count != 0 || notifications.ir.count != 0)
   end
 end
