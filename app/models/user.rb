@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :implement_change_requests, join_table: :implementers, class_name: :ChangeRequest
   has_and_belongs_to_many :test_change_requests, join_table: :testers, class_name: :ChangeRequest
   has_many :Comments
-  has_many :notifications
+  has_many :notifications, dependent: :destroy
   has_many :Approvals, :dependent => :destroy
   validates :email, format: { with: /\b[A-Z0-9._%a-z\-]+@veritrans\.co\.id\z/,
                   message: "must be a veritrans account" }
