@@ -475,7 +475,7 @@ DEPENDENCIES
   sunspot_test
   tinymce-rails!
   to_xls-rails
-  turbolinks
+  turbolinks (~> 2.5.3)
   uglifier (>= 1.3.0)
   unicorn
   unread
