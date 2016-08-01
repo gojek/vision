@@ -17,6 +17,7 @@
     <% if current_user.role == 'release_manager' || current_user.is_admin || @change_request.user == current_user ||  current_user.collaborate_change_requests.include?(@change_request)%>
     <%= link_to 'Edit', edit_change_request_path, :class => 'btn btn-primary btn-flat'  %>
     <% end %>
+    <%= link_to 'Duplicate', duplicate_path(@change_request), class: 'btn btn-primary btn-flat' %>
     <%= link_to  print_path, :class => 'btn btn-default btn-flat',data: { no_turbolink: true }, :target => "_blank" do %>
     <i class="fa fa-print"></i> Print
     <%end%>
