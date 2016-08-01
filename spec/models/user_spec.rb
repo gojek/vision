@@ -75,7 +75,7 @@ describe User do
 
 		it "will find the user based on the auth from omniauth if user already registered" do
 			user = FactoryGirl.create(:user)
-			auth = {:provider => 'google_oauth2', :uid => '123456'}
+			auth = {:provider => 'google_oauth2', :uid => user.uid}
 			expect(User.from_omniauth(auth)).to eq user
 		end
 
