@@ -3,7 +3,7 @@ class NotificationsController < ApplicationController
 
   def index
       @active = params[:type]
-      @notifications = current_user.notifications.unread
+      @notifications = current_user.notifications
       @new_cr = @notifications.new_cr
       @update_cr = @notifications.update_cr
       @approved = @notifications.approved

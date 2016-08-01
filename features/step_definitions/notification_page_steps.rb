@@ -1,6 +1,6 @@
 Given(/^I have any change request notifications$/) do
   @cr = FactoryGirl.create(:change_request, user: @current_user)
-  @notifcr = FactoryGirl.create(:notification, user: @current_user, change_request: @cr, read: false, message: 'new_cr')
+  @notifcr = FactoryGirl.create(:notification, user: @current_user, change_request: @cr, message: 'new_cr')
   visit root_path
   page.should have_content("Dashboard")
   page.should have_selector(:xpath, "//span[@id='notif-cr']")
@@ -26,7 +26,7 @@ end
 
 Given(/^I have any incident report notifications$/) do
   @ir = FactoryGirl.create(:incident_report, user: @current_user)
-  @notifir = FactoryGirl.create(:notification, user: @current_user, incident_report: @ir, read: false, message: 'new_ir')
+  @notifir = FactoryGirl.create(:notification, user: @current_user, incident_report: @ir, message: 'new_ir')
   visit root_path
   page.should have_content("Dashboard")
   page.should have_selector(:xpath, "//span[@id='notif-ir']")
