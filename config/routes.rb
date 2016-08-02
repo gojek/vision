@@ -102,6 +102,7 @@ Rails.application.routes.draw do
   get 'search/:q' => 'change_requests#search', :as => 'search'
 
   get 'notifications/index' => 'notifications#index'
+  get 'create_hotfix/:id' => 'change_requests#create_hotfix', :as => 'create_hotfix'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
