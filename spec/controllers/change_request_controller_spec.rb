@@ -160,12 +160,12 @@ describe ChangeRequestsController do
       context 'when exporting fulltext search results' do
         let(:change_request) {FactoryGirl.create(:change_request, business_justification: 'asdasd')}
         let(:other_cr) {FactoryGirl.create(:change_request, business_justification: 'asdasd')}
-        
+
         before :each do
           allow(ChangeRequest).to receive(:solr_search).and_return(SolrResultStub.new([change_request, other_cr]))
         end
 
-        it 'call1 fulltext search solr function' do
+        it 'exporting specific cr from fulltext results' do
           get :export_csv, search: "asdasd"
           expect(assigns(:change_requests)).to match_array([change_request, other_cr])
         end
