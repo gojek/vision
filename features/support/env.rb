@@ -5,14 +5,8 @@
 # files.
 
 require 'cucumber/rails'
-<<<<<<< da43eabc2c2b8cff9279ac097cb3dbd2a96d9f00
-<<<<<<< b59c0977242b88bf742c5172176160a7b668d228
 require 'sunspot_test/cucumber'
-=======
->>>>>>> Resolved conflict when cherrypicking
-=======
-require 'capybara-screenshot/cucumber'
->>>>>>> Added cucumber testing for autocomplete functionality
+
 
 
 ENV["RAILS_ENV"] ||= "cucumber"
@@ -67,10 +61,3 @@ end
 # The :transaction strategy is faster, but might give you threading problems.
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
 Cucumber::Rails::Database.javascript_strategy = :truncation
-<<<<<<< da43eabc2c2b8cff9279ac097cb3dbd2a96d9f00
-<<<<<<< b59c0977242b88bf742c5172176160a7b668d228
-=======
-
->>>>>>> Resolved conflict when cherrypicking
-=======
->>>>>>> Added cucumber testing for autocomplete functionality

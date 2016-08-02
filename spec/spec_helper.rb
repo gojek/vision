@@ -1,5 +1,5 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
-require 'capybara-screenshot/cucumber'
+# require 'capybara-screenshot/cucumber'
 require 'simplecov'
 SimpleCov.start 'rails'
 ENV["RAILS_ENV"] ||= 'test'
