@@ -1,5 +1,7 @@
 require 'spec_helper'
 
-describe Notification do
-  pending "add some examples to (or delete) #{__FILE__}"
+describe Notification, type: :model do
+  it { should belong_to(:change_request)}
+  it { should belong_to(:incident_report)}
+  it { should belong_to(:user)}
 end
