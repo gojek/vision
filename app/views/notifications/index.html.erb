@@ -1,6 +1,3 @@
-<% array_cr_scope = [@new_cr, @update_cr, @approved, @rejected, @final_rejected, @cancelled, @scheduled, @deployed, @closed, @rollbacked, @comment]%>
-<% array_ir_scope = [@new_ir, @resolved_ir] %>
-<% title = Hash[@new_cr, 'New', @update_cr, 'Updated', @approved, 'Approved', @rejected, 'Rejected', @final_rejected, 'Final Rejected', @cancelled, 'Cancelled', @scheduled, 'Scheduled', @deployed, 'Deployed', @closed, 'Closed', @rollbacked, 'Rollbacked', @comment, 'Comment', @new_ir, 'New', @resolved_ir, 'Resolved'] %>
 <section class="content-header">
   <h1>Notifications</h1>
 </section>
@@ -21,16 +18,16 @@
             </ul>
           </div>
         </div>
-        <div class="box-body" style=' overflow-y: auto; overflow-x: hidden'>
+        <div class="box-body" style=' overflow-x: hidden'>
           <div class='tab-content'>
             <div id='change_request' class='tab-pane fade in <%= 'active' if @active == 'cr' %>'>
               <div class='row'>
                 <% if @have_cr_notif %>
                 <div class='col-sm-12'>
                   <ul id='cr-list' class='nav nav-tabs'>
-                    <% array_cr_scope.each do |cr_scope| %>
+                    <% @array_cr_scope.each do |cr_scope| %>
                       <% if cr_scope.count > 0 %>
-                      <li> <a href="#<%= title[cr_scope]%>" data-toggle="tab"> <%=title[cr_scope]%>
+                      <li> <a href="#<%= @title[cr_scope]%>" data-toggle="tab"> <%=@title[cr_scope]%>
                         <span class="label label-success"> <%= cr_scope.count%></span>
                       </a></li>
                       <% end %>
@@ -38,9 +35,9 @@
                   </ul>
                 </div>
                 <div id='cr-div' class='tab-content'>
-                  <% array_cr_scope.each do |cr_scope| %>
+                  <% @array_cr_scope.each do |cr_scope| %>
                     <% if cr_scope.count > 0 %>
-                    <div id='<%=title[cr_scope]%>' class='tab-pane fade in col-sm-12'>
+                    <div id='<%=@title[cr_scope]%>' class='tab-pane fade in col-sm-12' style='height: 75vh;overflow-y:scroll'>
                       <table class="table table-hover">
                         <tr>
                           <th> ID </th>
@@ -77,9 +74,9 @@
                 <% if @have_ir_notif %>
                 <div class='col-sm-12'>
                   <ul id='ir-list' class='nav nav-tabs'>
-                    <% array_ir_scope.each do |ir_scope| %>
+                    <% @array_ir_scope.each do |ir_scope| %>
                       <% if ir_scope.count > 0 %>
-                      <li> <a href="#<%= title[ir_scope]%>" data-toggle="tab"> <%=title[ir_scope]%>
+                      <li> <a href="#<%= @title[ir_scope]%>" data-toggle="tab"> <%=@title[ir_scope]%>
                         <span class="label label-success"> <%= ir_scope.count%></span>
                       </a></li>
                       <% end %>
@@ -87,9 +84,9 @@
                   </ul>
                 </div>
                 <div id='ir-div' class='tab-content'>
-                  <% array_ir_scope.each do |ir_scope| %>
+                  <% @array_ir_scope.each do |ir_scope| %>
                   <% if ir_scope.count > 0 %>
-                  <div id='<%= title[ir_scope]%>' class='tab-pane fade in col-sm-12'>
+                  <div id='<%= @title[ir_scope]%>' class='tab-pane fade in col-sm-12' style='height: 75vh;overflow-y:scroll'>
                     <table class="table table-hover">
                       <tr>
                         <th> ID </th>
