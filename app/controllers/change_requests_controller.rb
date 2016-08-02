@@ -236,6 +236,21 @@ class ChangeRequestsController < ApplicationController
 
   end
 
+  def create_hotfix
+    @change_request = ChangeRequest.new
+    @reference_cr = ChangeRequest.find(params[:id])
+    @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
+    @current_tags = []
+    @current_collaborators = []
+    @current_approvers = []
+    @users = User.all.collect{|u| [u.name, u.id]}
+    @approvers = User.approvers.collect{|u| [u.name, u.id]}
+    @current_implementers = []
+    @current_testers = []
+    @change_request.reference_cr_id = ChangeRequest.find(params[:id])
+    render 'new'
+  end
+
   respond_to :json
   def change_requests_by_success_rate
     #default status is weekly
