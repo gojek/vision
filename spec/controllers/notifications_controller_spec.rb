@@ -44,7 +44,6 @@ describe NotificationsController do
       notification = FactoryGirl.create(:notification, user: user, change_request: cr, message: 'new_cr')
       get :index, type: 'cr'
       expect(assigns(:notifications).count).to eq 1
-      expect(assigns(:tabactive)[0]).to eq true
       expect(assigns(:have_cr_notif)).to eq true
     end
 
@@ -59,7 +58,6 @@ describe NotificationsController do
       notification = FactoryGirl.create(:notification, user: user, incident_report: ir, message: 'new_ir')
       get :index, type: 'ir'
       expect(assigns(:notifications).count).to eq 1
-      expect(assigns(:iractive)[0]).to eq true
       expect(assigns(:have_ir_notif)).to eq true
     end
 
