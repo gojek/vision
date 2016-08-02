@@ -23,16 +23,19 @@ class ChangeRequestsController < ApplicationController
 
   def export_csv
     @change_requests = []
-    if params[:tag_list]
+    if params[:q]
       @q = ChangeRequest.ransack(params[:q])
-      @change_requests = @q.result(distinct: true).tagged_with(params[:tag_list]).order(id: :desc)
-    elsif params[:q]
-      if current_user.role == 'release_manager' || current_user.role == 'approver'
-        @q = ChangeRequest.ransack(params[:q])
+      if params[:tag_list]
+        @change_requests = @q.result(distinct: true).tagged_with(params[:tag_list]).order(id: :desc)
       else
-        @q = ChangeRequest.where(user_id: current_user.id).ransack(params[:q])
+        @change_requests = @q.result(distinct: true).order(id: :desc)
       end
-       @change_requests = @q.result(distinct: true).order(id: :desc)
+    elsif params[:search]
+      search = ChangeRequest.solr_search do
+        fulltext params[:search]
+        order_by :created_at, :desc
+      end
+      @change_requests = search.results
     else
       @change_requests = ChangeRequest.all
     end
