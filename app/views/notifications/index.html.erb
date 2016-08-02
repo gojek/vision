@@ -1,3 +1,6 @@
+<% array_cr_scope = [@new_cr, @update_cr, @approved, @rejected, @final_rejected, @cancelled, @scheduled, @deployed, @closed, @rollbacked, @comment]%>
+<% array_ir_scope = [@new_ir, @resolved_ir] %>
+<% title = Hash[@new_cr, 'New', @update_cr, 'Updated', @approved, 'Approved', @rejected, 'Rejected', @final_rejected, 'Final Rejected', @cancelled, 'Cancelled', @scheduled, 'Scheduled', @deployed, 'Deployed', @closed, 'Closed', @rollbacked, 'Rollbacked', @comment, 'Comment', @new_ir, 'New', @resolved_ir, 'Resolved'] %>
 <section class="content-header">
   <h1>Notifications</h1>
 </section>
@@ -25,283 +28,37 @@
                 <% if @have_cr_notif %>
                 <div class='col-sm-12'>
                   <ul id='cr-list' class='nav nav-tabs'>
-                    <% if @new_cr.count > 0 %>
-                    <li> <a href='#new_cr' data-toggle="tab"> New
-                      <span class="label label-success"> <%= @new_cr.count%></span>
-                    </a></li>
-                    <% end %>
-                    <% if @update_cr.count > 0 %>
-                    <li> <a href='#update_cr' data-toggle="tab"> Updated
-                      <span class="label label-success"><%= @update_cr.count%></span>
-                    </a></li>
-                    <% end %>
-                    <% if @approved.count > 0 %>
-                    <li> <a href='#cr_approved' data-toggle="tab">Approved
-                      <span class="label label-success"><%= @approved.count%></span>
-                    </a></li>
-                    <% end %>
-                    <% if @rejected.count > 0 %>
-                    <li> <a href='#cr_rejected' data-toggle="tab">Rejected
-                      <span class="label label-success"><%= @rejected.count%></span>
-                    </a></li>
-                    <% end %>
-                    <% if @final_rejected.count > 0 %>
-                    <li> <a href='#cr_final_rejected' data-toggle="tab">Final Rejected
-                      <span class="label label-success"><%= @final_rejected.count%></span>
-                    </a></li>
-                    <% end %>
-                      <% if @cancelled.count > 0 %>
-                    <li> <a href='#cr_cancelled' data-toggle="tab">Cancelled
-                      <span class="label label-success"><%= @cancelled.count%></span>
-                    </a></li>
-                    <% end %>
-                    <% if @scheduled.count > 0 %>
-                    <li> <a href='#cr_scheduled' data-toggle="tab">Scheduled
-                      <span class="label label-success"><%= @scheduled.count%></span>
-                    </a></li>
-                    <% end %>
-                    <% if @deployed.count > 0 %>
-                    <li> <a href='#cr_deployed' data-toggle="tab">Deployed
-                      <span class="label label-success"><%= @deployed.count%></span>
-                    </a></li>
-                    <% end %>
-                    <% if @closed.count > 0 %>
-                    <li> <a href='#cr_closed' data-toggle="tab">Closed
-                      <span class="label label-success"><%= @closed.count%></span>
-                    </a></li>
-                    <% end %>
-                    <% if @rollbacked.count > 0 %>
-                    <li> <a href='#cr_rollbacked' data-toggle="tab">Rollbacked
-                      <span class="label label-success"><%= @rollbacked.count%></span>
-                    </a></li>
-                    <% end %>
-                    <% if @comment.count > 0 %>
-                    <li> <a href='#comment_cr' data-toggle="tab">Comments
-                      <span class="label label-success"><%= @comment.count%></span>
-                    </a></li>
+                    <% array_cr_scope.each do |cr_scope| %>
+                      <% if cr_scope.count > 0 %>
+                      <li> <a href="#<%= title[cr_scope]%>" data-toggle="tab"> <%=title[cr_scope]%>
+                        <span class="label label-success"> <%= cr_scope.count%></span>
+                      </a></li>
+                      <% end %>
                     <% end %>
                   </ul>
                 </div>
                 <div id='cr-div' class='tab-content'>
-                  <% if @new_cr.count > 0 %>
-                  <div id='new_cr' class='tab-pane fade in col-sm-12'>
-                    <table class="table table-hover">
-                      <tr>
-                        <th> ID </th>
-                        <th> Change Summary </th>
-                        <th> Requestor </th>
-                        <th> Time created </th>
-                      </tr>
-                      <% @new_cr.each do |n_cr| %>
+                  <% array_cr_scope.each do |cr_scope| %>
+                    <% if cr_scope.count > 0 %>
+                    <div id='<%=title[cr_scope]%>' class='tab-pane fade in col-sm-12'>
+                      <table class="table table-hover">
                         <tr>
-                          <td> <%= link_to n_cr.change_request.id, n_cr.change_request %> </td>
-                          <td> <%= link_to n_cr.change_request.change_summary, n_cr.change_request %></td>
-                          <td> <%= n_cr.change_request.user.name %> </td>
-                          <td> <%= distance_of_time_in_words(n_cr.created_at, Time.now) %> </td>
+                          <th> ID </th>
+                          <th> Change Summary </th>
+                          <th> Requestor </th>
+                          <th> Time created </th>
                         </tr>
-                      <% end %>
-                    </table>
-                  </div>
-                  <% end %>
-                  <% if @update_cr.count > 0 %>
-                  <div id='update_cr' class='tab-pane fade in col-sm-12'>
-                    <table class="table table-hover">
-                      <tr>
-                        <th> ID </th>
-                        <th> Change Summary </th>
-                        <th> Requestor </th>
-                        <th> Time created </th>
-                      </tr>
-                      <% @update_cr.each do |n_cr| %>
-                        <tr>
-                          <td> <%= link_to n_cr.change_request.id, n_cr.change_request %> </td>
-                          <td> <%= link_to n_cr.change_request.change_summary, n_cr.change_request %></td>
-                          <td> <%= n_cr.change_request.user.name %> </td>
-                          <td> <%= distance_of_time_in_words(n_cr.created_at, Time.now) %> </td>
-                        </tr>
-                      <% end %>
-                    </table>
-                  </div>
-                  <% end %>
-                  <% if @approved.count > 0 %>
-                  <div id='cr_approved' class='tab-pane fade in col-sm-12'>
-                    <table class="table table-hover">
-                      <tr>
-                        <th> ID </th>
-                        <th> Change Summary </th>
-                        <th> Requestor </th>
-                        <th> Time created </th>
-                      </tr>
-                      <% @approved.each do |n_cr| %>
-                        <tr>
-                          <td> <%= link_to n_cr.change_request.id, n_cr.change_request %> </td>
-                          <td> <%= link_to n_cr.change_request.change_summary, n_cr.change_request %></td>
-                          <td> <%= n_cr.change_request.user.name %> </td>
-                          <td> <%= distance_of_time_in_words(n_cr.created_at, Time.now) %> </td>
-                        </tr>
-                      <% end %>
-                    </table>
-                  </div>
-                  <% end %>
-                  <% if @rejected.count > 0 %>
-                  <div id='cr_rejected' class='tab-pane fade in col-sm-12'>
-                    <table class="table table-hover">
-                      <tr>
-                        <th> ID </th>
-                        <th> Change Summary </th>
-                        <th> Requestor </th>
-                        <th> Time created </th>
-                      </tr>
-                      <% @rejected.each do |n_cr| %>
-                        <tr>
-                          <td> <%= link_to n_cr.change_request.id, n_cr.change_request %> </td>
-                          <td> <%= link_to n_cr.change_request.change_summary, n_cr.change_request %></td>
-                          <td> <%= n_cr.change_request.user.name %> </td>
-                          <td> <%= distance_of_time_in_words(n_cr.created_at, Time.now) %> </td>
-                        </tr>
-                      <% end %>
-                    </table>
-                  </div>
-                  <% end %>
-                  <% if @final_rejected.count > 0 %>
-                  <div id='cr_final_rejected' class='tab-pane fade in col-sm-12'>
-                    <table class="table table-hover">
-                      <tr>
-                        <th> ID </th>
-                        <th> Change Summary </th>
-                        <th> Requestor </th>
-                        <th> Time created </th>
-                      </tr>
-                      <% @final_rejected.each do |n_cr| %>
-                        <tr>
-                          <td> <%= link_to n_cr.change_request.id, n_cr.change_request %> </td>
-                          <td> <%= link_to n_cr.change_request.change_summary, n_cr.change_request %></td>
-                          <td> <%= n_cr.change_request.user.name %> </td>
-                          <td> <%= distance_of_time_in_words(n_cr.created_at, Time.now) %> </td>
-                        </tr>
-                      <% end %>
-                    </table>
-                  </div>
-                  <% end %>
-                  <% if @cancelled.count > 0 %>
-                  <div id='cr_cancelled' class='tab-pane fade in col-sm-12'>
-                    <table class="table table-hover">
-                      <tr>
-                        <th> ID </th>
-                        <th> Change Summary </th>
-                        <th> Requestor </th>
-                        <th> Time created </th>
-                      </tr>
-                      <% @cancelled.each do |n_cr| %>
-                        <tr>
-                          <td> <%= link_to n_cr.change_request.id, n_cr.change_request %> </td>
-                          <td> <%= link_to n_cr.change_request.change_summary, n_cr.change_request %></td>
-                          <td> <%= n_cr.change_request.user.name %> </td>
-                          <td> <%= distance_of_time_in_words(n_cr.created_at, Time.now) %> </td>
-                        </tr>
-                      <% end %>
-                    </table>
-                  </div>
-                  <% end %>
-                  <% if @scheduled.count > 0 %>
-                  <div id='cr_scheduled' class='tab-pane fade in col-sm-12'>
-                    <table class="table table-hover">
-                      <tr>
-                        <th> ID </th>
-                        <th> Change Summary </th>
-                        <th> Requestor </th>
-                        <th> Time created </th>
-                      </tr>
-                      <% @scheduled.each do |n_cr| %>
-                        <tr>
-                          <td> <%= link_to n_cr.change_request.id, n_cr.change_request %> </td>
-                          <td> <%= link_to n_cr.change_request.change_summary, n_cr.change_request %></td>
-                          <td> <%= n_cr.change_request.user.name %> </td>
-                          <td> <%= distance_of_time_in_words(n_cr.created_at, Time.now) %> </td>
-                        </tr>
-                      <% end %>
-                    </table>
-                  </div>
-                  <% end %>
-                  <% if @deployed.count > 0 %>
-                  <div id='cr_deployed' class='tab-pane fade in col-sm-12'>
-                    <table class="table table-hover">
-                      <tr>
-                        <th> ID </th>
-                        <th> Change Summary </th>
-                        <th> Requestor </th>
-                        <th> Time created </th>
-                      </tr>
-                      <% @deployed.each do |n_cr| %>
-                        <tr>
-                          <td> <%= link_to n_cr.change_request.id, n_cr.change_request %> </td>
-                          <td> <%= link_to n_cr.change_request.change_summary, n_cr.change_request %></td>
-                          <td> <%= n_cr.change_request.user.name %> </td>
-                          <td> <%= distance_of_time_in_words(n_cr.created_at, Time.now) %> </td>
-                        </tr>
-                      <% end %>
-                    </table>
-                  </div>
-                  <% end %>
-                  <% if @closed.count > 0 %>
-                  <div id='cr_closed' class='tab-pane fade in col-sm-12'>
-                    <table class="table table-hover">
-                      <tr>
-                        <th> ID </th>
-                        <th> Change Summary </th>
-                        <th> Requestor </th>
-                        <th> Time created </th>
-                      </tr>
-                      <% @closed.each do |n_cr| %>
-                        <tr>
-                          <td> <%= link_to n_cr.change_request.id, n_cr.change_request %> </td>
-                          <td> <%= link_to n_cr.change_request.change_summary, n_cr.change_request %></td>
-                          <td> <%= n_cr.change_request.user.name %> </td>
-                          <td> <%= distance_of_time_in_words(n_cr.created_at, Time.now) %> </td>
-                        </tr>
-                      <% end %>
-                    </table>
-                  </div>
-                  <% end %>
-                  <% if @rollbacked.count > 0 %>
-                  <div id='cr_rollbacked' class='tab-pane fade in col-sm-12'>
-                    <table class="table table-hover">
-                      <tr>
-                        <th> ID </th>
-                        <th> Change Summary </th>
-                        <th> Requestor </th>
-                        <th> Time created </th>
-                      </tr>
-                      <% @rollbacked.each do |n_cr| %>
-                        <tr>
-                          <td> <%= link_to n_cr.change_request.id, n_cr.change_request %> </td>
-                          <td> <%= link_to n_cr.change_request.change_summary, n_cr.change_request %></td>
-                          <td> <%= n_cr.change_request.user.name %> </td>
-                          <td> <%= distance_of_time_in_words(n_cr.created_at, Time.now) %> </td>
-                        </tr>
-                      <% end %>
-                    </table>
-                  </div>
-                  <% end %>
-                  <% if @comment.count > 0 %>
-                  <div id='comment_cr' class='tab-pane fade in col-sm-12'>
-                    <table class="table table-hover">
-                      <tr>
-                        <th> ID </th>
-                        <th> Change Summary </th>
-                        <th> Requestor </th>
-                        <th> Time created </th>
-                      </tr>
-                      <% @comment.each do |n_cr| %>
-                        <tr>
-                          <td> <%= link_to n_cr.change_request.id, n_cr.change_request %> </td>
-                          <td> <%= link_to n_cr.change_request.change_summary, n_cr.change_request %></td>
-                          <td> <%= n_cr.change_request.user.name %> </td>
-                          <td> <%= distance_of_time_in_words(n_cr.created_at, Time.now) %> </td>
-                        </tr>
-                      <% end %>
-                    </table>
-                  </div>
+                        <% cr_scope.each do |n_cr| %>
+                          <tr>
+                            <td> <%= link_to n_cr.change_request.id, n_cr.change_request %> </td>
+                            <td> <%= link_to n_cr.change_request.change_summary, n_cr.change_request %></td>
+                            <td> <%= n_cr.change_request.user.name %> </td>
+                            <td> <%= distance_of_time_in_words(n_cr.created_at, Time.now) %> </td>
+                          </tr>
+                        <% end %>
+                      </table>
+                    </div>
+                    <% end %>
                   <% end %>
                 </div>
                 <% else %>
@@ -315,27 +72,24 @@
                 <% end %>
               </div>
             </div>
-
             <div id='incident_report'  class='tab-pane fade in <%= 'active' if @active != 'cr' %>'>
               <div class='row'>
                 <% if @have_ir_notif %>
                 <div class='col-sm-12'>
                   <ul id='ir-list' class='nav nav-tabs'>
-                    <% if @new_ir.count > 0 %>
-                    <li> <a href='#new_ir' data-toggle="tab"> New
-                      <span class="label label-success"> <%= @new_ir.count%></span>
-                    </a></li>
-                    <% end %>
-                    <% if @resolved_ir.count > 0 %>
-                    <li> <a href='#resolved_ir' data-toggle="tab"> Resolved
-                      <span class="label label-success"> <%= @resolved_ir.count%></span>
-                    </a></li>
+                    <% array_ir_scope.each do |ir_scope| %>
+                      <% if ir_scope.count > 0 %>
+                      <li> <a href="#<%= title[ir_scope]%>" data-toggle="tab"> <%=title[ir_scope]%>
+                        <span class="label label-success"> <%= ir_scope.count%></span>
+                      </a></li>
+                      <% end %>
                     <% end %>
                   </ul>
                 </div>
                 <div id='ir-div' class='tab-content'>
-                  <% if @new_ir.count > 0 %>
-                  <div id='new_ir' class='tab-pane fade in col-sm-12'>
+                  <% array_ir_scope.each do |ir_scope| %>
+                  <% if ir_scope.count > 0 %>
+                  <div id='<%= title[ir_scope]%>' class='tab-pane fade in col-sm-12'>
                     <table class="table table-hover">
                       <tr>
                         <th> ID </th>
@@ -343,7 +97,7 @@
                         <th> Reporter </th>
                         <th> Time created </th>
                       </tr>
-                      <% @new_ir.each do |n_ir| %>
+                      <% ir_scope.each do |n_ir| %>
                         <tr>
                           <td> <%= link_to n_ir.incident_report.id, n_ir.incident_report %> </td>
                           <td> <%= link_to n_ir.incident_report.service_impact, n_ir.incident_report %></td>
@@ -354,25 +108,6 @@
                     </table>
                   </div>
                   <% end %>
-                  <% if @resolved_ir.count > 0 %>
-                  <div id='resolved_ir' class='tab-pane fade in col-sm-12'>
-                    <table class="table table-hover">
-                      <tr>
-                        <th> ID </th>
-                        <th> Service Impacted </th>
-                        <th> Reporter </th>
-                        <th> Time created </th>
-                      </tr>
-                      <% @resolved_ir.each do |n_ir| %>
-                        <tr>
-                          <td> <%= link_to n_ir.incident_report.id, n_ir.incident_report %> </td>
-                          <td> <%= link_to n_ir.incident_report.service_impact, n_ir.incident_report %></td>
-                          <td> <%= n_ir.incident_report.user.name %> </td>
-                          <td> <%= distance_of_time_in_words(n_ir.created_at, Time.now) %> </td>
-                        </tr>
-                      <% end %>
-                    </table>
-                  </div>
                   <% end %>
                 </div>
                 <% else %>
