@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe ChangeRequest do
+	it { should have_many(:notifications).dependent(:destroy) }
 	it "initial state is submitted when first created" do
 		change_request = FactoryGirl.create(:change_request)
 		expect(change_request.aasm_state).to eq "submitted"
@@ -37,5 +38,4 @@ describe ChangeRequest do
 	 	change_request = FactoryGirl.build(:change_request, type_install_uninstall:nil, type_other:nil)
 	 	expect(change_request.at_least_one_type).to match_array(["Please choose at least one type."])
 	 end
-
 end

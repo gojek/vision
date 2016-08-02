@@ -100,6 +100,7 @@ group :development, :test do
 end
 
 group :test do
+  gem 'shoulda-matchers', '~> 3.1'
   gem 'capybara'
   gem 'capybara-screenshot'
   gem 'database_cleaner'
