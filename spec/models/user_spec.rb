@@ -2,13 +2,12 @@ require 'spec_helper'
 
 describe User do
 	let(:user) {FactoryGirl.create(:user)}
-
 	before :all do
 		UserList = Struct.new("UserList", :members)
 		Profile = Struct.new("Profile", :email)
 		UserSlack = Struct.new("UserSlack", :name, :profile)
 	end
-
+	it { should have_many(:notifications).dependent(:destroy) }
 	it "is valid with one of these role : approver, requestor, release_manager" do
 		other_user = FactoryGirl.build(:user, role: 'approver')
 		another_user = FactoryGirl.build(:user, role: 'release_manager')
