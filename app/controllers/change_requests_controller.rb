@@ -49,11 +49,10 @@ class ChangeRequestsController < ApplicationController
     @current_tags = []
     @current_collaborators = []
     @current_approvers = []
-
-    @users = User.all.collect{|u| [u.name, u.id]}
-    @approvers = User.approvers.collect{|u| [u.name, u.id]}
     @current_implementers = []
     @current_testers = []
+    @users = User.all.collect{|u| [u.name, u.id]}
+    @approvers = User.approvers.collect{|u| [u.name, u.id]}
   end
 
   def edit
@@ -79,43 +78,18 @@ class ChangeRequestsController < ApplicationController
 
   def create
     @change_request = current_user.ChangeRequests.build(change_request_params)
-
-    #Populating approver list
-    @approvers_list = params[:approvers_list]? params[:approvers_list] : []
-    @change_request.approvals = []
-    @approvers_list.each do |approver|
-      @tmp_user = User.find(approver)
-      @approval = Approval.create(user: @tmp_user, change_request: @change_request)
-      @change_request.approvals << @approval
-    end
-
-    #Populating implementers list
-    @implementers_list = params[:implementers_list]? params[:implementers_list] : []
-    @change_request.implementers = []
-    @implementers_list.each do |implementer_id|
-      @change_request.implementers << User.find(implementer_id)
-    end
-
-    #Populating testers list
-    @testers_list = params[:testers_list]? params[:testers_list] : []
-    @change_request.testers = []
-    @testers_list.each do |tester_id|
-    @change_request.testers << User.find(tester_id)
-  end
-
+    @current_approvers = Array.wrap(params[:approvers_list])
+    @current_implementers = Array.wrap(params[:implementers_list])
+    @current_testers = Array.wrap(params[:testers_list])
+    @current_collaborators = Array.wrap(params[:collaborators_list])
+    @change_request.set_approvers(@current_approvers)
+    @change_request.set_implementers(@current_implementers)
+    @change_request.set_testers(@current_testers)
+    @change_request.set_collaborators(@current_collaborators)
     respond_to do |format|
       if @change_request.save
-
-        @collaborators_list = params[:collaborators_list]? params[:collaborators_list] : []
-        @change_request.collaborators = []
-        @collaborators_list.each do |collaborator_id|
-          @change_request.collaborators << User.find(collaborator_id)
-        end
-
         @status = @change_request.change_request_statuses.new(:status => 'submitted')
         @status.save
-
-        #Notify
         Notifier.cr_notify(current_user, @change_request, 'new_cr')
         link = url_for @change_request
         SlackNotif.notif_new_request @change_request, link
@@ -123,7 +97,6 @@ class ChangeRequestsController < ApplicationController
           UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
           ActiveRecord::Base.connection.close
         end
-        #SendNotifEmailJob.set(wait: 20.seconds).perform_later(@change_request.user, @change_request, @status)
         flash[:create_cr_notice] = 'Change request was successfully created.'
         format.html { redirect_to @change_request }
         format.json { render :show, status: :created, location: @change_request }
@@ -132,11 +105,6 @@ class ChangeRequestsController < ApplicationController
         @current_tags = []
         @users = User.all.collect{|u| [u.name, u.id]}
         @approvers = User.approvers.collect{|u| [u.name, u.id]}
-        @current_collaborators = params[:collaborators_list]? params[:collaborators_list] : []
-        @current_implementers = params[:implementers_list]? params[:implementers_list] : []
-        @current_testers = params[:testers_list]? params[:testers_list] : []
-        @current_approvers = params[:approvers_list]? params[:approvers_list] : []
-
         format.html { render :new }
         format.json { render json: @change_request.errors, status: :unprocessable_entity }
       end
@@ -155,54 +123,23 @@ class ChangeRequestsController < ApplicationController
   end
 
   def update
-
-    #Remove all current approvals assigning
-    @change_request.approvals.delete_all
-
-    #Populating approvers list
-    @approvers_list = params[:approvers_list]? params[:approvers_list] : []
-    @change_request.approvals = []
-    @approvers_list.each do |approver|
-      @tmp_user = User.find(approver)
-      @approval = Approval.create(user: @tmp_user, change_request: @change_request)
-      @change_request.approvals << @approval
-    end
-
-    #Populating testers list
-    @testers_list = params[:testers_list]? params[:testers_list] : []
-    @change_request.testers = []
-    @testers_list.each do |tester_id|
-      @change_request.testers << User.find(tester_id)
-    end
-
-    #Populating implementers list
-    @implementers_list = params[:implementers_list]? params[:implementers_list] : []
-    @change_request.implementers = []
-    @implementers_list.each do |implementer_id|
-      @change_request.implementers << User.find(implementer_id)
-    end
-
+    @current_approvers = Array.wrap(params[:approvers_list])
+    @current_implementers = Array.wrap(params[:implementers_list])
+    @current_testers = Array.wrap(params[:testers_list])
+    @current_collaborators = Array.wrap(params[:collaborators_list])
+    @change_request.set_approvers(@current_approvers)
+    @change_request.set_implementers(@current_implementers)
+    @change_request.set_testers(@current_testers)
+    @change_request.set_collaborators(@current_collaborators)
     respond_to do |format|
       if @change_request.update(change_request_params)
-
-        #Collaborators section
-        @collaborators_list = params[:collaborators_list]? params[:collaborators_list] : []
-        @change_request.collaborators.delete_all
-        @collaborators_list.each do |collaborator_id|
-          @change_request.collaborators << User.find(collaborator_id)
-        end
-
         Notifier.cr_notify(current_user, @change_request, 'update_cr')
         flash[:update_cr_notice] = 'Change request was successfully updated.'
         format.html { redirect_to @change_request }
         format.json { render :show, status: :ok, location: @change_request }
       else
-        @current_tags = @change_request.tag_list
         @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
-        @current_collaborators = @change_request.implementers.collect{|u| u.id}
-        @current_approvers = @change_request.approvals.collect{|a| a.user.name}
-        @current_implementers = @change_request.implementers.collect{|u| u.id}
-        @current_testers = @change_request.testers.collect{|u| u.id}
+        @current_tags = @change_request.tag_list
         @users = User.all.collect{|u| [u.name, u.id]}
         @approvers = User.approvers.collect{|u| [u.name, u.id]}
         format.html { render :edit }
