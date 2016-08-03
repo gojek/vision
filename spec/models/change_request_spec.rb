@@ -1,42 +1,28 @@
 require 'spec_helper'
 
 describe ChangeRequest do
-
-	#shoulda matchers test
-	it { should belong_to(:user)}
-	it { should have_and_belong_to_many(:collaborators) }
-	it { should have_and_belong_to_many(:testers) }
-	it { should have_and_belong_to_many(:implementers) }
-	it { should have_many(:change_request_statuses).dependent(:destroy) }
-	it { should have_many(:approvals).dependent(:destroy) }
-	it { should have_many(:comments).dependent(:destroy) }
-	it { should have_many(:notifications).dependent(:destroy) }
+	let (:change_request) {FactoryGirl.create(:change_request)}
+	let (:user) {FactoryGirl.create(:approver)}
 
 	it "initial state is submitted when first created" do
-		change_request = FactoryGirl.create(:change_request)
 		expect(change_request.aasm_state).to eq "submitted"
 	end
 
 	it "wont be approvable when first created" do
-		change_request = FactoryGirl.create(:change_request)
 		expect(change_request.approvable?).to eq false
 	end
 
 	it "approvers_count will return the count of approvers" do
-		change_request = FactoryGirl.create(:change_request)
 		expect(change_request.approvers_count).to eq 0
 	end
 	it "rejects_count will return the count of rejecters" do
-		change_request =FactoryGirl.build(:change_request)
 		expect(change_request.rejects_count).to eq 0
 	end
 
 	it "all_type will return string contain of all types" do
-		change_request =FactoryGirl.build(:change_request)
 		expect(change_request.all_type).to eq "Install Uninstall, other type"
 	end
 	 it 'all_category will return string contain of all categories' do
-	 	change_request = FactoryGirl.build(:change_request)
 	 	expect(change_request.all_category).to eq "Application, Server"
 	 end
 
@@ -48,4 +34,33 @@ describe ChangeRequest do
 	 	change_request = FactoryGirl.build(:change_request, type_install_uninstall:nil, type_other:nil)
 	 	expect(change_request.at_least_one_type).to match_array(["Please choose at least one type."])
 	 end
+
+	 describe 'set_approvers' do
+	 	it 'set change request approvers' do
+			change_request.set_approvers([user.id])
+			expect(change_request.approvals.first.user).to eq user
+	 	end
+	 end
+
+	 describe 'set_implementers' do
+	 	it 'set change request implementers' do
+			change_request.set_implementers([user.id])
+			expect(change_request.implementers.first).to eq user
+	 	end
+	 end
+
+	 describe 'set_testers' do
+	 	it 'set change request testers' do
+			change_request.set_testers([user.id])
+			expect(change_request.testers.first).to eq user
+	 	end
+	 end
+
+	 describe 'set_collaborators' do
+	 	it 'set change request collaborators' do
+			change_request.set_collaborators([user.id])
+			expect(change_request.collaborators.first).to eq user
+	 	end
+	 end
+
 end
