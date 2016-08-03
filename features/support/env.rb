@@ -6,7 +6,7 @@
 
 require 'cucumber/rails'
 require 'sunspot_test/cucumber'
-
+require 'capybara-screenshot/cucumber'
 
 
 ENV["RAILS_ENV"] ||= "cucumber"

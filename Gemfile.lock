@@ -70,6 +70,9 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    capybara-screenshot (1.0.13)
+      capybara (>= 1.0, < 3)
+      launchy
     celluloid (0.16.0)
       timers (~> 4.0.0)
     childprocess (0.5.9)
