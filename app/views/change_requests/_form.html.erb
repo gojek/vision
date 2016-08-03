@@ -21,6 +21,7 @@
     });
 </script>
 <%= form_for(@change_request) do |f| %>
+  <% f.hidden_field :reference_cr_id, value: @change_request.reference_cr_id %>
   <% if @change_request.errors.any? %>
     <div id="error_explanation">
       <h3><%= pluralize(@change_request.errors.count, "error") %> prohibited this change_request from being saved:</h3>

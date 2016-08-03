@@ -4,6 +4,7 @@ class ChangeRequestsController < ApplicationController
   before_action :owner_required, only: [:edit, :update, :destroy]
   before_action :not_closed_required, only: [:destroy]
   before_action :submitted_required, only: [:edit]
+  before_action :reference_rollbacked_required, only: [:create_hotfix]
   require 'notifier.rb'
   require 'slack_notif.rb'
 
@@ -44,6 +45,7 @@ class ChangeRequestsController < ApplicationController
       #the status of cr approval, it can be : true, false or nil (nil is not decided yet by approver)
       @approved = approve.approve
     end
+    @hotfixes = ChangeRequest.where(reference_cr_id: @change_request.id)
     #Notifier.mark_as_read(notifica)
     @usernames = []
     User.all.each do |user|
@@ -233,12 +235,10 @@ class ChangeRequestsController < ApplicationController
     @change_request.grace_period_starts = nil
     @change_request.grace_period_end = nil
     render 'new'
-
   end
 
   def create_hotfix
     @change_request = ChangeRequest.new
-    @reference_cr = ChangeRequest.find(params[:id])
     @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
     @current_tags = []
     @current_collaborators = []
@@ -247,7 +247,7 @@ class ChangeRequestsController < ApplicationController
     @approvers = User.approvers.collect{|u| [u.name, u.id]}
     @current_implementers = []
     @current_testers = []
-    @change_request.reference_cr_id = ChangeRequest.find(params[:id])
+    @change_request.reference_cr_id = @reference_cr.id
     render 'new'
   end
 
@@ -351,7 +351,7 @@ class ChangeRequestsController < ApplicationController
     end
 
     def change_request_params
-      params.require(:change_request).permit(:change_summary, :priority, :db,
+      params.require(:change_request).permit(:reference_cr_id, :change_summary, :priority, :db,
             :os, :net, :category, :cr_type, :change_requirement,
             :business_justification, :note, :analysis,
             :solution, :impact, :scope, :design, :backup,
@@ -383,6 +383,10 @@ class ChangeRequestsController < ApplicationController
     end
     def not_closed_required
       redirect_to change_requests_path unless !@change_request.closed?
+    end
+    def reference_rollbacked_required
+      @reference_cr = ChangeRequest.find(params[:id])
+      redirect_to change_requests_path unless @reference_cr.rollbacked?
     end
 
 end
