@@ -23,10 +23,6 @@ class Mentioner
     return mentionees
   end
 
-  def self.yay
-    puts "yay"
-  end
-
   def self.handle_regexp
     /(?<!\w)#{mention_prefix}[\w\.]+/
   end
