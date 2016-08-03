@@ -3,7 +3,7 @@
   <h1>
     Change Request
     <% if !@change_request.reference_cr_id.nil? %>
-      - Reference to <%= link_to "Change Request #{@change_request.reference_cr_id}", ChangeRequest.find(@change_request.reference_cr_id)%>
+      - Reference to <%= link_to "Change Request ##{@change_request.reference_cr_id}", ChangeRequest.find(@change_request.reference_cr_id)%>
     <% end %>
   </h1>
 </section>

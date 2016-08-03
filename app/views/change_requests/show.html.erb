@@ -1,7 +1,10 @@
-
 <section class="content-header">
   <h1>
   Change Request #<%= @change_request.id %>
+
+    <% if !@change_request.reference_cr_id.nil? %>
+      - Reference to <%= link_to "Change Request ##{@change_request.reference_cr_id}", ChangeRequest.find(@change_request.reference_cr_id)%>
+    <% end %>
     <% if @change_request.aasm_state == 'cancelled' || @change_request.aasm_state == 'rollbacked' || @change_request.aasm_state == 'rejected' %>
       <div class= "pull-right label label-danger" >
     <% elsif @change_request.aasm_state == 'deployed' %>
@@ -492,7 +495,9 @@
       </div><!--box-->
     </div><!--col-->
   </div><!--row-->
+  <div class='row'>
 
+  </div>
   <div class='row'>
     <div class='col-lg-6 col-xs-12'>
       <div class="box box-default">
@@ -533,10 +538,43 @@
         </div><!--/box-footer-->
       </div><!--/box-->
     </div><!--/col-->
+    <%if !@hotfixes.empty? %>
+    <div class='col-lg-6 col-xs-12'>
+      <div class="box box-default">
+        <div class='box-header with-border'>
+          <h3 class='box-title'>Hotfixes</h3>
+        </div><!--box-header-->
+        <div class="box-body">
+          Below are the change requests that fixes this change request after being rollbacked
+          <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>ID </th>
+                  <th>Change Summary </th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @hotfixes.each do |hotfix| %>
+                  <tr>
+                    <td><%= link_to hotfix.id, hotfix %></td>
+                    <td><%= hotfix.change_summary %></td>
+                    <td><%= hotfix.created_at %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div><!--/box-body-->
+      </div><!--/box-->
+    </div><!--/col-->
+    <% end %>
     <div class="col-lg-6 col-xs-12">
       <%= render 'version', document: @change_request %>
     </div><!--/col-->
   </div><!--/row-->
+
 </section><!--/content-->
 <!-- modal for accept notes -->
 <div class="modal fade" id="accept" tabindex="-1" role="dialog" aria-labelledby="ScheduleModalLabel" aria-hidden="true" style="display: none;">
