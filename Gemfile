@@ -85,6 +85,7 @@ group :development do
 end
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'faker'
 	gem 'cucumber-rails', require: false
   gem 'byebug'
   gem 'rspec-rails', '~> 2.14.0'
@@ -99,8 +100,8 @@ group :development, :test do
 end
 
 group :test do
-  gem 'faker'
   gem 'capybara'
+  gem 'capybara-screenshot'
   gem 'database_cleaner'
   gem 'launchy'
   gem 'selenium-webdriver', "~> 2.53.1"
