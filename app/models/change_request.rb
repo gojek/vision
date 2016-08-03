@@ -2,6 +2,7 @@ class ChangeRequest < ActiveRecord::Base
   include AASM
   belongs_to :user
   acts_as_readable :on => :updated_at
+  has_and_belongs_to_many :associated_users, join_table: :change_requests_associated_users, :class_name =>'User'
   has_and_belongs_to_many :collaborators, join_table: :collaborators, :class_name =>'User'
   has_and_belongs_to_many :testers, join_table: :testers, class_name: :User
   has_and_belongs_to_many :implementers, join_table: :implementers, class_name: :User
