@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160721073311) do
+ActiveRecord::Schema.define(version: 20160721074233) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -119,6 +119,14 @@ ActiveRecord::Schema.define(version: 20160721073311) do
 
   add_index "change_requests", ["cab_id"], name: "index_change_requests_on_cab_id", using: :btree
   add_index "change_requests", ["user_id"], name: "index_change_requests_on_user_id", using: :btree
+
+  create_table "change_requests_associated_users", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "change_request_id"
+  end
+
+  add_index "change_requests_associated_users", ["change_request_id"], name: "index_change_requests_associated_users_on_change_request_id", using: :btree
+  add_index "change_requests_associated_users", ["user_id"], name: "index_change_requests_associated_users_on_user_id", using: :btree
 
   create_table "collaborators", id: false, force: :cascade do |t|
     t.integer "user_id"
@@ -291,6 +299,8 @@ ActiveRecord::Schema.define(version: 20160721073311) do
   add_foreign_key "change_request_statuses", "change_requests"
   add_foreign_key "change_requests", "cabs"
   add_foreign_key "change_requests", "users"
+  add_foreign_key "change_requests_associated_users", "change_requests"
+  add_foreign_key "change_requests_associated_users", "users"
   add_foreign_key "comments", "change_requests"
   add_foreign_key "comments", "users"
   add_foreign_key "implementers", "change_requests"
