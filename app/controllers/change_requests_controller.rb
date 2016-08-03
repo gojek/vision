@@ -88,6 +88,12 @@ class ChangeRequestsController < ApplicationController
     @change_request.set_collaborators(@current_collaborators)
     respond_to do |format|
       if @change_request.save
+        associated_user_ids = []
+        associated_user_ids.concat(@current_approvers)
+        associated_user_ids.concat(@current_implementers)
+        associated_user_ids.concat(@current_testers)
+        associated_user_ids.concat(@current_collaborators)
+        @change_request.associated_user_ids = associated_user_ids.uniq
         @status = @change_request.change_request_statuses.new(:status => 'submitted')
         @status.save
         Notifier.cr_notify(current_user, @change_request, 'new_cr')
@@ -133,6 +139,12 @@ class ChangeRequestsController < ApplicationController
     @change_request.set_collaborators(@current_collaborators)
     respond_to do |format|
       if @change_request.update(change_request_params)
+        associated_user_ids = []
+        associated_user_ids.concat(@current_approvers)
+        associated_user_ids.concat(@current_implementers)
+        associated_user_ids.concat(@current_testers)
+        associated_user_ids.concat(@current_collaborators)
+        @change_request.associated_user_ids = associated_user_ids.uniq
         Notifier.cr_notify(current_user, @change_request, 'update_cr')
         flash[:update_cr_notice] = 'Change request was successfully updated.'
         format.html { redirect_to @change_request }
