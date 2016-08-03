@@ -180,5 +180,34 @@ class ChangeRequest < ActiveRecord::Base
     result = dhms[0].to_s + " Days, " + dhms[1].to_s + " Hours, " + dhms[2].to_s + " minutes."
   end
 
+  def set_approvers(approver_id_list)
+    self.approvals.delete_all
+    approver_id_list.each do |approver_id|
+      approver = User.find(approver_id)
+      approval = Approval.create(user: approver)
+      self.approvals << approval
+    end
+  end
+
+  def set_implementers(implementer_id_list)
+    self.implementers = []
+    implementer_id_list.each do |implementer_id|
+      self.implementers << User.find(implementer_id)
+    end
+  end
+
+  def set_testers(tester_id_list)
+    self.testers = []
+    tester_id_list.each do |tester_id|
+      self.testers << User.find(tester_id)
+    end
+  end
+
+  def set_collaborators(collaborator_id_list)
+    self.collaborators = []
+    collaborator_id_list.each do |collaborator_id|
+      self.collaborators << User.find(collaborator_id)
+    end
+  end
 
 end
