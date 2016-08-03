@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160627040421) do
+ActiveRecord::Schema.define(version: 20160721073311) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -120,13 +120,13 @@ ActiveRecord::Schema.define(version: 20160627040421) do
   add_index "change_requests", ["cab_id"], name: "index_change_requests_on_cab_id", using: :btree
   add_index "change_requests", ["user_id"], name: "index_change_requests_on_user_id", using: :btree
 
-  create_table "change_requests_users", id: false, force: :cascade do |t|
+  create_table "collaborators", id: false, force: :cascade do |t|
     t.integer "user_id"
     t.integer "change_request_id"
   end
 
-  add_index "change_requests_users", ["change_request_id"], name: "index_change_requests_users_on_change_request_id", using: :btree
-  add_index "change_requests_users", ["user_id"], name: "index_change_requests_users_on_user_id", using: :btree
+  add_index "collaborators", ["change_request_id"], name: "index_collaborators_on_change_request_id", using: :btree
+  add_index "collaborators", ["user_id"], name: "index_collaborators_on_user_id", using: :btree
 
   create_table "comments", force: :cascade do |t|
     t.text     "body"
