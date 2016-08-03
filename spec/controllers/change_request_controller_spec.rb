@@ -83,6 +83,11 @@ describe ChangeRequestsController do
             post :create, change_request: attributes, implementers_list: [approver.id], testers_list: [approver.id] , approvers_list: [approver.id]
           }.to change(Approval, :count).by(1)
         end
+
+        it 'assigns associated_user' do
+          post :create, change_request: attributes, implementers_list: [user.id], testers_list: [user.id] , approvers_list: [approver.id]
+          expect(assigns(:change_request).associated_user_ids).to match_array([user.id, approver.id])
+        end
       end
 
       context 'with invalid attributes' do
@@ -103,6 +108,12 @@ describe ChangeRequestsController do
           patch :update , id: change_request.id, change_request: update_attributes, implementers_list: [approver.id], testers_list: [approver.id] , approvers_list: [approver.id]
           change_request.reload
           expect(change_request.note).to eq(note)
+        end
+
+        it 'assigns associated_user' do
+          update_attributes = FactoryGirl.attributes_for(:change_request)
+          patch :update , id: change_request.id, change_request: update_attributes, implementers_list: [user.id], testers_list: [user.id] , approvers_list: [approver.id]
+          expect(assigns(:change_request).associated_user_ids).to match_array([user.id, approver.id])
         end
       end
       context 'invalid attributes' do
