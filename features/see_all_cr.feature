@@ -11,6 +11,7 @@ Feature: See all CR
     Given a change request with summary "Heroku Deployment"
     When I visit page "/change_requests"
     Then I should be able to see "Heroku Deployment"
-    And the page should have selector "//a[@id='show']"
-    And the page should not have selector "//a[@id='edit']"
-    And the page should not have selector "//a[@id='delete']"
+    And the page should have "Show" link
+    And the page should have "Duplicate" link
+    And the page should not have "Edit" link
+    And the page should not have "Delete" link
