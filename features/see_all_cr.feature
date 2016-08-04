@@ -1,4 +1,3 @@
-@login
 Feature: See all CR
   In order to know what changes are being submitted / deployed
   As a user
@@ -9,6 +8,9 @@ Feature: See all CR
     Given I am logged in
 
   Scenario: See all change requests
-    Given another user has made a change request
-    When I visit the change request index page
-    Then I should be able to see that change request
+    Given a change request with summary "Heroku Deployment"
+    When I visit page "/change_requests"
+    Then I should be able to see "Heroku Deployment"
+    And the page should have selector "//a[@id='show']"
+    And the page should not have selector "//a[@id='edit']"
+    And the page should not have selector "//a[@id='delete']"
