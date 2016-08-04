@@ -8,38 +8,26 @@ class ChangeRequestsController < ApplicationController
   require 'slack_notif.rb'
 
   def index
-    if params[:tag]
-      @q = ChangeRequest.ransack(params[:q])
-      @change_requests = @q.result(distinct: true).tagged_with(params[:tag]).order(id: :desc).page(params[:page]).per(params[:per_page])
-    elsif params[:tag_list]
-      @q = ChangeRequest.ransack(params[:q])
-      @change_requests = @q.result(distinct: true).tagged_with(params[:tag_list]).order(id: :desc).page(params[:page]).per(params[:per_page])
-    else
-      @q = ChangeRequest.ransack(params[:q])
-      @change_requests = @q.result(distinct: true).order(id: :desc).page(params[:page]).per(params[:per_page])
-    end
-    @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
-  end
-
-  def export_csv
-    @change_requests = []
-    if params[:q]
-      @q = ChangeRequest.ransack(params[:q])
-      if params[:tag_list]
-        @change_requests = @q.result(distinct: true).tagged_with(params[:tag_list]).order(id: :desc)
-      else
-        @change_requests = @q.result(distinct: true).order(id: :desc)
-      end
-    elsif params[:search]
+    if params[:search]
       search = ChangeRequest.solr_search do
         fulltext params[:search]
         order_by :created_at, :desc
       end
       @change_requests = search.results
     else
-      @change_requests = ChangeRequest.all
+      @q = ChangeRequest.ransack(params[:q])
+      @change_requests = @q.result(distinct: true).order(id: :desc)
+      @change_requests = @change_requests.tagged_with(params[:tag_list]) if params[:tag_list]
     end
-    render csv: @change_requests, filename: 'change_requests', force_quotes: true
+    respond_to do |format|
+      format.html do
+        @change_requests = @change_requests.page(params[:page]).per(params[:per_page])
+        @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
+      end
+      format.csv do
+        render csv: @change_requests, filename: 'change_requests', force_quotes: true
+      end
+    end
   end
 
   def show
