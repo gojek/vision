@@ -8,6 +8,6 @@ Background:
 
 Scenario: User search change requests using search box
   Given I am logged in
-  And I visit page "/change_requests"
-  When I search "vision" in search box
+  When I visit page "/change_requests"
+  And I search "vision" in search box
   Then I should see change requests with summary "Upgrade vision to 2.0"
