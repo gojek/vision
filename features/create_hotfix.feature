@@ -18,3 +18,9 @@ Feature: Create hotfix of previously rollbacked CR
     And clicked create hotfix button
     Then I will be redirected to a change request new page
     And the rollbacked CR will be referenced
+
+  Scenario: Seeing hotfixes for my rollbacked change request
+    Given there is a rollbacked CR
+    And a hotfix has been made for that rollbacked CR
+    When I visit the rollbacked CR
+    Then I should be able to see the hotfixes that fixes my CR
