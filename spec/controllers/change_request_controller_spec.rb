@@ -32,8 +32,33 @@ describe ChangeRequestsController do
       it "populate current user's Change Request based on tag that selected" do
         change_request.update(tag_list: 'tag')
         other_cr = FactoryGirl.create(:change_request, user: user)
-        get :index, tag: 'tag'
+        get :index, tag_list: 'tag'
         expect(assigns(:change_requests)).to match_array([change_request])
+      end
+
+      it 'exporting specific cr filtered by q param if using tag filter' do
+        change_request.update(priority: 'Urgent')
+        get :index, q: {priority: 'Urgent'}
+        expect(assigns(:change_requests)).to match_array([change_request])
+      end
+
+      context 'when exporting fulltext search results' do
+        let(:change_request) {FactoryGirl.create(:change_request, business_justification: 'asdasd')}
+        let(:other_cr) {FactoryGirl.create(:change_request, business_justification: 'asdasd')}
+
+        before :each do
+          allow(ChangeRequest).to receive(:solr_search).and_return(SolrResultStub.new([change_request, other_cr]))
+        end
+
+        it 'exporting specific cr from fulltext results' do
+          get :index, format: :csv, search: "asdasd"
+          expect(assigns(:change_requests)).to match_array([change_request, other_cr])
+        end
+
+        it 'call fulltext search solr function' do
+          expect(ChangeRequest).to receive(:solr_search)
+          get :index, format: :csv, search: "asdasd"
+        end
       end
     end
 
@@ -139,41 +164,6 @@ describe ChangeRequestsController do
       it 'redirect to index if search a blank string' do
         get :search, search: ""
         expect(response).to redirect_to(change_requests_path)
-      end
-    end
-
-    describe 'GET export_csv' do
-      context 'when exporting tags or filter results' do
-        it 'exporting specific cr with the tags if using tag filter' do
-          change_request.update(tag_list: 'tag')
-          get :export_csv, tag_list: 'tag'
-          expect(assigns(:change_requests)).to match_array([change_request])
-        end
-
-        it 'exporting specific cr filtered by q param if using tag filter' do
-          change_request.update(priority: 'Urgent')
-          get :export_csv, q: {priority: 'Urgent'}
-          expect(assigns(:change_requests)).to match_array([change_request])
-        end
-      end
-
-      context 'when exporting fulltext search results' do
-        let(:change_request) {FactoryGirl.create(:change_request, business_justification: 'asdasd')}
-        let(:other_cr) {FactoryGirl.create(:change_request, business_justification: 'asdasd')}
-
-        before :each do
-          allow(ChangeRequest).to receive(:solr_search).and_return(SolrResultStub.new([change_request, other_cr]))
-        end
-
-        it 'exporting specific cr from fulltext results' do
-          get :export_csv, search: "asdasd"
-          expect(assigns(:change_requests)).to match_array([change_request, other_cr])
-        end
-
-        it 'call fulltext search solr function' do
-          expect(ChangeRequest).to receive(:solr_search)
-          get :export_csv, search: "asdasd"
-        end
       end
     end
   end
