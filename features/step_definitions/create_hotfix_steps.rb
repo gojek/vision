@@ -34,3 +34,14 @@ end
 Then(/^the rollbacked CR will be referenced$/) do
   page.should have_content("Reference to Change Request ##{@cr.id}")
 end
+
+Given(/^a hotfix has been made for that rollbacked CR$/) do
+  @cr_hotfix = FactoryGirl.create(:change_request, reference_cr_id: @cr.id)
+end
+
+Then(/^I should be able to see the hotfixes that fixes my CR$/) do
+  page.should have_content('Hotfixes')
+  page.should have_content(@cr_hotfix.id)
+  page.should have_content(@cr_hotfix.change_summary)
+  page.should have_content(@cr_hotfix.created_at)
+end
