@@ -106,7 +106,7 @@
         </div><!--/box-header-->
         <div class="box-body">
           <div class= 'form-group'>
-          <%=raw @change_request.tag_list.map{ |t| link_to t, tag_path(t), class:'btn btn-primary btn-xs' }.join('     ')  %>
+          <%=raw @change_request.tag_list.map{ |tag| link_to tag, change_requests_path(tag_list: [tag]), class:'btn btn-primary btn-xs' }.join('     ')  %>
         </div>
           <table class="table table-striped table-bordered">
             <thead>
