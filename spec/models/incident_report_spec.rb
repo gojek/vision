@@ -1,7 +1,11 @@
 require 'spec_helper'
 
 describe IncidentReport do
+
+	#shoulda matchers test
+	it { should belong_to(:user)}
 	it { should have_many(:notifications).dependent(:destroy) }
+	
 	it "is valid with all attibute filled" do
 		expect(FactoryGirl.build(:incident_report)).to be_valid
 	end

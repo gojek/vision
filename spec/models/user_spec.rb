@@ -7,7 +7,18 @@ describe User do
 		Profile = Struct.new("Profile", :email)
 		UserSlack = Struct.new("UserSlack", :name, :profile)
 	end
+
+	#shoulda matchers test
+	it { should have_many(:ChangeRequests)}
+	it { should have_many(:IncidentReports)}
+	it { should have_and_belong_to_many(:collaborate_change_requests) }
+	it { should have_and_belong_to_many(:implement_change_requests) }
+	it { should have_and_belong_to_many(:test_change_requests) }
+	it { should have_many(:Comments)}
+	it { should have_many(:Approvals).dependent(:destroy)}
 	it { should have_many(:notifications).dependent(:destroy) }
+
+
 	it "is valid with one of these role : approver, requestor, release_manager" do
 		other_user = FactoryGirl.build(:user, role: 'approver')
 		another_user = FactoryGirl.build(:user, role: 'release_manager')
