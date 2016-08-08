@@ -42,4 +42,4 @@ coverage/*
 .keep
 
 # Ignore solr data
-solr/data
+solr/**

@@ -11,8 +11,6 @@ class ChangeRequest < ActiveRecord::Base
   has_many :approvals, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :notifications
-  belongs_to :cab
-  scope :cab_free, -> {where(cab_id: nil)}
   acts_as_taggable
   has_paper_trail class_name: 'ChangeRequestVersion'
   SCOPE = %w(Major Minor)
@@ -170,38 +168,6 @@ class ChangeRequest < ActiveRecord::Base
     self.type_emergency_change ? category_array.push('Emergency Change') : nil
     self.type_other.blank? ? nil : category_array.push(self.type_other)
     category_array.join(', ')
-  end
-  def arrange_google_calendar(current_user)
-    attendees = []
-    @participants = self.cab.participant.split(",")
-    @participants.each do |participant|
-      attendees.push({'email' => participant}) unless participant.blank?
-    end
-
-    event = {
-      'summary' => self.change_summary,
-      'location' => 'Veritrans',
-      'start' => {
-        'dateTime' => self.schedule_change_date.iso8601,
-        'timeZone' => 'Asia/Jakarta',
-      },
-      'end' => {
-        'dateTime' => self.planned_completion.iso8601,
-        'timeZone' => 'Asia/Jakarta',
-      },
-      'attendees' => attendees
-    }
-
-    client = Google::APIClient.new
-    client.authorization.access_token = current_user.fresh_token
-    service = client.discovered_api('calendar', 'v3')
-    results = client.execute!(
-      :api_method => service.events.insert,
-      :parameters => {
-        :calendarId => 'primary', :sendNotifications => 'true'},
-      :body_object => event)
-    event = results.data
-
   end
 
   def lifetime
