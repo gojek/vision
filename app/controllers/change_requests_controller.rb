@@ -42,6 +42,10 @@ class ChangeRequestsController < ApplicationController
       @approved = approve.approve
     end
     #Notifier.mark_as_read(notifica)
+    @usernames = []
+    User.all.each do |user|
+      @usernames <<  user.email.split("@").first
+    end
   end
 
   def new
