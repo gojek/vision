@@ -1,34 +1,36 @@
-@login
 Feature: Notification page
   In order to view my notifications
   As a user
-  I want to visit a notification page
+  I want to visit a notification page to view my notifications
 
 
   Background:
     Given I am logged in
 
-
   Scenario: View change request notifications
-    Given I have any change request notifications
-    When I click the change request notifications button
+    Given I have "Deploy feature to heroku" change request notifications
+    When I press link "Change Request Notifications"
     Then I should be redirected to the notification page
-    And I could see the change request notifications
+    And the "Change Request" section should be active
+    And the "New" tab should be active
+    And I should be able to see "Deploy feature to heroku"
 
-  Scenario: View incident report notifications
-    Given I have any incident report notifications
-    When I click the incident report notifications button
+  Scenario: View Incident Report notifications
+    Given I have "Database cluster error" incident report notifications
+    When I press link "Incident Report Notifications"
     Then I should be redirected to the notification page
-    And I could see the incident report notifications
+    And the "Incident Report" section should be active
+    And the "New" tab should be active
+    And I should be able to see "Database cluster error"
 
   Scenario: Show nothing to display if user have no change request notifications
     Given I have no change request notifications
-    When I click the change request notifications button
+    When I press link "Change Request Notifications"
     Then I should be redirected to the notification page
-    And I should see Nothing to display here! text
+    And I should be able to see "Nothing to display here!"
 
   Scenario: Show nothing to display if user have no incident report notifications
     Given I have no incident report notifications
-    When I click the incident report notifications button
+    When I press link "Incident Report Notifications"
     Then I should be redirected to the notification page
-    And I should see Nothing to display here! text
+    And I should be able to see "Nothing to display here!"

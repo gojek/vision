@@ -9,11 +9,11 @@
           <div class='col-lg-6'>
             <ul class="nav nav-pills">
               <% if @active == 'cr' %>
-              <li class="active"><a data-toggle="pill" href="#change_request">Change Requests</a></li>
-              <li><a data-toggle="pill" href="#incident_report">Incident Report</a></li>
+              <li id='change_request_pill' class="active"><a data-toggle="pill" href="#change_request">Change Request</a></li>
+              <li id='incident_report_pill'><a data-toggle="pill" href="#incident_report">Incident Report</a></li>
               <% else %>
-              <li><a data-toggle="pill" href="#change_request">Change Requests</a></li>
-              <li class="active"><a data-toggle="pill" href="#incident_report">Incident Report</a></li>
+              <li id='change_request_pill'><a data-toggle="pill" href="#change_request">Change Requests</a></li>
+              <li id='incident_report_pill' class="active"><a data-toggle="pill" href="#incident_report">Incident Report</a></li>
               <% end %>
             </ul>
           </div>

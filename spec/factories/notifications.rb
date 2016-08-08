@@ -5,7 +5,6 @@ FactoryGirl.define do
     user nil
     change_request nil
     incident_report nil
-    read false
     message "MyString"
   end
 end
