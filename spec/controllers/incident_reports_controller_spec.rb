@@ -9,7 +9,7 @@ describe IncidentReportsController do
 			sign_in user
 		end
 		describe 'GET #show' do
-			it 'assigns the requested cab to @cab' do
+			it 'assigns the requested incident report to @incident_report' do
 				get :show, id: incident_report
 				expect(assigns(:incident_report)).to eq incident_report
 			end
@@ -20,7 +20,7 @@ describe IncidentReportsController do
 			end
 		end
 		describe 'GET #index' do
-			it 'populates an array of all cabs' do
+			it 'populates an array of all incident reports' do
 				get :index
 				expect(assigns(:incident_reports)).to match_array([incident_report])
 			end
@@ -161,7 +161,7 @@ describe IncidentReportsController do
 			end
 
 			context 'invalid attributes' do
-				it "doesnt change the @cab's attributes" do
+				it "doesnt change the @incident_report's attributes" do
 					source = 'source'
 					patch :update, id: incident_report,
 						incident_report: FactoryGirl.attributes_for(:incident_report, source: source)
