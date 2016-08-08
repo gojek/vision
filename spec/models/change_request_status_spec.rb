@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 describe ChangeRequestStatus do
+
+  #shoulda matchers test
+  it { should belong_to(:change_request)}
+
   it "need reason if CR status either rollbacked, cancelled or rejected" do
   	change_request_status = ChangeRequestStatus.create(
   		status: 'rollbacked')
