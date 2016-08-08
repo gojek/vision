@@ -21,18 +21,4 @@ class UserMailer < ApplicationMailer
     end
     mail(to: [@user.email,approvers], subject:'Change Request Status Changed')
   end
-  def cab_email(cab)
-    @date = cab.meet_date.to_s(:long)
-    @room = cab.room
-    @notes = cab.notes
-    @change_requests = cab.change_requests
-    @all_recepients = []
-    @change_requests.each do |change_request|
-      @all_recepients.push(change_request.user.email)
-      @all_recipients.push(change_request.approvals.collect{|a| a.user.email})
-    end
-    all_rec = @all_recepients.uniq.join(",")
-    mail(to: all_rec, subject:'New CAB Meeting')
-  end
-
 end

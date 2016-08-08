@@ -41,10 +41,7 @@ Rails.application.routes.draw do
       patch :bringback  # <= and that
     end
   end
-  resources :cabs do
-    get :get_cabs, on: :collection
-  end
-  get 'cabs/:id/get_change_requests' => 'cabs#get_change_requests'
+
   get 'incident_reports_by_source' => 'incident_reports#incident_reports_by_source'
   get 'change_requests_by_success_rate' => 'change_requests#change_requests_by_success_rate'
   get 'incident_reports_by_recovered_resolved_duration' => 'incident_reports#incident_reports_by_recovered_resolved_duration'
@@ -63,7 +60,6 @@ Rails.application.routes.draw do
 
 
   get 'users/show'
-  post 'cabs/:id'=> 'cabs#update_change_requests', :as => 'update_cr'
 
   get 'users/index'
   get 'register' => 'users#new'
