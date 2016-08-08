@@ -6,10 +6,11 @@ Feature: Shows suggestions by using autocomplete in comment field
 
   Background:
     Given I am logged in as approver
-    And someone has made a change request
-
+    
   @javascript
   Scenario: Shows autocomplete suggestions
-    Given I am in that change request's show page
-    When I input @ in the comment field
+    Given a change request with summary "Heroku Deployment"
+    When I visit page "/change_requests"
+    And I press link "Show"
+    And I input "@" in field "comment"
     Then it should show suggestions that shows all users name

@@ -587,10 +587,7 @@ $('#popoverOption').popover({ trigger: "hover" });
 </script>
 
 <script>
-  var users = []
-  <% User.all.each do |usr| %>
-    users.push("<%= usr.email.split("@").first %>")
-  <% end %>
+  var users = <%= raw @usernames %> ;
   $('#comment').atwho({at:"@", 'data':users})
 
 </script>
