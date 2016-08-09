@@ -107,6 +107,6 @@ class User < ActiveRecord::Base
     nil
   end
   def have_notifications?
-    (notifications.cr.unread.count != 0 || notifications.ir.unread.count != 0)
+    (notifications.cr.count != 0 || notifications.ir.count != 0)
   end
 end
