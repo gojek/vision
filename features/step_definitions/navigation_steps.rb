@@ -1,4 +1,8 @@
-Given /^I visit page "(.*?)"$/ do |page|
+Given /^I am in page "(.*?)"$/ do |page|
+  visit page
+end
+
+When /^I visit page "(.*?)"$/ do |page|
   visit page
 end
 

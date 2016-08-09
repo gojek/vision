@@ -1,9 +1,9 @@
 <li class="dropdown dropdown-accordion messages-menu" data-accordion="#accordion">
   <a  href="#" data-toggle="dropdown">
     Incident Report
-     <% if current_user.notifications.ir.unread.count > 0 %>
-     <span id="notif-ir" class="label label-success"><%= current_user.notifications.ir.unread.count%></span>
-     <% n_ir = current_user.notifications.ir.unread %>
+     <% if current_user.notifications.ir.count > 0 %>
+     <span id="notif-ir" class="label label-success"><%= current_user.notifications.ir.count%></span>
+     <% n_ir = current_user.notifications.ir %>
   </a>
   <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
     <li>
