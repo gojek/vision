@@ -1,0 +1,134 @@
+<section class="content-header">
+  <h1>Notifications</h1>
+</section>
+<section class="content">
+ <div class="row">
+    <div class="col-xs-12">
+      <div class="box box-default" style='height: 85vh'>
+        <div class='row'>
+          <div class='col-lg-6'>
+            <ul class="nav nav-pills">
+              <% if @active == 'cr' %>
+              <li id='change_request_pill' class="active"><a data-toggle="pill" href="#change_request">Change Request</a></li>
+              <li id='incident_report_pill'><a data-toggle="pill" href="#incident_report">Incident Report</a></li>
+              <% else %>
+              <li id='change_request_pill'><a data-toggle="pill" href="#change_request">Change Requests</a></li>
+              <li id='incident_report_pill' class="active"><a data-toggle="pill" href="#incident_report">Incident Report</a></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+        <div class="box-body" style=' overflow-x: hidden'>
+          <div class='tab-content'>
+            <div id='change_request' class='tab-pane fade in <%= 'active' if @active == 'cr' %>'>
+              <div class='row'>
+                <% if @have_cr_notif %>
+                <div class='col-sm-12'>
+                  <ul id='cr-list' class='nav nav-tabs'>
+                    <% @array_cr_scope.each do |cr_scope| %>
+                      <% if cr_scope.count > 0 %>
+                      <li> <a href="#<%= @title[cr_scope]%>" data-toggle="tab"> <%=@title[cr_scope]%>
+                        <span class="label label-success"> <%= cr_scope.count%></span>
+                      </a></li>
+                      <% end %>
+                    <% end %>
+                  </ul>
+                </div>
+                <div id='cr-div' class='tab-content'>
+                  <% @array_cr_scope.each do |cr_scope| %>
+                    <% if cr_scope.count > 0 %>
+                    <div id='<%=@title[cr_scope]%>' class='tab-pane fade in col-sm-12' style='height: 75vh;overflow-y:scroll'>
+                      <table class="table table-hover">
+                        <tr>
+                          <th> ID </th>
+                          <th> Change Summary </th>
+                          <th> Requestor </th>
+                          <th> Time created </th>
+                        </tr>
+                        <% cr_scope.each do |n_cr| %>
+                          <tr>
+                            <td> <%= link_to n_cr.change_request.id, n_cr.change_request %> </td>
+                            <td> <%= link_to n_cr.change_request.change_summary, n_cr.change_request %></td>
+                            <td> <%= n_cr.change_request.user.name %> </td>
+                            <td> <%= distance_of_time_in_words(n_cr.created_at, Time.now) %> </td>
+                          </tr>
+                        <% end %>
+                      </table>
+                    </div>
+                    <% end %>
+                  <% end %>
+                </div>
+                <% else %>
+                <div class='col-sm-12'>
+                  <div class='container'>
+                    <div class='text-center'>
+                      <h1> Nothing to display here! </h1>
+                    </div>
+                  </div>
+                </div>
+                <% end %>
+              </div>
+            </div>
+            <div id='incident_report'  class='tab-pane fade in <%= 'active' if @active != 'cr' %>'>
+              <div class='row'>
+                <% if @have_ir_notif %>
+                <div class='col-sm-12'>
+                  <ul id='ir-list' class='nav nav-tabs'>
+                    <% @array_ir_scope.each do |ir_scope| %>
+                      <% if ir_scope.count > 0 %>
+                      <li> <a href="#<%= @title[ir_scope]%>" data-toggle="tab"> <%=@title[ir_scope]%>
+                        <span class="label label-success"> <%= ir_scope.count%></span>
+                      </a></li>
+                      <% end %>
+                    <% end %>
+                  </ul>
+                </div>
+                <div id='ir-div' class='tab-content'>
+                  <% @array_ir_scope.each do |ir_scope| %>
+                  <% if ir_scope.count > 0 %>
+                  <div id='<%= @title[ir_scope]%>' class='tab-pane fade in col-sm-12' style='height: 75vh;overflow-y:scroll'>
+                    <table class="table table-hover">
+                      <tr>
+                        <th> ID </th>
+                        <th> Service Impacted </th>
+                        <th> Reporter </th>
+                        <th> Time created </th>
+                      </tr>
+                      <% ir_scope.each do |n_ir| %>
+                        <tr>
+                          <td> <%= link_to n_ir.incident_report.id, n_ir.incident_report %> </td>
+                          <td> <%= link_to n_ir.incident_report.service_impact, n_ir.incident_report %></td>
+                          <td> <%= n_ir.incident_report.user.name %> </td>
+                          <td> <%= distance_of_time_in_words(n_ir.created_at, Time.now) %> </td>
+                        </tr>
+                      <% end %>
+                    </table>
+                  </div>
+                  <% end %>
+                  <% end %>
+                </div>
+                <% else %>
+                <div class='col-sm-12'>
+                  <div class='container'>
+                    <div class='text-center'>
+                      <h1> Nothing to display here! </h1>
+                    </div>
+                  </div>
+                </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div><!-- /.box-body -->
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  $(document).ready(function() {
+    $('ul#cr-list li:first-child').addClass('active');
+    $('div#cr-div div').first().addClass('active');
+    $('ul#ir-list li:first-child').addClass('active');
+    $('div#ir-div div').first().addClass('active');
+  });
+</script>
