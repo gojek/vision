@@ -13,3 +13,13 @@ end
 Then(/^the page should not have "([^"]*)" link$/) do |selector|
   page.should_not have_link(selector)
 end
+
+Then(/^the "([^"]*)" field should be filled in with "([^"]*)"$/) do |field, string|
+  field_name = field.downcase.split(" ").join("_")
+  page.should have_field("change_request_#{field_name}", with: string)
+end
+
+Then(/^the "([^"]*)" field should be empty$/) do |field|
+  field_name = field.downcase.split(" ").join("_")
+  page.should have_field("change_request_#{field_name}", with: nil)
+end

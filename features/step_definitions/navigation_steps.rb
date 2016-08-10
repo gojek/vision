@@ -21,3 +21,11 @@ end
 Then /^I am in homepage$/ do
   pending
 end
+
+Then(/^I should be redirected to a new change request page$/) do
+  page.should have_content("Request")
+  page.should have_content("Analysis Impact Solution")
+  page.should have_content("Design and Backup Plan")
+  page.should have_content("Testing")
+  page.should have_content("Implementation")
+end
