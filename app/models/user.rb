@@ -110,4 +110,8 @@ class User < ActiveRecord::Base
   def have_notifications?
     (notifications.cr.count != 0 || notifications.ir.count != 0)
   end
+
+  def is_approver?
+    role == 'approver'
+  end
 end
