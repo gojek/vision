@@ -29,7 +29,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'devise'
 
 # file managment
-gem 'paper_trail', '~> 4.0.0.rc'
+gem 'paper_trail', '~> 4.1'
 
 # oauth
 gem 'omniauth-google-oauth2'
@@ -52,6 +52,7 @@ gem 'figaro'
 gem 'html_truncator', '~>0.2'
 gem 'unread'
 gem 'data-confirm-modal'
+gem 'jquery-atwho-rails'
 gem 'exception_notification'
 gem 'pry'
 gem 'omniauth'
@@ -69,6 +70,7 @@ gem 'colorize'
 #slack notification
 gem 'slack-ruby-client'
 
+
 # full-text search
 gem 'sunspot_rails'
 gem 'sunspot_solr'
@@ -83,6 +85,7 @@ group :development do
 end
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'faker'
 	gem 'cucumber-rails', require: false
   gem 'byebug'
   gem 'rspec-rails', '~> 2.14.0'
@@ -97,11 +100,12 @@ group :development, :test do
 end
 
 group :test do
-  gem 'faker'
+  gem 'shoulda-matchers', '~> 3.1'
   gem 'capybara'
+  gem 'capybara-screenshot'
   gem 'database_cleaner'
   gem 'launchy'
-  gem 'selenium-webdriver'
+  gem 'selenium-webdriver', "~> 2.53.1"
   gem 'simplecov'
   gem 'simplecov-rcov'
   gem 'webmock'
