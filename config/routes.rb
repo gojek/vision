@@ -98,6 +98,7 @@ Rails.application.routes.draw do
   post 'reject/:id' => 'change_requests#reject', :as =>'reject'
   get 'notifications/clear_notifications' => 'notifications#clear_notifications'
   get 'duplicate/:id' => 'change_requests#duplicate', :as => 'duplicate'
+  get 'notifications/index' => 'notifications#index'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

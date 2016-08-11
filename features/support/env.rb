@@ -6,7 +6,12 @@
 
 require 'cucumber/rails'
 require 'sunspot_test/cucumber'
+require 'capybara-screenshot/cucumber'
 
+
+ENV["RAILS_ENV"] ||= "cucumber"
+require File.expand_path(File.dirname(__FILE__) + '/../../config/environment')
+require 'paper_trail/frameworks/cucumber'
 # Capybara defaults to CSS3 selectors rather than XPath.
 # If you'd prefer to use XPath, just uncomment this line and adjust any
 # selectors in your step definitions to use the XPath syntax.

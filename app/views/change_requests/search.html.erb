@@ -47,7 +47,7 @@
                   </h4>
                 <% end %>
                 <span>
-                  <%= sanitize(hit.highlight(nil).format{|match_words| content_tag(:b, match_words, style: "color: DarkGreen")}, tags: ['b'], attributes: ['style']) %>
+                  <%= sanitize(hit.highlight(nil).format{|match_words| content_tag(:b, match_words, class: "keywords-search")}, attributes: ['class']) %>
                 </span>
             </li>
             <% end %>

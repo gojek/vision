@@ -2,12 +2,22 @@ require 'spec_helper'
 
 describe User do
 	let(:user) {FactoryGirl.create(:user)}
-
 	before :all do
 		UserList = Struct.new("UserList", :members)
 		Profile = Struct.new("Profile", :email)
 		UserSlack = Struct.new("UserSlack", :name, :profile)
 	end
+
+	#shoulda matchers test
+	it { should have_many(:ChangeRequests)}
+	it { should have_many(:IncidentReports)}
+	it { should have_and_belong_to_many(:collaborate_change_requests) }
+	it { should have_and_belong_to_many(:implement_change_requests) }
+	it { should have_and_belong_to_many(:test_change_requests) }
+	it { should have_many(:Comments)}
+	it { should have_many(:Approvals).dependent(:destroy)}
+	it { should have_many(:notifications).dependent(:destroy) }
+
 
 	it "is valid with one of these role : approver, requestor, release_manager" do
 		other_user = FactoryGirl.build(:user, role: 'approver')
@@ -162,15 +172,15 @@ describe User do
 		expect(approvers).to include(approver2)
 	end
 	describe "User.have_notifications?" do
-		it "should return true if the user have unread notifications" do
+		it "should return true if the user have any notifications" do
 			user = FactoryGirl.create(:user)
-			notification = FactoryGirl.create(:notification, user: user, read: false)
+			notification = FactoryGirl.create(:notification, user: user)
 			expect(user.have_notifications?).to eq true
 		end
-		it "should return false if the user does not have unread notifications" do
+		it "should return false if the user does not have any notifications" do
 			user = FactoryGirl.create(:user)
-			notification = FactoryGirl.create(:notification, user: user, read: true)
 			expect(user.have_notifications?).to eq false
 		end
 	end
+
 end
