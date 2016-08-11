@@ -520,7 +520,7 @@
         <div class="box-footer">
             <div class="form-group">
               <%= form_for ([@change_request, @change_request.comments.build]) do |f| %>
-                <%= f.text_area :body, class:"form-control" %>
+                <%= f.text_area :body, class:"form-control", id: "comment" %>
                 <br>
                 <span class="input-group-btn">
                   <%= f.submit class:"btn btn-primary btn-flat"%>
@@ -584,4 +584,10 @@
 <script type="text/javascript">
 $('#popoverData').popover();
 $('#popoverOption').popover({ trigger: "hover" });
+</script>
+
+<script>
+  var users = <%= raw @usernames %> ;
+  $('#comment').atwho({at:"@", 'data':users})
+
 </script>
