@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Notification, type: :model do
+describe Comment do
+  #shoulda matchers test
   it { should belong_to(:change_request)}
-  it { should belong_to(:incident_report)}
   it { should belong_to(:user)}
 end
