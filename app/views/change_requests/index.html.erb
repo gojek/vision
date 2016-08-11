@@ -57,7 +57,15 @@
       <div class="box">
         <div class="box-header with-border">
           <h3 class="box-title">Change Request List</h3>
-
+          <hr>
+          <div>
+            <b>Quick filters:</b>
+            <%= link_to "All", change_requests_path, class: 'btn-sm btn-primary' %>
+            <% if current_user.is_approver? %>
+              <%= link_to "Need my approvals", change_requests_path(type: 'approval'), class: 'btn-sm btn-primary' %>
+            <% end %>
+            <%= link_to "Relevant to me", change_requests_path(type: 'relevant'), class: 'btn-sm btn-primary' %>
+          </div>
         </div><!-- /.box-header -->
         <div class="box-body table-responsive" style="overflow-x: auto; height: 60vh">
           <table class="table table-hover">
