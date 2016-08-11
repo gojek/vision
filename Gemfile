@@ -57,6 +57,7 @@ gem 'exception_notification'
 gem 'pry'
 gem 'omniauth'
 gem 'tinymce-rails', git: 'https://github.com/spohlenz/tinymce-rails.git'
+gem 'comma', '~> 3.2.1'
 
 # xml parser
 gem 'nokogiri'
