@@ -15,12 +15,7 @@ class ChangeRequestsController < ApplicationController
       @q = ChangeRequest.ransack(params[:q])
       @change_requests = @q.result(distinct: true).tagged_with(params[:tag_list]).order(id: :desc).page(params[:page]).per(params[:per_page])
     else
-      if current_user.role == 'release_manager' || current_user.role == 'approver'
-        #populate all CR if release_manager/approver
-        @q = ChangeRequest.ransack(params[:q])
-      else
-        @q = ChangeRequest.where(user_id: current_user.id).ransack(params[:q])
-      end
+      @q = ChangeRequest.ransack(params[:q])
       @change_requests = @q.result(distinct: true).order(id: :desc).page(params[:page]).per(params[:per_page])
     end
     @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
@@ -42,6 +37,10 @@ class ChangeRequestsController < ApplicationController
       @approved = approve.approve
     end
     #Notifier.mark_as_read(notifica)
+    @usernames = []
+    User.all.each do |user|
+      @usernames <<  user.email.split("@").first
+    end
   end
 
   def new
@@ -150,7 +149,7 @@ class ChangeRequestsController < ApplicationController
     end
     @search = ChangeRequest.solr_search do
       fulltext params[:search], highlight: true
-      order_by :created_at, :desc
+      order_by(:created_at, :desc)
       paginate page: params[:page] || 1, per_page: 10
     end
   end

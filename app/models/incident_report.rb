@@ -1,7 +1,7 @@
 # a model representating incident report document
 class IncidentReport < ActiveRecord::Base
   include ActiveModel::Dirty
-  
+
   belongs_to :user
   acts_as_readable :on => :updated_at
   has_paper_trail class_name: 'IncidentReportVersion',
@@ -12,7 +12,7 @@ class IncidentReport < ActiveRecord::Base
   SOURCE = %w(Internal External)
   RECURRENCE_CONCERN = %w(Low Medium High)
 
-  has_many :notifications
+  has_many :notifications, dependent: :destroy
   validates :service_impact, :problem_details, :how_detected, :occurrence_time,
             :detection_time, :loss_related, :occurred_reason,
             :overlooked_reason, :recovery_action, :prevent_action,
@@ -50,7 +50,7 @@ class IncidentReport < ActiveRecord::Base
   def validate_recovery_time
     if occurrence_time.nil? ||
         recovery_time.nil? ||
-        detection_time.nil? || 
+        detection_time.nil? ||
         !(recovery_time > occurrence_time && recovery_time > detection_time)
       errors.add(:recovery_time, "is invalid")
     end
@@ -65,7 +65,7 @@ class IncidentReport < ActiveRecord::Base
 
   def validate_detection_time
     if occurrence_time.nil? || detection_time.nil? || (detection_time < occurrence_time)
-      errors.add(:detection_time, "is invalid") 
+      errors.add(:detection_time, "is invalid")
     end
   end
 
