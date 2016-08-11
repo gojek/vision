@@ -15,6 +15,15 @@ class ChangeRequestsController < ApplicationController
         order_by :created_at, :desc
       end
       @change_requests = search.results
+    elsif params[:type]
+      @q = ChangeRequest.ransack(params[:q])
+      case params[:type]
+      when 'approval'
+        cr_ids = Approval.where(user_id: current_user.id, approve: nil).collect(&:change_request_id)
+        @change_requests = @q.result(distinct: true).where(id: cr_ids).order(id: :desc)
+      when 'relevant'
+        @change_requests = @q.result(distinct: true).order(id: :desc)
+      end
     else
       @q = ChangeRequest.ransack(params[:q])
       @change_requests = @q.result(distinct: true).order(id: :desc)
