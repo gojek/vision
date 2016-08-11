@@ -1,6 +1,11 @@
 require 'spec_helper'
 
 describe IncidentReport do
+
+	#shoulda matchers test
+	it { should belong_to(:user)}
+	it { should have_many(:notifications).dependent(:destroy) }
+	
 	it "is valid with all attibute filled" do
 		expect(FactoryGirl.build(:incident_report)).to be_valid
 	end
@@ -13,7 +18,7 @@ describe IncidentReport do
 		incident_report = FactoryGirl.build(:incident_report, service_impact: nil)
 		expect(incident_report).to have(1).errors_on(:service_impact)
 	end
-	it "is invalid without a problem details" do 
+	it "is invalid without a problem details" do
 		incident_report = FactoryGirl.build(:incident_report, problem_details: nil)
 		expect(incident_report).to have(1).errors_on(:problem_details)
 	end
@@ -25,15 +30,15 @@ describe IncidentReport do
 		incident_report = FactoryGirl.build(:incident_report, occurrence_time: nil)
 		expect(incident_report).to have(1).errors_on(:occurrence_time)
 	end
-	it 'is invalid without a detection time' do 
+	it 'is invalid without a detection time' do
 		incident_report = FactoryGirl.build(:incident_report, detection_time: nil)
 		expect(incident_report).to have(2).errors_on(:detection_time)
 	end
-	it "is invalid without a recovery time" do 
+	it "is invalid without a recovery time" do
 		incident_report = FactoryGirl.build(:incident_report, recovery_time: nil)
 		expect(incident_report).to have(1).errors_on(:recovery_time)
 	end
-	it "is invalid without a loss related issue" do 
+	it "is invalid without a loss related issue" do
 		incident_report = FactoryGirl.build(:incident_report, loss_related: nil)
 		expect(incident_report).to have(1).errors_on(:loss_related)
 	end
@@ -42,31 +47,31 @@ describe IncidentReport do
 		incident_report = FactoryGirl.build(:incident_report, occurred_reason: nil)
 		expect(incident_report).to have(1).errors_on(:occurred_reason)
 	end
-	it "is invalid without a overlooked reason" do 
+	it "is invalid without a overlooked reason" do
 		incident_report = FactoryGirl.build(:incident_report, overlooked_reason: nil)
 		expect(incident_report).to have(1).errors_on(:overlooked_reason)
 	end
-	it "is invalid without a recovery action" do 
+	it "is invalid without a recovery action" do
 		incident_report = FactoryGirl.build(:incident_report, recovery_action: nil)
 		expect(incident_report).to have(1).errors_on(:recovery_action)
 	end
-	it "is invalid without a prevent action" do 
+	it "is invalid without a prevent action" do
 		incident_report = FactoryGirl.build(:incident_report, prevent_action: nil)
 		expect(incident_report).to have(1).errors_on(:prevent_action)
 	end
-	it "is invalid without a measurer status" do 
+	it "is invalid without a measurer status" do
 		incident_report = FactoryGirl.build(:incident_report, measurer_status: nil)
 		expect(incident_report).to have(2).errors_on(:measurer_status)
 	end
-	it "is invalid without a source" do 
+	it "is invalid without a source" do
 		incident_report = FactoryGirl.build(:incident_report, source: nil)
 		expect(incident_report).to have(2).errors_on(:source)
 	end
-	it "is invalid without a reccurence" do 
+	it "is invalid without a reccurence" do
 		incident_report = FactoryGirl.build(:incident_report, recurrence_concern: nil)
 		expect(incident_report).to have(2).errors_on(:recurrence_concern)
 	end
-	it "is invalid without a rank" do 
+	it "is invalid without a rank" do
 		incident_report = FactoryGirl.build(:incident_report, rank: nil)
 		expect(incident_report).to have(2).errors_on(:rank)
 	end

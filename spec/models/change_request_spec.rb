@@ -1,6 +1,17 @@
 require 'spec_helper'
 
 describe ChangeRequest do
+
+	#shoulda matchers test
+	it { should belong_to(:user)}
+	it { should have_and_belong_to_many(:collaborators) }
+	it { should have_and_belong_to_many(:testers) }
+	it { should have_and_belong_to_many(:implementers) }
+	it { should have_many(:change_request_statuses).dependent(:destroy) }
+	it { should have_many(:approvals).dependent(:destroy) }
+	it { should have_many(:comments).dependent(:destroy) }
+	it { should have_many(:notifications).dependent(:destroy) }
+
 	it "initial state is submitted when first created" do
 		change_request = FactoryGirl.create(:change_request)
 		expect(change_request.aasm_state).to eq "submitted"
@@ -37,5 +48,4 @@ describe ChangeRequest do
 	 	change_request = FactoryGirl.build(:change_request, type_install_uninstall:nil, type_other:nil)
 	 	expect(change_request.at_least_one_type).to match_array(["Please choose at least one type."])
 	 end
-
 end
