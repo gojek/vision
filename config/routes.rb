@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     resources :comments
     collection do
           get :deleted # <= this
+          get :export_csv
           get :search #=> 'change_requests#search', :as => 'search'
     end
     #collection do
