@@ -18,7 +18,7 @@
   <br>
   <span class='pull-left'>
     <% if @change_request.aasm_state == 'rollbacked'%>
-    <%= link_to 'Create Hotfix', create_hotfix_path(@change_request), :class => 'btn btn-primary btn-flat'  %>
+    <%= link_to 'Create Hotfix', create_hotfix_path(@change_request), :class => 'btn btn-danger btn-flat'  %>
     <% end %>
     <% if current_user.role == 'release_manager' || current_user.is_admin || @change_request.user == current_user ||  current_user.collaborate_change_requests.include?(@change_request)%>
     <%= link_to 'Edit', edit_change_request_path, :class => 'btn btn-primary btn-flat'  %>
