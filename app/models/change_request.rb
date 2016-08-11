@@ -89,6 +89,43 @@ class ChangeRequest < ActiveRecord::Base
     end
   end
 
+  comma do
+    change_summary 'change summary'
+    all_category 'category'
+    all_type 'type'
+    priority
+    user name: 'requestor'
+    tag_list 'tags' do |tag_list| tag_list.join(';') end
+    collaborators do |collaborators| collaborators.collect(&:name).join(';') end
+    approvals 'approvers' do |approvals| approvals.collect(&:user).collect(&:name).join(';') end
+    change_requirement 'change requirement'
+    business_justification 'business justification'
+    note
+    os 'operating system dependency'
+    db 'database dependency'
+    net 'network dependency'
+    other_dependency 'other dependency'
+    analysis
+    solution
+    impact
+    scope
+    design
+    backup
+    definition_of_success 'definition of success'
+    definition_of_failed 'definition of failed'
+    testing_environment_available to_s: 'testing environment available'
+    testing_procedure 'testing procedure'
+    testing_notes 'testing notes'
+    testers do |testers| testers.collect(&:name).join(';') end
+    schedule_change_date to_s: 'schedule change date'
+    planned_completion to_s: 'planned completion'
+    implementation_notes to_s: 'implementation notes'
+    grace_period_starts to_s: 'grace period starts'
+    grace_period_end to_s: 'grace period end'
+    grace_period_notes to_s: 'grace period notes'
+    implementers do |implementers| implementers.collect(&:name).join(';') end
+  end
+
   def failed_change_request
     self.status = 'failed'
     self.closed_date = Time.now

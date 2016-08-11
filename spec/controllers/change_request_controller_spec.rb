@@ -1,11 +1,15 @@
 require 'spec_helper'
 
 describe ChangeRequestsController do
+  before :all do
+    SolrResultStub = Struct.new("SolrResultStub", :results)
+  end
 
   describe 'requestor access' do
     let(:user) {FactoryGirl.create(:user)}
-    let(:change_request) {FactoryGirl.create(:change_request, user: user)}
     let(:approver) {FactoryGirl.create(:approver)}
+    let(:change_request) {FactoryGirl.create(:change_request, user: user)}
+
     before :each do
       @request.env['devise.mapping'] = Devise.mappings[:user]
       sign_in user
@@ -28,8 +32,33 @@ describe ChangeRequestsController do
       it "populate current user's Change Request based on tag that selected" do
         change_request.update(tag_list: 'tag')
         other_cr = FactoryGirl.create(:change_request, user: user)
-        get :index, tag: 'tag'
+        get :index, tag_list: 'tag'
         expect(assigns(:change_requests)).to match_array([change_request])
+      end
+
+      it 'exporting specific cr filtered by q param if using tag filter' do
+        change_request.update(priority: 'Urgent')
+        get :index, q: {priority: 'Urgent'}
+        expect(assigns(:change_requests)).to match_array([change_request])
+      end
+
+      context 'when exporting fulltext search results' do
+        let(:change_request) {FactoryGirl.create(:change_request, business_justification: 'asdasd')}
+        let(:other_cr) {FactoryGirl.create(:change_request, business_justification: 'asdasd')}
+
+        before :each do
+          allow(ChangeRequest).to receive(:solr_search).and_return(SolrResultStub.new([change_request, other_cr]))
+        end
+
+        it 'exporting specific cr from fulltext results' do
+          get :index, format: :csv, search: "asdasd"
+          expect(assigns(:change_requests)).to match_array([change_request, other_cr])
+        end
+
+        it 'call fulltext search solr function' do
+          expect(ChangeRequest).to receive(:solr_search)
+          get :index, format: :csv, search: "asdasd"
+        end
       end
     end
 
