@@ -77,6 +77,9 @@ FactoryGirl.define do
 
       approval = FactoryGirl.create(:approval)
       cr.approvals << approval
+
+      associated_user_ids = [collaborator.id, implementer.id, tester.id, approval.user.id]
+      cr.associated_user_ids = associated_user_ids.uniq
     end
 
     after(:build) do |cr|
