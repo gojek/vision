@@ -19,10 +19,9 @@ class ChangeRequestsController < ApplicationController
       @q = ChangeRequest.ransack(params[:q])
       case params[:type]
       when 'approval'
-        cr_ids = Approval.where(user_id: current_user.id, approve: nil).collect(&:change_request_id)
-        @change_requests = @q.result(distinct: true).where(id: cr_ids).order(id: :desc)
+        @change_requests = ChangeRequest.where(id: Approval.where(user_id: current_user.id, approve: nil).collect(&:change_request_id)).order(id: :desc)
       when 'relevant'
-        @change_requests = @q.result(distinct: true).order(id: :desc)
+        @change_requests = ChangeRequest.where(id: current_user.associated_change_requests.collect(&:id)).order(id: :desc)
       end
     else
       @q = ChangeRequest.ransack(params[:q])
@@ -107,7 +106,7 @@ class ChangeRequestsController < ApplicationController
     @change_request.set_collaborators(@current_collaborators)
     respond_to do |format|
       if @change_request.save
-        associated_user_ids = []
+        associated_user_ids = ["#{@change_request.user.id}"]
         associated_user_ids.concat(@current_approvers)
         associated_user_ids.concat(@current_implementers)
         associated_user_ids.concat(@current_testers)
@@ -158,7 +157,7 @@ class ChangeRequestsController < ApplicationController
     @change_request.set_collaborators(@current_collaborators)
     respond_to do |format|
       if @change_request.update(change_request_params)
-        associated_user_ids = []
+        associated_user_ids = ["#{@change_request.user.id}"]
         associated_user_ids.concat(@current_approvers)
         associated_user_ids.concat(@current_implementers)
         associated_user_ids.concat(@current_testers)

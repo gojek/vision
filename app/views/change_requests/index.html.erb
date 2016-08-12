@@ -56,7 +56,16 @@
     <div class="col-xs-12">
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">Change Request List</h3>
+          <h3 class="box-title">
+            <% case params[:type] %>
+            <% when 'approval' %>
+              Showing change requests that needs your approval
+            <% when 'relevant' %>
+              Showing change requests that is relevant to you
+            <% else %>
+              Showing all change requests
+            <% end %>
+          </h3>
           <hr>
           <div>
             <b>Quick filters:</b>
