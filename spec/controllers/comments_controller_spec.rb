@@ -1,4 +1,6 @@
 require 'spec_helper'
+require 'slack_notif'
+require 'mentioner.rb'
 
 describe CommentsController do
 	let(:change_request) {FactoryGirl.create(:change_request)}
@@ -13,6 +15,12 @@ describe CommentsController do
 				expect{
 					post :create, change_request_id: change_request.id, comment: {body: 'comment'}
 				}.to change(Comment, :count).by(1)
+			end
+
+			it 'call slack notification library to notify to the mentionees that they have been mentioned' do
+				comment = FactoryGirl.build(:comment, body: 'comment @metionee')
+				expect_any_instance_of(SlackNotif).to receive(:notify_new_comment).with(an_instance_of(Comment))
+				post :create, change_request_id: change_request.id, comment: {body: comment.body}
 			end
 		end
 		context 'with invalid attributes' do
