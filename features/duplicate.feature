@@ -13,7 +13,6 @@ Feature: Duplicate Change request
   Given I am in page "/change_requests"
   When I press link "Duplicate"
   Then I should be redirected to a new change request page
-  And I should be the requestor of the CR
   And the "requestor name" field should be filled in with "Lia Sadita"
   And the "change summary" field should be filled in with "Heroku Deployment"
 
