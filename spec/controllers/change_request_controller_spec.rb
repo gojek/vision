@@ -44,17 +44,21 @@ describe ChangeRequestsController do
 
       context 'when sending get index with relevant params' do
         let(:other_user) {FactoryGirl.create(:user)}
+        let(:new_change_request) {FactoryGirl.create(:change_request, user: user)}
         let(:other_change_request) {FactoryGirl.create(:change_request, user: other_user)}
         it 'should not populate change requests that have no relevancy to me' do
+          change_request.reload
+          new_change_request.reload
           get :index, type: 'relevant'
-          expect(assigns(:change_requests)).to match_array([])
+          expect(assigns(:change_requests)).to match_array([change_request, new_change_request])
         end
-        
         it 'should populate change requests where I am an associated user' do
+          change_request.reload
+          new_change_request.reload
           other_change_request.update(associated_user_ids: [user.id])
           other_change_request.reload
           get :index, type: 'relevant'
-          expect(assigns(:change_requests)).to match_array([other_change_request])
+          expect(assigns(:change_requests)).to match_array([change_request, other_change_request, new_change_request])
         end
 
       end

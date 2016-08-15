@@ -82,6 +82,12 @@ FactoryGirl.define do
       cr.associated_user_ids = associated_user_ids.uniq
     end
 
+    after(:create) do |cr|
+      if !cr.user.nil?
+        cr.update(associated_user_ids: cr.associated_user_ids << cr.user.id)
+      end
+    end
+
     after(:build) do |cr|
       approval = FactoryGirl.create(:approval)
       cr.approvals << approval
