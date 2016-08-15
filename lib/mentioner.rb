@@ -1,35 +1,25 @@
 class Mentioner
-  def self.extract_handles_from_mentioner(mentioner)
-      content = self.extract_mentioner_content(mentioner)
-      handles = content.scan(self.handle_regexp).map { |handle| handle.gsub("#{mention_prefix}","") }
-    end
-
-  def self.extract_mentioner_content(comment)
-    comment.body
+  def self.process_mentions(comment)
+    usernames = extract_username(comment)
+    mentionees =find_mentionees_from_username(usernames)
+    return Array.wrap(mentionees)
   end
 
-  def self.find_mentionees_by_handles(*handles)
-    handles[0] = handles[0].collect{|mention| mention + "@veritrans.co.id"}
-    User.where(email: handles)
+  def self.extract_username(comment)
+    content = comment.body
+    usernames = content.scan(username_extract_regex).map{|username| username.gsub(mention_prefix,'')}
   end
 
-  def self.process_mentions(mentioner)
-    handles = self.extract_handles_from_mentioner(mentioner)
-    if !handles.nil?
-      mentionees = self.find_mentionees_by_handles(handles)
-    else
-      mentionees = nil
-    end
-    return mentionees
+  def self.find_mentionees_from_username(usernames)
+    usernames = usernames.map{|mention| mention + '@veritrans.co.id'}
+    User.where(email: usernames)
   end
 
-  def self.handle_regexp
+  def self.username_extract_regex
     /(?<!\w)#{mention_prefix}[\w\.]+/
   end
 
   def self.mention_prefix
-      "@"
+    '@'
   end
-
-
 end
