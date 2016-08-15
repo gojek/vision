@@ -1,6 +1,5 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
-  require 'mentioner.rb'
   require 'slack_notif.rb'
 
   def create
@@ -11,12 +10,7 @@ class CommentsController < ApplicationController
     respond_to do |format|
       if @comment.save
         Notifier.cr_notify(current_user, @cr, 'comment_cr')
-        # Placeholder content for slack notification
-        mentionees =  Mentioner.process_mentions(@comment)
-        if !mentionees.nil?
-          link = url_for @cr
-          SlackNotif.notif_comment_mention @comment, mentionees, link
-        end
+        SlackNotif.new.notify_new_comment @comment        
         format.html { redirect_to @cr}
         format.json { render :show, status: :created, location: @comment }
       else
