@@ -114,4 +114,8 @@ class User < ActiveRecord::Base
   def is_approver?
     role == 'approver'
   end
+
+  def is_associated?(change_request)
+    associated_change_requests.inclide? change_request
+  end
 end
