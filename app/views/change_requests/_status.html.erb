@@ -11,8 +11,8 @@
   <div class="col-lg-1">
     <i class="fa fa-arrow-right fa-2x" aria-hidden="true"></i>
   </div>
+  <% if @change_request.submitted? %>
   <div class="col-lg-2">
-    <% if @change_request.submitted? %>
     <div class="dropdown">
       <button class="btn btn-primary btn-lg dropdown-toggle" type="button" data-toggle="dropdown">Second Phase
       <span class="caret"></span></button>
@@ -36,20 +36,12 @@
         </li>
       </ul>
     </div>
-    <% elsif @change_request.scheduled? || @change_request.deployed? || @change_request.rollbacked? || (@change_request.closed? && @change_request.status == 'success')%>
-    <button class="btn btn-success btn-lg"> Scheduled <i class="fa fa-check" aria-hidden="true"></i> </button>
-    <% elsif (@change_request.closed? && @change_request.status = 'failed') %>
-    <button class="btn btn-danger btn-lg"> Closed <i class="fa fa-times" aria-hidden="true"></i> </button>
-    <% elsif @change_request.rejected?%>
-    <button class="btn btn-danger btn-lg"> Rejected <i class="fa fa-times" aria-hidden="true"></i> </button>
-    <% else %>
-    <% end %>
   </div>
-  <div class="col-lg-1">
-    <i class="fa fa-arrow-right fa-2x" aria-hidden="true"></i>
-  </div>
+  <% else %>
+    <%= render 'status_button', status: @cr_statuses[1].status unless @cr_statuses[1].nil?%>
+  <% end %>
+  <% if @change_request.scheduled? %>
   <div class="col-lg-2">
-    <% if @change_request.scheduled? %>
     <div class="dropdown">
       <button class="btn btn-primary dropdown-toggle btn-lg" type="button" data-toggle="dropdown">Third Phase
       <span class="caret"></span></button>
@@ -76,23 +68,12 @@
         </li>
       </ul>
     </div>
-    <% elsif @change_request.deployed? || (@change_request.closed? && @change_request.status == 'success')%>
-    <button class="btn btn-success btn-lg"> Deployed <i class="fa fa-check" aria-hidden="true"></i> </button>
-    <% elsif @change_request.rollbacked? %>
-    <button class="btn btn-danger btn-lg"> Rollbacked <i class="fa fa-times" aria-hidden="true"></i> </button>
-    <% elsif @change_request.cancelled? %>
-    <button class="btn btn-danger btn-lg"> Cancelled <i class="fa fa-times" aria-hidden="true"></i> </button>
-    <% elsif (@change_request.closed? && @change_request.status == 'failed') %>
-    <button class="btn btn-danger btn-lg"> Closed <i class="fa fa-times" aria-hidden="true"></i> </button>
-    <% else %>
-
-    <% end %>
   </div>
-  <div class="col-lg-1">
-    <i class="fa fa-arrow-right fa-2x" aria-hidden="true"></i>
-  </div>
+  <% else %>
+  <%= render 'status_button', status: @cr_statuses[2].status unless @cr_statuses[2].nil?%>
+  <% end %>
+  <% if @change_request.deployed? %>
   <div class="col-lg-2">
-    <% if @change_request.deployed? %>
     <div class="dropdown">
       <button class="btn btn-primary dropdown-toggle btn-lg" type="button" data-toggle="dropdown">Final Phase
       <span class="caret"></span></button>
@@ -109,7 +90,9 @@
         </li>
       </ul>
     </div>
-    <% elsif @change_request.rollbacked? %>
+  </div>
+  <% elsif @change_request.rollbacked? %>
+  <div class="col-lg-2">
     <div class="dropdown">
       <button class="btn btn-primary dropdown-toggle btn-lg" type="button" data-toggle="dropdown">Final Phase
       <span class="caret"></span></button>
@@ -121,65 +104,11 @@
         </li>
       </ul>
     </div>
-    <% elsif @change_request.closed? && @change_request.status == 'success'%>
-    <button class="btn btn-success btn-lg"> Success <i class="fa fa-check" aria-hidden="true"></i> </button>
-    <% elsif @change_request.closed? && @change_request.status == 'failed'%>
-    <button class="btn btn-danger btn-lg"> Failed <i class="fa fa-times" aria-hidden="true"></i> </button>
-    <% else %>
-
-    <% end %>
   </div>
+  <% else %>
+  <%= render 'status_button', status: @cr_statuses[3].status unless @cr_statuses[3].nil? %>
+  <% end %>
 </div>
-
-
-
-<!-- <% if @change_request.submitted? %>
-  <button class="btn btn-primary" data-toggle="modal" data-target="#ScheduleModalLabel">
-    Schedule Change Request
-  </button>
-  <button class="btn btn-primary" data-toggle="modal" data-target="#closeModalLabel">
-    Close Change Request
-  </button>
-  <button class="btn btn-primary" data-toggle="modal" data-target="#RejectModalLabel">
-    Reject Change Request
-  </button>
-<% elsif @change_request.scheduled?%>
-  <button class="btn btn-primary" data-toggle="modal" data-target="#closeModalLabel">
-    Close Change Request
-  </button>
-  <button class="btn btn-primary" data-toggle="modal" data-target="#DeployModalLabel">
-    Deploy Change Request
-  </button>
-  <button class="btn btn-primary" data-toggle="modal" data-target="#RollbackModalLabel">
-    Rollback Change Request
-  </button>
-  <button class="btn btn-primary" data-toggle="modal" data-target="#cancelModalLabel">
-    Cancel Change Request
-  </button>
-<% elsif @change_request.deployed? %>
-  <button class="btn btn-primary" data-toggle="modal" data-target="#closeModalLabel">
-    Close Change Request
-  </button>
-  <button class="btn btn-primary" data-toggle="modal" data-target="#RollbackModalLabel">
-    Rollback Change Request
-  </button>
-<%elsif @change_request.rollbacked? %>
-  <button class="btn btn-primary" data-toggle="modal" data-target="#closeModalLabel">
-    Close Change Request
-  </button>
-<% elsif @change_request.cancelled?%>
-  <button class="btn btn-primary" data-toggle="modal" data-target="#closeModalLabel">
-    Close Change Request
-  </button>
-  <button class="btn btn-primary" data-toggle="modal" data-target="#SubmitModalLabel">
-    Submit Change Request
-  </button>
-<% elsif @change_request.rejected? %>
-  <button class="btn btn-primary" data-toggle="modal" data-target="#closeModalLabel">
-    Close Change Request
-  </button>
-<% end %> -->
-
 <div class="modal fade" id="ScheduleModalLabel" tabindex="-1" role="dialog" aria-labelledby="ScheduleModalLabel" aria-hidden="true" style="display: none;">
   <div class="modal-dialog">
       <div class="modal-content">
