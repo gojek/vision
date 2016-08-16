@@ -94,10 +94,10 @@
       <% end %><!--/if approved-->
     </div><!--/approve-status-->
   <% end %><!--/current_user.role==approver-->
-  <% if !@change_request.closed? && (current_user.role =='release_manager'|| current_user.is_admin)%>
+  <% if (current_user.role =='release_manager'|| current_user.is_admin || current_user.is_associated?(@change_request))%>
     <div class="box box-default">
       <div class="box-header with-border">
-        <h3 class="box-title">Actions</h3>
+        <h3 class="box-title">Change Request Lifeline: </h3>
       </div>
       <div class="box-body">
         <%= render 'status' %>
