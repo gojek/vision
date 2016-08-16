@@ -59,6 +59,7 @@ class ChangeRequestsController < ApplicationController
     User.all.each do |user|
       @usernames <<  user.email.split("@").first
     end
+    @cr_statuses = @change_request.change_request_statuses
   end
 
   def new
