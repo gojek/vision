@@ -116,6 +116,6 @@ class User < ActiveRecord::Base
   end
 
   def is_associated?(change_request)
-    associated_change_requests.inclide? change_request
+    associated_change_requests.include? change_request
   end
 end
