@@ -10,7 +10,7 @@
     <% if @change_request.aasm_state == 'rollbacked'%>
     <%= link_to 'Create Hotfix', create_hotfix_path(@change_request), :class => 'btn btn-danger btn-flat'  %>
     <% end %>
-    <% if current_user.role == 'release_manager' || current_user.is_admin || @change_request.user == current_user ||  current_user.collaborate_change_requests.include?(@change_request)%>
+    <% if current_user.role == 'release_manager' || current_user.is_admin || current_user.is_associated?(@change_request)%>
     <%= link_to 'Edit', edit_change_request_path, :class => 'btn btn-primary btn-flat'  %>
     <% end %>
     <%= link_to 'Duplicate', duplicate_path(@change_request), class: 'btn btn-primary btn-flat' %>
@@ -84,16 +84,14 @@
       <% end %><!--/if approved-->
     </div><!--/approve-status-->
   <% end %><!--/current_user.role==approver-->
-  <% if (current_user.role =='release_manager'|| current_user.is_admin || current_user.is_associated?(@change_request))%>
-    <div class="box box-default">
-      <div class="box-header with-border">
-        <h3 class="box-title">Change Request Lifeline: </h3>
-      </div>
-      <div class="box-body">
-        <%= render 'status' %>
-      </div>
+  <div class="box box-default">
+    <div class="box-header with-border">
+      <h3 class="box-title">Change Request Lifeline: </h3>
     </div>
-  <% end %><!--/release_manager action-->
+    <div class="box-body">
+      <%= render 'status' %>
+    </div>
+  </div>
   <div class='row'>
     <div class='col-lg-6 col-xs-12'>
       <div class="box box-default">

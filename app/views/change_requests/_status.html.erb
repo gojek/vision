@@ -9,7 +9,9 @@
   <% @cr_statuses.each do |status| %>
     <%= render 'status_button', status: status.status%>
   <% end %>
+  <% if (current_user.role =='release_manager'|| current_user.is_admin || current_user.is_associated?(@change_request)) %>
   <%= render 'next_actions' %>
+  <% end %>
 </div>
 
 <div class="modal fade" id="SubmitModalLabel" tabindex="-1" role="dialog" aria-labelledby="SubmitModalLabel" aria-hidden="true" style="display: none;">
