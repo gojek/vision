@@ -4,111 +4,37 @@
     </div>
 <% end %>
 
+
 <div class="row">
-  <div class="col-lg-2">
-    <button class="btn btn-success btn-lg"> Submitted <i class="fa fa-check" aria-hidden="true"></i> </button>
-  </div>
-  <div class="col-lg-1">
-    <i class="fa fa-arrow-right fa-2x" aria-hidden="true"></i>
-  </div>
-  <% if @change_request.submitted? %>
-  <div class="col-lg-2">
-    <div class="dropdown">
-      <button class="btn btn-primary btn-lg dropdown-toggle" type="button" data-toggle="dropdown">Second Phase
-      <span class="caret"></span></button>
-      <ul class="dropdown-menu">
-        <li>
-          <button class="btn btn-primary" data-toggle="modal" data-target="#ScheduleModalLabel">
-            Schedule Change Request
-          </button>
-        </li>
-        <li class="divider"></li>
-        <li>
-          <button class="btn btn-primary" data-toggle="modal" data-target="#closeModalLabel">
-            Close Change Request
-          </button>
-        </li>
-        <li class="divider"></li>
-        <li>
-          <button class="btn btn-primary" data-toggle="modal" data-target="#RejectModalLabel">
-            Reject Change Request
-          </button>
-        </li>
-      </ul>
-    </div>
-  </div>
-  <% else %>
-    <%= render 'status_button', status: @cr_statuses[1].status unless @cr_statuses[1].nil?%>
+  <% @cr_statuses.each do |status| %>
+    <%= render 'status_button', status: status.status%>
   <% end %>
-  <% if @change_request.scheduled? %>
-  <div class="col-lg-2">
-    <div class="dropdown">
-      <button class="btn btn-primary dropdown-toggle btn-lg" type="button" data-toggle="dropdown">Third Phase
-      <span class="caret"></span></button>
-      <ul class="dropdown-menu">
-        <li>
-          <button class="btn btn-primary" data-toggle="modal" data-target="#closeModalLabel">
-            Close Change Request
-          </button>
-        </li>
-        <li>
-          <button class="btn btn-primary" data-toggle="modal" data-target="#DeployModalLabel">
-            Deploy Change Request
-          </button>
-        </li>
-        <li>
-          <button class="btn btn-primary" data-toggle="modal" data-target="#RollbackModalLabel">
-            Rollback Change Request
-          </button>
-        </li>
-        <li>
-          <button class="btn btn-primary" data-toggle="modal" data-target="#cancelModalLabel">
-            Cancel Change Request
-          </button>
-        </li>
-      </ul>
-    </div>
-  </div>
-  <% else %>
-  <%= render 'status_button', status: @cr_statuses[2].status unless @cr_statuses[2].nil?%>
-  <% end %>
-  <% if @change_request.deployed? %>
-  <div class="col-lg-2">
-    <div class="dropdown">
-      <button class="btn btn-primary dropdown-toggle btn-lg" type="button" data-toggle="dropdown">Final Phase
-      <span class="caret"></span></button>
-      <ul class="dropdown-menu">
-        <li>
-          <button class="btn btn-primary" data-toggle="modal" data-target="#RollbackModalLabel">
-            Rollback Change Request
-          </button>
-        </li>
-        <li>
-          <button class="btn btn-primary" data-toggle="modal" data-target="#closeModalLabel">
-            Close Change Request
-          </button>
-        </li>
-      </ul>
-    </div>
-  </div>
-  <% elsif @change_request.rollbacked? %>
-  <div class="col-lg-2">
-    <div class="dropdown">
-      <button class="btn btn-primary dropdown-toggle btn-lg" type="button" data-toggle="dropdown">Final Phase
-      <span class="caret"></span></button>
-      <ul class="dropdown-menu">
-        <li>
-          <button class="btn btn-primary" data-toggle="modal" data-target="#closeModalLabel">
-            Close Change Request
-          </button>
-        </li>
-      </ul>
-    </div>
-  </div>
-  <% else %>
-  <%= render 'status_button', status: @cr_statuses[3].status unless @cr_statuses[3].nil? %>
-  <% end %>
+  <%= render 'next_actions' %>
 </div>
+
+<div class="modal fade" id="SubmitModalLabel" tabindex="-1" role="dialog" aria-labelledby="SubmitModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <%= form_for(@change_request_status, url: submit_path) do |f| %>
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+              <h4 class="modal-title" id="myModalLabel">Submit Change Request </h4>
+          </div>
+          <div class="modal-body">
+              <%= f.label :reason %>
+              <%= f.text_area :reason, class: 'form-control' %>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <%= f.submit "Update Change Request Status to Submit", class: 'btn btn-default'%>
+           </div>
+          <% end %>
+      </div>
+      <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 <div class="modal fade" id="ScheduleModalLabel" tabindex="-1" role="dialog" aria-labelledby="ScheduleModalLabel" aria-hidden="true" style="display: none;">
   <div class="modal-dialog">
       <div class="modal-content">
