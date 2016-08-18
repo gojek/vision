@@ -20,6 +20,11 @@ describe ChangeRequestsController do
         get :show, id: change_request
         expect(assigns(:change_request)).to eq change_request
       end
+
+      it 'assigns change request statuses for change request lifeline' do
+        get :show, id: change_request
+        expect(assigns(:cr_statuses)).to eq change_request.change_request_statuses
+      end
     end
 
     describe 'GET #index' do
