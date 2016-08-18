@@ -1,4 +1,11 @@
 <% case status %>
+<% when 'submitted' %>
+<div class="col-lg-2">
+  <button class="btn btn-success btn-lg"> Submitted <i class="fa fa-check" aria-hidden="true"></i> </button>
+</div>
+<div class="col-lg-1">
+  <i class="fa fa-arrow-right fa-2x" aria-hidden="true"></i>
+</div>
 <% when 'scheduled' %>
 <div class="col-lg-2">
   <button class="btn btn-success btn-lg"> Scheduled <i class="fa fa-check" aria-hidden="true"></i> </button>
@@ -26,6 +33,9 @@
 <% when 'cancelled' %>
 <div class="col-lg-2">
   <button class="btn btn-danger btn-lg"> Cancelled <i class="fa fa-times" aria-hidden="true"></i> </button>
+</div>
+<div class="col-lg-1">
+  <i class="fa fa-arrow-right fa-2x" aria-hidden="true"></i>
 </div>
 <% when 'rollbacked' %>
 <div class="col-lg-2">

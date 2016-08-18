@@ -1,19 +1,9 @@
 <section class="content-header">
   <h1>
   Change Request #<%= @change_request.id %>
-
     <% if !@change_request.reference_cr_id.nil? %>
       - Reference to <%= link_to "Change Request ##{@change_request.reference_cr_id}", ChangeRequest.find(@change_request.reference_cr_id)%>
     <% end %>
-    <% if @change_request.aasm_state == 'cancelled' || @change_request.aasm_state == 'rollbacked' || @change_request.aasm_state == 'rejected' %>
-      <div class= "pull-right label label-danger" >
-    <% elsif @change_request.aasm_state == 'deployed' %>
-      <div class= "pull-right label label-success" >
-    <% else %>
-      <div class= "pull-right label  label-primary" >
-    <% end %>
-      <%=@change_request.aasm_state%>
-      </div><!--/label-->
   </h1>
   <br>
   <span class='pull-left'>

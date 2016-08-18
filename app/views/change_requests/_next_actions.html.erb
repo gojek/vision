@@ -1,0 +1,108 @@
+<% if @change_request.submitted? %>
+<div class="col-lg-2">
+  <div class="dropdown">
+    <a class="btn btn-primary btn-lg dropdown-toggle" type="a" data-toggle="dropdown">Next Action
+    <span class="caret"></span></a>
+    <ul class="dropdown-menu">
+      <li>
+        <a  data-toggle="modal" data-target="#ScheduleModalLabel">
+          Schedule Change Request
+        </a>
+      </li>
+      <li class="divider"></li>
+      <li>
+        <a  data-toggle="modal" data-target="#closeModalLabel">
+          Close Change Request
+        </a>
+      </li>
+      <li class="divider"></li>
+      <li>
+        <a  data-toggle="modal" data-target="#RejectModalLabel">
+          Reject Change Request
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+<% elsif @change_request.scheduled? %>
+<div class="col-lg-2">
+  <div class="dropdown">
+    <a class="btn btn-primary dropdown-toggle btn-lg" type="a" data-toggle="dropdown">Next Action
+    <span class="caret"></span></a>
+    <ul class="dropdown-menu">
+      <li>
+        <a  data-toggle="modal" data-target="#closeModalLabel">
+          Close Change Request
+        </a>
+      </li>
+      <li>
+        <a  data-toggle="modal" data-target="#DeployModalLabel">
+          Deploy Change Request
+        </a>
+      </li>
+      <li>
+        <a  data-toggle="modal" data-target="#RollbackModalLabel">
+          Rollback Change Request
+        </a>
+      </li>
+      <li>
+        <a  data-toggle="modal" data-target="#cancelModalLabel">
+          Cancel Change Request
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+<% elsif @change_request.deployed? %>
+<div class="col-lg-2">
+  <div class="dropdown">
+    <a class="btn btn-primary dropdown-toggle btn-lg" type="a" data-toggle="dropdown">Next Action
+    <span class="caret"></span></a>
+    <ul class="dropdown-menu">
+      <li>
+        <a  data-toggle="modal" data-target="#RollbackModalLabel">
+          Rollback Change Request
+        </a>
+      </li>
+      <li>
+        <a  data-toggle="modal" data-target="#closeModalLabel">
+          Close Change Request
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+<% elsif @change_request.rollbacked? %>
+<div class="col-lg-2">
+  <div class="dropdown">
+    <a class="btn btn-primary dropdown-toggle btn-lg" type="a" data-toggle="dropdown">Next Action
+    <span class="caret"></span></a>
+    <ul class="dropdown-menu">
+      <li>
+        <a  data-toggle="modal" data-target="#closeModalLabel">
+          Close Change Request
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+<% elsif @change_request.cancelled? %>
+<div class="col-lg-2">
+  <div class="dropdown">
+    <a class="btn btn-primary dropdown-toggle btn-lg" type="a" data-toggle="dropdown">Next Action
+    <span class="caret"></span></a>
+    <ul class="dropdown-menu">
+      <li>
+        <a  data-toggle="modal" data-target="#SubmitModalLabel">
+          Submit Change Request
+        </a>
+      </li>
+      <li>
+        <a  data-toggle="modal" data-target="#closeModalLabel">
+          Close Change Request
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+<% end %>
