@@ -46,5 +46,29 @@ Given(/^I am a "([^"]*)" in a change request with summary "([^"]*)"$/) do |role,
       approval = Approval.create(user: @current_user, change_request: cr, approve: nil)
   end
   cr.update(associated_user_ids: cr.associated_user_ids << @current_user.id)
-  
+end
+
+Given(/^a change request with summary "([^"]*)" that I approved$/) do |change_summary|
+  user = FactoryGirl.create(:user)
+  cr = FactoryGirl.create(:change_request, user: user, change_summary: change_summary)
+  cr.approvals.delete_all
+  Approval.create(user: @current_user, change_request: cr, approve: true)
+  @current_user.update(associated_change_requests: @current_user.associated_change_requests << cr)
+end
+
+Given(/^I am a "([^"]*)" in a change request with summary "([^"]*)" that has been approved$/) do |role, change_summary|
+  user = FactoryGirl.create(:user)
+  cr = FactoryGirl.create(:change_request, user: user, change_summary: change_summary)
+  case role
+    when "collaborator"
+      cr.update(collaborators: cr.collaborators << @current_user)
+    when "implementer"
+      cr.update(implementers: cr.implementers << @current_user)
+    when "tester"
+      cr.update(testers: cr.testers << @current_user)
+    when "approver"
+      approval = Approval.create(user: @current_user, change_request: cr, approve: nil)
+  end
+  cr.update(associated_user_ids: cr.associated_user_ids << @current_user.id)
+  cr.approvals.update_all(approve: true)
 end

@@ -114,7 +114,7 @@ class ChangeRequestStatusesController < ApplicationController
 
   def authorized_user_required
     redirect_to @change_request unless
-    current_user.role == 'release_manager' || current_user.is_admin
+    current_user.role == 'release_manager' || current_user.is_admin || current_user.is_associated?(@change_request)
   end
 
 end

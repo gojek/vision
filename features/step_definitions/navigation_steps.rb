@@ -18,6 +18,11 @@ When /^I input "(.*?)" in field "(.*?)"$/ do |value, field_name|
   fill_in(field_name, with: value)
 end
 
+When(/^I press "([^"]*)" submit button$/) do |value|
+  page.find(:xpath, "//input[@value='#{value}']").click
+end
+
+
 Then /^I am in homepage$/ do
   pending
 end
