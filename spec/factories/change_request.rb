@@ -86,6 +86,8 @@ FactoryGirl.define do
       if !cr.user.nil?
         cr.update(associated_user_ids: cr.associated_user_ids << cr.user.id)
       end
+      status = FactoryGirl.create(:change_request_status, status: 'submitted')
+      cr.update(change_request_statuses: cr.change_request_statuses << status)
     end
 
     after(:build) do |cr|
