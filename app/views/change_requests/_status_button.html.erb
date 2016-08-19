@@ -1,51 +1,51 @@
 <% case status %>
 <% when 'submitted' %>
-<div class="col-lg-2">
+<span>
   <button class="btn btn-success btn-lg"> Submitted <i class="fa fa-check" aria-hidden="true"></i> </button>
-</div>
-<div class="col-lg-1">
+</span>
+<span>
   <i class="fa fa-arrow-right fa-2x" aria-hidden="true"></i>
-</div>
+</span>
 <% when 'scheduled' %>
-<div class="col-lg-2">
+<span>
   <button class="btn btn-success btn-lg"> Scheduled <i class="fa fa-check" aria-hidden="true"></i> </button>
-</div>
-<div class="col-lg-1">
+</span>
+<span>
   <i class="fa fa-arrow-right fa-2x" aria-hidden="true"></i>
-</div>
+</span>
 <% when 'deployed' %>
-<div class="col-lg-2">
+<span>
   <button class="btn btn-success btn-lg"> Deployed <i class="fa fa-check" aria-hidden="true"></i> </button>
-</div>
-<div class="col-lg-1">
+</span>
+<span>
   <i class="fa fa-arrow-right fa-2x" aria-hidden="true"></i>
-</div>
+</span>
 <% when 'closed' %>
   <% if @change_request.status == 'success' %>
-  <div class="col-lg-2">
+  <span>
     <button class="btn btn-success btn-lg"> Success <i class="fa fa-check" aria-hidden="true"></i> </button>
-  </div>
+  </span>
   <% else %>
-  <div class="col-lg-2">
+  <span>
     <button class="btn btn-danger btn-lg"> Failed <i class="fa fa-times" aria-hidden="true"></i> </button>
-  </div>
+  </span>
   <% end %>
 <% when 'cancelled' %>
-<div class="col-lg-2">
+<span>
   <button class="btn btn-danger btn-lg"> Cancelled <i class="fa fa-times" aria-hidden="true"></i> </button>
-</div>
-<div class="col-lg-1">
+</span>
+<span>
   <i class="fa fa-arrow-right fa-2x" aria-hidden="true"></i>
-</div>
+</span>
 <% when 'rollbacked' %>
-<div class="col-lg-2">
+<span>
   <button class="btn btn-danger btn-lg"> Rollbacked <i class="fa fa-times" aria-hidden="true"></i> </button>
-</div>
-<div class="col-lg-1">
+</span>
+<span>
   <i class="fa fa-arrow-right fa-2x" aria-hidden="true"></i>
-</div>
+</span>
 <% when 'rejected' %>
-<div class="col-lg-2">
+<span>
   <button class="btn btn-danger btn-lg"> Rejected <i class="fa fa-times" aria-hidden="true"></i> </button>
-</div>
+</span>
 <% end %>
