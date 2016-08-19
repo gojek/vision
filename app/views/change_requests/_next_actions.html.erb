@@ -1,8 +1,9 @@
-<% if @change_request.submitted? %>
-<div class="col-lg-2">
-  <div class="dropdown">
+<% if !@change_request.closed? %>
+<span>
+  <div class="dropdown" style="display: inline;">
     <button class="btn btn-primary dropdown-toggle btn-lg" data-toggle="dropdown">Next Action<span class="caret"></span></button>
     <ul class="dropdown-menu">
+      <% if @change_request.submitted? %>
       <li>
         <a href="#" data-toggle="modal" data-target="#ScheduleModalLabel">
           Schedule Change Request
@@ -20,14 +21,7 @@
           Reject Change Request
         </a>
       </li>
-    </ul>
-  </div>
-</div>
-<% elsif @change_request.scheduled? %>
-<div class="col-lg-2">
-  <div class="dropdown">
-    <button class="btn btn-primary dropdown-toggle btn-lg" data-toggle="dropdown">Next Action<span class="caret"></span></button>
-    <ul class="dropdown-menu">
+      <% elsif @change_request.scheduled? %>
       <li>
         <a href="#" data-toggle="modal" data-target="#CloseModalLabel">
           Close Change Request
@@ -51,14 +45,7 @@
           Cancel Change Request
         </a>
       </li>
-    </ul>
-  </div>
-</div>
-<% elsif @change_request.deployed? %>
-<div class="col-lg-2">
-  <div class="dropdown">
-    <button class="btn btn-primary dropdown-toggle btn-lg"  data-toggle="dropdown">Next Action<span class="caret"></span></button>
-    <ul class="dropdown-menu">
+      <% elsif @change_request.deployed? %>
       <li>
         <a href="#" data-toggle="modal" data-target="#RollbackModalLabel">
           Rollback Change Request
@@ -70,27 +57,13 @@
           Close Change Request
         </a>
       </li>
-    </ul>
-  </div>
-</div>
-<% elsif @change_request.rollbacked? %>
-<div class="col-lg-2">
-  <div class="dropdown">
-    <button class="btn btn-primary dropdown-toggle btn-lg"  data-toggle="dropdown">Next Action<span class="caret"></span></button>
-    <ul class="dropdown-menu">
+      <% elsif @change_request.rollbacked? %>
       <li>
         <a href="#" data-toggle="modal" data-target="#CloseModalLabel">
           Close Change Request
         </a>
       </li>
-    </ul>
-  </div>
-</div>
-<% elsif @change_request.cancelled? %>
-<div class="col-lg-2">
-  <div class="dropdown">
-    <button class="btn btn-primary dropdown-toggle btn-lg"  data-toggle="dropdown">Next Action<span class="caret"></span></button>
-    <ul class="dropdown-menu">
+      <% elsif @change_request.cancelled? %>
       <li>
         <a href="#" data-toggle="modal" data-target="#SubmitModalLabel">
           Submit Change Request
@@ -102,7 +75,9 @@
           Close Change Request
         </a>
       </li>
+      <% end %>
     </ul>
   </div>
-</div>
+</span>
+<% else %>
 <% end %>
