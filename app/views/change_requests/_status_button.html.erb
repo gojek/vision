@@ -2,23 +2,17 @@
 <% when 'submitted' %>
 <span>
   <button class="btn btn-success btn-lg"> Submitted <i class="fa fa-check" aria-hidden="true"></i> </button>
-</span>
-<span>
-  <i class="fa fa-arrow-right fa-2x" aria-hidden="true"></i>
+  <i class="glyphicon glyphicon-menu-right" aria-hidden="true"style="font-size:1.5em;"></i>
 </span>
 <% when 'scheduled' %>
 <span>
   <button class="btn btn-success btn-lg"> Scheduled <i class="fa fa-check" aria-hidden="true"></i> </button>
-</span>
-<span>
-  <i class="fa fa-arrow-right fa-2x" aria-hidden="true"></i>
+  <i class="glyphicon glyphicon-menu-right" aria-hidden="true"style="font-size:1.5em;"></i>
 </span>
 <% when 'deployed' %>
 <span>
   <button class="btn btn-success btn-lg"> Deployed <i class="fa fa-check" aria-hidden="true"></i> </button>
-</span>
-<span>
-  <i class="fa fa-arrow-right fa-2x" aria-hidden="true"></i>
+  <i class="glyphicon glyphicon-menu-right" aria-hidden="true"style="font-size:1.5em;"></i>
 </span>
 <% when 'closed' %>
   <% if @change_request.status == 'success' %>
@@ -33,16 +27,12 @@
 <% when 'cancelled' %>
 <span>
   <button class="btn btn-danger btn-lg"> Cancelled <i class="fa fa-times" aria-hidden="true"></i> </button>
-</span>
-<span>
-  <i class="fa fa-arrow-right fa-2x" aria-hidden="true"></i>
+  <i class="glyphicon glyphicon-menu-right" aria-hidden="true"style="font-size:1.5em;"></i>
 </span>
 <% when 'rollbacked' %>
 <span>
   <button class="btn btn-danger btn-lg"> Rollbacked <i class="fa fa-times" aria-hidden="true"></i> </button>
-</span>
-<span>
-  <i class="fa fa-arrow-right fa-2x" aria-hidden="true"></i>
+  <i class="glyphicon glyphicon-menu-right" aria-hidden="true"style="font-size:1.5em;"></i>
 </span>
 <% when 'rejected' %>
 <span>
