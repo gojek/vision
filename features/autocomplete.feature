@@ -1,4 +1,3 @@
-@login
 Feature: Shows suggestions by using autocomplete in comment field
   In order to easily mention other user
   As a user
@@ -6,7 +5,7 @@ Feature: Shows suggestions by using autocomplete in comment field
 
   Background:
     Given I am logged in as approver
-    
+
   @javascript
   Scenario: Shows autocomplete suggestions
     Given a change request with summary "Heroku Deployment"
