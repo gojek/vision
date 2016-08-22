@@ -17,7 +17,7 @@ Feature: Create hotfix of previously rollbacked CR
     Given there is a "rollbacked" change request with summary "Heroku Deployment"
     When I visit change request with change summary "Heroku Deployment"
     And I press link "Create Hotfix"
-    Then I should be redirected to a change request new page
+    Then I should be redirected to a new change request page
     And the rollbacked change request should be referenced
 
   Scenario: Seeing hotfixes for my rollbacked change request
