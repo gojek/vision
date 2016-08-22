@@ -41,7 +41,7 @@ class SlackNotif
       mentioned_message = "You are mentioned in #{comment.user.name} comment's on a <#{link}|change request>"
       message_users(mentionees, mentioned_message, attachment)
     end
-    associated_users = comment.change_request.associated_users
+    associated_users = comment.change_request.associated_users - [comment.user]
     general_message = "A new comment from #{comment.user.name} on a <#{link}|change request>"
     message_users(associated_users - mentionees, general_message, attachment)
   end
