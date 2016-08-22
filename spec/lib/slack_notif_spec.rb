@@ -93,8 +93,8 @@ describe SlackNotif do
       slack_notifier.notify_new_comment(comment)
     end
 
-    it 'Send message to associated_users about new comment except mentionees' do
-      associated_users = [user, other_user, another_user]
+    it 'Send message to associated_users about new comment except mentionees and the commenter itself' do
+      associated_users = [other_user, another_user]
       change_request.update(associated_users: associated_users)
       change_request.reload
       general_message = "A new comment from #{comment.user.name} on a <#{change_request_link}|change request>"
