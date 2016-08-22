@@ -1,4 +1,3 @@
-@login
 Feature: Clear change request and incident report notifications
   In order to tidy up my dashboard
   As a user
@@ -6,9 +5,10 @@ Feature: Clear change request and incident report notifications
 
 
   Background:
-    Given I am logged in as approver
+    Given I am logged in
 
   Scenario: Clear notifications when button is clicked
-    Given I have any change request / incident report notifications
-    When I click the clear notification button
+    Given I have "Deploy feature to heroku" change request notifications
+    And I have "Database cluster error" incident report notifications
+    When I press link "Clear Notification"
     Then all notifications should be removed
