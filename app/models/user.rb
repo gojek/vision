@@ -110,4 +110,12 @@ class User < ActiveRecord::Base
   def have_notifications?
     (notifications.cr.count != 0 || notifications.ir.count != 0)
   end
+
+  def is_approver?
+    role == 'approver'
+  end
+
+  def is_associated?(change_request)
+    associated_change_requests.include? change_request
+  end
 end

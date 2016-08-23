@@ -20,6 +20,11 @@ describe ChangeRequestsController do
         get :show, id: change_request
         expect(assigns(:change_request)).to eq change_request
       end
+
+      it 'assigns change request statuses for change request lifeline' do
+        get :show, id: change_request
+        expect(assigns(:cr_statuses)).to eq change_request.change_request_statuses
+      end
     end
 
     describe 'GET #index' do
@@ -40,6 +45,27 @@ describe ChangeRequestsController do
         change_request.update(priority: 'Urgent')
         get :index, q: {priority: 'Urgent'}
         expect(assigns(:change_requests)).to match_array([change_request])
+      end
+
+      context 'when sending get index with relevant params' do
+        let(:other_user) {FactoryGirl.create(:user)}
+        let(:new_change_request) {FactoryGirl.create(:change_request, user: user)}
+        let(:other_change_request) {FactoryGirl.create(:change_request, user: other_user)}
+        it 'should not populate change requests that have no relevancy to me' do
+          change_request.reload
+          new_change_request.reload
+          get :index, type: 'relevant'
+          expect(assigns(:change_requests)).to match_array([change_request, new_change_request])
+        end
+        it 'should populate change requests where I am an associated user' do
+          change_request.reload
+          new_change_request.reload
+          other_change_request.update(associated_user_ids: [user.id])
+          other_change_request.reload
+          get :index, type: 'relevant'
+          expect(assigns(:change_requests)).to match_array([change_request, other_change_request, new_change_request])
+        end
+
       end
 
       context 'when exporting fulltext search results' do
@@ -210,6 +236,12 @@ describe ChangeRequestsController do
      describe 'GET #index' do
      it "populate all current user's Change Request if no param is passed" do
         get :index
+        expect(assigns(:change_requests)).to match_array([@cr])
+      end
+
+      it 'populate the list with change requests that you need to approve when submitted with approval params' do
+        cr_other = FactoryGirl.create(:change_request)
+        get :index, type: 'approval'
         expect(assigns(:change_requests)).to match_array([@cr])
       end
     end
