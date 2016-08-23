@@ -116,8 +116,7 @@ class ChangeRequestsController < ApplicationController
         @status = @change_request.change_request_statuses.new(:status => 'submitted')
         @status.save
         Notifier.cr_notify(current_user, @change_request, 'new_cr')
-        link = url_for @change_request
-        SlackNotif.notif_new_request @change_request, link
+        SlackNotif.new.notify_new_cr @change_request
         Thread.new do
           UserMailer.notif_email(@change_request.user, @change_request, @status).deliver
           ActiveRecord::Base.connection.close
@@ -165,6 +164,7 @@ class ChangeRequestsController < ApplicationController
         associated_user_ids.concat(@current_collaborators)
         @change_request.associated_user_ids = associated_user_ids.uniq
         Notifier.cr_notify(current_user, @change_request, 'update_cr')
+        SlackNotif.new.notify_update_cr @change_request
         flash[:update_cr_notice] = 'Change request was successfully updated.'
         format.html { redirect_to @change_request }
         format.json { render :show, status: :ok, location: @change_request }
