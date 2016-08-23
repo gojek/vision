@@ -15,6 +15,14 @@ class ChangeRequestsController < ApplicationController
         order_by :created_at, :desc
       end
       @change_requests = search.results
+    elsif params[:type]
+      @q = ChangeRequest.ransack(params[:q])
+      case params[:type]
+      when 'approval'
+        @change_requests = ChangeRequest.where(id: Approval.where(user_id: current_user.id, approve: nil).collect(&:change_request_id)).order(id: :desc)
+      when 'relevant'
+        @change_requests = ChangeRequest.where(id: current_user.associated_change_requests.collect(&:id)).order(id: :desc)
+      end
     else
       @q = ChangeRequest.ransack(params[:q])
       @change_requests = @q.result(distinct: true).order(id: :desc)
@@ -51,6 +59,7 @@ class ChangeRequestsController < ApplicationController
     User.all.each do |user|
       @usernames <<  user.email.split("@").first
     end
+    @cr_statuses = @change_request.change_request_statuses
   end
 
   def new
@@ -98,7 +107,7 @@ class ChangeRequestsController < ApplicationController
     @change_request.set_collaborators(@current_collaborators)
     respond_to do |format|
       if @change_request.save
-        associated_user_ids = []
+        associated_user_ids = ["#{@change_request.user.id}"]
         associated_user_ids.concat(@current_approvers)
         associated_user_ids.concat(@current_implementers)
         associated_user_ids.concat(@current_testers)
@@ -149,7 +158,7 @@ class ChangeRequestsController < ApplicationController
     @change_request.set_collaborators(@current_collaborators)
     respond_to do |format|
       if @change_request.update(change_request_params)
-        associated_user_ids = []
+        associated_user_ids = ["#{@change_request.user.id}"]
         associated_user_ids.concat(@current_approvers)
         associated_user_ids.concat(@current_implementers)
         associated_user_ids.concat(@current_testers)

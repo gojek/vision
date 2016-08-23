@@ -6,7 +6,7 @@ class ChangeRequest < ActiveRecord::Base
   has_and_belongs_to_many :collaborators, join_table: :collaborators, :class_name =>'User'
   has_and_belongs_to_many :testers, join_table: :testers, class_name: :User
   has_and_belongs_to_many :implementers, join_table: :implementers, class_name: :User
-  has_many :change_request_statuses, dependent: :destroy
+  has_many :change_request_statuses, -> {order('created_at asc')}, dependent: :destroy
   has_many :approvals, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :notifications
