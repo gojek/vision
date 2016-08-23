@@ -15,9 +15,10 @@ class SlackNotif
     approvers = change_request.approvals.collect{|approval| approval.user}
     approver_message = "New <#{link}|change request> needs your approvals"
     message_users(approvers, approver_message, attachment)
-    associated_users = change_request.associated_users
+    associated_users = change_request.associated_users.to_a
+    approvers.each {|approver| associated_users.delete(approver)}
     general_message = "New <#{link}|change request> has been created"
-    message_users(associated_users - approvers, general_message, attachment)
+    message_users(associated_users, general_message, attachment)
     message_channel('cab', general_message, attachment)
   end
 
@@ -27,9 +28,10 @@ class SlackNotif
     approvers = change_request.approvals.collect{|approval| approval.user}
     approver_message = "Modified <#{link}|change request> needs your approvals"
     message_users(approvers, approver_message, attachment)
-    associated_users = change_request.associated_users
+    associated_users = change_request.associated_users.to_a
+    approvers.each {|approver| associated_users.delete(approver)}
     general_message = "<#{link}|Change request> has been modified"
-    message_users(associated_users - approvers, general_message, attachment)
+    message_users(associated_users, general_message, attachment)
     message_channel('cab', general_message, attachment)
   end
 
@@ -41,9 +43,11 @@ class SlackNotif
       mentioned_message = "You are mentioned in #{comment.user.name} comment's on a <#{link}|change request>"
       message_users(mentionees, mentioned_message, attachment)
     end
-    associated_users = comment.change_request.associated_users - [comment.user]
+    associated_users = comment.change_request.associated_users.to_a
+    associated_users.delete(comment.user)
+    mentionees.each {|mentionee| associated_users.delete(mentionee)}
     general_message = "A new comment from #{comment.user.name} on a <#{link}|change request>"
-    message_users(associated_users - mentionees, general_message, attachment)
+    message_users(associated_users, general_message, attachment)
   end
 
   private
