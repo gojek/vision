@@ -72,6 +72,10 @@ RSpec.configure do |config|
     stub_request(:put, "https://www.googleapis.com/calendar/v3/calendars/primary/events/?sendNotifications=true")
       .with(headers: {'Accept'=>'*/*', 'Authorization'=>'Bearer 123456'})
       .to_return(status: 200, body: "", headers: {})
+
+    # slack notification
+    stub_request(:post, "https://slack.com/api/chat.postMessage")
+      .to_return(status: 200, body: '{"ok": true}', headers: {})
   end
 
   config.after(:each) do

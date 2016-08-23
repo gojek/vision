@@ -7,13 +7,13 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 
-User.create(email: "1@veritrans.co.id", role: "requestor", name: "Mohamad Dwiyan Rahmanianto")
-User.create(email: "12@veritrans.co.id", role: "requestor", name: "Kevin Aditya Prabowo")
+User.create(email: "1@veritrans.co.id", role: "requestor", name: "Rani Utami")
+User.create(email: "12@veritrans.co.id", role: "requestor", name: "Ariq")
 User.create(email: "13@veritrans.co.id", role: "requestor", name: "Ya Keu Leus")
 User.create(email: "14@veritrans.co.id", role: "requestor", name: "Thisis Aseed")
 User.create(email: "15@veritrans.co.id", role: "requestor", name: "Thisisal Soseed")
 User.create(email: "16@veritrans.co.id", role: "requestor", name: "Lutfi K P di Veritrans")
-User.create(email: "17@veritrans.co.id", role: "requestor", name: "Mohamad Dwi Rahman")
+User.create(email: "17@veritrans.co.id", role: "requestor", name: "Seorang Requestor")
 
 user = []
 (1..20).each do |i|

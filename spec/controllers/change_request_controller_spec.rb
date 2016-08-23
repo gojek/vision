@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'slack_notif'
 
 describe ChangeRequestsController do
   before :all do
@@ -163,6 +164,11 @@ describe ChangeRequestsController do
           post :create, change_request: attributes, implementers_list: [user.id], testers_list: [user.id] , approvers_list: [approver.id]
           expect(assigns(:change_request).associated_user_ids).to match_array([user.id, approver.id])
         end
+
+        it 'call slack notification library to send notification to slack veritrans about new cr' do
+          expect_any_instance_of(SlackNotif).to receive(:notify_new_cr).with(an_instance_of(ChangeRequest))
+          post :create, change_request: attributes, implementers_list: [approver.id], testers_list: [approver.id] , approvers_list: [approver.id]
+        end
       end
 
       context 'with invalid attributes' do
@@ -189,6 +195,12 @@ describe ChangeRequestsController do
           update_attributes = FactoryGirl.attributes_for(:change_request)
           patch :update , id: change_request.id, change_request: update_attributes, implementers_list: [user.id], testers_list: [user.id] , approvers_list: [approver.id]
           expect(assigns(:change_request).associated_user_ids).to match_array([user.id, approver.id])
+        end
+
+        it 'call slack notification library to send notification to slack veritrans about modified cr' do
+          expect_any_instance_of(SlackNotif).to receive(:notify_update_cr).with(an_instance_of(ChangeRequest))
+          update_attributes = FactoryGirl.attributes_for(:change_request)
+          patch :update , id: change_request.id, change_request: update_attributes, implementers_list: [user.id], testers_list: [user.id] , approvers_list: [approver.id]
         end
       end
       context 'invalid attributes' do
