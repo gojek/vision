@@ -11,7 +11,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160721074233) do
+
+ActiveRecord::Schema.define(version: 20160801070508) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -115,9 +116,11 @@ ActiveRecord::Schema.define(version: 20160721074233) do
     t.string   "type_other"
     t.text     "other_dependency"
     t.datetime "closed_date"
+    t.integer  "reference_cr_id"
   end
 
   add_index "change_requests", ["cab_id"], name: "index_change_requests_on_cab_id", using: :btree
+  add_index "change_requests", ["reference_cr_id"], name: "index_change_requests_on_reference_cr_id", using: :btree
   add_index "change_requests", ["user_id"], name: "index_change_requests_on_user_id", using: :btree
 
   create_table "change_requests_associated_users", force: :cascade do |t|
@@ -298,6 +301,7 @@ ActiveRecord::Schema.define(version: 20160721074233) do
   add_foreign_key "approvals", "users"
   add_foreign_key "change_request_statuses", "change_requests"
   add_foreign_key "change_requests", "cabs"
+  add_foreign_key "change_requests", "change_requests", column: "reference_cr_id"
   add_foreign_key "change_requests", "users"
   add_foreign_key "change_requests_associated_users", "change_requests"
   add_foreign_key "change_requests_associated_users", "users"

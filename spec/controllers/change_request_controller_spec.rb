@@ -95,6 +95,26 @@ describe ChangeRequestsController do
   		end
   	end
 
+    describe 'GET #create_hotfix' do
+      let(:cr) {FactoryGirl.create(:rollbacked_change_request)}
+      it 'redirects to change request index if specified CR is not rollbacked' do
+        get :create_hotfix, id: change_request
+        response.should redirect_to change_requests_url
+      end
+
+      it 'should render change request new page' do
+        get :create_hotfix, id: cr
+        expect(response).to render_template :new
+        expect(assigns(:change_request)).to be_a_new(ChangeRequest)
+        expect(assigns(:change_request)).to_not be_valid
+      end
+
+      it 'should set the rollbacked CR as a reference to the new CR' do
+        get :create_hotfix, id: cr
+        expect(assigns(:change_request).reference_cr_id).to eq cr.id
+      end
+    end
+
     describe 'POST #create' do
       context 'with valid attributes' do
         let(:attributes) {FactoryGirl.attributes_for(:change_request)}
