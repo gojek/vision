@@ -11,23 +11,17 @@
       </li>
       <li class="divider"></li>
       <li>
-        <a href="#" data-toggle="modal" data-target="#CloseModalLabel">
-          Close Change Request
-        </a>
-      </li>
-      <li class="divider"></li>
-      <li>
         <a href="#" data-toggle="modal" data-target="#RejectModalLabel">
           Reject Change Request
         </a>
       </li>
-      <% elsif @change_request.scheduled? %>
+      <li class="divider"></li>
       <li>
         <a href="#" data-toggle="modal" data-target="#CloseModalLabel">
           Close Change Request
         </a>
       </li>
-      <li class="divider"></li>
+      <% elsif @change_request.scheduled? %>
       <li>
         <a href="#" data-toggle="modal" data-target="#DeployModalLabel">
           Deploy Change Request
@@ -43,6 +37,12 @@
       <li>
         <a href="#" data-toggle="modal" data-target="#CancelModalLabel">
           Cancel Change Request
+        </a>
+      </li>
+      <li class="divider"></li>
+      <li>
+        <a href="#" data-toggle="modal" data-target="#CloseModalLabel">
+          Close Change Request
         </a>
       </li>
       <% elsif @change_request.deployed? %>
@@ -70,6 +70,12 @@
         </a>
       </li>
       <li class="divider"></li>
+      <li>
+        <a href="#" data-toggle="modal" data-target="#CloseModalLabel">
+          Close Change Request
+        </a>
+      </li>
+      <% elsif @change_request.rejected? %>
       <li>
         <a href="#" data-toggle="modal" data-target="#CloseModalLabel">
           Close Change Request
