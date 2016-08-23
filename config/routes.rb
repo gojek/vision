@@ -100,6 +100,7 @@ Rails.application.routes.draw do
   get 'notifications/clear_notifications' => 'notifications#clear_notifications'
   get 'duplicate/:id' => 'change_requests#duplicate', :as => 'duplicate'
   get 'notifications/index' => 'notifications#index'
+  get 'create_hotfix/:id' => 'change_requests#create_hotfix', :as => 'create_hotfix'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
