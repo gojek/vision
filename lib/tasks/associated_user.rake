@@ -27,6 +27,7 @@ namespace :associated_user do
           count_success += 1
         else
           puts "~~> Failed to assign associated users CR##{cr.id}".colorize(:light_red)
+          puts "~~> Error cause: #{cr.errors.messages}"
           count_fail += 1
         end
       end
