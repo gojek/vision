@@ -183,4 +183,19 @@ describe User do
 		end
 	end
 
+	describe "User.is_associated?" do
+		it "should return true if the user is associated to a change request" do 
+			user = FactoryGirl.create(:user)
+			cr = FactoryGirl.create(:change_request, user: user)
+			user.reload
+			expect(user.is_associated?(cr)).to eq true
+		end
+		it "should return false if the user is not associated to a change request" do
+			user = FactoryGirl.create(:user)
+			other_user = FactoryGirl.create(:user)
+			cr = FactoryGirl.create(:change_request, user: other_user)
+			user.reload
+			expect(user.is_associated?(cr)).to eq false
+		end
+	end
 end
