@@ -9,7 +9,7 @@ class ChangeRequest < ActiveRecord::Base
   has_many :change_request_statuses, -> {order('created_at asc')}, dependent: :destroy
   has_many :approvals, dependent: :destroy
   has_many :comments, dependent: :destroy
-  has_many :notifications
+  has_many :notifications, dependent: :destroy
   acts_as_taggable
   has_paper_trail class_name: 'ChangeRequestVersion'
   SCOPE = %w(Major Minor)
