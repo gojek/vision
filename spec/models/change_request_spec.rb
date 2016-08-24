@@ -4,6 +4,16 @@ describe ChangeRequest do
 	let (:change_request) {FactoryGirl.create(:change_request)}
 	let (:user) {FactoryGirl.create(:approver)}
 
+	#shoulda matchers test
+	it { should belong_to(:user)}
+	it { should have_and_belong_to_many(:collaborators) }
+	it { should have_and_belong_to_many(:testers) }
+	it { should have_and_belong_to_many(:implementers) }
+	it { should have_many(:change_request_statuses).dependent(:destroy) }
+	it { should have_many(:approvals).dependent(:destroy) }
+	it { should have_many(:comments).dependent(:destroy) }
+	it { should have_many(:notifications).dependent(:destroy) }
+	
 	it "initial state is submitted when first created" do
 		expect(change_request.aasm_state).to eq "submitted"
 	end
