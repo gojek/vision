@@ -54,7 +54,15 @@ class SlackNotif
   def message_users(users, message, attachment)
     users.each do |user|
       next if user.slack_username.blank?
-      @client.chat_postMessage(channel: "@#{user.slack_username}", text: message, attachments: [attachment])
+      begin
+        @client.chat_postMessage(channel: "@#{user.slack_username}", text: message, attachments: [attachment])
+      rescue Slack::Web::Api::Error
+        # TODO add test for it !
+        slack_username = user.get_slack_username
+        user.slack_username = slack_username
+        user.save      
+        next
+      end
     end
   end
 
