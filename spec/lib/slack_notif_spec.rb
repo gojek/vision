@@ -113,5 +113,12 @@ describe SlackNotif do
       expect(slack_notifier).to receive(:message_users).with(anything(), anything(), comment_attachment).twice
       slack_notifier.notify_new_comment(comment)
     end
+
+    # context 'slack username is not found' do
+    #   it 'should skip the notifications' do
+    #     allow(slack_notifier).to receive(:foo).and_raise("Slack::Web::Api::Error")
+    #   end
+    # end
+
   end
 end
