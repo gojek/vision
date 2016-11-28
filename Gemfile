@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby "2.1.5"
+ruby "2.3.0"
 
 # Bundle edge Rails insteadhttps://developers.google.com/oauthplayground: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'
@@ -38,7 +38,8 @@ gem 'httpclient'
 
 # server-related
 # gem 'dotenv' # to allow loading environment variable locally by file
-gem 'foreman' # to load environment variable, foreman start/foreman rails c
+gem 'foreman', '0.82' # to load environment variable, foreman start/foreman rails c
+gem 'thor', '0.19.1'
 
 # data representation
 gem 'ransack'
@@ -89,7 +90,7 @@ group :development, :test do
   gem 'faker'
 	gem 'cucumber-rails', require: false
   gem 'byebug'
-  gem 'rspec-rails', '~> 2.14.0'
+  gem 'rspec-rails'
   gem 'factory_girl_rails', '~> 4.2.1'
   gem 'guard-rspec', require: false
   gem 'sunspot_test'
