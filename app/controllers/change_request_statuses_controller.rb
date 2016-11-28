@@ -3,14 +3,27 @@ class ChangeRequestStatusesController < ApplicationController
 	before_action :authorized_user_required, only:[:schedule, :deploy, :rollback, :cancel, :close, :final_reject, :submit]
   before_action :authenticate_user!
 
+  private def alert_users(status:)
+    if @change_request && @status
+      begin
+        UserMailer.notif_email(@change_request.user, @change_request, @status).deliver_now
+        Notifier.cr_notify(current_user, @change_request, status)
+      rescue => e
+        Rails.logger.error e.message
+        Rails.logger.error e.backtrace.join("\n")
+      end
+    else
+      Rails.logger.error "Cannot notify users: change request and status object do not exist"
+    end
+  end
+
   def schedule
     if @change_request.may_schedule?
       @status = @change_request.change_request_statuses.new(change_request_status_params)
       @status.status = 'scheduled'
       if @status.save
         @change_request.schedule!
-        UserMailer.notif_email(@change_request.user, @change_request, @status).deliver_now
-        Notifier.cr_notify(current_user, @change_request, 'cr_scheduled')
+        alert_users status: 'cr_scheduled'
       end
     else
       flash[:change_status_notice] = 'Sorry, this CR didnt reach approval limit by Approver'
@@ -24,8 +37,7 @@ class ChangeRequestStatusesController < ApplicationController
     	@status.status = 'deployed'
     	if @status.save
         @change_request.deploy!
-        UserMailer.notif_email(@change_request.user, @change_request, @status).deliver_now
-        Notifier.cr_notify(current_user, @change_request, 'cr_deployed')
+        alert_users status: 'cr_deployed'
       end
     end
     redirect_to @change_request
@@ -37,8 +49,7 @@ class ChangeRequestStatusesController < ApplicationController
       @status.status = 'rollbacked'
       if @status.save
         @change_request.rollback!
-         UserMailer.notif_email(@change_request.user, @change_request, @status).deliver_now
-        Notifier.cr_notify(current_user, @change_request, 'cr_rollbacked')
+        alert_users status: 'cr_rollbacked'
       else
         flash[:change_status_notice] = 'Reason must be filled to Rollback CR'
       end
@@ -52,8 +63,7 @@ class ChangeRequestStatusesController < ApplicationController
       @status.status = 'cancelled'
       if @status.save
         @change_request.cancel!
-        UserMailer.notif_email(@change_request.user, @change_request, @status).deliver_now
-        Notifier.cr_notify(current_user, @change_request, 'cr_cancelled')
+        alert_users status: 'cr_cancelled'
       else
         flash[:change_status_notice] = 'Reason must be filled Cancel CR'
       end
@@ -66,9 +76,8 @@ class ChangeRequestStatusesController < ApplicationController
       @status = @change_request.change_request_statuses.new(change_request_status_params)
       @status.status = 'closed'
       if @status.save
-        UserMailer.notif_email(@change_request.user, @change_request, @status).deliver_now
         @change_request.close!
-        Notifier.cr_notify(current_user, @change_request, 'cr_closed')
+        alert_users status: 'cr_closed'
       end
     end
     redirect_to @change_request
@@ -80,8 +89,7 @@ class ChangeRequestStatusesController < ApplicationController
       @status.status = 'rejected'
       if @status.save
         @change_request.reject!
-          UserMailer.notif_email(@change_request.user, @change_request, @status).deliver_now
-          Notifier.cr_notify(current_user, @change_request, 'cr_final_rejected')
+        alert_users status: 'cr_final_rejected'
       else
         flash[:change_status_notice] = 'Reason must be filled to Reject CR'
       end
@@ -116,5 +124,4 @@ class ChangeRequestStatusesController < ApplicationController
     redirect_to @change_request unless
     current_user.role == 'release_manager' || current_user.is_admin || current_user.is_associated?(@change_request)
   end
-
 end
