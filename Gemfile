@@ -90,7 +90,7 @@ group :development, :test do
   gem 'faker'
 	gem 'cucumber-rails', require: false
   gem 'byebug'
-  gem 'rspec-rails'
+  gem 'rspec-rails', '~> 3.5'
   gem 'factory_girl_rails', '~> 4.2.1'
   gem 'guard-rspec', require: false
   gem 'sunspot_test'
