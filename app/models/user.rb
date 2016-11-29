@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
   has_many :Comments
   has_many :notifications, dependent: :destroy
   has_many :Approvals, :dependent => :destroy
-  validates :email, format: { with: /\b[A-Z0-9._%a-z\-]+@veritrans\.co\.id\z/,
+  validates :email, format: { with: /\b[A-Z0-9._%a-z\-]+@(veritrans\.co\.id|midtrans\.com)\z/,
                   message: "must be a veritrans account" }
   validates :email, uniqueness: true
   scope :approvers, -> {where(role: 'approver')}

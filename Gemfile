@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby "2.1.5"
+ruby "2.3.0"
 
 # Bundle edge Rails insteadhttps://developers.google.com/oauthplayground: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'
@@ -38,7 +38,8 @@ gem 'httpclient'
 
 # server-related
 # gem 'dotenv' # to allow loading environment variable locally by file
-gem 'foreman' # to load environment variable, foreman start/foreman rails c
+gem 'foreman', '0.82' # to load environment variable, foreman start/foreman rails c
+gem 'thor', '0.19.1'
 
 # data representation
 gem 'ransack'
@@ -54,7 +55,7 @@ gem 'unread'
 gem 'data-confirm-modal'
 gem 'jquery-atwho-rails'
 gem 'exception_notification'
-gem 'pry'
+gem 'pry-byebug'
 gem 'omniauth'
 gem 'tinymce-rails', git: 'https://github.com/spohlenz/tinymce-rails.git'
 gem 'comma', '~> 3.2.1'
@@ -89,9 +90,9 @@ group :development, :test do
   gem 'faker'
 	gem 'cucumber-rails', require: false
   gem 'byebug'
-  gem 'rspec-rails', '~> 2.14.0'
+  gem 'rspec-rails', '~> 2.14'
   gem 'factory_girl_rails', '~> 4.2.1'
-  gem 'guard-rspec', require: false
+  gem 'guard-rspec', '4.2.0', require: false
   gem 'sunspot_test'
   # Access an IRB console on exception pages or by using <%= console %> in views
   #
