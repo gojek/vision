@@ -5,6 +5,7 @@ ruby "2.3.0"
 gem 'rails', '4.2.1'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'unicorn'
+gem 'rake', '10.0.0'
 
 # resource-related
 gem 'sass-rails', '~> 5.0'
