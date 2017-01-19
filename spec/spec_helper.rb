@@ -8,6 +8,8 @@ require 'rspec/rails'
 require 'rspec/autorun'
 require 'webmock/rspec'
 require 'sunspot/rails/spec_helper'
+require 'capybara/rspec'  
+require 'capybara/rails'
 
 WebMock.disable_net_connect!(allow_localhost: true)
 
@@ -110,6 +112,7 @@ RSpec.configure do |config|
   config.order = "random"
 
   config.include Devise::TestHelpers, :type => :controller
+  config.include Warden::Test::Helpers
 
 end
 Shoulda::Matchers.configure do |config|
@@ -117,4 +120,18 @@ Shoulda::Matchers.configure do |config|
     with.test_framework :rspec
     with.library :rails
   end
+end
+
+def login_as(user)
+    OmniAuth.config.test_mode = true
+    OmniAuth.config.add_mock(:google_oauth2, {
+      uid: user.uid,
+      credentials: {
+      token: "token",
+      refresh_token: "refresh_token",
+      expires_at: Time.now + 1.hour
+    }
+  })
+  visit("/users/auth/google_oauth2")
+  OmniAuth.config.test_mode = false
 end
