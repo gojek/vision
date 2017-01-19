@@ -193,7 +193,7 @@
                   <div class="field form-group">
                 <% end %>
                     <%= f.label :analysis %><br>
-                    <%= f.text_area :analysis, class: "form-control tinymce" %>
+                    <%= f.text_area :analysis, class: "form-control tinymce",style:"height:400px;"%>
                   </div><!--/field-->
                 <% if @change_request.errors.messages[:solution] %>
                   <div class="field form-group has-error">
@@ -211,7 +211,7 @@
                   <div class="field form-group">
                 <% end %>
                     <%= f.label :impact %><br>
-                    <%= f.text_area :impact, class: "form-control tinymce" %>
+                    <%= f.text_area :impact, class: "form-control tinymce"%>
                   </div>
                 <% if @change_request.errors.messages[:scope] %>
                   <div class="field form-group has-error">
@@ -236,7 +236,7 @@
                   <div class="field form-group">
                 <% end %>
                     <%= f.label :design %><br>
-                    <%= f.text_area :design, class: "form-control tinymce" %>
+                    <%= f.text_area :design, class: "form-control tinymce",style:"height:400px;"  %>
                   </div><!--/field-->
                 <% if @change_request.errors.messages[:backup] %>
                   <div class="field form-group has-error">
