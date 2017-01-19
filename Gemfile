@@ -111,4 +111,6 @@ group :test do
   gem 'simplecov'
   gem 'simplecov-rcov'
   gem 'webmock'
+
+  gem 'timecop'
 end
