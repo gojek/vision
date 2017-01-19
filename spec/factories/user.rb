@@ -24,5 +24,9 @@ FactoryGirl.define do
     factory :approver do
         role 'approver'
     end
+
+    factory :user_login do
+        
+    end
   end
 end
