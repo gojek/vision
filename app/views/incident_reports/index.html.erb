@@ -53,9 +53,9 @@ $(function(){
               </tr>
               <% @incident_reports.each do |incident_report| %>
                   <tr>
-                      <td><%= incident_report.id %></td>
-                      <td><%= incident_report.service_impact %></td>
-                      <td><%=raw incident_report.problem_details %></td>
+                      <td><%= link_to incident_report.id, incident_report %></td>
+                      <td><%= link_to incident_report.service_impact, incident_report %></td>
+                      <td><%= link_to (raw incident_report.problem_details), incident_report %></td>
                       <td><%= incident_report.how_detected %></td>
                       <td><%= incident_report.current_status %></td>
                       <td><%= incident_report.occurrence_time.to_s(:long) %></td>
