@@ -11,7 +11,7 @@ class ChangeRequest < ActiveRecord::Base
   has_many :comments, dependent: :destroy
   has_many :notifications, dependent: :destroy
   acts_as_taggable
-  has_paper_trail class_name: 'ChangeRequestVersion'
+  has_paper_trail class_name: 'ChangeRequestVersion', meta: { author_username: :user_name }
   SCOPE = %w(Major Minor)
   PRIORITY = %w(Critical Urgent High Normal Low)
   validates :scope,
