@@ -151,7 +151,7 @@ class ChangeRequestsController < ApplicationController
     @current_implementers = Array.wrap(params[:implementers_list])
     @current_testers = Array.wrap(params[:testers_list])
     @current_collaborators = Array.wrap(params[:collaborators_list])
-    @change_request.set_approvers(@current_approvers)
+    @change_request.update_approvers(@current_approvers)
     @change_request.set_implementers(@current_implementers)
     @change_request.set_testers(@current_testers)
     @change_request.set_collaborators(@current_collaborators)
