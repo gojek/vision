@@ -1,11 +1,18 @@
 
 <section class="content-header">
-  <h1>
-    Change Request
-    <% if !@change_request.reference_cr_id.nil? %>
-      - Reference to <%= link_to "Change Request ##{@change_request.reference_cr_id}", ChangeRequest.find(@change_request.reference_cr_id)%>
-    <% end %>
-  </h1>
+  <div class="clearfix">
+    <div class="pull-left">
+  	  <h1>
+        Change Request
+        <% if !@change_request.reference_cr_id.nil? %>
+          - Reference to <%= link_to "Change Request ##{@change_request.reference_cr_id}", ChangeRequest.find(@change_request.reference_cr_id)%>
+        <% end %>
+      </h1>
+    </div>
+    <div class="pull-right">
+  	  <h4 class="text-right">Uncompleted change request will be saved as a draft</h4>
+    </div>
+  <div class="clearfix"></div>
 </section>
 <section class="content">
     <%= render 'form' %>

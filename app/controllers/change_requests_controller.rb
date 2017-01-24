@@ -106,15 +106,22 @@ class ChangeRequestsController < ApplicationController
     @change_request.set_testers(@current_testers)
     @change_request.set_collaborators(@current_collaborators)
     respond_to do |format|
-      if @change_request.save
+      unless @change_request.save
+        @change_request.save(:validate=> false)
+        flash[:create_cr_notice] = 'Change request was created as draft.'
+        @status = @change_request.change_request_statuses.new(:status => 'draft')
+        @status.save
+      else
+        @change_request.submit!
+        @change_request.save
+        @status = @change_request.change_request_statuses.new(:status => 'submitted')
+        @status.save
         associated_user_ids = ["#{@change_request.user.id}"]
         associated_user_ids.concat(@current_approvers)
         associated_user_ids.concat(@current_implementers)
         associated_user_ids.concat(@current_testers)
         associated_user_ids.concat(@current_collaborators)
         @change_request.associated_user_ids = associated_user_ids.uniq
-        @status = @change_request.change_request_statuses.new(:status => 'submitted')
-        @status.save
         Notifier.cr_notify(current_user, @change_request, 'new_cr')
         SlackNotif.new.notify_new_cr @change_request
         Thread.new do
@@ -122,16 +129,9 @@ class ChangeRequestsController < ApplicationController
           ActiveRecord::Base.connection.close
         end
         flash[:create_cr_notice] = 'Change request was successfully created.'
-        format.html { redirect_to @change_request }
-        format.json { render :show, status: :created, location: @change_request }
-      else
-        @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
-        @current_tags = []
-        @users = User.all.collect{|u| [u.name, u.id]}
-        @approvers = User.approvers.collect{|u| [u.name, u.id]}
-        format.html { render :new }
-        format.json { render json: @change_request.errors, status: :unprocessable_entity }
       end
+      format.html { redirect_to @change_request }
+      format.json { render :show, status: :created, location: @change_request }
     end
   end
 
