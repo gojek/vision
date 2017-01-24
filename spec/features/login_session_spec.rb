@@ -10,8 +10,8 @@ RSpec.describe "Login session timeout testing", :type=>:feature do
   	Timecop.freeze(Time.current + 13.days) do
         #login_time is last time user login
   	  expect(user.timedout?(login_time)).to eq(false)
-        visit edit_change_request_path(id: change_request.id)		
-    	  expect(page).to have_content("Change Request")
+      visit edit_change_request_path(id: change_request.id)		
+	    expect(page).to have_content("Change Request")
   	end
     #forward time to 30 days later
     Timecop.freeze(Time.current + 15.days) do
