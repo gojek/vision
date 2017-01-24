@@ -157,6 +157,9 @@ class ChangeRequestsController < ApplicationController
     @change_request.set_collaborators(@current_collaborators)
     respond_to do |format|
       if @change_request.update(change_request_params)
+        if @change_request.draft?
+          @change_request.submit!
+        end
         associated_user_ids = ["#{@change_request.user.id}"]
         associated_user_ids.concat(@current_approvers)
         associated_user_ids.concat(@current_implementers)
@@ -169,12 +172,20 @@ class ChangeRequestsController < ApplicationController
         format.html { redirect_to @change_request }
         format.json { render :show, status: :ok, location: @change_request }
       else
-        @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
-        @current_tags = @change_request.tag_list
-        @users = User.all.collect{|u| [u.name, u.id]}
-        @approvers = User.approvers.collect{|u| [u.name, u.id]}
-        format.html { render :edit }
-        format.json { render json: @change_request.errors, status: :unprocessable_entity }
+        if @change_request.draft?
+          @change_request = current_user.ChangeRequests.build(change_request_params)
+          @change_request.save(false)
+          flash[:update_cr_notice] = 'Change request draft was successfully updated.'
+          format.html { redirect_to @change_request }
+          format.json { render :show, status: :ok, location: @change_request }
+        else
+          @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
+          @current_tags = @change_request.tag_list
+          @users = User.all.collect{|u| [u.name, u.id]}
+          @approvers = User.approvers.collect{|u| [u.name, u.id]}
+          format.html { render :edit }
+          format.json { render json: @change_request.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -382,7 +393,9 @@ class ChangeRequestsController < ApplicationController
       current_user == @change_request.user || current_user.is_admin || (current_user.role == 'release_manager') || current_user.collaborate_change_requests.include?(@change_request)
     end
     def submitted_required
-      if @change_request.closed?
+      if @change_request.draft?
+        #do nothing
+      elsif @change_request.closed?
         redirect_to change_requests_path
       elsif @change_request.scheduled? || @change_request.deployed?
         redirect_to implementation_notes_path
