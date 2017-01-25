@@ -28,11 +28,10 @@ class CommentsController < ApplicationController
     comment = Comment.find(permitted[:comment_id])
     if type == 'hide'
       comment.hide = true
-      comment.save
     else
       comment.hide = false
-      comment.save
     end
+    comment.save
     redirect_to @cr
   end
 
