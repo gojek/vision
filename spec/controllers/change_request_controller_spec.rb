@@ -291,4 +291,5 @@ describe ChangeRequestsController do
       end
     end
   end
+
 end
