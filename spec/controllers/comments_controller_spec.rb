@@ -4,6 +4,7 @@ require 'mentioner.rb'
 
 describe CommentsController do
 	let(:change_request) {FactoryGirl.create(:change_request)}
+	let(:cr_comment)  {FactoryGirl.build(:comment, body: 'comment')}
 	before :each do
 		@request.env['devise.mapping'] = Devise.mappings[:user]
 		release_manager = FactoryGirl.create(:release_manager)
@@ -31,6 +32,24 @@ describe CommentsController do
 			end
 		end
 
+	end
+	describe 'POST #hide_unhide' do
+		context 'hide' do
+			it 'change the comment into hide state' do
+				change_request.comments << cr_comment
+				post :hide_unhide, change_request_id: change_request.id, comment_id: cr_comment.id, type: 'hide'
+				expect(Comment.find(cr_comment.id).hide).to eq(true) 
+			end
+		end
+		context 'unhide' do
+			it 'change the comment into unhide' do
+				change_request.comments << cr_comment
+				cr_comment.hide = true
+				cr_comment.save
+				post :hide_unhide, change_request_id: change_request.id, comment_id: cr_comment.id, type: 'unhide'
+				expect(Comment.find(cr_comment.id).hide).to eq(false) 
+			end
+		end
 	end
 
 end
