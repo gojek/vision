@@ -24,7 +24,7 @@ class ChangeRequestsController < ApplicationController
         @change_requests = ChangeRequest.where(id: current_user.associated_change_requests.collect(&:id)).order(id: :desc)
       end
     else
-      @q = ChangeRequest.ransack(params[:q])
+      @q = ChangeRequest.ransack(aasm_state_not_eq:'draft', user_id_eq:current_user.id, m:'or')
       @change_requests = @q.result(distinct: true).order(id: :desc)
       @change_requests = @change_requests.tagged_with(params[:tag_list]) if params[:tag_list]
     end
@@ -202,6 +202,7 @@ class ChangeRequestsController < ApplicationController
     @change_requests = ChangeRequestVersion.where(event: 'destroy')
                         .page(params[:page]).per(params[:per_page])
   end
+
   def approve
     approver = Approval.where(change_request_id: @change_request.id, user_id: current_user.id).first
     accept_note = params["notes"]
@@ -391,6 +392,7 @@ class ChangeRequestsController < ApplicationController
       redirect_to change_requests_url unless
       current_user == @change_request.user || current_user.is_admin || (current_user.role == 'release_manager') || current_user.collaborate_change_requests.include?(@change_request)
     end
+
     def submitted_required
       if @change_request.draft?
         #do nothing
@@ -402,12 +404,14 @@ class ChangeRequestsController < ApplicationController
         redirect_to graceperiod_path if !@change_request.submitted?
       end
     end
+
     def not_closed_required
       redirect_to change_requests_path unless !@change_request.closed?
     end
+
     def reference_rollbacked_required
       @reference_cr = ChangeRequest.find(params[:id])
       redirect_to change_requests_path unless @reference_cr.rollbacked?
     end
-
 end
+
