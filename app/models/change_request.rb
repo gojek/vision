@@ -90,6 +90,7 @@ class ChangeRequest < ActiveRecord::Base
   end
 
   comma do
+    id 'id'
     change_summary 'change summary'
     all_category 'category'
     all_type 'type'
