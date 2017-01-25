@@ -52,3 +52,9 @@ $(function(){
   });
 });
 $(document).on('page:fetch',   function() { NProgress.set(0.3); });
+
+function show_comment(comment){
+	var commentId = comment.getAttribute('data-comment-id');
+	$(comment).hide();
+	$('#p-comment-'+commentId).show();
+}
