@@ -224,18 +224,18 @@ class ChangeRequest < ActiveRecord::Base
   end
 
   def update_approvers(approver_id_list)
-    current_approver_ids = self.approvals.pluck(:user_id)
+    current_approver_ids = Approval.where(change_request_id: self.id).pluck(:user_id)
     approver_id_list.map! {|id| id.to_i}
     deleted_approver_ids = current_approver_ids - approver_id_list
     if deleted_approver_ids.present?
-      self.approvals.where(user_id: deleted_approver_ids).destroy_all
+      Approval.where(change_request_id: self.id).where(user_id: deleted_approver_ids).destroy_all
     end
     approver_id_list.each do |approver_id|
       app = Approval.where(user_id: approver_id).where(change_request_id: self.id).first
-      if (not app.present?)
+      if (!app.present?)
         approver = User.find(approver_id)
-        approval = Approval.create(user: approver)
-        self.approvals << approval
+        new_approval = Approval.create(user: User.find(approver_id))
+        self.approvals << new_approval
       end
     end
   end
