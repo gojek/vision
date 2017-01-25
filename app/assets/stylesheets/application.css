@@ -53,3 +53,12 @@ z-index: 200000;
 	color: DarkGreen
 
 }
+
+.hidden-comment {
+	display:none;
+}
+
+.show-comment:hover {
+	cursor: pointer;
+	color: grey;
+}

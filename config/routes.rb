@@ -19,7 +19,9 @@ Rails.application.routes.draw do
 
   resources :change_requests do
 
-    resources :comments
+    resources :comments do
+      post :hide, to: 'comments#hide_unhide'
+    end
     collection do
           get :deleted # <= this
           get :export_csv

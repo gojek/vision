@@ -504,11 +504,21 @@
                     <i class="fa fa-clock-o fa-fw"></i> <%= c.created_at.to_s(:long) %>
                     </small>
                   </div><!--/header-->
-                  <p>
-                     <%= c.body %>
-                  </p>
+                  <% params_comment = {change_request_id: @change_request.id, comment_id: c.id} %>
+                  <% is_author = current_user && current_user.id == c.user_id %>
+                  <% if c.hide %>
+                    <p id="p-comment-<%= c.id %>" class="hidden-comment"><%= c.body %></p>
+                    <p id="p-show-comment-<%= c.id %>" class="show-comment" data-comment-id="<%= c.id %>" onclick="show_comment(this)">Show the content</p>
+                    <% if is_author %>
+                      <%= link_to 'Unhide Comment', change_request_comment_hide_path(params_comment.merge({type: 'unhide'})), method: :post %>    
+                    <% end %>
+                  <% else %>
+                    <p><%= c.body %></p>
+                    <%= link_to 'Hide', change_request_comment_hide_path(params_comment.merge({type: 'hide'})), method: :post %>
+                  <% end %>
                 </div><!--/chat-->
               </li>
+              <hr>
            <% end %>
           </ul>
 

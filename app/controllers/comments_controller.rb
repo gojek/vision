@@ -20,6 +20,22 @@ class CommentsController < ApplicationController
     end
   end
 
+  def hide_unhide
+    @cr = ChangeRequest.find(params[:change_request_id])
+    permitted = params.permit(:type, :comment_id, :change_request_id)
+    # 2 available type, hide and unhide
+    type = permitted[:type]
+    comment = Comment.find(permitted[:comment_id])
+    if type == 'hide'
+      comment.hide = true
+      comment.save
+    else
+      comment.hide = false
+      comment.save
+    end
+    redirect_to @cr
+  end
+
   private
     # Never trust parameters from the scary internet, only allow the white list through.
     def comment_params
