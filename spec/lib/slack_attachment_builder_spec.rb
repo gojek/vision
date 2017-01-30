@@ -41,13 +41,21 @@ describe SlackAttachmentBuilder do
 
     it 'put deployment_time as field in attachment' do 
       attachment_generated = attachment_builder.generate_change_request_attachment(change_request)
-      expect(attachment_generated[:fields]).to include({title: "Deployment Time", value: change_request.schedule_change_date, short: false})
+      expect(attachment_generated[:fields]).to include({
+        title: "Deployment Time",
+        value: change_request.schedule_change_date,
+        short: false
+      })
     end
 
     it 'put approvers as field in attachment' do
       attachment_generated = attachment_builder.generate_change_request_attachment(change_request)
       approvers_name = change_request.approvals.includes(:user).pluck(:name)
-      expect(attachment_generated[:fields]).to include({title: "Approvers", value: (approvers_name.join ', '), short: false})      
+      expect(attachment_generated[:fields]).to include({
+        title: "Approvers", 
+        value: (approvers_name.join ', '), 
+        short: false
+      })      
     end
 
   end
