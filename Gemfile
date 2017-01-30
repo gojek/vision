@@ -5,6 +5,7 @@ ruby "2.3.0"
 gem 'rails', '4.2.1'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'unicorn'
+gem 'rake', '10.0.0'
 
 # resource-related
 gem 'sass-rails', '~> 5.0'
@@ -57,7 +58,7 @@ gem 'jquery-atwho-rails'
 gem 'exception_notification'
 gem 'pry-byebug'
 gem 'omniauth'
-gem 'tinymce-rails', git: 'https://github.com/spohlenz/tinymce-rails.git'
+gem 'tinymce-rails', '4.3.8'
 gem 'comma', '~> 3.2.1'
 
 # xml parser
