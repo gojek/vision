@@ -96,7 +96,7 @@
             </tr>
             <% @change_requests.each do |change_request| %>
               <tr>
-                <td><%= change_request.id %></td>
+                <td><%= link_to change_request.id, change_request %></td>
                 <td><%=raw change_request.change_summary %></td>
 
                 <td><%=raw change_request.created_at.to_s(:long) %></td>
