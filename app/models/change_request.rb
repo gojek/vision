@@ -11,7 +11,7 @@ class ChangeRequest < ActiveRecord::Base
   has_many :comments, dependent: :destroy
   has_many :notifications, dependent: :destroy
   acts_as_taggable
-  has_paper_trail class_name: 'ChangeRequestVersion'
+  has_paper_trail class_name: 'ChangeRequestVersion', meta: { author_username: :user_name }
   SCOPE = %w(Major Minor)
   PRIORITY = %w(Critical Urgent High Normal Low)
   validates :scope,
@@ -91,6 +91,7 @@ class ChangeRequest < ActiveRecord::Base
   end
 
   comma do
+    id 'id'
     change_summary 'change summary'
     all_category 'category'
     all_type 'type'
@@ -221,6 +222,23 @@ class ChangeRequest < ActiveRecord::Base
       approver = User.find(approver_id)
       approval = Approval.create(user: approver)
       self.approvals << approval
+    end
+  end
+
+  def update_approvers(approver_id_list)
+    current_approver_ids = Approval.where(change_request_id: self.id).pluck(:user_id)
+    approver_id_list.map! {|id| id.to_i}
+    deleted_approver_ids = current_approver_ids - approver_id_list
+    if deleted_approver_ids.present?
+      Approval.where(change_request_id: self.id).where(user_id: deleted_approver_ids).destroy_all
+    end
+    approver_id_list.each do |approver_id|
+      app = Approval.where(user_id: approver_id).where(change_request_id: self.id).first
+      if (!app.present?)
+        approver = User.find(approver_id)
+        new_approval = Approval.create(user: User.find(approver_id))
+        self.approvals << new_approval
+      end
     end
   end
 
