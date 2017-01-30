@@ -172,10 +172,13 @@ describe ChangeRequestsController do
       end
 
       context 'with invalid attributes' do
-        it "doesn't save new CR in the database" do
+        let(:attributes) {FactoryGirl.attributes_for(:change_request, :invalid_change_request)}
+        it 'saves the new CR in the database as draft' do
           expect{
-            post :create, change_request: FactoryGirl.attributes_for(:change_request, :invalid_change_request)
-          }.to_not change(ChangeRequest, :count)
+            post :create, change_request: attributes, implementers_list: [approver.id], testers_list: [approver.id] , approvers_list: [approver.id]
+          }.to change(ChangeRequest, :count).by(1)
+          cr = ChangeRequest.last
+          expect(cr.aasm_state).to eq "draft"
         end
       end
     end
