@@ -46,8 +46,7 @@ describe SlackAttachmentBuilder do
 
     it 'put approvers as field in attachment' do
       attachment_generated = attachment_builder.generate_change_request_attachment(change_request)
-      approvers = change_request.approvals.pluck(:user_id)
-      approvers_name = approvers.collect {|id| User.find(id).name}
+      approvers_name = change_request.approvals.includes(:user).pluck(:name)
       expect(attachment_generated[:fields]).to include({title: "Approvers", value: (approvers_name.join ', '), short: false})      
     end
 
