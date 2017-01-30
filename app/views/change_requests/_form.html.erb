@@ -278,7 +278,7 @@
                 <div class="field form-group">
               <% end %>
                   <label>Testing in Test/Development Environment Available?</label>
-                  <%= f.check_box :testing_environment_available, checked: false, data: {toggle: :toggle, on: "YES", off: "NO", onstyle: 'success', offstyle: 'danger'}%>
+                  <%= f.check_box :testing_environment_available, checked: @change_request.present? ? @change_request.testing_environment_available : false, data: {toggle: :toggle, on: "YES", off: "NO", onstyle: 'success', offstyle: 'danger'}%>
                 </div><!--/field-->
               <div class='col-md-6'>
                 <% if @change_request.errors.messages[:testing_procedure] %>
