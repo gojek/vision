@@ -3,8 +3,7 @@ class SlackAttachmentBuilder
   include ActionView::Helpers::SanitizeHelper
 
   def generate_change_request_attachment(change_request)
-    approvers = change_request.approvals.pluck(:user_id)
-    approvers_name = approvers.collect {|id| User.find(id).name}
+    approvers_name = change_request.approvals.includes(:user).pluck(:name)
     attachment = {
       fallback: change_request.change_summary,
       color: "#439FE0",
