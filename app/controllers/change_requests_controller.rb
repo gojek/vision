@@ -24,7 +24,9 @@ class ChangeRequestsController < ApplicationController
         @change_requests = ChangeRequest.where(id: current_user.associated_change_requests.collect(&:id)).order(id: :desc)
       end
     else
-      @q = ChangeRequest.ransack(aasm_state_not_eq:'draft', user_id_eq:current_user.id, m:'or')
+      @q = ChangeRequest.ransack((params[:q] || {}).merge({
+                                  aasm_state_not_eq:'draft', user_id_eq:current_user.id, m:'or'
+                                }))
       @change_requests = @q.result(distinct: true).order(id: :desc)
       @change_requests = @change_requests.tagged_with(params[:tag_list]) if params[:tag_list]
     end
