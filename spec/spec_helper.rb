@@ -109,7 +109,7 @@ RSpec.configure do |config|
   #     --seed 1234
   config.order = "random"
 
-  config.include Devise::TestHelpers, :type => :controller
+  config.include Devise::Test::ControllerHelpers, :type => :controller
 
 end
 Shoulda::Matchers.configure do |config|
@@ -117,4 +117,18 @@ Shoulda::Matchers.configure do |config|
     with.test_framework :rspec
     with.library :rails
   end
+end
+
+def login_as(user)
+  OmniAuth.config.test_mode = true
+  OmniAuth.config.add_mock(:google_oauth2, {
+    uid: user.uid,
+    credentials: {
+      token: "token",
+      refresh_token: "refresh_token",
+      expires_at: Time.now + 1.hour
+    }
+  })
+  visit("/users/auth/google_oauth2")
+  OmniAuth.config.test_mode = false
 end
