@@ -42,7 +42,7 @@ class ChangeRequestsController < ApplicationController
         email = current_user.email
         ChangeRequestJob.perform_async(cr_ids, email)
         #binding.pry
-        flash[:export_csv_notice] = "CSV is being sended to #{email}"
+        flash[:notice] = "CSV is being sended to #{email}"
         redirect_to change_requests_path
       end
     end
