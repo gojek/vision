@@ -42,3 +42,5 @@ module Vision
     config.assets.paths << Rails.root.join("app", "assets", "fonts")
   end
 end
+
+SuckerPunch.logger = Logger.new("#{Rails.root}/log/sucker_punch.log")
