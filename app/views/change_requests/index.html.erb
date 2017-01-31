@@ -46,11 +46,11 @@
           <p id="notice"><%= flash[:destroy_cr_notice]  %></p>
       </div>
       <% end %>
-      <%if flash[:notice] != nil %>
-       <div class="alert alert-success alert-dismissable ">
+      <%if flash[:export_csv_notice] != nil %>
+       <div class="alert alert-danger alert-dismissable ">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
         <h4>  <i class="icon fa fa-check"></i> Success!</h4>
-          <p id="notice"><%= flash[:notice]  %></p>
+          <p id="notice"><%= flash[:export_csv_notice]  %></p>
       </div>
       <% end %>
     </div>
