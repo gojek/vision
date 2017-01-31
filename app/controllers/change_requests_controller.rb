@@ -36,7 +36,14 @@ class ChangeRequestsController < ApplicationController
         @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
       end
       format.csv do
-        render csv: @change_requests, filename: 'change_requests', force_quotes: true
+        #offset = params[:page] || 1
+        #@change_requests.order("created_at desc").limit(13).offset(offset)
+        cr_ids = @change_requests.ids
+        email = current_user.email
+        ChangeRequestJob.perform_async(cr_ids, email)
+        #binding.pry
+        flash[:export_csv_notice] = "CSV is being sended to #{email}"
+        redirect_to change_requests_path
       end
     end
   end

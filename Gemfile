@@ -31,6 +31,7 @@ gem 'devise'
 
 # file managment
 gem 'paper_trail', '~> 4.1'
+gem 'sucker_punch', '~> 2.0'
 
 # oauth
 gem 'omniauth-google-oauth2'
