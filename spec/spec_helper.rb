@@ -8,6 +8,8 @@ require 'rspec/rails'
 require 'rspec/autorun'
 require 'webmock/rspec'
 require 'sunspot/rails/spec_helper'
+require 'capybara/rspec'  
+require 'capybara/rails'
 
 WebMock.disable_net_connect!(allow_localhost: true)
 
@@ -110,6 +112,8 @@ RSpec.configure do |config|
   config.order = "random"
 
   config.include Devise::TestHelpers, :type => :controller
+  config.include Warden::Test::Helpers
+  config.include Devise::Test::ControllerHelpers, :type => :controller
 
 end
 Shoulda::Matchers.configure do |config|

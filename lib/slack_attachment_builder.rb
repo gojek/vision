@@ -3,6 +3,7 @@ class SlackAttachmentBuilder
   include ActionView::Helpers::SanitizeHelper
 
   def generate_change_request_attachment(change_request)
+    approvers_name = change_request.approvals.includes(:user).pluck(:name)
     attachment = {
       fallback: change_request.change_summary,
       color: "#439FE0",
@@ -21,6 +22,14 @@ class SlackAttachmentBuilder
           title: "Scope",
           value: change_request.scope,
           short: true
+        },{
+          title: "Deployment Time",
+          value: change_request.schedule_change_date,
+          short: false
+        },{
+          title: "Approvers",
+          value: (approvers_name.join ', '),
+          short: false
         },
       ],
       footer: "VT-Vision",
