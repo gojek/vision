@@ -4,6 +4,9 @@
     <% if !@change_request.reference_cr_id.nil? %>
       - Reference to <%= link_to "Change Request ##{@change_request.reference_cr_id}", ChangeRequest.find(@change_request.reference_cr_id)%>
     <% end %>
+    <% if @change_request.aasm_state == "draft"%>
+      <span class="label label-info">Draft</span>
+     <% end %>
   </h1>
   <br>
   <span class='pull-left'>
