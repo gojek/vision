@@ -38,31 +38,35 @@ FactoryGirl.define do
     end
 
     factory :scheduled_change_request do
-        aasm_state 'scheduled'
+      aasm_state 'scheduled'
     end
 
     factory :rejected_change_request do
-        aasm_state 'rejected'
+      aasm_state 'rejected'
     end
 
     factory :deployed_change_request do
-        aasm_state 'deployed'
+      aasm_state 'deployed'
     end
 
     factory :rollbacked_change_request do
-        aasm_state 'rollbacked'
+      aasm_state 'rollbacked'
     end
 
     factory :cancelled_change_request do
-        aasm_state 'cancelled'
+      aasm_state 'cancelled'
     end
 
     factory :closed_change_request do
-        aasm_state 'closed'
+      aasm_state 'closed'
+    end
+
+    factory :draft_change_request do
+      aasm_state 'draft'
     end
 
     trait :invalid_change_request do
-        scope "Scope"
+      scope "Scope"
     end
 
     before(:create) do |cr|
