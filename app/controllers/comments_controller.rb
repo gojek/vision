@@ -26,13 +26,9 @@ class CommentsController < ApplicationController
     # 2 available type, hide and unhide
     type = permitted[:type]
     comment = Comment.find(permitted[:comment_id])
-    if type == 'hide'
-      comment.hide = true
-    else
-      comment.hide = false
-    end
+    comment.hide = (type == 'hide')
     comment.save
-    redirect_to @cr
+    render json: comment
   end
 
   private
