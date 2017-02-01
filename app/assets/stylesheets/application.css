@@ -54,11 +54,19 @@ z-index: 200000;
 
 }
 
-.hidden-comment {
-	display:none;
+.hide-unhide-comment {
+	visibility: hidden;
 }
 
 .show-comment:hover {
 	cursor: pointer;
 	color: grey;
+}
+
+.clearfix:hover .hide-unhide-comment {
+	visibility: visible;
+}
+
+.clearfix p {
+	margin: 0;
 }
