@@ -14,18 +14,27 @@
 <section class="content-header">
   <h1>
     Change Requests
-    <%= link_to(change_requests_path(request.GET.merge({format: :csv, cr_page: :current_page})) , class: 'btn btn-flat btn-primary pull-right') do %>
-         <i class="fa  fa-file-text"></i> <strong>Export to csv</strong>
-    <% end %>
-    <%= link_to(change_requests_path(request.GET.merge({format: :csv, cr_page: :all_page})) , class: 'btn btn-flat btn-primary pull-right') do %>
-         <i class="fa  fa-file-text"></i> <strong>Export all to csv</strong>
-    <% end %>
+    <div class="btn-group pull-right">
+      <button type="button" class="btn btn-primary btn-flat pull-right dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="glyphicon glyphicon-collapse-down"> </span>
+      </button>
+       <div class="dropdown-menu pull-right">
+        <%= link_to(change_requests_path(request.GET.merge({format: :csv, cr_page: :all_page})) , class: 'dropdown-item pull-right') do %>
+           <i class="fa  fa-file-text"></i> <strong> Export all to csv </strong>
+        <% end %>
+        <%= link_to(change_requests_path(request.GET.merge({format: :csv, cr_page: :current_page})) , class: 'dropdown-item pull-center') do %>
+            <i class="fa  fa-file-text"></i> <strong> Export to csv </strong>
+        <% end %>
+      </div>
+      <%= link_to(change_requests_path(request.GET.merge({format: :csv, cr_page: :current_page})) , class: 'btn btn-flat btn-primary pull-center') do %>
+           <i class="fa  fa-file-text"></i> <strong>Export to csv</strong>
+      <% end %>
+    </div>
     <%= link_to  new_change_request_path, class: 'btn btn-flat btn-primary pull-right'  do %>
          <i class="fa fa-plus"></i> <strong>New Change Request</strong>
     <% end %>
     <a href="#" data-toggle="control-sidebar" class="btn btn-flat btn-primary pull-right" id='filter-button'><i class="fa fa-filter"></i><span><strong> Filter</strong></span></a>
-
-    </h1>
+  </h1>
 </section>
 <section class="content">
  <div class="row">
