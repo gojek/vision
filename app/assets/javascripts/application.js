@@ -50,11 +50,30 @@ $(function(){
   $('.datetimepicker').datetimepicker({
     format: "yyyy-mm-dd"
   });
+
+  $('.hide-unhide-comment').on('ajax:success', function(data, response){
+    var comment_id = response.id;
+    var cr_id = response.change_request_id;
+    var new_link = '/change_requests/'+ cr_id +'/comments/'+ comment_id +'/hide?type=';
+    if(response.hide){
+      $('#p-comment-'+comment_id).addClass('hidden');
+      $('#p-show-comment-'+comment_id).removeClass('hidden');
+      $('#hide-unhide-comment-'+comment_id).attr('href', new_link + 'unhide');
+      $('#hide-unhide-comment-'+comment_id).html('Unhide');
+    }
+    else{
+      $('#p-comment-'+comment_id).removeClass('hidden');
+      $('#p-show-comment-'+comment_id).addClass('hidden');
+      $('#hide-unhide-comment-'+comment_id).attr('href', new_link + 'hide');
+      $('#hide-unhide-comment-'+comment_id).html('Hide');
+    }
+  });
+
 });
 $(document).on('page:fetch',   function() { NProgress.set(0.3); });
 
 function show_comment(comment){
 	var commentId = comment.getAttribute('data-comment-id');
-	$(comment).hide();
-	$('#p-comment-'+commentId).show();
+	$(comment).addClass('hidden');
+	$('#p-comment-'+commentId).removeClass('hidden');
 }
