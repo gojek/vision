@@ -31,6 +31,13 @@
 </section><!--/content-header-->
 <br><br>
 <section class="content">
+  <%if flash[:notice] != nil %>
+    <div class="alert alert-success alert-dismissable ">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      <h4>  <i class="icon fa fa-check"></i> Success!</h4>
+      <p id="notice"><%= flash[:notice]  %></p>
+    </div><!--/alert-->
+  <% end %>
   <%if flash[:create_cr_notice] != nil %>
     <div class="alert alert-success alert-dismissable ">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>

@@ -110,7 +110,7 @@ class ChangeRequestsController < ApplicationController
     respond_to do |format|
       unless @change_request.save
         @change_request.save(:validate=> false)
-        flash[:create_cr_notice] = 'Change request was created as a draft.'
+        flash[:notice] = 'Change request was created as a draft.'
         @status = @change_request.change_request_statuses.new(:status => 'draft')
         @status.save
       else
@@ -176,7 +176,7 @@ class ChangeRequestsController < ApplicationController
       else
         if @change_request.draft?
           @change_request.save(:validate => false)
-          flash[:update_cr_notice] = ('Change request draft id:' + @change_request.id.to_s  + ' was successfully updated.')
+          flash[:notice] = ('Change request draft id: #{@change_request.id.to_s} was successfully updated.')
           format.html { redirect_to @change_request }
           format.json { render :show, status: :ok, location: @change_request }
         else
