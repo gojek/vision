@@ -152,6 +152,7 @@ describe ChangeRequestsController do
           cr = ChangeRequest.first
           expect(cr.implementers.count).to eq(1)
           expect(cr.testers.count).to eq(1)
+          expect(cr.aasm_state).to eq("submitted")
         end
 
         it 'create new approval(s) for the new CR in the database' do
