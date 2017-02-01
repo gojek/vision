@@ -3,6 +3,7 @@ require 'spec_helper'
 describe ChangeRequest do
 	let (:change_request) {FactoryGirl.create(:change_request)}
 	let (:user) {FactoryGirl.create(:approver)}
+	let (:user_2) {FactoryGirl.create(:approver)}
 
 	#shoulda matchers test
 	it { should belong_to(:user)}
@@ -49,6 +50,18 @@ describe ChangeRequest do
 	 	it 'set change request approvers' do
 			change_request.set_approvers([user.id])
 			expect(change_request.approvals.first.user).to eq user
+	 	end
+	 end
+
+	 describe 'update_approvers' do
+	 	it 'update change request approvers' do
+	 		change_request.set_approvers([user.id])
+	 		appr = change_request.approvals.first
+	 		appr.approve = true
+	 		appr.save
+	 		change_request.update_approvers([user.id, user_2.id])
+	 		expect(change_request.approvals.first).to eq appr
+	 		expect(change_request.approvals.second.user).to eq user_2
 	 	end
 	 end
 
