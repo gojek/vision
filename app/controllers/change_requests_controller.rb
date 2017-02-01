@@ -176,7 +176,7 @@ class ChangeRequestsController < ApplicationController
       else
         if @change_request.draft?
           @change_request.save(:validate => false)
-          flash[:notice] = ('Change request draft id: #{@change_request.id.to_s} was successfully updated.')
+          flash[:notice] = "Change request draft id: #{@change_request.id} was successfully updated."
           format.html { redirect_to @change_request }
           format.json { render :show, status: :ok, location: @change_request }
         else
