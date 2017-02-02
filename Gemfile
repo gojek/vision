@@ -85,6 +85,13 @@ end
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
+
+  # mail catcher is being used for email in development
+  # based on the https://mailcatcher.me/
+  # it is stated that "Please don't put mailcatcher into your Gemfile. 
+  # It will conflict with your applications gems at some point."
+  # Instead, simply run gem install mailcatcher then mailcatcher to get started.
+
 end
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
