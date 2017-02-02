@@ -41,3 +41,13 @@ foreman start
 ```
 
 5. Visit vision in `localhost:3000`
+
+
+6. For mail interaction in Development environment, install and run Mailcatcher by running
+
+```
+gem install mailcatcher
+
+mailcatcher
+
+```
