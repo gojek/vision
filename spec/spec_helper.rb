@@ -78,6 +78,9 @@ RSpec.configure do |config|
     # slack notification
     stub_request(:post, "https://slack.com/api/chat.postMessage")
       .to_return(status: 200, body: '{"ok": true}', headers: {})
+
+    config.infer_spec_type_from_file_location!
+
   end
 
   config.after(:each) do
@@ -111,7 +114,6 @@ RSpec.configure do |config|
   #     --seed 1234
   config.order = "random"
 
-  config.include Devise::TestHelpers, :type => :controller
   config.include Warden::Test::Helpers
   config.include Devise::Test::ControllerHelpers, :type => :controller
 
