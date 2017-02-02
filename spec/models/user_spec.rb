@@ -29,7 +29,8 @@ describe User do
 
 	it "is invalid with role other than approver, requestor, release_manager" do
 		user.role = 'jagoan'
-		expect(user).to have(1).errors_on(:role)
+		user.valid?
+		expect(user.errors[:role].size).to eq(1)
 	end
 
 	it "is valid with a veritrans email" do
@@ -38,19 +39,22 @@ describe User do
 
 	it "is invalid without an email address" do
 		user.email = nil
-		expect(user).to have(2).errors_on(:email)
+		user.valid?
+		expect(user.errors[:email].size).to eq(2)
 	end
 
 	it "is invalid with a duplicate email address" do
 		user.email = 'patrick@veritrans.co.id'
 		user.save
 		other_user = FactoryGirl.build(:user, email: 'patrick@veritrans.co.id')
-		expect(other_user).to have(1).errors_on(:email)
+		other_user.valid?
+		expect(other_user.errors[:email].size).to eq(1)
 	end
 
 	it "is invalid with a non-veritrans email" do
 		user.email = 'squidward@gmail.com'
-		expect(user).to have(1).errors_on(:email)
+		user.valid?
+		expect(user.errors[:email].size).to eq(1)
 	end
 
 	it "returns true if account is not locked" do
