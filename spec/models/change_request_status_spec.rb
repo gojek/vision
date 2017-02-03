@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ChangeRequestStatus do
+describe ChangeRequestStatus, type: :model do
 
   #shoulda matchers test
   it { should belong_to(:change_request)}

@@ -2,11 +2,11 @@ require 'spec_helper'
 require 'slack_notif'
 require 'mentioner.rb'
 
-describe CommentsController do
+describe CommentsController, type:  :controller do
   let(:change_request) {FactoryGirl.create(:change_request)}
   let(:cr_comment) {FactoryGirl.build(:comment, body: 'comment')}
   before :each do
-    @request.env['devise.mapping'] = Devise.mappings[:user]
+    controller.request.env['devise.mapping'] = Devise.mappings[:user]
     release_manager = FactoryGirl.create(:release_manager)
     sign_in release_manager
   end

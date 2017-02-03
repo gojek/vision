@@ -99,9 +99,8 @@ group :development, :test do
   gem 'faker'
 	gem 'cucumber-rails', require: false
   gem 'byebug'
-  gem 'rspec-rails', '~> 2.14'
+  gem 'rspec-rails', '~> 3.5.2'
   gem 'factory_girl_rails', '~> 4.2.1'
-  gem 'guard-rspec', '4.2.0', require: false
   gem 'sunspot_test'
   # Access an IRB console on exception pages or by using <%= console %> in views
   #

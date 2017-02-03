@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ChangeRequest do
+describe ChangeRequest, type: :model do
 	let (:change_request) {FactoryGirl.create(:change_request)}
 	let (:user) {FactoryGirl.create(:approver)}
 	let (:user_2) {FactoryGirl.create(:approver)}
