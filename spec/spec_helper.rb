@@ -5,7 +5,6 @@ SimpleCov.start 'rails'
 ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
-require 'rspec/autorun'
 require 'webmock/rspec'
 require 'sunspot/rails/spec_helper'
 require 'capybara/rspec'  
@@ -111,7 +110,6 @@ RSpec.configure do |config|
   #     --seed 1234
   config.order = "random"
 
-  config.include Devise::TestHelpers, :type => :controller
   config.include Warden::Test::Helpers
   config.include Devise::Test::ControllerHelpers, :type => :controller
 
