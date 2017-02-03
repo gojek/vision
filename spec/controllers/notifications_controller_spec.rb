@@ -1,9 +1,9 @@
 require 'spec_helper.rb'
 
-describe NotificationsController do
+describe NotificationsController, type: :controller do
   let(:user) {FactoryGirl.create(:user)}
   before(:each) do
-    @request.env["devise.mapping"] = Devise.mappings[:user]
+    controller.request.env["devise.mapping"] = Devise.mappings[:user]
     sign_in user
     request.env["HTTP_REFERER"] = "vt-vision.com"
   end

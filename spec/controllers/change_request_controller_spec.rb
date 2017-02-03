@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'slack_notif'
 
-describe ChangeRequestsController do
+describe ChangeRequestsController, type: :controller do
   before :all do
     SolrResultStub = Struct.new("SolrResultStub", :results)
   end
@@ -12,7 +12,7 @@ describe ChangeRequestsController do
     let(:change_request) {FactoryGirl.create(:change_request, user: user)}
 
     before :each do
-      @request.env['devise.mapping'] = Devise.mappings[:user]
+      controller.request.env['devise.mapping'] = Devise.mappings[:user]
       sign_in user
     end
 
