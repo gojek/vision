@@ -24,7 +24,9 @@ class ChangeRequestsController < ApplicationController
         @change_requests = ChangeRequest.where(id: current_user.associated_change_requests.collect(&:id)).order(id: :desc)
       end
     else
-      @q = ChangeRequest.ransack(params[:q])
+      @q = ChangeRequest.ransack((params[:q] || {}).merge({
+                                  aasm_state_not_eq:'draft', user_id_eq:current_user.id, m:'or'
+                                }))
       @change_requests = @q.result(distinct: true).order(id: :desc)
       @change_requests = @change_requests.tagged_with(params[:tag_list]) if params[:tag_list]
     end
@@ -106,15 +108,22 @@ class ChangeRequestsController < ApplicationController
     @change_request.set_testers(@current_testers)
     @change_request.set_collaborators(@current_collaborators)
     respond_to do |format|
-      if @change_request.save
+      unless @change_request.save
+        @change_request.save(:validate=> false)
+        flash[:notice] = 'Change request was created as a draft.'
+        @status = @change_request.change_request_statuses.new(:status => 'draft')
+        @status.save
+      else
+        @change_request.submit!
+        @change_request.save
+        @status = @change_request.change_request_statuses.new(:status => 'submitted')
+        @status.save
         associated_user_ids = ["#{@change_request.user.id}"]
         associated_user_ids.concat(@current_approvers)
         associated_user_ids.concat(@current_implementers)
         associated_user_ids.concat(@current_testers)
         associated_user_ids.concat(@current_collaborators)
         @change_request.associated_user_ids = associated_user_ids.uniq
-        @status = @change_request.change_request_statuses.new(:status => 'submitted')
-        @status.save
         Notifier.cr_notify(current_user, @change_request, 'new_cr')
         SlackNotif.new.notify_new_cr @change_request
         Thread.new do
@@ -122,16 +131,9 @@ class ChangeRequestsController < ApplicationController
           ActiveRecord::Base.connection.close
         end
         flash[:create_cr_notice] = 'Change request was successfully created.'
-        format.html { redirect_to @change_request }
-        format.json { render :show, status: :created, location: @change_request }
-      else
-        @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
-        @current_tags = []
-        @users = User.all.collect{|u| [u.name, u.id]}
-        @approvers = User.approvers.collect{|u| [u.name, u.id]}
-        format.html { render :new }
-        format.json { render json: @change_request.errors, status: :unprocessable_entity }
       end
+      format.html { redirect_to @change_request }
+      format.json { render :show, status: :created, location: @change_request }
     end
   end
 
@@ -157,6 +159,9 @@ class ChangeRequestsController < ApplicationController
     @change_request.set_collaborators(@current_collaborators)
     respond_to do |format|
       if @change_request.update(change_request_params)
+        if @change_request.draft?
+          @change_request.submit!
+        end
         associated_user_ids = ["#{@change_request.user.id}"]
         associated_user_ids.concat(@current_approvers)
         associated_user_ids.concat(@current_implementers)
@@ -169,12 +174,19 @@ class ChangeRequestsController < ApplicationController
         format.html { redirect_to @change_request }
         format.json { render :show, status: :ok, location: @change_request }
       else
-        @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
-        @current_tags = @change_request.tag_list
-        @users = User.all.collect{|u| [u.name, u.id]}
-        @approvers = User.approvers.collect{|u| [u.name, u.id]}
-        format.html { render :edit }
-        format.json { render json: @change_request.errors, status: :unprocessable_entity }
+        if @change_request.draft?
+          @change_request.save(:validate => false)
+          flash[:notice] = "Change request draft id: #{@change_request.id} was successfully updated."
+          format.html { redirect_to @change_request }
+          format.json { render :show, status: :ok, location: @change_request }
+        else
+          @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
+          @current_tags = @change_request.tag_list
+          @users = User.all.collect{|u| [u.name, u.id]}
+          @approvers = User.approvers.collect{|u| [u.name, u.id]}
+          format.html { render :edit }
+          format.json { render json: @change_request.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -192,6 +204,7 @@ class ChangeRequestsController < ApplicationController
     @change_requests = ChangeRequestVersion.where(event: 'destroy')
                         .page(params[:page]).per(params[:per_page])
   end
+
   def approve
     approver = Approval.where(change_request_id: @change_request.id, user_id: current_user.id).first
     accept_note = params["notes"]
@@ -381,8 +394,11 @@ class ChangeRequestsController < ApplicationController
       redirect_to change_requests_url unless
       current_user == @change_request.user || current_user.is_admin || (current_user.role == 'release_manager') || current_user.collaborate_change_requests.include?(@change_request)
     end
+
     def submitted_required
-      if @change_request.closed?
+      if @change_request.draft?
+        #do nothing
+      elsif @change_request.closed?
         redirect_to change_requests_path
       elsif @change_request.scheduled? || @change_request.deployed?
         redirect_to implementation_notes_path
@@ -390,12 +406,14 @@ class ChangeRequestsController < ApplicationController
         redirect_to graceperiod_path if !@change_request.submitted?
       end
     end
+
     def not_closed_required
       redirect_to change_requests_path unless !@change_request.closed?
     end
+
     def reference_rollbacked_required
       @reference_cr = ChangeRequest.find(params[:id])
       redirect_to change_requests_path unless @reference_cr.rollbacked?
     end
-
 end
+
