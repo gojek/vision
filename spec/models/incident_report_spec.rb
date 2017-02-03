@@ -7,7 +7,7 @@ describe IncidentReport do
 	it { should have_many(:notifications).dependent(:destroy) }
 	
   it "is valid with all attibute filled" do
-		expect(FactoryGirl.build(:incident_report)).to be_valid
+    expect(FactoryGirl.build(:incident_report)).to be_valid
 	end
 	it "is valid with rank number 1- 5"
 	it "is valid with current status either recovered or on going"
