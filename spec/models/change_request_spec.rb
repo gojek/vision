@@ -15,8 +15,8 @@ describe ChangeRequest do
 	it { should have_many(:comments).dependent(:destroy) }
 	it { should have_many(:notifications).dependent(:destroy) }
 	
-	it "initial state is submitted when first created" do
-		expect(change_request.aasm_state).to eq "submitted"
+	it "initial state is draft when first created" do
+		expect(change_request.aasm_state).to eq "draft"
 	end
 
 	it "wont be approvable when first created" do

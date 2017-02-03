@@ -32,7 +32,7 @@ describe ChangeRequestsController do
       it "populate all current user's Change Request if no param is passed" do
         other_cr = FactoryGirl.create(:change_request)
         get :index
-        expect(assigns(:change_requests)).to match_array([change_request, other_cr])
+        expect(assigns(:change_requests)).to match_array([change_request])
       end
 
       it "populate current user's Change Request based on tag that selected" do
@@ -152,6 +152,7 @@ describe ChangeRequestsController do
           cr = ChangeRequest.first
           expect(cr.implementers.count).to eq(1)
           expect(cr.testers.count).to eq(1)
+          expect(cr.aasm_state).to eq("submitted")
         end
 
         it 'create new approval(s) for the new CR in the database' do
@@ -172,10 +173,13 @@ describe ChangeRequestsController do
       end
 
       context 'with invalid attributes' do
-        it "doesn't save new CR in the database" do
+        let(:attributes) {FactoryGirl.attributes_for(:change_request, :invalid_change_request)}
+        it 'saves the new CR in the database as draft' do
           expect{
-            post :create, change_request: FactoryGirl.attributes_for(:change_request, :invalid_change_request)
-          }.to_not change(ChangeRequest, :count)
+            post :create, change_request: attributes, implementers_list: [approver.id], testers_list: [approver.id] , approvers_list: [approver.id]
+          }.to change(ChangeRequest, :count).by(1)
+          cr = ChangeRequest.last
+          expect(cr.aasm_state).to eq "draft"
         end
       end
     end
@@ -209,7 +213,8 @@ describe ChangeRequestsController do
           patch :update, id: change_request,
           change_request: FactoryGirl.attributes_for(:change_request, scope: scope)
           change_request.reload
-          expect(change_request.scope). to_not eq(scope)
+          expect(change_request.scope).to eq(scope)
+          expect(change_request.aasm_state).to eq("draft")
         end
       end
     end
@@ -291,4 +296,5 @@ describe ChangeRequestsController do
       end
     end
   end
+
 end
