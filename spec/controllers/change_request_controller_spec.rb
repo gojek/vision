@@ -105,7 +105,7 @@ describe ChangeRequestsController, type: :controller do
       it 'will redirect to Change Request List if current user is the owner of the requested ChangeRequest' do
         cr = FactoryGirl.create(:change_request)
         get :edit, id: cr
-        response.should redirect_to change_requests_url
+        expect(response).to redirect_to(change_requests_url)
       end
     end
 
@@ -126,7 +126,7 @@ describe ChangeRequestsController, type: :controller do
       let(:cr) {FactoryGirl.create(:rollbacked_change_request)}
       it 'redirects to change request index if specified CR is not rollbacked' do
         get :create_hotfix, id: change_request
-        response.should redirect_to change_requests_url
+        expect(response).to redirect_to(change_requests_url)
       end
 
       it 'should render change request new page' do
