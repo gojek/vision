@@ -58,13 +58,14 @@ class ChangeRequest < ActiveRecord::Base
   end
 
   aasm do
-    state :submitted, :initial => true
+    state :submitted
     state :scheduled
     state :deployed
     state :rollbacked
     state :cancelled
     state :closed
     state :rejected
+    state :draft, :initial => true
     event :schedule do
       transitions :from => :submitted, :to => :scheduled, :guard => :approvable?
     end
@@ -85,7 +86,7 @@ class ChangeRequest < ActiveRecord::Base
       transitions :from => :deployed, :to => :closed, after: :success_change_request
     end
     event :submit do
-      transitions :form => :cancelled, :to => :submitted
+      transitions :form => [:draft, :cancelled], :to => :submitted
     end
   end
 
