@@ -23,7 +23,9 @@ describe Notifier do
     end
 
     it 'should NOT send notification to the requestor when a change request is made' do
-      expect{Notifier.cr_notify(user, change_request, message)}.to_not change{change_request.user.notifications.cr.count}.by(1)
+      Notifier.cr_notify(user, change_request, message)
+      latest_count = change_request.user.notifications.count
+      expect(change_request.user.notifications.count).to eq(latest_count)
     end
   end
 
