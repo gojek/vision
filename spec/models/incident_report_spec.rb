@@ -6,7 +6,7 @@ describe IncidentReport do
 	it { should belong_to(:user)}
 	it { should have_many(:notifications).dependent(:destroy) }
 	
-	it "is valid with all attibute filled" do
+  it "is valid with all attibute filled" do
 		expect(FactoryGirl.build(:incident_report)).to be_valid
 	end
 	it "is valid with rank number 1- 5"
