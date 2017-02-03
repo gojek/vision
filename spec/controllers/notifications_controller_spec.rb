@@ -19,7 +19,7 @@ describe NotificationsController, type: :controller do
 
     it 'should redirect to request.referer' do
       get :clear_notifications
-      response.should redirect_to "vt-vision.com"
+      expect(response).to redirect_to("vt-vision.com")
     end
   end
 
