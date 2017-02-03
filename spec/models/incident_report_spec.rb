@@ -17,7 +17,13 @@ describe IncidentReport, type: :model do
       expect(ir).to be_valid
     end
   end
-  it "is valid with current status either recovered or on going"
+  it "is valid with current status either recovered or on going" do
+    allowed_status = %w(Ongoing Recovered Resolved)
+    allowed_status.each do |status|
+      ir = FactoryGirl.build(:incident_report, current_status: status)
+      expect(ir).to be_valid
+    end
+  end
   it "is valid with source either external or internal" do
     allowed_source = %w(External Internal)
     allowed_source.each do |source|
@@ -135,7 +141,19 @@ describe IncidentReport, type: :model do
     incident_report.valid?
     expect(incident_report.errors[:rank].size).to eq(1)
   end
-  it "is invalid with occurence time other than date time "
-  it "is invalid with detection time other than date time "
-  it "is invalid with recovery time other than date time "
+  it "is invalid with occurence time other than date time " do
+    incident_report = FactoryGirl.build(:incident_report, occurrence_time: 1)
+    incident_report.valid?
+    expect(incident_report.errors[:occurrence_time].size).to eq(1)
+  end
+  it "is invalid with detection time other than date time " do
+    incident_report = FactoryGirl.build(:incident_report, detection_time: 1)
+    incident_report.valid?
+    expect(incident_report.errors[:detection_time].size).not_to eq(0)
+  end
+  it "is invalid with recovery time other than date time " do 
+    incident_report = FactoryGirl.build(:incident_report, recovery_time: 1)
+    incident_report.valid?
+    expect(incident_report.errors[:recovery_time].size).to eq(1)
+  end
 end
