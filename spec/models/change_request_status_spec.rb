@@ -8,12 +8,15 @@ describe ChangeRequestStatus, type: :model do
   it "need reason if CR status either rollbacked, cancelled or rejected" do
   	change_request_status = ChangeRequestStatus.create(
   		status: 'rollbacked')
-  	expect(change_request_status).to have(1).errors_on(:reason)
+    change_request_status.valid?
+    expect(change_request_status.errors[:reason].size).to eq(1)
   	other_change_request_status = ChangeRequestStatus.create(
   		status: 'cancelled')
-  	expect(other_change_request_status).to have(1).errors_on(:reason)
+    other_change_request_status.valid?
+    expect(other_change_request_status.errors[:reason].size).to eq(1)
   	another_change_request_status = ChangeRequestStatus.create(
   		status: 'rejected')
-  	expect(another_change_request_status).to have(1).errors_on(:reason)
+    another_change_request_status.valid?
+    expect(another_change_request_status.errors[:reason].size).to eq(1)
   end
 end
