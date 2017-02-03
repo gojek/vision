@@ -9,11 +9,36 @@ describe IncidentReport, type: :model do
   it "is valid with all attibute filled" do
     expect(FactoryGirl.build(:incident_report)).to be_valid
   end
-  it "is valid with rank number 1- 5"
+  it "is valid with rank number 1- 5" do
+    total_incident_report = IncidentReport.all.count
+    allowed_rank_number = [1,2,3,4,5]
+    allowed_rank_number.each do |rank_number|
+      ir = FactoryGirl.build(:incident_report, rank: 1)
+      expect(ir).to be_valid
+    end
+  end
   it "is valid with current status either recovered or on going"
-  it "is valid with source either external or internal"
-  it "is valid with concern of reccurence one these option low medium or high"
-  it "is valid with status of measurer either implemeted or development"
+  it "is valid with source either external or internal" do
+    allowed_source = %w(External Internal)
+    allowed_source.each do |source|
+      ir = FactoryGirl.build(:incident_report, source: source)
+      expect(ir).to be_valid
+    end
+  end
+  it "is valid with concern of reccurence one these option low medium or high" do
+    allowed_concern = %w(Low Medium High)
+    allowed_concern.each do |concern|
+      ir = FactoryGirl.build(:incident_report, recurrence_concern: concern)
+      expect(ir).to be_valid
+    end
+  end
+  it "is valid with status of measurer either implemeted or development" do
+    allowed_measurer = %w(Implemented Development)
+    allowed_measurer.each do |measurer|
+      ir = FactoryGirl.build(:incident_report, measurer_status: measurer)
+      expect(ir).to be_valid
+    end
+  end
   it "is invalid without a service impact" do
     incident_report = FactoryGirl.build(:incident_report, service_impact: nil)
     incident_report.valid?
