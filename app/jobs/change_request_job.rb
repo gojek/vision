@@ -1,7 +1,6 @@
 # app/jobs/log_job.rb
 
-class ChangeRequestJob
-	include SuckerPunch::Job 
+class ChangeRequestJob include SuckerPunch::Job 
 
   def perform(cr_ids, email)
   	csv_string = CSV.generate do |csv|

@@ -427,4 +427,3 @@ class ChangeRequestsController < ApplicationController
       redirect_to change_requests_path unless @reference_cr.rollbacked?
     end
 end
-
