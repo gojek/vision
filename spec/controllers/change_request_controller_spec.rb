@@ -48,6 +48,21 @@ describe ChangeRequestsController do
         expect(assigns(:change_requests)).to match_array([change_request])
       end
 
+      context "When download as csv" do
+        let(:cr_current_page) {change_request.where.not(aasm_state: 'draft').page(1).per(10)}
+
+        let(:csv_string)  {  cr_current_page.to_csv }
+        let(:csv_options) { {filename: "report.csv", disposition: 'attachment', type: 'text/csv; charset=utf-8; header=present'} }
+        let(:params) { {format: "csv", page:"1"}  }
+        
+        it "should return current page when downloading an attachment" do
+          expect(@controller).to receive(:send_data).with(csv_string, csv_options) {
+            @controller.render nothing: true # to prevent a 'missing template' error
+          }
+          get :index, params
+        end
+      end
+
       context 'when sending get index with relevant params' do
         let(:other_user) {FactoryGirl.create(:user)}
         let(:new_change_request) {FactoryGirl.create(:change_request, user: user)}
