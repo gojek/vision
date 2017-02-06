@@ -140,11 +140,10 @@ ActiveRecord::Schema.define(version: 20170130020123) do
 
   create_table "comments", force: :cascade do |t|
     t.text     "body"
-    t.boolean  "hide",              default: false
     t.integer  "change_request_id"
     t.integer  "user_id"
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
   end
 
   add_index "comments", ["change_request_id"], name: "index_comments_on_change_request_id", using: :btree
