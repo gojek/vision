@@ -70,3 +70,13 @@ z-index: 200000;
 .clearfix p {
 	margin: 0;
 }
+
+.cr-title-link {
+	text-decoration: none;
+	color: #333;
+}
+
+.cr-title-link:hover {
+	text-decoration: none;
+	color: #333;
+}
