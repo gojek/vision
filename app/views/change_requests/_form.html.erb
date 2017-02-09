@@ -54,13 +54,13 @@
                 <% if @change_request.errors.messages[:change_summary] %>
                   <div class="field form-group has-error">
                 <% else %>
-                  <div class="field form-group">
+                  <div class="field form-group required">
                 <% end %>
-                    <%= f.label :change_summary %><br>
+                    <%= f.label :change_summary, class: 'control-label'%><br>
                     <%= f.text_field :change_summary, class: 'form-control' %>
                   </div><!--/field-->
-                <div class='col-md-6 form-group' style='padding-left:0 ; border-right: 1px solid #d9d9d9'>
-                  <%= f.label :category %><br>
+                <div class='col-md-6 form-group required' style='padding-left:0 ; border-right: 1px solid #d9d9d9'>
+                  <%= f.label :category, class: 'control-label'%><br>
                   <%= f.check_box :category_application %>
                   <%= f.label :application %><br>
                   <%= f.check_box :category_network_equipment %>
@@ -74,8 +74,8 @@
                     <%= f.text_field :category_other, class: 'form-control'%>
                   </div><!--/input-group-->
                 </div><!--/col-->
-                <div class='col-md-6 form-group' style='padding-right:0'>
-                  <%= f.label :type %><br>
+                <div class='col-md-6 form-group required' style='padding-right:0'>
+                  <%= f.label :type, class: 'control-label' %><br>
                   <%= f.check_box :type_security_update %>
                   <%= f.label :security_update %><br>
                   <%= f.check_box :type_install_uninstall %>
@@ -92,9 +92,9 @@
                 <% if @change_request.errors.messages[:priority] %>
                   <div class="field form-group has-error">
                 <%else %>
-                  <div class="field form-group">
+                  <div class="field form-group required">
                 <% end %>
-                    <%= f.label :priority %>
+                    <%= f.label :priority, class: 'control-label' %>
                     <%= f.select :priority, options_for_select(ChangeRequest::PRIORITY, @change_request.priority), {include_blank: true}, {class: 'form-control select2'} %>
                   </div><!--/field-->
               </div><!--/col-->
@@ -115,9 +115,9 @@
                 <% if @change_request.errors.messages[:approvals] %>
                   <div class="field form-group has-error">
                 <% else %>
-                  <div class="field form-group">
+                  <div class="field form-group required">
                 <% end %>
-                  <label>Approvers</label><br>
+                  <label class="control-label">Approvers</label><br>
                     <%= select_tag "approvers_list" ,options_for_select(@approvers), class: 'select2-approve form-control', multiple:true %>
                 </div><!--/field-->
 
@@ -135,17 +135,17 @@
                   <% if @change_request.errors.messages[:change_requirement] %>
                     <div class="field form-group has-error">
                   <%else %>
-                    <div class="field form-group">
+                    <div class="field form-group required">
                   <% end %>
-                      <%= f.label :change_requirement %><br>
+                      <%= f.label :change_requirement, class: 'control-label' %><br>
                       <%= f.text_area :change_requirement, :class => "form-control tinymce" %>
                     </div><!--field-->
                   <% if @change_request.errors.messages[:business_justification] %>
                     <div class="field form-group has-error">
                   <%else %>
-                    <div class="field form-group">
+                    <div class="field form-group required">
                   <% end %>
-                      <%= f.label :business_justification %><br>
+                      <%= f.label :business_justification, class: 'control-label' %><br>
                       <%= f.text_area :business_justification, class: "form-control tinymce" %>
                     </div><!--/field-->
                   <div class="field form-group">
@@ -190,17 +190,17 @@
                 <% if @change_request.errors.messages[:analysis] %>
                   <div class="field form-group has-error">
                 <%else %>
-                  <div class="field form-group">
+                  <div class="field form-group required">
                 <% end %>
-                    <%= f.label :analysis %><br>
+                    <%= f.label :analysis, class: 'control-label' %><br>
                     <%= f.text_area :analysis, class: "form-control tinymce",style:"height:250px;"%>
                   </div><!--/field-->
                 <% if @change_request.errors.messages[:solution] %>
                   <div class="field form-group has-error">
                 <%else %>
-                  <div class="field form-group">
+                  <div class="field form-group required">
                 <% end %>
-                    <%= f.label :solution %><br>
+                    <%= f.label :solution, class: 'control-label' %><br>
                     <%= f.text_area :solution, class: "form-control tinymce" %>
                   </div><!--/field-->
               </div><!--/col-->
@@ -208,17 +208,17 @@
                 <% if @change_request.errors.messages[:impact] %>
                   <div class="field form-group has-error">
                 <%else %>
-                  <div class="field form-group">
+                  <div class="field form-group required">
                 <% end %>
-                    <%= f.label :impact %><br>
+                    <%= f.label :impact, class: 'control-label' %><br>
                     <%= f.text_area :impact, class: "form-control tinymce"%>
                   </div>
                 <% if @change_request.errors.messages[:scope] %>
                   <div class="field form-group has-error">
                 <%else %>
-                  <div class="field form-group">
+                  <div class="field form-group required">
                 <% end %>
-                    <%= f.label :scope %><br>
+                    <%= f.label :scope, class: 'control-label' %><br>
                      <%=f.select :scope, options_for_select(ChangeRequest::SCOPE, @change_request.scope), {:include_blank => true}, {class: 'form-control select2'} %>
                   </div><!--/field-->
               </div><!--/col-->
@@ -233,17 +233,17 @@
                 <% if @change_request.errors.messages[:design] %>
                   <div class="field form-group has-error">
                 <%else %>
-                  <div class="field form-group">
+                  <div class="field form-group required">
                 <% end %>
-                    <%= f.label :design %><br>
+                    <%= f.label :design, class: 'control-label' %><br>
                     <%= f.text_area :design, class: "form-control tinymce",style:"height:250px;"  %>
                   </div><!--/field-->
                 <% if @change_request.errors.messages[:backup] %>
                   <div class="field form-group has-error">
                 <%else %>
-                  <div class="field form-group">
+                  <div class="field form-group required">
                 <% end %>
-                    <%= f.label :backup %><br>
+                    <%= f.label :backup, class: 'control-label'%><br>
                     <%= f.text_area :backup, class: "form-control tinymce" %>
                   </div><!--/field-->
               </div><!--/col-->
@@ -251,17 +251,17 @@
                 <% if @change_request.errors.messages[:definition_of_success] %>
                   <div class="field form-group has-error">
                 <%else %>
-                  <div class="field form-group">
+                  <div class="field form-group required">
                 <% end %>
-                    <%= f.label :definition_of_success %><br>
+                    <%= f.label :definition_of_success, class: 'control-label' %><br>
                     <%= f.text_area :definition_of_success, class: "form-control tinymce" %>
                   </div><!--/field-->
                 <% if @change_request.errors.messages[:definition_of_failed] %>
                   <div class="field form-group has-error">
                 <%else %>
-                  <div class="field form-group">
+                  <div class="field form-group required">
                 <% end %>
-                    <%= f.label :definition_of_failure %><br>
+                    <%= f.label :definition_of_failure, class: 'control-label' %><br>
                     <%= f.text_area :definition_of_failed, class: "form-control tinymce" %>
                   </div><!--/filed-->
               </div><!--/col-->
@@ -275,26 +275,26 @@
               <% if @change_request.errors.messages[:testing_environment_available] %>
                 <div class="field form-group has-error">
               <%else %>
-                <div class="field form-group">
+                <div class="field form-group required">
               <% end %>
-                  <label>Testing in Test/Development Environment Available?</label>
+                  <label class="control-label">Testing in Test/Development Environment Available?</label>
                   <%= f.check_box :testing_environment_available, checked: @change_request.present? ? @change_request.testing_environment_available : false, data: {toggle: :toggle, on: "YES", off: "NO", onstyle: 'success', offstyle: 'danger'}%>
                 </div><!--/field-->
               <div class='col-md-6'>
                 <% if @change_request.errors.messages[:testing_procedure] %>
                   <div class="field form-group has-error">
                 <%else %>
-                  <div class="field form-group">
+                  <div class="field form-group required">
                 <% end %>
-                    <%= f.label :testing_procedure %><br>
+                    <%= f.label :testing_procedure , class: 'control-label'%><br>
                     <%= f.text_area :testing_procedure, class: "form-control tinymce" %>
                   </div>
                 <% if @change_request.errors.messages[:testing_notes] %>
                   <div class="field form-group has-error">
                 <%else %>
-                  <div class="field form-group">
+                  <div class="field form-group required">
                 <% end %>
-                    <%= f.label :testing_notes %><br>
+                    <%= f.label :testing_notes, class: 'control-label' %><br>
                     <%= f.text_area :testing_notes, class: "form-control tinymce" %>
                   </div>
               </div><!--/col-->
@@ -304,10 +304,10 @@
                   <% if @change_request.errors.messages[:testers] %>
                     <div class="field form-group has-error">
                   <% else %>
-                    <div class="field form-group">
+                    <div class="field form-group required">
                   <% end %>
                   <!-- <div class="field form-group"> -->
-                    <label>Testers</label><br>
+                    <label class= "control-label">Testers</label><br>
                       <%= select_tag "testers_list" ,options_for_select(@users), class: 'select2-tester form-control', style: 'width: 100%' , multiple:true %>
                   </div><!--/field-->
                 </div><!--/nested form for testers-->
@@ -324,17 +324,17 @@
                     <% if @change_request.errors.messages[:schedule_change_date] %>
                       <div class="field form-group has-error">
                     <%else %>
-                      <div class="field form-group">
+                      <div class="field form-group required">
                     <% end %>
-                        <%= f.label :schedule_change_date %><br>
+                        <%= f.label :schedule_change_date , class: 'control-label'%><br>
                         <%= f.datetime_select :schedule_change_date %>
                       </div><!--/field-->
                     <% if @change_request.errors.messages[:planned_completion] %>
                       <div class="field form-group has-error">
                     <%else %>
-                      <div class="field form-group">
+                      <div class="field form-group required">
                     <% end %>
-                        <%= f.label :planned_completion %><br>
+                        <%= f.label :planned_completion , class: 'control-label'%><br>
                         <%= f.datetime_select :planned_completion, :default => Time.now %>
                       </div><!--/field-->
                     <div class="field form-group">
@@ -348,8 +348,8 @@
               <div class="box box-default">
                 <div class="box-header with border"></div>
                 <div class="box-body">
-                  <div class="field form-group">
-                    <%= f.label :grace_period_starts %><br>
+                  <div class="field form-group required">
+                    <%= f.label :grace_period_starts , class: 'control-label'%><br>
                     <%= f.datetime_select :grace_period_starts %>
                   </div><!--/field-->
                   <div class="field form-group">
@@ -374,9 +374,9 @@
                 <% if @change_request.errors.messages[:implementers] %>
                   <div class="field form-group has-error">
                 <% else %>
-                  <div class="field form-group">
+                  <div class="field form-group required">
                 <% end %>
-                  <label>Implementers</label><br>
+                  <label class="control-label">Implementers</label><br>
                     <%= select_tag "implementers_list" ,options_for_select(@users), class: 'select2-implementer form-control', style: 'width: 100%;', multiple:true %>
                 </div><!--/field-->
               </div><!--implementers-->
