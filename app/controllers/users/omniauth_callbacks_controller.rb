@@ -5,11 +5,17 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     @user.token = request.env['omniauth.auth'][:credentials][:token]
     @user.refresh_token =request.env['omniauth.auth'][:credentials][:refresh_token]
     @user.expired_at = Time.at(request.env['omniauth.auth'][:credentials][:expires_at]).to_datetime
+    @user.valid?
     @user.save
     if @user.persisted?
       sign_in_and_redirect @user, event: :authentication
     else
-      redirect_to root_path, flash: { error: 'Authentication failed!' }
+      if @user.errors.messages[:email]
+        err_message = @user.errors.messages[:email].first
+      else
+        err_message = 'Authentication failed!'
+      end
+      redirect_to root_path, flash: { alert: err_message }
     end
   end
 
