@@ -46,6 +46,12 @@
         <h4>  <i class="icon fa fa-check"></i> Success!</h4>
           <p id="notice"><%= flash[:destroy_cr_notice]  %></p>
       </div>
+      <% elsif session[:first_time] != nil and session[:first_time] %>
+        <% session[:first_time] = false %>
+        <div class="alert alert-info alert-dismissible" id="draft-alert" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close" aria-hidden="true">x</button>
+          <strong>Save CR as Draft!</strong> CR can be saved as a draft by leaving the mandatory fields, and be completed at a later time.
+        </div>
       <% end %>
       <%if flash[:notice] != nil %>
        <div class="alert alert-danger alert-dismissable ">
@@ -292,4 +298,10 @@
       }
     });
   });
+  $(document).ready (function(){
+    $("#draft-alert").fadeTo(10000, 500).slideUp(500, function(){
+      $("#draft-alert").slideUp(500);
+    });
+  });
+
 </script>

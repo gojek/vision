@@ -14,5 +14,8 @@ class ApplicationController < ActionController::Base
   	sign_out current_user unless current_user.token != nil
   end
 
-
+  def after_sign_in_path_for(resource)
+    session[:first_time] = true
+    user_path(resource)
+  end
 end
