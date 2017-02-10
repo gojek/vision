@@ -45,6 +45,7 @@ describe IncidentReport, type: :model do
       expect(ir).to be_valid
     end
   end
+
   it "is invalid without a service impact" do
     incident_report = FactoryGirl.build(:incident_report, service_impact: nil)
     incident_report.valid?
