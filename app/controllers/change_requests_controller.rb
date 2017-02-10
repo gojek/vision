@@ -5,6 +5,7 @@ class ChangeRequestsController < ApplicationController
   before_action :not_closed_required, only: [:destroy]
   before_action :submitted_required, only: [:edit]
   before_action :reference_rollbacked_required, only: [:create_hotfix]
+  after_action :unset_session_first_time, only: [:index, :show], if: -> { session['first_time'] }
   require 'notifier.rb'
   require 'slack_notif.rb'
 
@@ -384,6 +385,10 @@ class ChangeRequestsController < ApplicationController
       else
         @change_request = ChangeRequest.find(params[:id])
       end
+    end
+
+    def unset_session_first_time
+      session[:first_time] = false
     end
 
     def change_request_params
