@@ -70,3 +70,8 @@ z-index: 200000;
 .clearfix p {
 	margin: 0;
 }
+
+.form-group.required .control-label:after { 
+   content:"*";
+   color:red;
+}
