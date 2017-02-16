@@ -11,7 +11,7 @@ class ChangeRequestJob include SuckerPunch::Job
 	  end
 
     ActiveRecord::Base.connection_pool.with_connection do
-		  ChangeRequestMailer.send_csv(csv_string, email).deliver
+		  ChangeRequestMailer.send_csv(csv_string, email).deliver_now
     end
   end
 end
