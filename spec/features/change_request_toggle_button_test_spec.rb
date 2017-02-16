@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe "Change Request testing Toggle Button", :type => :request do
+RSpec.describe "Change Request testing Toggle Button", type: :feature do
   it "Toggle button must have the same state as the boolean in testing_environment_variable attribute of the ChangeRequest model " do
    	user = FactoryGirl.create(:user)
    	change_request = FactoryGirl.create(:change_request, user: user)

@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-describe User do
+describe User, type: :model do
+
   let(:user) {FactoryGirl.create(:user)}
   before :all do
     UserList = Struct.new("UserList", :members)
@@ -84,7 +85,9 @@ describe User do
     end
 
     before :each do
-      Slack::Web::Client.any_instance.stub(users_list: @users_list)
+      # Slack::Web::Client.any_instance.stub(users_list: @users_list)
+      allow_any_instance_of(Slack::Web::Client).to receive(:users_list).and_return(@users_list)
+
     end
 
     it "will find the user based on the auth from omniauth if user already registered" do
@@ -113,7 +116,8 @@ describe User do
       before :each do
         user_slack = UserSlack.new('salah', Profile.new('e' + user.email))
         @users_list = UserList.new([user_slack])
-        Slack::Web::Client.any_instance.stub(users_list: @users_list)
+        allow_any_instance_of(Slack::Web::Client).to receive(:users_list).and_return(@users_list)
+
       end
 
       it 'will return nil' do
@@ -126,7 +130,8 @@ describe User do
         @slack_username = 'patrick.star'
         user_slack = UserSlack.new(@slack_username, Profile.new(user.email))
         @users_list = UserList.new([user_slack])
-        Slack::Web::Client.any_instance.stub(users_list: @users_list)
+        allow_any_instance_of(Slack::Web::Client).to receive(:users_list).and_return(@users_list)
+
       end
 
       it 'will return the username' do

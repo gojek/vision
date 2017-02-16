@@ -80,3 +80,7 @@ z-index: 200000;
 	text-decoration: none;
 	color: #333;
 }
+.form-group.required .control-label:after { 
+   content:"*";
+   color:red;
+}
