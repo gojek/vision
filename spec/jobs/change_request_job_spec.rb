@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe ChangeRequestJob do
   let(:job) {ChangeRequestJob.new }	
   let(:user) {FactoryGirl.create(:user, )}
@@ -8,7 +6,7 @@ describe ChangeRequestJob do
   describe "#perform" do
     it "delivers an email" do 
       expect{  
-              job.perform(crs.ids, user.email)
+        job.perform(crs.ids, user.email)
       }.to change{ ActionMailer::Base.deliveries.size }.by(1)
     end 
   end 
