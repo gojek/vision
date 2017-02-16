@@ -42,7 +42,7 @@ class ChangeRequestsController < ApplicationController
           cr_ids = @change_requests.ids
           email = current_user.email
           ChangeRequestJob.perform_async(cr_ids, email)
-          flash[:notice] = "CSV is being sended to #{email}"
+          flash[:notice] = "CSV is being sent to #{email}"
           redirect_to change_requests_path          
         else
           @change_requests = @change_requests.where.not(aasm_state: 'draft').page(params[:page] || 1).per(params[:per_page] || 10)
