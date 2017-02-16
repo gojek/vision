@@ -10,8 +10,8 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     if @user.persisted?
       sign_in_and_redirect @user, event: :authentication
     else
-      if @user.errors.messages[:email]
-        err_message = @user.errors.messages[:email].first
+      if !@user.use_company_email?
+        err_message = 'Please use company email'
       else
         err_message = 'Authentication failed!'
       end
