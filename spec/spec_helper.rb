@@ -10,6 +10,7 @@ require 'webmock/rspec'
 require 'sunspot/rails/spec_helper'
 require 'capybara/rspec'  
 require 'capybara/rails'
+require 'sucker_punch/testing/inline'
 
 WebMock.disable_net_connect!(allow_localhost: true)
 
