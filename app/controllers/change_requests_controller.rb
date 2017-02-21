@@ -145,7 +145,7 @@ class ChangeRequestsController < ApplicationController
           UserMailer.notif_email(@change_request.user, @change_request, @status).deliver_now
           ActiveRecord::Base.connection.close
         end
-        flash[:create_cr_notice] = 'Change request was successfully created.'
+        flash[:success] = 'Change request was successfully created.'
       end
       format.html { redirect_to @change_request }
       format.json { render :show, status: :created, location: @change_request }
@@ -185,13 +185,13 @@ class ChangeRequestsController < ApplicationController
         @change_request.associated_user_ids = associated_user_ids.uniq
         Notifier.cr_notify(current_user, @change_request, 'update_cr')
         SlackNotif.new.notify_update_cr @change_request
-        flash[:update_cr_notice] = 'Change request was successfully updated.'
+        flash[:success] = 'Change request was successfully updated.'
         format.html { redirect_to @change_request }
         format.json { render :show, status: :ok, location: @change_request }
       else
         if @change_request.draft?
           @change_request.save(:validate => false)
-          flash[:notice] = "Change request draft id: #{@change_request.id} was successfully updated."
+          flash[:success] = "Change request draft id: #{@change_request.id} was successfully updated."
           format.html { redirect_to @change_request }
           format.json { render :show, status: :ok, location: @change_request }
         else
@@ -209,7 +209,7 @@ class ChangeRequestsController < ApplicationController
   def destroy
     @change_request.destroy
     respond_to do |format|
-      flash[:destroy_cr_notice] = 'Change request was successfully destroyed.'
+      flash[:success] = 'Change request was successfully destroyed.'
       format.html { redirect_to change_requests_url }
       format.json { head :no_content }
     end
@@ -224,16 +224,16 @@ class ChangeRequestsController < ApplicationController
     approver = Approval.where(change_request_id: @change_request.id, user_id: current_user.id).first
     accept_note = params["notes"]
     if approver.nil?
-      flash[:not_eligible_notice] = 'You are not eligible to approve this Change Request'
+      flash[:danger] = 'You are not eligible to approve this Change Request'
     elsif accept_note.blank?
-      flash[:reject_reason_notice] = 'You must fill accept notes'
+      flash[:notice] = 'You must fill accept notes'
     else
       approver.approve = true
       approver.approval_date = Time.current
       approver.notes = accept_note
       approver.save!
       Notifier.cr_notify(current_user, @change_request, 'cr_approved')
-      flash[:status_changed_notice] = 'Change Request Approved'
+      flash[:success] = 'Change Request Approved'
     end
     redirect_to @change_request
     return
@@ -243,13 +243,13 @@ class ChangeRequestsController < ApplicationController
     approver = Approval.where(change_request_id: @change_request.id, user_id: current_user.id)
     reject_reason = params["notes"]
     if approver.empty?
-      flash[:not_eligible_notice] = 'You are not eligible to reject this Change Request'
+      flash[:danger] = 'You are not eligible to reject this Change Request'
     elsif reject_reason.blank?
-      flash[:reject_reason_notice] = 'You must fill reject reason'
+      flash[:notice] = 'You must fill reject reason'
     else
       Notifier.cr_notify(current_user, @change_request, 'cr_rejected')
       approver.update_all(:approve => false, :notes => reject_reason)
-      flash[:status_changed_notice] = 'Change Request Rejected'
+      flash[:notice] = 'Change Request Rejected'
     end
     redirect_to @change_request
   end
