@@ -49,10 +49,10 @@ describe ChangeRequestsController do
       end
 
       context "When download as csv" do
-        let(:cr_current_page) {change_request.where.not(aasm_state: 'draft').page(1).per(10)}
+        let(:cr_current_page) {ChangeRequest.where.not(aasm_state: 'draft').page(1).per(10)}
 
         let(:csv_string)  {  cr_current_page.to_csv }
-        let(:csv_options) { {filename: "report.csv", disposition: 'attachment', type: 'text/csv; charset=utf-8; header=present'} }
+        let(:csv_options) { {filename: "change_requests.csv", disposition: 'attachment', type: 'text/csv; charset=utf-8; header=present'} }
         let(:params) { {format: "csv", page:"1"}  }
         
         it "should return current page when downloading an attachment" do
