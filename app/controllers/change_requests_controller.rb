@@ -15,6 +15,8 @@ class ChangeRequestsController < ApplicationController
         order_by :created_at, :desc
       end
       @change_requests = search.results
+      ids = @change_requests.map {|c| c.id}
+      @change_requests = ChangeRequest.where(id: ids)
     elsif params[:type]
       @q = ChangeRequest.ransack(params[:q])
       case params[:type]
