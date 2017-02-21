@@ -26,7 +26,7 @@ class ChangeRequestStatusesController < ApplicationController
         alert_users status: 'cr_scheduled'
       end
     else
-      flash[:change_status_notice] = 'Sorry, this CR didnt reach approval limit by Approver'
+      flash[:danger] = 'Sorry, this CR didnt reach approval limit by Approver'
     end
     redirect_to @change_request
   end
@@ -51,7 +51,7 @@ class ChangeRequestStatusesController < ApplicationController
         @change_request.rollback!
         alert_users status: 'cr_rollbacked'
       else
-        flash[:change_status_notice] = 'Reason must be filled to Rollback CR'
+        flash[:danger] = 'Reason must be filled to Rollback CR'
       end
     end
     redirect_to @change_request
@@ -65,7 +65,7 @@ class ChangeRequestStatusesController < ApplicationController
         @change_request.cancel!
         alert_users status: 'cr_cancelled'
       else
-        flash[:change_status_notice] = 'Reason must be filled Cancel CR'
+        flash[:danger] = 'Reason must be filled Cancel CR'
       end
     end
     redirect_to @change_request
@@ -91,7 +91,7 @@ class ChangeRequestStatusesController < ApplicationController
         @change_request.reject!
         alert_users status: 'cr_final_rejected'
       else
-        flash[:change_status_notice] = 'Reason must be filled to Reject CR'
+        flash[:danger] = 'Reason must be filled to Reject CR'
       end
     end
     redirect_to @change_request
