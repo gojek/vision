@@ -35,45 +35,24 @@
 <br><br>
 <section class="content">
   <%if flash[:notice] != nil %>
-    <div class="alert alert-success alert-dismissable ">
+    <div class="alert alert-warning alert-dismissable ">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
       <h4>  <i class="icon fa fa-check"></i> Success!</h4>
       <p id="notice"><%= flash[:notice]  %></p>
     </div><!--/alert-->
   <% end %>
-  <%if flash[:create_cr_notice] != nil %>
+  <%if flash[:success] != nil %>
     <div class="alert alert-success alert-dismissable ">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
       <h4>  <i class="icon fa fa-check"></i> Success!</h4>
-      <p id="notice"><%= flash[:create_cr_notice]  %></p>
+      <p id="notice"><%= flash[:success]  %></p>
     </div><!--/alert-->
   <% end %>
-   <%if flash[:reject_reason_notice] != nil %>
-   <div class="alert alert-warning alert-dismissable ">
+   <%if flash[:danger] != nil %>
+   <div class="alert alert-danger alert-dismissable ">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
       <h4>  <i class="icon fa fa-warning"></i> Alert!</h4>
-      <p id="notice"><%= flash[:reject_reason_notice]  %></p>
-    </div><!--/alert-->
-  <% end %>
-  <%if flash[:update_cr_notice] != nil %>
-    <div class="alert alert-success alert-dismissable ">
-      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-      <h4>  <i class="icon fa fa-check"></i> Success!</h4>
-      <p id="notice"><%= flash[:update_cr_notice]  %></p>
-    </div><!--/alert-->
-  <% end %>
-  <%if flash[:status_changed_notice] != nil %>
-   <div class="alert alert-success alert-dismissable ">
-      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-      <h4>  <i class="icon fa fa-check"></i> Success!</h4>
-      <p id="notice"><%= flash[:status_changed_notice]  %></p>
-    </div><!--/alert-->
-  <% end %>
-  <%if flash[:not_eligible_notice] != nil %>
-    <div class="alert alert-warning alert-dismissable ">
-      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-      <h4>  <i class="icon fa fa-warning"></i> Alert!</h4>
-      <p id="notice"><%= flash[:not_eligible_notice]  %></p>
+      <p id="notice"><%= flash[:danger]  %></p>
     </div><!--/alert-->
   <% end %>
   <% if current_user.role=='approver' && @eligible_to_approve %>
