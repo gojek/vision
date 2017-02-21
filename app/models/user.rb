@@ -33,7 +33,8 @@ class User < ActiveRecord::Base
   end
 
   def use_company_email?
-    email.match(/\b[A-Z0-9._%a-z\-]+@(veritrans\.co\.id|midtrans\.com)\z/).present?
+    email =~ /\b[A-Z0-9._%a-z\-]+@(veritrans\.co\.id|midtrans\.com)\z/
+    email.present?
   end
 
   def active_for_authentication?
