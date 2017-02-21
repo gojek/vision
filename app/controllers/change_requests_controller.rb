@@ -16,15 +16,15 @@ class ChangeRequestsController < ApplicationController
       end
       @change_requests = search.results
       ids = @change_requests.map {|c| c.id}
-      @change_requests = ChangeRequest.where(id: ids)
+      @change_requests = ChangeRequest.where(id: ids).where.not(aasm_state: 'draft')
     elsif params[:type]
-      @q = ChangeRequest.ransack(params[:q])
       case params[:type]
       when 'approval'
-        @change_requests = ChangeRequest.where(id: Approval.where(user_id: current_user.id, approve: nil).collect(&:change_request_id)).order(id: :desc)
+        @change_requests = ChangeRequest.where(id: Approval.where(user_id: current_user.id, approve: nil).collect(&:change_request_id))
       when 'relevant'
-        @change_requests = ChangeRequest.where(id: current_user.associated_change_requests.collect(&:id)).order(id: :desc)
+        @change_requests = ChangeRequest.where(id: current_user.associated_change_requests.collect(&:id))
       end
+      @change_requests = @change_requests.where.not(aasm_state: 'draft').order(id: :desc)
     else
       @q = ChangeRequest.ransack((params[:q] || {}).merge({
                                   aasm_state_not_eq:'draft', user_id_eq:current_user.id, m:'or'
