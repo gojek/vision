@@ -1,5 +1,5 @@
 class ChangeRequestMailer < ApplicationMailer
-  default from: "visiony@midtrans.com"
+  default from: "vision@midtrans.com"
 
   def send_csv(cr_csv, email)
     attachments['change_requests.csv'] = {mime_type: 'text/csv', content: cr_csv}
