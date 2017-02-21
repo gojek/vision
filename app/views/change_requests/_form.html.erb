@@ -457,6 +457,7 @@
     <% @current_approvers.each do |approver| %>
       var p = '<%= approver %>';
       approvers.push(p);
+      approvers.push("woakwoakwa");
     <% end %>
     $(".select2-approve").val(approvers);
     $(".select2-approve").select2({

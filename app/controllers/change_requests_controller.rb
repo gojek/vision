@@ -88,7 +88,7 @@ class ChangeRequestsController < ApplicationController
     @current_implementers = []
     @current_testers = []
     @users = User.all.collect{|u| [u.name, u.id]}
-    @approvers = User.approvers.collect{|u| [u.name, u.id]}
+    @approvers = User.approvers.collect{|u| [u.name, u.id] if u.id != current_user.id }
   end
 
   def edit
@@ -98,7 +98,7 @@ class ChangeRequestsController < ApplicationController
     @current_implementers = @change_request.implementers.collect{|u| u.id}
     @current_testers = @change_request.testers.collect{|u| u.id}
     @users = User.all.collect{|u| [u.name, u.id]}
-    @approvers = User.approvers.collect{|u| [u.name, u.id]}
+    @approvers = User.approvers.collect{|u| [u.name, u.id] if u.id != current_user.id}
     @current_approvers = @change_request.approvals.collect(&:user_id)
   end
 
@@ -198,7 +198,7 @@ class ChangeRequestsController < ApplicationController
           @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
           @current_tags = @change_request.tag_list
           @users = User.all.collect{|u| [u.name, u.id]}
-          @approvers = User.approvers.collect{|u| [u.name, u.id]}
+          @approvers = User.approvers.collect{|u| [u.name, u.id] if u.id != current_user.id}
           format.html { render :edit }
           format.json { render json: @change_request.errors, status: :unprocessable_entity }
         end
@@ -264,7 +264,7 @@ class ChangeRequestsController < ApplicationController
     @users = User.all.collect{|u| [u.name, u.id]}
     @current_approvers = @old_change_request.approvals.collect(&:user_id)
     @change_request = @old_change_request.dup
-    @approvers = User.approvers.collect{|u| [u.name, u.id]}
+    @approvers = User.approvers.collect{|u| [u.name, u.id] if u.id != current_user.id}
     # Clear certain fields
     @change_request.user = current_user
     @change_request.schedule_change_date = nil
@@ -281,7 +281,7 @@ class ChangeRequestsController < ApplicationController
     @current_collaborators = []
     @current_approvers = []
     @users = User.all.collect{|u| [u.name, u.id]}
-    @approvers = User.approvers.collect{|u| [u.name, u.id]}
+    @approvers = User.approvers.collect{|u| [u.name, u.id] if u.id != current_user.id}
     @current_implementers = []
     @current_testers = []
     @change_request.reference_cr_id = @reference_cr.id
