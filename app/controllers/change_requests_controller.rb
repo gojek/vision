@@ -224,7 +224,7 @@ class ChangeRequestsController < ApplicationController
     approver = Approval.where(change_request_id: @change_request.id, user_id: current_user.id).first
     accept_note = params["notes"]
     if approver.nil?
-      flash[:danger] = 'You are not eligible to approve this Change Request'
+      flash[:alert] = 'You are not eligible to approve this Change Request'
     elsif accept_note.blank?
       flash[:notice] = 'You must fill accept notes'
     else
@@ -243,7 +243,7 @@ class ChangeRequestsController < ApplicationController
     approver = Approval.where(change_request_id: @change_request.id, user_id: current_user.id)
     reject_reason = params["notes"]
     if approver.empty?
-      flash[:danger] = 'You are not eligible to reject this Change Request'
+      flash[:alert] = 'You are not eligible to reject this Change Request'
     elsif reject_reason.blank?
       flash[:notice] = 'You must fill reject reason'
     else

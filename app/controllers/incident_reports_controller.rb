@@ -88,7 +88,7 @@ require 'notifier.rb'
   def destroy
     @incident_report.destroy
     respond_to do |format|
-      flash[:danger] = 'Incident report was successfully destroyed.'
+      flash[:alert] = 'Incident report was successfully destroyed.'
       format.html { redirect_to incident_reports_url }
       format.json { head :no_content }
     end
