@@ -80,6 +80,9 @@ RSpec.configure do |config|
     stub_request(:post, "https://slack.com/api/chat.postMessage")
       .to_return(status: 200, body: '{"ok": true}', headers: {})
 
+    # clear action mailer
+    ActionMailer::Base.deliveries = []
+
   end
 
   config.after(:each) do
