@@ -10,7 +10,6 @@ class ChangeRequestJob
         csv << cr.attributes.values
   	  end
 	  end
-
     ActiveRecord::Base.connection_pool.with_connection do
 		  ChangeRequestMailer.send_csv(csv_string, email).deliver_now
     end

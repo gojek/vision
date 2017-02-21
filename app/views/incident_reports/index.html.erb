@@ -13,14 +13,14 @@ $(function(){
         <span class="glyphicon glyphicon-collapse-down"> </span>       
       </button>        
       <div class="dropdown-menu pull-right">         
-        <%= link_to(change_requests_path(request.GET.merge({format: :csv, cr_page: :all_page})) , class: 'dropdown-item pull-right') do %>            
+        <%= link_to(incident_reports_path(request.GET.merge({format: :csv, ir_page: :all_page})) , class: 'dropdown-item pull-right') do %>            
           <i class="fa  fa-file-text"></i> <strong> Export all to csv </strong>         
         <% end %>         
-        <%= link_to(change_requests_path(request.GET.merge({format: :csv, cr_page: :current_page})) , class: 'dropdown-item pull-center') do %>             
+        <%= link_to(incident_reports_path(request.GET.merge({format: :csv, ir_page: :current_page})) , class: 'dropdown-item pull-center') do %>             
           <i class="fa  fa-file-text"></i> <strong> Export to csv </strong>         
         <% end %>       
       </div>       
-      <%= link_to(change_requests_path(request.GET.merge({format: :csv, cr_page: :current_page})) , class: 'btn btn-flat btn-primary pull-center') do %>            
+      <%= link_to(incident_reports_path(request.GET.merge({format: :csv, ir_page: :current_page})) , class: 'btn btn-flat btn-primary pull-center') do %>            
         <i class="fa  fa-file-text"></i>
         <strong>Export to csv</strong>       
       <% end %>     
@@ -40,6 +40,13 @@ $(function(){
           <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
           <h4>  <i class="icon fa fa-check"></i> Success!</h4>
           <p id="notice"><%= flash[:destroy_incident_report_notice]  %></p>
+        </div>
+        <% end %>
+        <%if flash[:notice] != nil %>
+        <div class="alert alert-success alert-dismissable ">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4>  <i class="icon fa fa-check"></i> Success!</h4>
+          <p id="notice"><%= flash[:notice]  %></p>
         </div>
         <% end %>
       </div>
