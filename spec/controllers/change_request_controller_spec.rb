@@ -49,17 +49,17 @@ describe ChangeRequestsController do
       end
 
       context "When download as csv" do
-        let(:cr_current_page) {ChangeRequest.where.not(aasm_state: 'draft').page(1).per(10)}
-
         let(:csv_string)  {  cr_current_page.to_csv }
         let(:csv_options) { {filename: "change_requests.csv", disposition: 'attachment', type: 'text/csv; charset=utf-8; header=present'} }
-        let(:params) { {format: "csv", page:"1"}  }
+        let(:params) { {format: "csv", page: 1, per_page: 10}  }
         
         it "should return current page when downloading an attachment" do
-          expect(@controller).to receive(:send_data).with(csv_string, csv_options) {
-            @controller.render nothing: true # to prevent a 'missing template' error
-          }
           get :index, params
+          #expect(@controller).to receive(:send_data).with(csv_string, csv_options) {
+          #  @controller.render nothing: true # to prevent a 'missing template' error
+          #}
+          expect(response.header['Content-Type']).to eq('text/csv')
+          expect(response.body).to eq('owka')
         end
       end
 
