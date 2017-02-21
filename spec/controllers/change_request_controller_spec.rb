@@ -9,7 +9,7 @@ describe ChangeRequestsController do
   describe 'requestor access' do
     let(:user) {FactoryGirl.create(:user)}
     let(:approver) {FactoryGirl.create(:approver)}
-    let(:change_request) {FactoryGirl.create(:change_request, user: user)}
+    let(:change_request) {FactoryGirl.create(:submitted_change_request, user: user)}
 
     before :each do
       @request.env['devise.mapping'] = Devise.mappings[:user]
@@ -65,8 +65,8 @@ describe ChangeRequestsController do
 
       context 'when sending get index with relevant params' do
         let(:other_user) {FactoryGirl.create(:user)}
-        let(:new_change_request) {FactoryGirl.create(:change_request, user: user)}
-        let(:other_change_request) {FactoryGirl.create(:change_request, user: other_user)}
+        let(:new_change_request) {FactoryGirl.create(:submitted_change_request, user: user)}
+        let(:other_change_request) {FactoryGirl.create(:submitted_change_request, user: other_user)}
         it 'should not populate change requests that have no relevancy to me' do
           change_request.reload
           new_change_request.reload
@@ -228,8 +228,7 @@ describe ChangeRequestsController do
           patch :update, id: change_request,
           change_request: FactoryGirl.attributes_for(:change_request, scope: scope)
           change_request.reload
-          expect(change_request.scope).to eq(scope)
-          expect(change_request.aasm_state).to eq("draft")
+          expect(change_request.scope).not_to eq(scope)
         end
       end
     end
@@ -262,7 +261,7 @@ describe ChangeRequestsController do
     before :each do
       @request.env['devise.mapping'] = Devise.mappings[:user]
       sign_in user
-      @cr = FactoryGirl.create(:change_request, user: user)
+      @cr = FactoryGirl.create(:submitted_change_request, user: user)
       @approval = Approval.create(user: user, change_request: @cr)
     end
      describe 'GET #index' do
@@ -272,7 +271,7 @@ describe ChangeRequestsController do
       end
 
       it 'populate the list with change requests that you need to approve when submitted with approval params' do
-        cr_other = FactoryGirl.create(:change_request)
+        cr_other = FactoryGirl.create(:submitted_change_request)
         get :index, type: 'approval'
         expect(assigns(:change_requests)).to match_array([@cr])
       end
