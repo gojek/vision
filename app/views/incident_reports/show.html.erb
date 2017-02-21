@@ -20,20 +20,13 @@
 <br><br>
 <!-- Main content -->
 <section class="invoice">
-  <%if flash[:create_incident_report_notice] != nil %>
+  <%if flash[:success] != nil %>
      <div class="alert alert-success alert-dismissable ">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
       <h4>  <i class="icon fa fa-check"></i> Success!</h4>
-      <p id="notice"><%= flash[:create_incident_report_notice]  %></p>
+      <p id="notice"><%= flash[:success]  %></p>
     </div>
-    <% end %>
-    <%if flash[:update_incident_report_notice] != nil %>
-    <div class="alert alert-success alert-dismissable ">
-      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-      <h4>  <i class="icon fa fa-check"></i> Success!</h4>
-      <p id="notice"><%= flash[:update_incident_report_notice]  %></p>
-    </div>
-    <% end %>
+  <% end %>
   <!-- title row -->
   <div class="row">
     <div class="col-xs-12">
