@@ -21,7 +21,7 @@ class ChangeRequest < ActiveRecord::Base
   STATUS = %w(submitted scheduled rollbacked cancelled rejected deployed closed)
 
   validates :change_summary, :priority,:change_requirement, :business_justification, :analysis, :solution, :impact, :scope, :design,
-            :backup, :testing_procedure, :testing_notes, :schedule_change_date, :planned_completion, :definition_of_success, :definition_of_failed, presence: true
+            :backup, :testing_procedure, :testing_notes, :schedule_change_date, :planned_completion, :definition_of_success, :definition_of_failed,:grace_period_end, :grace_period_starts, presence: true
   validates_inclusion_of :testing_environment_available, :in => [true, false]
   accepts_nested_attributes_for :implementers, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :testers, :allow_destroy => true
