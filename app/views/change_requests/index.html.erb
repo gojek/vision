@@ -27,8 +27,8 @@
             <i class="fa  fa-file-text"></i> <strong> Export to csv </strong>
         <% end %>
       </div>
-      <%= link_to(change_requests_path(request.GET.merge({format: :csv, cr_page: :current_page})) , class: 'btn btn-flat btn-primary pull-center') do %>
-           <i class="fa  fa-file-text"></i> <strong>Export to csv</strong>
+      <%= link_to(change_requests_path(request.GET.merge(second_params)) , class: 'btn btn-flat btn-primary pull-center') do %>
+           <i class="fa  fa-file-text"></i> <strong>Export this page to csv</strong>
       <% end %>
     </div>
     <%= link_to  new_change_request_path, class: 'btn btn-flat btn-primary pull-right'  do %>
