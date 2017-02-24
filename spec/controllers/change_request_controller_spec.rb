@@ -59,7 +59,6 @@ describe ChangeRequestsController do
           #  @controller.render nothing: true # to prevent a 'missing template' error
           #}
           expect(response.header['Content-Type']).to eq('text/csv')
-          expect(response.body).to eq('owka')
         end
       end
 
