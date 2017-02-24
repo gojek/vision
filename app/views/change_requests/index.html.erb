@@ -19,10 +19,11 @@
         <span class="glyphicon glyphicon-collapse-down"> </span>
       </button>
        <div class="dropdown-menu pull-right">
-        <%= link_to(change_requests_path(request.GET.merge({format: :csv, cr_page: :all_page})) , class: 'dropdown-item pull-right') do %>
+        <%= link_to(change_requests_path(request.GET.merge({format: :csv})) , class: 'dropdown-item pull-right') do %>
            <i class="fa  fa-file-text"></i> <strong> Export all to csv </strong>
         <% end %>
-        <%= link_to(change_requests_path(request.GET.merge({format: :csv, cr_page: :current_page})) , class: 'dropdown-item pull-center') do %>
+        <% second_params = {format: :csv, page: params[:page].present? ? params[:page] : 1} %>
+        <%= link_to(change_requests_path(request.GET.merge(second_params)) , class: 'dropdown-item pull-center') do %>
             <i class="fa  fa-file-text"></i> <strong> Export to csv </strong>
         <% end %>
       </div>
