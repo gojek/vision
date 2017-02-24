@@ -42,7 +42,7 @@ class ChangeRequestsController < ApplicationController
         #@change_requests.order("created_at desc").limit(13).offset(offset)
         if params[:page].present?
           # download crs current page
-          @change_requests = @change_requests.where.not(aasm_state: 'draft').page(params[:page] || 1).per(params[:per_page] || 10)
+          @change_requests = @change_requests.page(params[:page] || 1).per(params[:per_page] || 10)
           render csv: @change_requests, filename: 'change_requests', force_quotes: true
         else
           # download all crs
