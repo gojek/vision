@@ -40,14 +40,16 @@ class ChangeRequestsController < ApplicationController
       format.csv do
         #offset = params[:page] || 1
         #@change_requests.order("created_at desc").limit(13).offset(offset)
-        if params[:cr_page] == "all_page"
+        if params[:page].present?
+          # download crs current page
+          @change_requests = @change_requests.where.not(aasm_state: 'draft').page(params[:page] || 1).per(params[:per_page] || 10)
+          render csv: @change_requests, filename: 'change_requests', force_quotes: true
+        else
+          # download all crs
           cr_ids = @change_requests.ids
           email = current_user.email
           ChangeRequestJob.perform_async(cr_ids, email)
-          redirect_to change_requests_path, notice: "CSV is being sent to #{email}"         
-        else
-          @change_requests = @change_requests.where.not(aasm_state: 'draft').page(params[:page] || 1).per(params[:per_page] || 10)
-          render csv: @change_requests, filename: 'change_requests', force_quotes: true
+          redirect_to change_requests_path, notice: "CSV is being sent to #{email}"
         end
       end
     end
