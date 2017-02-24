@@ -70,3 +70,11 @@ z-index: 200000;
 .clearfix p {
 	margin: 0;
 }
+
+.left-export-csv {
+	padding-left: 1em;
+}
+
+.dropdown-export-csv{
+	height: 35px;
+}
