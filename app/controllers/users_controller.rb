@@ -20,7 +20,7 @@ class UsersController < ApplicationController
     @user.is_admin = params[:is_admin]
     @user.save
     if @user.update(update_user_params)
-      flash[:user_notice] = 'User updated succesfully'
+      flash[:success] = 'User updated succesfully'
       redirect_to users_path
     else
       render action: 'edit'
@@ -30,14 +30,14 @@ class UsersController < ApplicationController
   def lock_user
     @user = User.find params[:id]
     @user.update_attribute(:locked_at, Time.current)
-    flash[:user_notice] = 'User locked succesfully'
+    flash[:success] = 'User locked succesfully'
     redirect_to users_path
   end
 
   def unlock_user
     @user = User.find params[:id]
     @user.update_attribute(:locked_at, nil)
-    flash[:user_notice] = 'User unlocked succesfully'
+    flash[:success] = 'User unlocked succesfully'
     redirect_to users_path
   end
 
