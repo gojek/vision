@@ -19,20 +19,8 @@ require 'notifier.rb'
 
     @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
     respond_to do |format|
-      format.html do
-      end
-      format.xls do
-        send_data(@incident_reports.to_xls) 
-      end
-      format.csv do 
-        if params[:ir_page] == "all_page"
-          email = current_user.email
-          IncidentReportJob.perform_async(email)
-          redirect_to incident_reports_path, notice: "CSV is being sent to #{email}"   
-        else
-          render csv: @incident_reports, filename: 'incident_reports', force_quotes: true       
-        end
-      end
+      format.html
+      format.xls { send_data(@incident_reports.to_xls) }
     end
 
   end
