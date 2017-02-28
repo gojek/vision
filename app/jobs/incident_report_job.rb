@@ -7,7 +7,7 @@ class IncidentReportJob
     csv_string = CSV.generate do |csv|
       csv << IncidentReport.attribute_names
       IncidentReport.where(id: ir_ids).order('created_at DESC').each do |ir|
-        csv << ir.attribute.values
+        csv << ir.attributes.values
       end
     end
     ActiveRecord::Base.connection_pool.with_connection do
