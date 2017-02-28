@@ -27,7 +27,7 @@ require 'notifier.rb'
         else
           # download all page through sucker punch
           email = current_user.email
-          ChangeRequestJob.perform_async(IncidentReport.ids, email)
+          IncidentReportJob.perform_async(IncidentReport.ids, email)
           redirect_to incident_reports_path, notice: "CSV is being sent to #{email}"
         end
       end
