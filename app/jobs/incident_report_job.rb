@@ -10,5 +10,8 @@ class IncidentReportJob
         csv << ir.attribute.values
       end
     end
+    ActiveRecord::Base.connection_pool.with_connection do
+	  IncidentReportMailer.send_csv(csv_string, email).deliver_now
+    end
   end
 end
