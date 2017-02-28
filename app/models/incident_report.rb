@@ -31,6 +31,23 @@ class IncidentReport < ActiveRecord::Base
   validate  :validate_resolution_time, if: :resolved_time?
   validate  :validate_detection_time
 
+  comma do
+    id     
+    service_impact 'service impact'     
+    problem_details 'problem details'     
+    current_status 'current status'     
+    rank     
+    measurer_status 'measurer status'     
+    recurrence_concern 'recurrence concern'     
+    occurrence_time to_s: 'occurrence time'     
+    detection_time to_s: 'detection time'     
+    recovery_time to_s: 'recovery time'     
+    recovery_duration to_s: 'recovery duration'     
+    resolved_time 'resolved time'     
+    how_detected 'how was problem detected'     
+    loss_related 'loss related issue'
+  end
+
   def user_name
     user ? user.name : ''
   end
