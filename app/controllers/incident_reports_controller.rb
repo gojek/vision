@@ -20,6 +20,17 @@ require 'notifier.rb'
     @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
     respond_to do |format|
       format.html
+      format.csv do
+        if params[:page].present?
+          # download current page only
+          render csv: @incident_reports, filename: 'incident_reports', force_quotes: true
+        else
+          # download all page through sucker punch
+          email = current_user.email
+          ChangeRequestJob.perform_async(IncidentReport.ids, email)
+          redirect_to incident_reports_path, notice: "CSV is being sent to #{email}"
+        end
+      end
       format.xls { send_data(@incident_reports.to_xls) }
     end
 
