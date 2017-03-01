@@ -9,11 +9,15 @@
         <% end %>
       </h1>
     </div>
-    <div class="pull-right">
-  	  <h4 class="text-right">Invalid change request will be saved as a draft</h4>
-    </div>
-  <div class="clearfix"></div>
+  <div class="clearfix">
+  </div>
 </section>
 <section class="content">
+    <%if session[:first_time] %>
+      <div class="alert alert-info alert-dismissible" id="draft-alert" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close" aria-hidden="true">x</button>
+        <strong>Save CR as Draft!</strong> Now you can save this CR as draft by simply leaving out important fields marked with *
+      </div>
+    <% end %>
     <%= render 'form' %>
 </section>

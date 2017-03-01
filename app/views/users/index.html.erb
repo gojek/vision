@@ -16,9 +16,9 @@
  <div class="row">
     
     <div class='col-lg-6'>
-        <%if flash[:user_notice] != nil %>
+        <%if flash[:success] != nil %>
         <div class='alert alert-success'>
-            <p id="notice"><%= flash[:user_notice]  %></p>
+            <p id="notice"><%= flash[:success]  %></p>
         </div>
         <% end %>
     </div>

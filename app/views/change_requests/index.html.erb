@@ -40,12 +40,12 @@
 <section class="content">
  <div class="row">
     <div class='col-lg-6'>
-      <%if flash[:destroy_cr_notice] != nil %>
-       <div class="alert alert-danger alert-dismissable ">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-        <h4>  <i class="icon fa fa-check"></i> Success!</h4>
-          <p id="notice"><%= flash[:destroy_cr_notice]  %></p>
-      </div>
+      <%if flash[:notice] != nil %>
+        <div class="alert alert-danger alert-dismissable ">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+          <h4>  <i class="icon fa fa-check"></i> Success!</h4>
+          <p id="notice"><%= flash[:notice]  %></p>
+        </div>
       <% end %>
       <%if flash[:notice] != nil %>
        <div class="alert alert-success alert-dismissable ">
@@ -118,7 +118,7 @@
             <% @change_requests.each do |change_request| %>
               <tr>
                 <td><%= link_to change_request.id, change_request %></td>
-                <td><%=raw change_request.change_summary %></td>
+                <td><%= link_to (raw change_request.change_summary), change_request, {class: 'cr-title-link'} %></td>
 
                 <td><%=raw change_request.created_at.to_s(:long) %></td>
                 <td><%=raw HTML_Truncator.truncate(change_request.business_justification, 10) %>
@@ -292,4 +292,10 @@
       }
     });
   });
+  $(document).ready (function(){
+    $("#draft-alert").fadeTo(10000, 500).slideUp(500, function(){
+      $("#draft-alert").slideUp(500);
+    });
+  });
+
 </script>
