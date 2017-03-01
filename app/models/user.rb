@@ -32,6 +32,10 @@ class User < ActiveRecord::Base
     locked_at.nil?
   end
 
+  def use_company_email?
+    (email =~ /\b[A-Z0-9._%a-z\-]+@(veritrans\.co\.id|midtrans\.com)\z/).present?
+  end
+
   def active_for_authentication?
     super && account_active?
   end
