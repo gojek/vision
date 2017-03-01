@@ -5,6 +5,7 @@ class ChangeRequestsController < ApplicationController
   before_action :not_closed_required, only: [:destroy]
   before_action :submitted_required, only: [:edit]
   before_action :reference_rollbacked_required, only: [:create_hotfix]
+  after_action :unset_session_first_time, only: [:new], if: -> { session['first_time'] }
   require 'notifier.rb'
   require 'slack_notif.rb'
 
@@ -87,7 +88,7 @@ class ChangeRequestsController < ApplicationController
     @current_implementers = []
     @current_testers = []
     @users = User.all.collect{|u| [u.name, u.id]}
-    @approvers = User.approvers.collect{|u| [u.name, u.id]}
+    @approvers = User.approvers.collect{|u| [u.name, u.id] if u.id != current_user.id }
   end
 
   def edit
@@ -97,7 +98,7 @@ class ChangeRequestsController < ApplicationController
     @current_implementers = @change_request.implementers.collect{|u| u.id}
     @current_testers = @change_request.testers.collect{|u| u.id}
     @users = User.all.collect{|u| [u.name, u.id]}
-    @approvers = User.approvers.collect{|u| [u.name, u.id]}
+    @approvers = User.approvers.collect{|u| [u.name, u.id] if u.id != current_user.id}
     @current_approvers = @change_request.approvals.collect(&:user_id)
   end
 
@@ -144,7 +145,7 @@ class ChangeRequestsController < ApplicationController
           UserMailer.notif_email(@change_request.user, @change_request, @status).deliver_now
           ActiveRecord::Base.connection.close
         end
-        flash[:create_cr_notice] = 'Change request was successfully created.'
+        flash[:success] = 'Change request was successfully created.'
       end
       format.html { redirect_to @change_request }
       format.json { render :show, status: :created, location: @change_request }
@@ -184,20 +185,20 @@ class ChangeRequestsController < ApplicationController
         @change_request.associated_user_ids = associated_user_ids.uniq
         Notifier.cr_notify(current_user, @change_request, 'update_cr')
         SlackNotif.new.notify_update_cr @change_request
-        flash[:update_cr_notice] = 'Change request was successfully updated.'
+        flash[:success] = 'Change request was successfully updated.'
         format.html { redirect_to @change_request }
         format.json { render :show, status: :ok, location: @change_request }
       else
         if @change_request.draft?
           @change_request.save(:validate => false)
-          flash[:notice] = "Change request draft id: #{@change_request.id} was successfully updated."
+          flash[:success] = "Change request draft id: #{@change_request.id} was successfully updated."
           format.html { redirect_to @change_request }
           format.json { render :show, status: :ok, location: @change_request }
         else
           @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
           @current_tags = @change_request.tag_list
           @users = User.all.collect{|u| [u.name, u.id]}
-          @approvers = User.approvers.collect{|u| [u.name, u.id]}
+          @approvers = User.approvers.collect{|u| [u.name, u.id] if u.id != current_user.id}
           format.html { render :edit }
           format.json { render json: @change_request.errors, status: :unprocessable_entity }
         end
@@ -208,7 +209,7 @@ class ChangeRequestsController < ApplicationController
   def destroy
     @change_request.destroy
     respond_to do |format|
-      flash[:destroy_cr_notice] = 'Change request was successfully destroyed.'
+      flash[:success] = 'Change request was successfully destroyed.'
       format.html { redirect_to change_requests_url }
       format.json { head :no_content }
     end
@@ -223,16 +224,16 @@ class ChangeRequestsController < ApplicationController
     approver = Approval.where(change_request_id: @change_request.id, user_id: current_user.id).first
     accept_note = params["notes"]
     if approver.nil?
-      flash[:not_eligible_notice] = 'You are not eligible to approve this Change Request'
+      flash[:alert] = 'You are not eligible to approve this Change Request'
     elsif accept_note.blank?
-      flash[:reject_reason_notice] = 'You must fill accept notes'
+      flash[:notice] = 'You must fill accept notes'
     else
       approver.approve = true
       approver.approval_date = Time.current
       approver.notes = accept_note
       approver.save!
       Notifier.cr_notify(current_user, @change_request, 'cr_approved')
-      flash[:status_changed_notice] = 'Change Request Approved'
+      flash[:success] = 'Change Request Approved'
     end
     redirect_to @change_request
     return
@@ -242,13 +243,13 @@ class ChangeRequestsController < ApplicationController
     approver = Approval.where(change_request_id: @change_request.id, user_id: current_user.id)
     reject_reason = params["notes"]
     if approver.empty?
-      flash[:not_eligible_notice] = 'You are not eligible to reject this Change Request'
+      flash[:alert] = 'You are not eligible to reject this Change Request'
     elsif reject_reason.blank?
-      flash[:reject_reason_notice] = 'You must fill reject reason'
+      flash[:notice] = 'You must fill reject reason'
     else
       Notifier.cr_notify(current_user, @change_request, 'cr_rejected')
       approver.update_all(:approve => false, :notes => reject_reason)
-      flash[:status_changed_notice] = 'Change Request Rejected'
+      flash[:notice] = 'Change Request Rejected'
     end
     redirect_to @change_request
   end
@@ -263,7 +264,7 @@ class ChangeRequestsController < ApplicationController
     @users = User.all.collect{|u| [u.name, u.id]}
     @current_approvers = @old_change_request.approvals.collect(&:user_id)
     @change_request = @old_change_request.dup
-    @approvers = User.approvers.collect{|u| [u.name, u.id]}
+    @approvers = User.approvers.collect{|u| [u.name, u.id] if u.id != current_user.id}
     # Clear certain fields
     @change_request.user = current_user
     @change_request.schedule_change_date = nil
@@ -280,7 +281,7 @@ class ChangeRequestsController < ApplicationController
     @current_collaborators = []
     @current_approvers = []
     @users = User.all.collect{|u| [u.name, u.id]}
-    @approvers = User.approvers.collect{|u| [u.name, u.id]}
+    @approvers = User.approvers.collect{|u| [u.name, u.id] if u.id != current_user.id}
     @current_implementers = []
     @current_testers = []
     @change_request.reference_cr_id = @reference_cr.id
@@ -384,6 +385,10 @@ class ChangeRequestsController < ApplicationController
       else
         @change_request = ChangeRequest.find(params[:id])
       end
+    end
+
+    def unset_session_first_time
+      session[:first_time] = false
     end
 
     def change_request_params
