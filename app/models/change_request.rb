@@ -263,13 +263,8 @@ class ChangeRequest < ActiveRecord::Base
     end
   end
 
-  def has_approver?(user)
-    approvals.each do |approval| 
-      if approval.user == user
-        return true
-      end
-    end
-    return false
+  def has_approver?(user_id)
+    Approval.where(change_request_id:self.id, user_id:user_id).any?
   end
 
 end
