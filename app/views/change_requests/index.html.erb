@@ -134,7 +134,7 @@
                     <i class='glyphicon glyphicon-eye-open'><span style='display: none'> Show </span></i>
                   <% end %>
                 </td>
-                <%if (current_user==change_request.user || current_user.is_admin || current_user.role=='release_manager' || current_user.collaborate_change_requests.include?(change_request)) && (!change_request.closed?)%>
+                <%if (current_user==change_request.user || current_user.is_admin || current_user.role=='release_manager' || current_user.collaborate_change_requests.include?(change_request)) && (!change_request.closed?) && (!change_request.has_approver?(current_user))%>
                 <td>
                   <%= link_to edit_change_request_path(change_request) do %>
                     <i class='glyphicon glyphicon-edit'><span style='display: none'> Edit </span></i>

@@ -437,7 +437,7 @@ class ChangeRequestsController < ApplicationController
     end
 
     def role_not_approver_required
-      if !(Approval.where(change_request_id:params[:id], user_id:current_user.id).any?)
+      if (Approval.where(change_request_id:params[:id], user_id:current_user.id).any?)
         flash[:notice] = "Cr's approver is not allowed to edit"
         redirect_to change_requests_path 
       end
