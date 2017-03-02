@@ -6,6 +6,7 @@ class ChangeRequestsController < ApplicationController
   before_action :submitted_required, only: [:edit]
   before_action :reference_rollbacked_required, only: [:create_hotfix]
   after_action :unset_session_first_time, only: [:new], if: -> { session['first_time'] }
+  before_action :role_not_approver_required, only: :edit
   require 'notifier.rb'
   require 'slack_notif.rb'
 
@@ -433,5 +434,12 @@ class ChangeRequestsController < ApplicationController
     def reference_rollbacked_required
       @reference_cr = ChangeRequest.find(params[:id])
       redirect_to change_requests_path unless @reference_cr.rollbacked?
+    end
+
+    def role_not_approver_required
+      if !(Approval.where(change_request_id:params[:id], user_id:current_user.id).any?)
+        flash[:notice] = "Cr's approver is not allowed to edit"
+        redirect_to change_requests_path 
+      end
     end
 end
