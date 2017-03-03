@@ -3,9 +3,11 @@
 class IncidentReportJob
   include SuckerPunch::Job
 
+  CSV_COLUMNS = ['id', 'service impact', 'problem details', 'current status', 'rank', 'measurer status', 'recurrence concern', 'occurrence time', 'detection time', 'recovery time', 'recovery duration', 'resolved time', 'how was problem detected', 'loss related issue']
+
   def perform(ir_ids, email)
     csv_string = CSV.generate do |csv|
-      csv << initiate_headers
+      csv << CSV_COLUMNS
       IncidentReport.where(id: ir_ids).order('created_at DESC').find_in_batches do |group|
         group.each do |ir|
           csv << get_data(ir)
@@ -15,25 +17,6 @@ class IncidentReportJob
     ActiveRecord::Base.connection_pool.with_connection do
       IncidentReportMailer.send_csv(csv_string, email).deliver_now
     end
-  end
-
-  def initiate_headers
-    [
-      'id',
-      'service impact' ,
-      'problem details',
-      'current status',
-      'rank',
-      'measurer status',
-      'recurrence concern',    
-      'occurrence time',    
-      'detection time',    
-      'recovery time',   
-      'recovery duration',  
-      'resolved time',    
-      'how was problem detected',    
-      'loss related issue'
-    ]
   end
 
   def get_data(ir)
