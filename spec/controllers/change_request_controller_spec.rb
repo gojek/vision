@@ -9,7 +9,7 @@ describe ChangeRequestsController, type: :controller do
   describe 'requestor access' do
     let(:user) {FactoryGirl.create(:user)}
     let(:approver) {FactoryGirl.create(:approver)}
-    let(:change_request) {FactoryGirl.create(:change_request, user: user)}
+    let(:change_request) {FactoryGirl.create(:submitted_change_request, user: user)}
 
     before :each do
       controller.request.env['devise.mapping'] = Devise.mappings[:user]
@@ -48,10 +48,24 @@ describe ChangeRequestsController, type: :controller do
         expect(assigns(:change_requests)).to match_array([change_request])
       end
 
+      context "When download as csv" do
+        let(:csv_string)  {  cr_current_page.to_csv }
+        let(:csv_options) { {filename: "change_requests.csv", disposition: 'attachment', type: 'text/csv; charset=utf-8; header=present'} }
+        let(:params) { {format: "csv", page: 1, per_page: 10}  }
+        
+        it "should return current page when downloading an attachment" do
+          get :index, params
+          #expect(@controller).to receive(:send_data).with(csv_string, csv_options) {
+          #  @controller.render nothing: true # to prevent a 'missing template' error
+          #}
+          expect(response.header['Content-Type']).to eq('text/csv')
+        end
+      end
+
       context 'when sending get index with relevant params' do
         let(:other_user) {FactoryGirl.create(:user)}
-        let(:new_change_request) {FactoryGirl.create(:change_request, user: user)}
-        let(:other_change_request) {FactoryGirl.create(:change_request, user: other_user)}
+        let(:new_change_request) {FactoryGirl.create(:submitted_change_request, user: user)}
+        let(:other_change_request) {FactoryGirl.create(:submitted_change_request, user: other_user)}
         it 'should not populate change requests that have no relevancy to me' do
           change_request.reload
           new_change_request.reload
@@ -70,16 +84,16 @@ describe ChangeRequestsController, type: :controller do
       end
 
       context 'when exporting fulltext search results' do
-        let(:change_request) {FactoryGirl.create(:change_request, business_justification: 'asdasd')}
+        let(:change_request) {FactoryGirl.create(:submitted_change_request, business_justification: 'asdasd')}
+        # ^ this change request is draft
         let(:other_cr) {FactoryGirl.create(:change_request, business_justification: 'asdasd')}
-
         before :each do
           allow(ChangeRequest).to receive(:solr_search).and_return(SolrResultStub.new([change_request, other_cr]))
         end
 
         it 'exporting specific cr from fulltext results' do
           get :index, format: :csv, search: "asdasd"
-          expect(assigns(:change_requests)).to match_array([change_request, other_cr])
+          expect(assigns(:change_requests)).to match_array([change_request])
         end
 
         it 'call fulltext search solr function' do
@@ -213,8 +227,7 @@ describe ChangeRequestsController, type: :controller do
           patch :update, id: change_request,
           change_request: FactoryGirl.attributes_for(:change_request, scope: scope)
           change_request.reload
-          expect(change_request.scope).to eq(scope)
-          expect(change_request.aasm_state).to eq("draft")
+          expect(change_request.scope).not_to eq(scope)
         end
       end
     end
@@ -247,7 +260,7 @@ describe ChangeRequestsController, type: :controller do
     before :each do
       @request.env['devise.mapping'] = Devise.mappings[:user]
       sign_in user
-      @cr = FactoryGirl.create(:change_request, user: user)
+      @cr = FactoryGirl.create(:submitted_change_request, user: user)
       @approval = Approval.create(user: user, change_request: @cr)
     end
      describe 'GET #index' do
@@ -257,7 +270,7 @@ describe ChangeRequestsController, type: :controller do
       end
 
       it 'populate the list with change requests that you need to approve when submitted with approval params' do
-        cr_other = FactoryGirl.create(:change_request)
+        cr_other = FactoryGirl.create(:submitted_change_request)
         get :index, type: 'approval'
         expect(assigns(:change_requests)).to match_array([@cr])
       end
