@@ -264,7 +264,7 @@ class ChangeRequest < ActiveRecord::Base
   end
 
   def has_approver?(user)
-    Approval.where(change_request_id:id, user_id:user.id).any?
+    Approval.where(change_request_id: id, user_id: user.id).any?
   end
 
 end
