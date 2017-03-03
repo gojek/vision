@@ -59,7 +59,7 @@ require 'notifier.rb'
     @incident_report.set_current_status
     respond_to do |format|
       if @incident_report.save
-        flash[:create_incident_report_notice] = 'Incident report was successfully created.'
+        flash[:success] = 'Incident report was successfully created.'
         format.html { redirect_to @incident_report }
         format.json { render :show, status: :created, location: @incident_report }
          Notifier.ir_notify(current_user, @incident_report, 'new_ir')
@@ -73,7 +73,6 @@ require 'notifier.rb'
   end
 
   def update
-   
     respond_to do |format|
       if @incident_report.update(incident_report_params)
         
@@ -85,7 +84,7 @@ require 'notifier.rb'
         end
         @incident_report.save
 
-        flash[:update_incident_report_notice] = 'Incident report was successfully updated.' 
+        flash[:success] = 'Incident report was successfully updated.' 
         format.html { redirect_to @incident_report }
         format.json { render :show, status: :ok, location: @incident_report }
       else
@@ -94,14 +93,13 @@ require 'notifier.rb'
         format.html { render :edit }
         format.json { render json: @incident_report.errors, status: :unprocessable_entity }
       end
-    end
-    
+    end 
   end
 
   def destroy
     @incident_report.destroy
     respond_to do |format|
-      flash[:destroy_incident_report_notice] = 'Incident report was successfully destroyed.'
+      flash[:alert] = 'Incident report was successfully destroyed.'
       format.html { redirect_to incident_reports_url }
       format.json { head :no_content }
     end
