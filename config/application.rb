@@ -40,5 +40,10 @@ module Vision
 
     # add fonts
     config.assets.paths << Rails.root.join("app", "assets", "fonts")
+
+    # For queing process backend
+    config.active_job.queue_adapter = :sucker_punch
   end
 end
+
+SuckerPunch.logger = Logger.new("#{Rails.root}/log/sucker_punch.log")

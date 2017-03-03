@@ -62,7 +62,6 @@ require 'notifier.rb'
   end
 
   def update
-   
     respond_to do |format|
       if @incident_report.update(incident_report_params)
         
@@ -83,8 +82,7 @@ require 'notifier.rb'
         format.html { render :edit }
         format.json { render json: @incident_report.errors, status: :unprocessable_entity }
       end
-    end
-    
+    end 
   end
 
   def destroy
