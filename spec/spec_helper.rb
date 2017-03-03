@@ -9,6 +9,7 @@ require 'webmock/rspec'
 require 'sunspot/rails/spec_helper'
 require 'capybara/rspec'  
 require 'capybara/rails'
+require 'sucker_punch/testing/inline'
 
 WebMock.disable_net_connect!(allow_localhost: true)
 
@@ -77,6 +78,9 @@ RSpec.configure do |config|
     # slack notification
     stub_request(:post, "https://slack.com/api/chat.postMessage")
       .to_return(status: 200, body: '{"ok": true}', headers: {})
+
+    # clear action mailer
+    ActionMailer::Base.deliveries = []
 
   end
 
