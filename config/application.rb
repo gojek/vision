@@ -46,4 +46,5 @@ module Vision
   end
 end
 
+# sucker punch logging
 SuckerPunch.logger = Logger.new("#{Rails.root}/log/sucker_punch.log")
