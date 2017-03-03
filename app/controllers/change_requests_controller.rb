@@ -16,14 +16,16 @@ class ChangeRequestsController < ApplicationController
         order_by :created_at, :desc
       end
       @change_requests = search.results
+      ids = @change_requests.map {|c| c.id}
+      @change_requests = ChangeRequest.where(id: ids).where.not(aasm_state: 'draft')
     elsif params[:type]
-      @q = ChangeRequest.ransack(params[:q])
       case params[:type]
       when 'approval'
-        @change_requests = ChangeRequest.where(id: Approval.where(user_id: current_user.id, approve: nil).collect(&:change_request_id)).order(id: :desc)
+        @change_requests = ChangeRequest.where(id: Approval.where(user_id: current_user.id, approve: nil).collect(&:change_request_id))
       when 'relevant'
-        @change_requests = ChangeRequest.where(id: current_user.associated_change_requests.collect(&:id)).order(id: :desc)
+        @change_requests = ChangeRequest.where(id: current_user.associated_change_requests.collect(&:id))
       end
+      @change_requests = @change_requests.where.not(aasm_state: 'draft').order(id: :desc)
     else
       @q = ChangeRequest.ransack((params[:q] || {}).merge({
                                   aasm_state_not_eq:'draft', user_id_eq:current_user.id, m:'or'
@@ -37,7 +39,19 @@ class ChangeRequestsController < ApplicationController
         @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
       end
       format.csv do
-        render csv: @change_requests, filename: 'change_requests', force_quotes: true
+        #offset = params[:page] || 1
+        #@change_requests.order("created_at desc").limit(13).offset(offset)
+        if params[:page].present?
+          # download crs current page
+          @change_requests = @change_requests.page(params[:page] || 1).per(params[:per_page] || 10)
+          render csv: @change_requests, filename: 'change_requests', force_quotes: true
+        else
+          # download all crs
+          cr_ids = @change_requests.ids
+          email = current_user.email
+          ChangeRequestJob.perform_async(cr_ids, email)
+          redirect_to change_requests_path, notice: "CSV is being sent to #{email}"
+        end
       end
     end
   end
@@ -421,4 +435,3 @@ class ChangeRequestsController < ApplicationController
       redirect_to change_requests_path unless @reference_cr.rollbacked?
     end
 end
-

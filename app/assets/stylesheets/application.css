@@ -71,6 +71,15 @@ z-index: 200000;
 	margin: 0;
 }
 
+
+.left-export-csv {
+	padding-left: 1em;
+}
+
+.dropdown-export-csv{
+	height: 35px;
+}
+
 .cr-title-link {
 	text-decoration: none;
 	color: #333;
@@ -84,3 +93,4 @@ z-index: 200000;
    content:"*";
    color:red;
 }
+
