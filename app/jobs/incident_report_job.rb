@@ -3,7 +3,21 @@
 class IncidentReportJob
   include SuckerPunch::Job
 
-  CSV_COLUMNS = ['id', 'service impact', 'problem details', 'current status', 'rank', 'measurer status', 'recurrence concern', 'occurrence time', 'detection time', 'recovery time', 'recovery duration', 'resolved time', 'how was problem detected', 'loss related issue']
+  CSV_COLUMNS = [
+    'id',
+    'service impact', 
+    'problem details', 
+    'current status', 
+    'rank', 
+    'measurer status', 
+    'recurrence concern', 
+    'occurrence time', 
+    'detection time', 'recovery time', 
+    'recovery duration', 
+    'resolved time', 
+    'how was problem detected', 
+    'loss related issue'
+  ]
 
   def perform(ir_ids, email)
     csv_string = CSV.generate do |csv|
