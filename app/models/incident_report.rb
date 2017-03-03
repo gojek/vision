@@ -31,7 +31,7 @@ class IncidentReport < ActiveRecord::Base
   validate  :validate_resolution_time, if: :resolved_time?
   validate  :validate_detection_time
 
-  comma do     
+  comma do
     id     
     service_impact 'service impact'     
     problem_details 'problem details'     
@@ -45,7 +45,7 @@ class IncidentReport < ActiveRecord::Base
     recovery_duration to_s: 'recovery duration'     
     resolved_time 'resolved time'     
     how_detected 'how was problem detected'     
-    loss_related 'loss related issue'   
+    loss_related 'loss related issue'
   end
 
   def user_name
