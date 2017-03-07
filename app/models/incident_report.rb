@@ -13,7 +13,7 @@ class IncidentReport < ActiveRecord::Base
   RECURRENCE_CONCERN = %w(Low Medium High)
 
   has_many :notifications, dependent: :destroy
-  validates :service_impact, :problem_details, :how_detected, :occurrence_time,
+  validates :service_impact, :expected, :problem_details, :how_detected, :occurrence_time,
             :detection_time, :loss_related, :occurred_reason,
             :overlooked_reason, :recovery_action, :prevent_action,
             presence: true
