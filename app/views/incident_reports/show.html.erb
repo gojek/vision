@@ -43,7 +43,8 @@
       <div class= 'form-group'>
         <%=raw @incident_report.tag_list.map{ |t| link_to t, incident_report_tag_path(t), class:'btn btn-primary btn-xs' }.join('     ')  %>
       </div>
-     <b>Current Status:</b> <%= @incident_report.current_status %><br/>
+      <b>Current Status:</b> <%= @incident_report.current_status %><br/>
+      <b>Expected:</b> <%= @incident_report.expected %><br/>
       <b>Source:</b> <%= @incident_report.source %><br/>
       <b>Incident Rank:</b> <%= @incident_report.rank %><br/>
       <b>Measurer Status:</b> <%= @incident_report.measurer_status %><br/>

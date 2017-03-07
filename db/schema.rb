@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170206082547) do
+ActiveRecord::Schema.define(version: 20170307034555) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -140,7 +140,6 @@ ActiveRecord::Schema.define(version: 20170206082547) do
 
   create_table "comments", force: :cascade do |t|
     t.text     "body"
-    t.boolean "hide", default: false
     t.integer  "change_request_id"
     t.integer  "user_id"
     t.datetime "created_at",                        null: false
@@ -195,11 +194,12 @@ ActiveRecord::Schema.define(version: 20170206082547) do
     t.string   "current_status"
     t.string   "measurer_status"
     t.integer  "user_id"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
     t.datetime "resolved_time"
     t.decimal  "resolution_duration"
     t.decimal  "recovery_duration"
+    t.boolean  "expected",            default: false
   end
 
   add_index "incident_reports", ["user_id"], name: "index_incident_reports_on_user_id", using: :btree
