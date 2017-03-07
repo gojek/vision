@@ -161,6 +161,18 @@ describe IncidentReportsController, type: :controller do
       end
     end
 
+    describe 'GET #search' do
+      it 'search incident report using solr_search' do
+        expect(IncidentReport).to receive(:solr_search)
+        get :search, search: "asd"
+      end
+
+      it 'redirect to index if search a blank string' do
+        get :search, search: ""
+        expect(response).to redirect_to(incident_reports_path)
+      end
+    end
+
     describe 'PATCH #update' do
       context 'valid attributes' do
         it "changes @incident_report's attributes" do
