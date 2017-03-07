@@ -81,6 +81,7 @@ Rails.application.routes.draw do
   resources :incident_reports do
       collection do
           get :deleted # <= this
+          get :search
       end
       resources :versions, only: [:destroy] do
         member do

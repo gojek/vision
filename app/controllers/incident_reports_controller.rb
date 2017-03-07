@@ -110,6 +110,37 @@ require 'notifier.rb'
                         .page(params[:page]).per(params[:per_page])
   end
 
+  def search
+    if params[:search].blank?
+      redirect_to incident_reports_path
+    else
+      @search = IncidentReport.solr_search do
+        fulltext params[:search], highlight: true
+        order_by(:created_at, :desc)
+        paginate page: params[:page] || 1, per_page: params[:per_page] || 10
+      end
+      respond_to do |format|
+        format.html
+        format.csv do
+          if params[:page].present?
+            # download current page only
+            ids = []
+            @search.hits.each do |hit|
+              ids << hit.primary_key
+            end
+            incident_reports = IncidentReport.where(id: ids)
+            render csv: incident_reports, filename: 'incident_reports', force_quotes: true
+          else
+            # download all page through sucker punch
+            email = current_user.email
+            IncidentReportJob.perform_async(IncidentReport.ids, email)
+            redirect_to incident_reports_path, notice: "CSV is being sent to #{email}"
+          end
+        end
+      end
+    end
+  end
+
   respond_to :json
   def incident_reports_by_source()
     #default is per week
