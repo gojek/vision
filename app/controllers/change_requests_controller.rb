@@ -128,6 +128,8 @@ class ChangeRequestsController < ApplicationController
       unless @change_request.save
         @change_request.save(:validate=> false)
         flash[:notice] = 'Change request was created as a draft.'
+        flash[:invalid] = @change_request.errors.full_messages
+        puts(@error)
         @status = @change_request.change_request_statuses.new(:status => 'draft')
         @status.save
       else
