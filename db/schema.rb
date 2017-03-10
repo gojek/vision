@@ -140,6 +140,7 @@ ActiveRecord::Schema.define(version: 20170206082547) do
 
   create_table "comments", force: :cascade do |t|
     t.text     "body"
+    t.boolean "hide", default: false
     t.integer  "change_request_id"
     t.integer  "user_id"
     t.datetime "created_at",                        null: false
