@@ -21,11 +21,7 @@ class ChangeRequest < ActiveRecord::Base
   STATUS = %w(submitted scheduled rollbacked cancelled rejected deployed closed)
 
   validates :change_summary, :priority,:change_requirement, :business_justification, :analysis, :solution, :impact, :scope, :design,
-<<<<<<< HEAD
-            :backup, :testing_procedure, :testing_notes, :schedule_change_date, :planned_completion, :definition_of_success, :definition_of_failed,:grace_period_end, :grace_period_starts, presence: true
-=======
             :backup, :testing_procedure, :testing_notes, :schedule_change_date, :planned_completion, :definition_of_success, :definition_of_failed, presence: true
->>>>>>> e3544cb... remove grace start and grace period from mandatory field
   validates_inclusion_of :testing_environment_available, :in => [true, false]
   accepts_nested_attributes_for :implementers, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :testers, :allow_destroy => true
@@ -175,7 +171,13 @@ class ChangeRequest < ActiveRecord::Base
   end
 
   def grace_period_date
-    errors.add(:grace_period_time, "is invalid") unless grace_period_starts < grace_period_end
+    if !grace_period_starts.nil?
+      if grace_period_starts > grace_period_end
+        errors.add(:grace_period_time, "is invalid") 
+        return false
+      end
+    end
+    return true
   end
 
   def approvable?
