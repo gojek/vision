@@ -174,6 +174,7 @@ class ChangeRequestsController < ApplicationController
     @change_request.set_implementers(@current_implementers)
     @change_request.set_testers(@current_testers)
     @change_request.set_collaborators(@current_collaborators)
+    @change_request.set_requestor_position(current_user)
     respond_to do |format|
       if @change_request.update(change_request_params)
         if @change_request.draft?
