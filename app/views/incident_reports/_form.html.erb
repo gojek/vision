@@ -51,6 +51,11 @@
           <%= f.text_field :service_impact, class: 'form-control' %>
         </div>
         </div>
+        <div class="form-group">
+          <div class="field form-group">
+            <%= f.label 'expected ?' %> <%= f.check_box :expected %>
+          </div>
+        </div>
         <div class="form-group"><div class="field">
           <%= f.label :problem_details %><br>
           <%= f.text_area :problem_details, class: 'form-control tinymce' %>

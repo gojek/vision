@@ -240,7 +240,7 @@ require 'notifier.rb'
 
   def incident_report_params
     params.require(:incident_report)
-      .permit(:service_impact, :problem_details, :how_detected,
+      .permit(:service_impact, :expected, :problem_details, :how_detected,
               :occurrence_time, :detection_time, :recovery_time,:resolved_time,
               :source, :rank, :loss_related, :occurred_reason,
               :overlooked_reason, :solving_duration, :recovery_action, :prevent_action,
