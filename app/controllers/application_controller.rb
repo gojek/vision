@@ -16,6 +16,6 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     session[:first_time] = true
-    user_path(resource)
+    change_requests_path
   end
 end
