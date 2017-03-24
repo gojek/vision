@@ -11,6 +11,7 @@ FactoryGirl.define do
     locked_at nil
     token '123456'
     refresh_token '123456'
+    position 'Software Engineer 1'
     expired_at Time.now+1.hour
 
     factory :admin do
