@@ -123,7 +123,7 @@ class ChangeRequestsController < ApplicationController
     @change_request.set_implementers(@current_implementers)
     @change_request.set_testers(@current_testers)
     @change_request.set_collaborators(@current_collaborators)
-    @change_request.set_requestor_position(current_user)
+    @change_request.requestor_position = current_user.position
     respond_to do |format|
       unless @change_request.save
         @change_request.save(:validate=> false)
