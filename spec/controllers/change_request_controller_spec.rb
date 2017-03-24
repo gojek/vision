@@ -196,6 +196,18 @@ describe ChangeRequestsController, type: :controller do
           expect(cr.aasm_state).to eq "draft"
         end
       end
+
+      context 'requestor change position' do
+        let(:user_temp) {FactoryGirl.create(:user)}
+        user_temp.position = 'Position 1'
+        user_temp.save
+        let(:new_cr) {FactoryGirl.create(:change_request, user: user_temp)}
+        expect(new_cr.requestor_position).to eq (user_temp.position)
+        user_temp.position = 'Position 2'
+        user_temp.save
+        expect(new_cr.requestor_position).not_to eq (user_temp.position)
+      end
+
     end
 
     describe 'PATCH #update' do
