@@ -198,14 +198,18 @@ describe ChangeRequestsController, type: :controller do
       end
 
       context 'requestor change position' do
-        let(:user_temp) {FactoryGirl.create(:user)}
-        user_temp.position = 'Position 1'
-        user_temp.save
-        let(:new_cr) {FactoryGirl.create(:change_request, user: user_temp)}
-        expect(new_cr.requestor_position).to eq (user_temp.position)
-        user_temp.position = 'Position 2'
-        user_temp.save
-        expect(new_cr.requestor_position).not_to eq (user_temp.position)
+        let(:attributes) {FactoryGirl.attributes_for(:change_request)}
+        it 'when requestor change position' do
+          expect{
+            post :create, change_request: attributes, implementers_list: [approver.id], testers_list: [approver.id] , approvers_list: [approver.id]
+          }.to change(ChangeRequest, :count).by(1)
+          cr = ChangeRequest.last
+          expect(cr.user.position).to eq (cr.requestor_position)
+          user = cr.user
+          user.position = 'Position 2'
+          user.save
+          expect(cr.requestor_position).not_to eq (user.position)
+        end
       end
 
     end
