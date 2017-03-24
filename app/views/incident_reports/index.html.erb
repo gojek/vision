@@ -1,10 +1,20 @@
 <script type="text/javascript">
-$(function(){
-  $('.datetimepicker').datetimepicker({
-    format: "yyyy-mm-dd"
+  $(function(){
+    $('.datetimepicker').datetimepicker({
+      format: "yyyy-mm-dd"
+    });
   });
-});
- </script>
+  function noenter() {
+    var x = document.forms["search-form"]["search-box"].value;
+    if (window.event.keyCode == 13){
+      if (x == null || x == ""){
+        return false;
+      } else {
+        return true;
+      }
+    }
+  }
+</script>
  <section class="content-header">
   <h1>
     Incident Report
@@ -38,6 +48,25 @@ $(function(){
           <p id="notice"><%= flash[:notice] %></p>
         </div>
         <% end %>
+      </div>
+      <div class="col-xs-12">
+        <div class="box box-default">
+          <div class="box-header">
+            <h3 class="box-title">Search Incident Report</h3>
+          </div><!--/box-header-->
+          <div class="box-body">
+            <%= form_tag search_incident_reports_path, method: :get, id: 'search-form' do%>
+                <div class="input-group">
+                  <span class="input-group-btn">
+                    <button id="search-button" type="submit" class="btn btn-default" aria-label="Left Align">
+                      <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    </button>
+                  </span>
+                  <%= text_field_tag :search, params[:search], class: 'form-control', autofocus: :autofocus, id: 'search-box', onkeypress: 'return noenter()'%>
+                </div><!-- /input-group -->
+            <% end %>
+          </div><!-- /.box-body -->
+        </div>
       </div>
         <div class="col-xs-12">
           <div class="box">
