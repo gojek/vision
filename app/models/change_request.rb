@@ -171,7 +171,11 @@ class ChangeRequest < ActiveRecord::Base
   end
 
   def grace_period_date
-    errors.add(:grace_period_time, "is invalid") unless grace_period_starts < grace_period_end
+    if !grace_period_starts.nil?
+      if grace_period_starts > grace_period_end
+        errors.add(:grace_period_time, "is invalid") 
+      end
+    end
   end
 
   def approvable?
