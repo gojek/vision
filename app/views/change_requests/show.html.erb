@@ -37,7 +37,7 @@
   <%if flash[:notice] != nil %>
     <div class="alert alert-warning alert-dismissable ">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-      <h4>  <i class="icon fa fa-check"></i> Success!</h4>
+      <h4>  <i class="icon fa fa-check"></i> Notice!</h4>
       <p id="notice"><%= flash[:notice]  %></p>
     </div><!--/alert-->
   <% end %>
@@ -48,13 +48,19 @@
       <p id="notice"><%= flash[:success]  %></p>
     </div><!--/alert-->
   <% end %>
-   <%if flash[:alert] != nil %>
+  <% if flash[:invalid] != nil %>
    <div class="alert alert-danger alert-dismissable ">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
       <h4>  <i class="icon fa fa-warning"></i> Alert!</h4>
-      <p id="notice"><%= flash[:alert]  %></p>
+      <p id="notice">
+          <ul>
+          <% flash[:invalid].each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+          </ul>
+      </p>
     </div><!--/alert-->
-  <% end %>
+  <% end %> 
   <% if current_user.role=='approver' && @eligible_to_approve %>
     <div class='approve-status form-group'>
       <% if @approved == nil %>
