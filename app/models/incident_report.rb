@@ -31,6 +31,18 @@ class IncidentReport < ActiveRecord::Base
   validate  :validate_resolution_time, if: :resolved_time?
   validate  :validate_detection_time
 
+  searchable do
+    text :service_impact, stored: true
+    text :problem_details, stored: true
+    text :how_detected, stored: true
+    text :loss_related, stored: true
+    text :occurred_reason, stored: true
+    text :overlooked_reason, stored: true
+    text :recovery_action, stored: true
+    text :prevent_action, stored: true
+    time :created_at, stored: true
+  end
+
   comma do
     id     
     service_impact 'service impact'     
