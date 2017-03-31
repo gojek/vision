@@ -13,7 +13,7 @@ class IncidentReport < ActiveRecord::Base
   RECURRENCE_CONCERN = %w(Low Medium High)
 
   has_many :notifications, dependent: :destroy
-  validates :service_impact, :expected, :problem_details, :how_detected, :occurrence_time,
+  validates :service_impact, :problem_details, :how_detected, :occurrence_time,
             :detection_time, :loss_related, :occurred_reason,
             :overlooked_reason, :recovery_action, :prevent_action,
             presence: true
@@ -116,4 +116,11 @@ class IncidentReport < ActiveRecord::Base
     IncidentReport.where("id < ?",id).last
   end
 
+  def expected=(val)
+    if [TrueClass, FalseClass].include?(val)
+      write_attribute :expected, val
+    else
+      write_attribute :expected, (val.to_i == 1)
+    end
+  end
 end
