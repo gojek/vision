@@ -316,7 +316,7 @@
                   <% end%>
                 </tr>
                 <tr>
-                  <td><strong>Planned Complation</strong></td>
+                  <td><strong>Planned Completion</strong></td>
                   <% if @change_request.planned_completion != nil %>
                     <td colspan="2"><%= @change_request.planned_completion.to_s(:long)%></td>
                   <% end %>
@@ -332,7 +332,7 @@
                 </tr>
 
                 <tr>
-                  <td><strong>Grace Preiod Ends</strong></td>
+                  <td><strong>Grace Period Ends</strong></td>
                   <td colspan="2">
                   <% if @change_request.grace_period_end != nil %>
                     <%= @change_request.grace_period_end.to_s(:long) %>
