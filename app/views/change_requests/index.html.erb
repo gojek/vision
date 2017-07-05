@@ -110,7 +110,7 @@
                 <th>Approvers</th>
                 <th>Approve</th>
                 <th>Reject</th>
-                <th>Lifetime</th>
+                <th>Scheduled on</th>
                 <th colspan="3">Action</th>
                 <th> </th>
             </tr>
@@ -128,7 +128,7 @@
                 <td><%= change_request.approvals.count %></td>
                 <td><%= change_request.approvers_count %></td>
                 <td><%= change_request.rejects_count %></td>
-                <td><%= change_request.lifetime %></td>
+                <td><%= change_request.schedule_change_date %></td>
                 <td>
                   <%= link_to change_request do %>
                     <i class='glyphicon glyphicon-eye-open'><span style='display: none'> Show </span></i>
