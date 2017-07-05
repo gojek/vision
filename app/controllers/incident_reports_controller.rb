@@ -75,7 +75,7 @@ require 'notifier.rb'
   def update
     respond_to do |format|
       if @incident_report.update(incident_report_params)
-        
+
         (@incident_report.recovery_time)? @incident_report.recovery_duration = (@incident_report.recovery_time - @incident_report.occurrence_time)/60 : 0
         (@incident_report.resolved_time)? @incident_report.resolution_duration = (@incident_report.resolved_time - @incident_report.occurrence_time)/60 : 0
         @incident_report.set_current_status
@@ -84,7 +84,7 @@ require 'notifier.rb'
         end
         @incident_report.save
 
-        flash[:success] = 'Incident report was successfully updated.' 
+        flash[:success] = 'Incident report was successfully updated.'
         format.html { redirect_to @incident_report }
         format.json { render :show, status: :ok, location: @incident_report }
       else
@@ -93,7 +93,7 @@ require 'notifier.rb'
         format.html { render :edit }
         format.json { render json: @incident_report.errors, status: :unprocessable_entity }
       end
-    end 
+    end
   end
 
   def destroy
@@ -117,7 +117,7 @@ require 'notifier.rb'
       @search = IncidentReport.solr_search do
         fulltext params[:search], highlight: true
         order_by(:created_at, :desc)
-        paginate page: params[:page] || 1, per_page: params[:per_page] || 10
+        paginate page: params[:page] || 1, per_page: params[:per_page] || 20
       end
       respond_to do |format|
         format.html
@@ -162,14 +162,14 @@ require 'notifier.rb'
       title = title + ' - ' + params[:end_time]
       end_time = (params[:end_time].in_time_zone('Asia/Jakarta'))
     end
-    
+
     internal = IncidentReport.where("occurrence_time <= ? AND occurrence_time >= ? AND source = 'Internal'", end_time, start_time).count
     external = IncidentReport.where("occurrence_time <= ? AND occurrence_time >= ? AND source = 'External'", end_time, start_time).count
     pieData = [
         {
           title: "Internal",
           value: internal
-          
+
         },
         {
           title: "External",
@@ -177,7 +177,7 @@ require 'notifier.rb'
         }
       ]
     final_result = [{title: title}, pieData]
-    render :text => final_result.to_json   
+    render :text => final_result.to_json
   end
 
 
@@ -203,10 +203,10 @@ require 'notifier.rb'
       end
       recovery = IncidentReport.where('recovery_duration > 0 AND recovery_time <= ? AND recovery_time >= ?', end_time, start_time)
       resolved = IncidentReport.where('resolution_duration > 0 AND resolved_time <= ? AND resolved_time >= ?', end_time, start_time)
-      
+
       avg_recovery = recovery.blank? ? 0 : recovery.average(:recovery_duration)
       avg_resolved = resolved.blank? ? 0 : resolved.average(:resolution_duration)
-      result << { 
+      result << {
         label: start_time.strftime("%d/%m")+' - '+end_time.strftime("%d/%m"),
         recovery_duration: avg_recovery,
         resolution_duration: avg_resolved
@@ -215,7 +215,7 @@ require 'notifier.rb'
       #result << {:start => start_time, :end => end_time}
       start_month = (start_month.end_of_week + 1.day).beginning_of_day
     end
-    
+
     final_result = [{title: title}, result]
     render :text => final_result.to_json
   end
@@ -243,11 +243,11 @@ require 'notifier.rb'
       occured = IncidentReport.where("occurrence_time <= ? AND occurrence_time >= ?", end_time, start_time)
       recovered = IncidentReport.where("recovery_time <= ? AND recovery_time >= ?", end_time, start_time)
       resolved = IncidentReport.where("resolved_time <= ? AND resolved_time >= ?", end_time, start_time)
-      
+
       total_occured = occured.blank? ? 0 : occured.count
       total_recovered = recovered.blank? ? 0 : recovered.count
       total_resolved = resolved.blank? ? 0 : resolved.count
-      result << { 
+      result << {
         label: start_time.strftime("%d/%m")+' - '+end_time.strftime("%d/%m"),
         occured_number: total_occured,
         recovered_number: total_recovered,

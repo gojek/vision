@@ -18,7 +18,7 @@
         <i class="fa  fa-file-text"></i> <strong>Export to CSV</strong> <span class="caret"></span>
     <%end %>
     <ul class="dropdown-menu pull-right" aria-labelledby="dropdownMenuDownload">
-      <li><%= link_to 'Current page IR', search_incident_reports_path(request.GET.merge({format: :csv, page: params[:page] || 1, per_page: (params[:per_page] || 10) })) %></li>
+      <li><%= link_to 'Current page IR', search_incident_reports_path(request.GET.merge({format: :csv, page: params[:page] || 1, per_page: (params[:per_page] || 20) })) %></li>
       <li><%= link_to 'All IR', search_incident_reports_path(request.GET.merge({ format: :csv })) %></li>
     </ul>
     <%= link_to  new_incident_report_path, class: 'btn btn-flat btn-primary pull-right'  do %>
