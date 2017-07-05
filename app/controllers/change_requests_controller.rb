@@ -20,6 +20,7 @@ class ChangeRequestsController < ApplicationController
       ids = @change_requests.map {|c| c.id}
       @change_requests = ChangeRequest.where(id: ids).where.not(aasm_state: 'draft')
     elsif params[:type]
+      @q = ChangeRequest.ransack(params[:q])
       case params[:type]
       when 'approval'
         @change_requests = ChangeRequest.where(id: Approval.where(user_id: current_user.id, approve: nil).collect(&:change_request_id))
