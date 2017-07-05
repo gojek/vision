@@ -45,7 +45,7 @@ class ChangeRequestsController < ApplicationController
         #@change_requests.order("created_at desc").limit(13).offset(offset)
         if params[:page].present?
           # download crs current page
-          @change_requests = @change_requests.page(params[:page] || 1).per(params[:per_page] || 10)
+          @change_requests = @change_requests.page(params[:page] || 1).per(params[:per_page] || 20)
           render csv: @change_requests, filename: 'change_requests', force_quotes: true
         else
           # download all crs
@@ -163,7 +163,7 @@ class ChangeRequestsController < ApplicationController
     @search = ChangeRequest.solr_search do
       fulltext params[:search], highlight: true
       order_by(:created_at, :desc)
-      paginate page: params[:page] || 1, per_page: 10
+      paginate page: params[:page] || 1, per_page: 20
     end
   end
 
@@ -442,7 +442,7 @@ class ChangeRequestsController < ApplicationController
     def role_not_approver_required
       if (Approval.where(change_request_id:params[:id], user_id:current_user.id).any?)
         flash[:alert] = "As an approver, you are not allowed to edit this change request"
-        redirect_to change_requests_path 
+        redirect_to change_requests_path
       end
     end
 end

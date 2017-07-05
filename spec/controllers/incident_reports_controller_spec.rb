@@ -32,8 +32,8 @@ describe IncidentReportsController, type: :controller do
       context "When download as csv" do
         let(:csv_string)  {  incident_report.to_csv }
         let(:csv_options) { {filename: "incident_report.csv", disposition: 'attachment', type: 'text/csv; charset=utf-8; header=present'} }
-        let(:params) { {format: "csv", page: 1, per_page: 10}  }
-        
+        let(:params) { {format: "csv", page: 1, per_page: 20}  }
+
         it "should return current page when downloading an attachment" do
           get :index, params
           expect(response.header['Content-Type']).to eq('text/csv')
