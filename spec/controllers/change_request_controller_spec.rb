@@ -51,8 +51,8 @@ describe ChangeRequestsController, type: :controller do
       context "When download as csv" do
         let(:csv_string)  {  cr_current_page.to_csv }
         let(:csv_options) { {filename: "change_requests.csv", disposition: 'attachment', type: 'text/csv; charset=utf-8; header=present'} }
-        let(:params) { {format: "csv", page: 1, per_page: 10}  }
-        
+        let(:params) { {format: "csv", page: 1, per_page: 20}  }
+
         it "should return current page when downloading an attachment" do
           get :index, params
           #expect(@controller).to receive(:send_data).with(csv_string, csv_options) {
@@ -123,9 +123,9 @@ describe ChangeRequestsController, type: :controller do
       end
     end
 
-  	describe 'GET #duplicate' do
-  		it 'will create a duplicate change request with empty implementation and grace period dates' do
-  		  get :duplicate, id: change_request
+        describe 'GET #duplicate' do
+                it 'will create a duplicate change request with empty implementation and grace period dates' do
+                  get :duplicate, id: change_request
         expect(assigns(:change_request)).to_not be_valid
         expect(assigns(:change_request)).to be_a_new(ChangeRequest)
         expect(assigns(:change_request).user).to eq user
@@ -133,8 +133,8 @@ describe ChangeRequestsController, type: :controller do
         expect(assigns(:change_request).planned_completion).to be nil
         expect(assigns(:change_request).grace_period_starts).to be nil
         expect(assigns(:change_request).grace_period_end).to be nil
-  		end
-  	end
+                end
+        end
 
     describe 'GET #create_hotfix' do
       let(:cr) {FactoryGirl.create(:rollbacked_change_request)}
