@@ -130,7 +130,7 @@
                 <td><%= change_request.rejects_count %></td>
                 <td><%= change_request.schedule_change_date %></td>
                 <td>
-                  <%= link_to change_request do %>
+                  <%= link_to change_request, title: "Show" do %>
                     <i class='glyphicon glyphicon-eye-open'><span style='display: none'> Show </span></i>
                   <% end %>
                 </td>
@@ -145,7 +145,7 @@
                 <% end %>
                 <% if current_user==change_request.user || current_user.is_admin %>
                 <td>
-                  <%= link_to change_request, method: :delete, data: { confirm: 'Are you sure?' } do%>
+                  <%= link_to change_request, title: "Delete",  method: :delete, data: { confirm: 'Are you sure?' } do%>
                     <i class='glyphicon glyphicon-trash'><span style='display: none'> Delete </span></i>
                   <% end %>
                 </td>
@@ -153,7 +153,7 @@
                 <td></td>
                 <% end %>
                 <td>
-                  <%= link_to duplicate_path(change_request) do%>
+                  <%= link_to duplicate_path(change_request), title: "Duplicate" do%>
                     <i class='glyphicon glyphicon-duplicate'><span style='display: none'> Duplicate </span></i>
                   <% end %>
                 </td>
