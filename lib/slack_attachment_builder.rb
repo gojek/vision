@@ -9,6 +9,7 @@ class SlackAttachmentBuilder
       color: "#439FE0",
       title: change_request.change_summary,
       title_link: change_request_url(change_request),
+      callback_id: change_request.id,
       fields: [
         {
           title: "Business Justification",
@@ -31,6 +32,21 @@ class SlackAttachmentBuilder
           value: (approvers_name.join ', '),
           short: false
         },
+        actions: [
+          {
+            name: "act",
+            text: "Approve",
+            type: "button",
+            value: "approve"
+          },
+           {
+            name: "act",
+            text: "Reject",
+            type: "button",
+            style: "danger"
+            value: "reject"
+          }
+        ]
       ],
       footer: "VT-Vision",
       ts: change_request.created_at.to_datetime.to_f.round
