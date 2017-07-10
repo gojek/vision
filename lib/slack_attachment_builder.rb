@@ -43,7 +43,7 @@ class SlackAttachmentBuilder
             name: "act",
             text: "Reject",
             type: "button",
-            style: "danger"
+            style: "danger",
             value: "reject"
           }
         ]
