@@ -112,10 +112,10 @@
                       <td><%= incident_report.rank %></td>
                       <td><%= incident_report.user.name %></td>
                       <td><%= incident_report.updated_at.to_s(:long) %></td>
-                      <td><%= link_to '', incident_report, class: 'glyphicon glyphicon-eye-open' %></td>
+                      <td><%= link_to '', incident_report, title: "View", class: 'glyphicon glyphicon-eye-open' %></td>
                       <%if current_user==incident_report.user || current_user.is_admin %>
-                      <td><%= link_to '', edit_incident_report_path(incident_report), class: 'glyphicon glyphicon-edit'  %></td>
-                      <td><%= link_to '', incident_report, method: :delete, data: { confirm: 'Are you sure?' }, class: 'glyphicon glyphicon-trash' %></td>
+                      <td><%= link_to '', edit_incident_report_path(incident_report), title: "Edit", class: 'glyphicon glyphicon-edit'  %></td>
+                      <td><%= link_to '', incident_report, method: :delete, title: "Delete", data: { confirm: 'Are you sure?' }, class: 'glyphicon glyphicon-trash' %></td>
                       <% else %>
                       <td></td>
                       <td></td>
