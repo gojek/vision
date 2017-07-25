@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
   has_many :Comments
   has_many :notifications, dependent: :destroy
   has_many :Approvals, :dependent => :destroy
-  validates :email, format: { with: /\b[A-Z0-9._%a-z\-]+@(veritrans\.co\.id|midtrans\.com)\z/,
+  validates :email, format: { with: /\b[A-Z0-9._%a-z\-]+@(veritrans\.co\.id|midtrans\.com|associate\.midtrans\.com)\z/,
                   message: "must be a veritrans account" }
   validates :email, uniqueness: true
   scope :approvers, -> {where(role: 'approver')}
@@ -33,7 +33,7 @@ class User < ActiveRecord::Base
   end
 
   def use_company_email?
-    (email =~ /\b[A-Z0-9._%a-z\-]+@(veritrans\.co\.id|midtrans\.com)\z/).present?
+    (email =~ /\b[A-Z0-9._%a-z\-]+@(veritrans\.co\.id|midtrans\.com|associate\.midtrans\.com)\z/).present?
   end
 
   def active_for_authentication?
