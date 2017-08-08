@@ -79,6 +79,9 @@ gem 'slack-ruby-client'
 gem 'sunspot_rails'
 gem 'sunspot_solr'
 
+# sanitizer
+gem 'sanitize'
+
 group :production do
   gem 'rails_12factor'
 end
