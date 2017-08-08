@@ -49,6 +49,7 @@ Rails.application.routes.draw do
   get 'change_requests_by_success_rate' => 'change_requests#change_requests_by_success_rate'
   get 'incident_reports_by_recovered_resolved_duration' => 'incident_reports#incident_reports_by_recovered_resolved_duration'
   get 'incident_reports_number' => 'incident_reports#incident_reports_number'
+  get 'incident_reports_internal_external' => 'incident_reports#incident_reports_internal_external'
   get 'signin' => 'pages#signin'
   get 'blank' => 'pages#blank'
 

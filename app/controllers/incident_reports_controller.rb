@@ -223,6 +223,43 @@ require 'notifier.rb'
     render :text => final_result.to_json
   end
 
+
+  respond_to :json
+  def incident_reports_internal_external
+    if params[:end_time]
+      current = Time.parse(params[:end_time])
+    else
+      current = Date.current
+    end
+
+    start_month = (current - 6.months).beginning_of_month
+    end_month = current.end_of_month
+
+    title = start_month.strftime("%B %Y") + ' - ' + end_month.strftime("%B %Y")
+    result = []
+
+    while start_month <= end_month do
+      beginning = start_month
+      ending = start_month.end_of_month
+      internal = IncidentReport.where("occurrence_time <= ? AND occurrence_time >= ? AND source = 'Internal'", ending, beginning)
+      external = IncidentReport.where("occurrence_time <= ? AND occurrence_time >= ? AND source = 'External'", ending, beginning)
+      total_internal = internal.count
+      total_external = external.count
+
+      result << {
+        label: start_month.strftime("%B"),
+        total_internal: total_internal,
+        total_external: total_external,
+        start: beginning,
+        end: ending
+      }
+
+      start_month = (start_month + 1.months).beginning_of_month
+    end
+    final_result = [{title: title}, result]
+    render :text => final_result.to_json
+  end
+
   respond_to :json
   def incident_reports_number
     start_month = (Time.now).beginning_of_month

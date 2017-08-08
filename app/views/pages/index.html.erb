@@ -99,6 +99,37 @@
             </div>
           </div>
         </div>
+        <div class='col-lg-6'>
+          <div class='box '>
+            <div class='box-header with-border'>
+              <h3 class='box-title'>Internal vs External</h3>
+              <div class='box-tools'>
+
+              <!--   <button id='reset'>reset</button> -->
+              </div>
+             </div>
+            <div class='box-body'>
+              <div class='row'>
+                <div class='col-lg-12'>
+                  <div class="btn-group pull-right">
+                    <div class='input-group date col-lg-2 col-md-2 col-xs-2 pull-right'  id='internal_external_month'>
+                      <input type='text' class="form-control" />
+                      <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-calendar">
+                          </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class='row'>
+                <div class='col-lg-12'>
+                  <div id="internal-external-chart" width="300" height="300"> </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div id='change_request' class='tab-pane fade'>
@@ -154,6 +185,11 @@
   font-size : 11px;
 }
 #deployment-chart {
+  width   : 100%;
+  height    : 500px;
+  font-size : 11px;
+}
+#internal-external-chart {
   width   : 100%;
   height    : 500px;
   font-size : 11px;
@@ -227,6 +263,61 @@
           "lineAlpha": 0.2,
           "type": "column",
           "valueField": "resolution_duration"
+        }],
+        "guides": [],
+        "valueAxes": [
+          {
+            "id": "ValueAxis-1",
+          }
+        ],
+        "allLabels": [],
+        "balloon": {},
+        "dataProvider": barChartData[1],
+        "export": {
+          "enabled": true
+        }
+      });
+      isEmpty = true;
+      for (bar of barChartData[1]) {
+        isEmpty = isEmpty && bar.recovery_duration == 0 && bar.resolution_duration == 0;
+      }
+      if(isEmpty)
+        chart.addLabel(0, '50%', 'There are no incident reports in the specfied periods','center');
+    });
+  };
+
+  function loadInternalExternalChart(url) {
+    $.get(url, function(data, status){
+      var barChartData = jQuery.parseJSON(data);
+      var chart = AmCharts.makeChart("internal-external-chart", {
+         "titles": [
+            {
+              "text": barChartData[0].title,
+              "size": 15
+            }
+          ],
+          "type": "serial",
+             "theme": "light",
+          "categoryField": "label",
+          "startDuration": 1,
+          "categoryAxis": {
+            "gridPosition": "start",
+            "position": "left"
+          },
+          "trendLines": [],
+          "graphs": [
+            {
+          "balloonText": "Internal: <b>[[value]]</b>",
+          "fillAlphas": 0.8,
+          "lineAlpha": 0.2,
+          "type": "column",
+          "valueField": "total_internal"
+        } ,{
+          "balloonText": "External: <b>[[value]]</b>",
+          "fillAlphas": 0.8,
+          "lineAlpha": 0.2,
+          "type": "column",
+          "valueField": "total_external"
         }],
         "guides": [],
         "valueAxes": [
@@ -382,6 +473,7 @@
     loadAverageChart("<%=incident_reports_by_recovered_resolved_duration_path %>");
     loadNumberChart("<%=incident_reports_number_path %>");
     loadDeploymentChart("<%=change_requests_by_success_rate_path %>");
+    loadInternalExternalChart("<%=incident_reports_internal_external_path %>");
 
     $("#source_month_button").click(function(){
       url = "<%=incident_reports_by_source_path %>?month=true";
@@ -461,6 +553,11 @@
       }
     );
 
+    $('#internal_external_month').datetimepicker({
+        viewMode: 'years',
+        format: 'MM/YYYY'
+    });
+
 
     $('#selected_month').on("dp.change", function(e) {
       var time = (e.date.format('YYYY/MM'));
@@ -473,6 +570,13 @@
       var url = "<%=incident_reports_number_path %>";
       url = url+'?start_time='+time;
       loadNumberChart(url);
+    });
+
+    $('#internal_external_month').on("dp.change", function(e) {
+      var time = (e.date.format('YYYY/MM'));
+      var url = "<%=incident_reports_internal_external_path %>";
+      url = url+'?end_time='+time;
+      loadInternalExternalChart(url);
     });
   });
 
