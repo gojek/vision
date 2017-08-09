@@ -3,3 +3,6 @@ plugins: ['textcolor link image tabfocus ']
 toolbar: 'undo redo | styleselect | bold italic| alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | forecolor' 
 theme: "modern" 
 browser_spellcheck: true
+resize: true
+content_style: '@media only screen and (max-width: 320px) {.mce-content-body {font-size:14px;font-family:Arial,sans-serif;} }'
+toolbar_items_size: 'small'
