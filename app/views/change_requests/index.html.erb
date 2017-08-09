@@ -108,8 +108,7 @@
                 <th>Type</th>
                 <th>Status</th>
                 <th>Approvers</th>
-                <th>Approve</th>
-                <th>Reject</th>
+                <th>Approval Status</th>
                 <th>Scheduled on</th>
                 <th colspan="3">Action</th>
                 <th> </th>
@@ -126,8 +125,15 @@
                 <td><%=raw change_request.all_type %></td>
                 <td><%= change_request.aasm_state %></td>
                 <td><%= change_request.approvals.count %></td>
-                <td><%= change_request.approvers_count %></td>
-                <td><%= change_request.rejects_count %></td>
+                <td>
+                  <% if change_request.approval_status == 'success' %>
+                    <i class="glyphicon glyphicon-ok" style="color:green;"></i>
+                  <% elsif change_request.approval_status == 'failed' %>
+                    <i class="glyphicon glyphicon-remove" style="color:red;"></i>
+                  <% else %>
+                    <i class="glyphicon glyphicon-exclamation-sign" style="color:orange;"></i>
+                  <% end %>
+                </td>
                 <td><%= change_request.schedule_change_date %></td>
                 <td>
                   <%= link_to change_request, title: "Show" do %>
