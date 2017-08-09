@@ -127,7 +127,7 @@
             <%else %>  
             <div class="field form-group">
             <% end %>
-          <%= f.label :rank %><br>
+          <a style="cursor: pointer;" id="rank-button"><%= f.label :rank %> <i class="glyphicon glyphicon-question-sign"></i></a><br>
           <%= f.number_field :rank, in:1..5, class: 'form-control' %>
         </div>
         </div>
@@ -219,6 +219,19 @@
 
 <% end %>
 
+<div id="rank-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Incident Level Guideline</h4>
+      </div>
+      <div class="modal-body">
+        <iframe src="" frameborder="0" style="width:100%;height:70vh;"></iframe>
+      </div>
+  </div>
+</div>
+
 <script>
   $(document).ready(function () {
     $('body').attr("data-no-turbolink", "true");
@@ -241,7 +254,13 @@
       unsaved = true;
     });
 
+    $('#rank-button').click(function(){
+      $('#rank-modal').modal('show');
+    });
 
+    $('#rank-modal').on('shown.bs.modal',function(){
+      $(this).find('iframe').attr('src','https://drive.google.com/file/d/0Bxui8ihRvgbUb2wzbDdyY2ZCMVk/preview')
+    })
   });
   $(function(){
     var tags = []
