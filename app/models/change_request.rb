@@ -159,6 +159,18 @@ class ChangeRequest < ActiveRecord::Base
     attributes[:implementers_id]
   end
 
+  def approval_status
+    completed = self.approvers_count == self.approvals.count
+    due = if not schedule_change_date.nil? then Date.today > schedule_change_date.to_date else false end
+    if !completed && due
+      status = 'failed'
+    elsif !completed && !due
+      status = 'on progress'
+    else
+      status = 'success'
+    end
+  end
+
   def approvers_count
     self.approvals.where(approve: true).count
   end
