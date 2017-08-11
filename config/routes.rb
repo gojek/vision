@@ -107,6 +107,10 @@ Rails.application.routes.draw do
   get 'notifications/index' => 'notifications#index'
   get 'create_hotfix/:id' => 'change_requests#create_hotfix', :as => 'create_hotfix'
 
+  namespace :api do
+    post 'change_requests/action'
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
