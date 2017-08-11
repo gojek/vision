@@ -89,3 +89,7 @@ z-index: 200000;
 	width: 320px;
 	right: -320px;
 }
+
+.well {
+	word-wrap: break-word;
+}
