@@ -161,7 +161,7 @@ class ChangeRequest < ActiveRecord::Base
 
   def approval_status
     completed = self.approvers_count == self.approvals.count
-    due = if not schedule_change_date.nil? then Date.today > schedule_change_date.to_date else false end
+    due = schedule_change_date.present? && Date.today > schedule_change_date.to_date
     if !completed && due
       status = 'failed'
     elsif !completed && !due
