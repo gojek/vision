@@ -14,7 +14,7 @@ class Api::ChangeRequestsController < Api::ApiController
     change_request = ChangeRequest.find(cr_id)
     approval = Approval.find_by(change_request_id: change_request.id, user_id: user.id)
 
-    approval.update(approve: value == 'approve', approval_date: Time.current, notes: 'Approved through Slack')
+    approval.update(approve: value == 'approve', approval_date: Time.current, notes: "#{value.humanize}ed through Slack")
     Notifier.cr_notify(user, change_request, 'cr_approved')
 
     attachment = payload['original_message']['attachments'][0]
