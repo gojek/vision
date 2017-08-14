@@ -46,8 +46,8 @@ class IncidentReport < ActiveRecord::Base
   comma do
     id     
     service_impact 'service impact'     
-    problem_details 'problem details'     
-    current_status 'current status'     
+    problem_details 'problem details' do |problem_details| Sanitize.fragment(problem_details) end
+    current_status 'current status' 
     rank     
     measurer_status 'measurer status'     
     recurrence_concern 'recurrence concern'     
@@ -58,6 +58,7 @@ class IncidentReport < ActiveRecord::Base
     resolved_time 'resolved time'     
     how_detected 'how was problem detected'     
     loss_related 'loss related issue'
+    source 'source'
   end
 
   def user_name
