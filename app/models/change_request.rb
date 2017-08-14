@@ -13,7 +13,7 @@ class ChangeRequest < ActiveRecord::Base
   acts_as_taggable
   has_paper_trail class_name: 'ChangeRequestVersion', meta: { author_username: :user_name }
   SCOPE = %w(Major Minor)
-  PRIORITY = %w(Critical Urgent High Normal Low)
+  PRIORITY = %w(High Medium Low)
   validates :scope,
             inclusion: { in: SCOPE, message: '%{value} is not a valid scope' }
   validates :priority,
@@ -157,6 +157,18 @@ class ChangeRequest < ActiveRecord::Base
 
   def no_implementers(attributes)
     attributes[:implementers_id]
+  end
+
+  def approval_status
+    completed = self.approvers_count == self.approvals.count
+    due = schedule_change_date.present? && Date.today > schedule_change_date.to_date
+    if !completed && due
+      status = 'failed'
+    elsif !completed && !due
+      status = 'on progress'
+    else
+      status = 'success'
+    end
   end
 
   def approvers_count
