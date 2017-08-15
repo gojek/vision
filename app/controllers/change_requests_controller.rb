@@ -9,6 +9,7 @@ class ChangeRequestsController < ApplicationController
   before_action :role_not_approver_required, only: :edit
   require 'notifier.rb'
   require 'slack_notif.rb'
+  require 'calendar.rb'
 
   def index
     if params[:search]
@@ -133,6 +134,9 @@ class ChangeRequestsController < ApplicationController
         @status = @change_request.change_request_statuses.new(:status => 'draft')
         @status.save
       else
+        event = Calendar.new.set_cr(current_user, @change_request)
+        @change_request.update(google_event_id: event.data.id) unless event.error?
+
         @change_request.submit!
         @change_request.save
         @status = @change_request.change_request_statuses.new(:status => 'submitted')
@@ -150,6 +154,7 @@ class ChangeRequestsController < ApplicationController
           ActiveRecord::Base.connection.close
         end
         flash[:success] = 'Change request was successfully created.'
+        flash[:success] += " Calendar event creation failed: #{event.error_message}." if event.error?
       end
       format.html { redirect_to @change_request }
       format.json { render :show, status: :created, location: @change_request }
@@ -178,6 +183,9 @@ class ChangeRequestsController < ApplicationController
     @change_request.set_collaborators(@current_collaborators)
     respond_to do |format|
       if @change_request.update(change_request_params)
+        event = Calendar.new.set_cr(current_user, @change_request)
+        @change_request.update(google_event_id: event.data.id) unless event.error?
+
         if @change_request.draft?
           @change_request.submit!
         end
@@ -190,6 +198,7 @@ class ChangeRequestsController < ApplicationController
         Notifier.cr_notify(current_user, @change_request, 'update_cr')
         SlackNotif.new.notify_update_cr @change_request
         flash[:success] = 'Change request was successfully updated.'
+        flash[:success] += " Calendar event creation failed: #{event.error_message}." if event.error?
         format.html { redirect_to @change_request }
         format.json { render :show, status: :ok, location: @change_request }
       else
