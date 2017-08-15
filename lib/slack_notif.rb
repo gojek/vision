@@ -43,7 +43,6 @@ class SlackNotif
     associated_users.delete(comment.user)
     mentionees.each {|mentionee| associated_users.delete(mentionee)}
     general_message = "A new comment from #{comment.user.name} on a <#{link}|change request>"
-    # message_users(associated_users, general_message, attachment)
     notify_users(associated_users, general_message, attachment)
   end
 
