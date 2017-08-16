@@ -18,4 +18,13 @@ class ApplicationController < ActionController::Base
     session[:first_time] = true
     change_requests_path
   end
+
+  def stream(filename, content_type, enumerator)
+    self.response.headers["Content-Type"] ||= "#{content_type}"
+    self.response.headers["Content-Disposition"] = "attachment; filename=#{filename}"
+    self.response.headers["Content-Transfer-Encoding"] = "binary"
+    self.response.headers["Last-Modified"] = Time.now.ctime.to_s
+
+    self.response_body = enumerator
+  end
 end

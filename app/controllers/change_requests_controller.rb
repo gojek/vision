@@ -49,11 +49,13 @@ class ChangeRequestsController < ApplicationController
           @change_requests = @change_requests.page(params[:page] || 1).per(params[:per_page] || 20)
           render csv: @change_requests, filename: 'change_requests', force_quotes: true
         else
-          # download all crs
-          cr_ids = @change_requests.ids
-          email = current_user.email
-          ChangeRequestJob.perform_async(cr_ids, email)
-          redirect_to change_requests_path, notice: "CSV is being sent to #{email}"
+          enumerator = Enumerator.new do |lines|
+            lines << ChangeRequest.to_comma_headers.to_csv
+            ChangeRequest.find_each do |record|
+              lines << record.to_comma.to_csv
+            end
+          end
+          self.stream('change_requests_all.csv', 'text/csv', enumerator)
         end
       end
     end
