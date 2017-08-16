@@ -73,6 +73,7 @@ gem 'colorize'
 
 #slack notification
 gem 'slack-ruby-client'
+gem "slack-notifier"
 
 
 # full-text search
