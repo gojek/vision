@@ -180,6 +180,9 @@ class ChangeRequestsController < ApplicationController
 
         if @change_request.draft?
           @change_request.submit!
+          @change_request.save
+          @status = @change_request.change_request_statuses.new(:status => 'submitted')
+          @status.save
         end
         associated_user_ids = ["#{@change_request.user.id}"]
         associated_user_ids.concat(@current_approvers)
@@ -430,9 +433,9 @@ class ChangeRequestsController < ApplicationController
     def submitted_required
       if @change_request.draft?
         #do nothing
-      elsif @change_request.closed?
+      elsif @change_request.terminal_state?
         redirect_to change_requests_path
-      elsif @change_request.scheduled? || @change_request.deployed?
+      elsif @change_request.deployed?
         redirect_to implementation_notes_path
       else
         redirect_to graceperiod_path if !@change_request.submitted?

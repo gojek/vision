@@ -1,6 +1,6 @@
 class ChangeRequestStatusesController < ApplicationController
-	before_action :set_change_request, only:[:schedule, :deploy, :rollback, :cancel, :close, :final_reject, :submit]
-	before_action :authorized_user_required, only:[:schedule, :deploy, :rollback, :cancel, :close, :final_reject, :submit]
+	before_action :set_change_request, only:[:deploy, :rollback, :cancel, :close, :fail, :submit]
+	before_action :authorized_user_required, only:[:deploy, :rollback, :cancel, :close, :fail, :submit]
   before_action :authenticate_user!
 
   private def alert_users(status:)
@@ -17,27 +17,31 @@ class ChangeRequestStatusesController < ApplicationController
     end
   end
 
-  def schedule
-    if @change_request.may_schedule?
-      @status = @change_request.change_request_statuses.new(change_request_status_params)
-      @status.status = 'scheduled'
-      if @status.save
-        @change_request.schedule!
-        alert_users status: 'cr_scheduled'
-      end
-    else
-      flash[:alert] = 'Sorry, this CR didnt reach approval limit by Approver'
-    end
-    redirect_to @change_request
-  end
-
   def deploy
-    if @change_request.may_deploy?
+    if @change_request.may_deploy? && @change_request.deployable?
     	@status = @change_request.change_request_statuses.new(change_request_status_params)
     	@status.status = 'deployed'
     	if @status.save
         @change_request.deploy!
         alert_users status: 'cr_deployed'
+      else
+        flash[:alert] = 'Reason must be filled to Deploy delayed CR'
+      end
+    else
+      flash[:alert] = 'Sorry, this CR should be approved by all Approver first'
+    end
+    redirect_to @change_request
+  end
+
+  def fail
+    if @change_request.may_fail?
+      @status = @change_request.change_request_statuses.new(change_request_status_params)
+      @status.status = 'failed'
+      if @status.save
+        @change_request.fail!
+        alert_users status: 'cr_failed'
+      else
+        flash[:alert] = 'Reason must be filled to Fail CR'
       end
     end
     redirect_to @change_request
@@ -65,7 +69,7 @@ class ChangeRequestStatusesController < ApplicationController
         @change_request.cancel!
         alert_users status: 'cr_cancelled'
       else
-        flash[:alert] = 'Reason must be filled Cancel CR'
+        flash[:alert] = 'Reason must be filled to Cancel CR'
       end
     end
     redirect_to @change_request
@@ -74,24 +78,10 @@ class ChangeRequestStatusesController < ApplicationController
   def close
     if @change_request.may_close?
       @status = @change_request.change_request_statuses.new(change_request_status_params)
-      @status.status = 'closed'
+      @status.status = 'succeeded'
       if @status.save
         @change_request.close!
         alert_users status: 'cr_closed'
-      end
-    end
-    redirect_to @change_request
-  end
-
-  def final_reject
-    if @change_request.may_reject?
-      @status = @change_request.change_request_statuses.new(change_request_status_params)
-      @status.status = 'rejected'
-      if @status.save
-        @change_request.reject!
-        alert_users status: 'cr_final_rejected'
-      else
-        flash[:alert] = 'Reason must be filled to Reject CR'
       end
     end
     redirect_to @change_request
@@ -117,7 +107,7 @@ class ChangeRequestStatusesController < ApplicationController
   end
 
   def change_request_status_params
-  	params.require(:change_request_status).permit(:reason)
+  	params.require(:change_request_status).permit(:reason, :deploy_delayed)
   end
 
   def authorized_user_required

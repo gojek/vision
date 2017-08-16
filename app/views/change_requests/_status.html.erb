@@ -17,184 +17,41 @@
   </span>
   <% end %>
 </div>
-<div class="modal fade" id="SubmitModalLabel" tabindex="-1" role="dialog" aria-labelledby="SubmitModalLabel" aria-hidden="true" style="display: none;">
+
+
+<% @change_request.next_states.each do |state| %>
+<div class="modal fade" id="<%= state.to_s.humanize %>Modal" role="dialog">
   <div class="modal-dialog">
-      <div class="modal-content">
-          <%= form_for(@change_request_status, url: submit_path) do |f| %>
-          <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              <h4 class="modal-title" id="myModalLabel">Submit Change Request </h4>
+    <div class="modal-content">
+      <%= form_for(@change_request_status, url: self.send("#{state.to_s}_path")) do |f| %>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h4 class="modal-title"><%= state.to_s.humanize %></h4>
+        </div>
+        <div class="modal-body">
+          <div class="field form-group <%= @change_request.state_require_note?(state) ? 'required' : '' %>" id="reason-field-<%= state %>">
+            <%= f.label :reason, class: 'control-label' %>
+            <%= f.text_area :reason, class: 'form-control' %>
           </div>
-          <div class="modal-body">
-              <%= f.label :reason %>
-              <%= f.text_area :reason, class: 'form-control' %>
+          <% if state == :deploy %>
+          <div class="field form-group">
+            <%= f.check_box :deploy_delayed, class: 'control-label' %>
+            <%= f.label :deploy_delayed, 'Deployment is delayed from the scheduled time', class: 'control-label' %>
           </div>
-          <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <%= f.submit "Update Change Request Status to Submit", class: 'btn btn-default'%>
-           </div>
+          <script type="text/javascript">
+          $('#change_request_status_deploy_delayed').change(function(){
+            if($(this).is(":checked")) $('#reason-field-<%= state %>').addClass('required');
+            else $('#reason-field-<%= state %>').removeClass('required');
+          });
+          </script>
           <% end %>
-      </div>
-      <!-- /.modal-content -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <%= f.submit "Update Change Request Status to #{state.to_s.humanize}", class: 'btn btn-default'%>
+         </div>
+      <% end %>
+    </div>
   </div>
-  <!-- /.modal-dialog -->
 </div>
-<!-- /.modal -->
-<div class="modal fade" id="ScheduleModalLabel" tabindex="-1" role="dialog" aria-labelledby="ScheduleModalLabel" aria-hidden="true" style="display: none;">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <%= form_for(@change_request_status, url: schedule_path) do |f| %>
-          <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              <h4 class="modal-title" id="myModalLabel">Schedule Change Request </h4>
-          </div>
-          <div class="modal-body">
-              <%= f.label :reason %>
-              <%= f.text_area :reason, class: 'form-control' %>
-          </div>
-          <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <%= f.submit "Update Change Request Status to Schedule", class: 'btn btn-default'%>
-           </div>
-          <% end %>
-      </div>
-      <!-- /.modal-content -->
-  </div>
-  <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-<div class="modal fade" id="DeployModalLabel" tabindex="-1" role="dialog" aria-labelledby="DeployModalLabel" aria-hidden="true" style="display: none;">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <%= form_for(@change_request_status, url: deploy_path) do |f| %>
-          <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              <h4 class="modal-title" id="myModalLabel">Deploy Change Request </h4>
-          </div>
-          <div class="modal-body">
-               <%= f.label :reason %>
-              <%= f.text_area :reason, class: 'form-control' %>
-          </div>
-          <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <%= f.submit "Update Change Request Status to Deploy", class: 'btn btn-default'%>
-          </div>
-          <% end %>
-      </div>
-      <!-- /.modal-content -->
-  </div>
-  <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-<div class="modal fade" id="SubmitModalLabel" tabindex="-1" role="dialog" aria-labelledby="SubmitModalLabel" aria-hidden="true" style="display: none;">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <%= form_for(@change_request_status, url: submit_path) do |f| %>
-          <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              <h4 class="modal-title" id="myModalLabel">Submit Change Request </h4>
-          </div>
-          <div class="modal-body">
-               <%= f.label :reason %>
-              <%= f.text_area :reason, class: 'form-control' %>
-          </div>
-          <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <%= f.submit "Update Change Request Status to Submit", class: 'btn btn-default'%>
-          </div>
-          <% end %>
-      </div>
-      <!-- /.modal-content -->
-  </div>
-  <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-<div class="modal fade" id="RejectModalLabel" tabindex="-1" role="dialog" aria-labelledby="RejectModalLabel" aria-hidden="true" style="display: none;">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <%= form_for(@change_request_status, url: final_reject_path) do |f| %>
-          <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              <h4 class="modal-title" id="myModalLabel">Reject Change Request </h4>
-          </div>
-          <div class="modal-body">
-              <%= f.label :reason %>
-              <%= f.text_area :reason, class: 'form-control' %>
-          </div>
-          <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <%= f.submit "Update Change Request Status to Reject", class: 'btn btn-default'%>
-          </div>
-          <% end %>
-      </div>
-      <!-- /.modal-content -->
-  </div>
-  <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-<div class="modal fade" id="RollbackModalLabel" tabindex="-1" role="dialog" aria-labelledby="RollbackModalLabel" aria-hidden="true" style="display: none;">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <%= form_for(@change_request_status, url: rollback_path) do |f| %>
-          <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              <h4 class="modal-title" id="myModalLabel">Rollback Change Request </h4>
-          </div>
-          <div class="modal-body">
-              <%= f.label :reason %>
-              <%= f.text_area :reason, class: 'form-control' %>
-          </div>
-          <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <%= f.submit 'Update Change Request Status to Rollback', class: 'btn btn-default' %>
-          </div>
-          <% end %>
-      </div>
-      <!-- /.modal-content -->
-  </div>
-  <!-- /.modal-dialog -->
-</div>
-<div class="modal fade" id="CloseModalLabel" tabindex="-1" role="dialog" aria-labelledby="RollbackModalLabel" aria-hidden="true" style="display: none;">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <%= form_for(@change_request_status, url: close_path) do |f| %>
-          <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              <h4 class="modal-title" id="myModalLabel">Close Change Request </h4>
-          </div>
-          <div class="modal-body">
-              <%= f.label :reason %>
-              <%= f.text_area :reason, class: 'form-control' %>
-          </div>
-          <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <%= f.submit 'Update Change Request Status to Close', class: 'btn btn-default'  %>
-          </div>
-          <% end %>
-      </div>
-      <!-- /.modal-content -->
-  </div>
-  <!-- /.modal-dialog -->
-</div>
-<div class="modal fade" id="CancelModalLabel" tabindex="-1" role="dialog" aria-labelledby="RollbackModalLabel" aria-hidden="true" style="display: none;">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <%= form_for(@change_request_status, url: cancel_path) do |f| %>
-          <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              <h4 class="modal-title" id="myModalLabel">Cancel Change Request </h4>
-          </div>
-          <div class="modal-body">
-              <%= f.label :reason %>
-              <%= f.text_area :reason, class: 'form-control' %>
-          </div>
-          <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <%= f.submit "Update Change Request Status to Cancel", class: 'btn btn-default' %>
-          </div>
-          <% end %>
-      </div>
-      <!-- /.modal-content -->
-  </div>
-  <!-- /.modal-dialog -->
-</div>
+<% end %>

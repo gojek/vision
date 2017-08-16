@@ -13,7 +13,7 @@
     <% if @change_request.aasm_state == 'rollbacked'%>
     <%= link_to 'Create Hotfix', create_hotfix_path(@change_request), :class => 'btn btn-danger btn-flat'  %>
     <% end %>
-    <% if (current_user==@change_request.user || current_user.is_admin || current_user.role=='release_manager' || current_user.collaborate_change_requests.include?(@change_request)) && (!@change_request.closed?) && (!@change_request.has_approver?(current_user)) %>
+    <% if @change_request.editable?(current_user) %>
     <%= link_to 'Edit', edit_change_request_path, :class => 'btn btn-primary btn-flat'  %>
     <% end %>
     <%= link_to 'Duplicate', duplicate_path(@change_request), class: 'btn btn-primary btn-flat' %>
@@ -580,7 +580,8 @@
           <h4 class="modal-title" id="myModalLabel">Accept Change Request </h4>
         </div>
         <div class="modal-body">
-          <%= text_field_tag 'notes',nil, class: 'form-control'%>
+          <%= label_tag 'notes' %>
+          <%= text_area_tag 'notes',nil, class: 'form-control'%>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
@@ -603,7 +604,8 @@
           <h4 class="modal-title" id="myModalLabel">Reject Change Request </h4>
         </div>
         <div class="modal-body">
-          <%= text_field_tag 'notes',nil, class: 'form-control'%>
+          <%= label_tag 'notes' %>
+          <%= text_area_tag 'notes',nil, class: 'form-control'%>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>

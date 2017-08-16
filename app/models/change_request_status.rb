@@ -2,10 +2,9 @@ class ChangeRequestStatus < ActiveRecord::Base
   belongs_to :change_request
   validates :reason, presence: true, if: :reason_needed?
 
-    private
-
+  private
   def reason_needed?
-    self.status=='rollbacked' || self.status=='cancelled' || self.status=='rejected'
+    (['cancelled', 'failed', 'rollbacked'].include? self.status) || self.deploy_delayed
   end
 
 end

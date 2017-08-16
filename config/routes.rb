@@ -13,8 +13,7 @@ Rails.application.routes.draw do
   post 'change_requests/:id/rollback' => 'change_request_statuses#rollback', :as =>'rollback'
   post 'change_requests/:id/cancel' => 'change_request_statuses#cancel', :as =>'cancel'
   post 'change_requests/:id/close' => 'change_request_statuses#close', :as => 'close'
-  post 'change_requests/:id/final_reject' => 'change_request_statuses#final_reject', :as => 'final_reject'
-  post 'change_requests/:id/schedule' => 'change_request_statuses#schedule', :as => 'schedule'
+  post 'change_requests/:id/fail' => 'change_request_statuses#fail', :as => 'fail'
   post 'change_requests/:id/submit' => 'change_request_statuses#submit', :as => 'submit'
 
   resources :change_requests do
