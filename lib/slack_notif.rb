@@ -7,7 +7,6 @@ class SlackNotif
   def initialize
     @client = Slack::Web::Client.new
     @attachment_builder = SlackAttachmentBuilder.new
-    @notifier = Slack::Notifier.new ENV['SLACK_CR_WEBHOOK']
   end
 
   def notify_new_cr(change_request)
@@ -43,7 +42,7 @@ class SlackNotif
     associated_users.delete(comment.user)
     mentionees.each {|mentionee| associated_users.delete(mentionee)}
     general_message = "A new comment from #{comment.user.name} on a <#{link}|change request>"
-    notify_users(associated_users, general_message, attachment)
+    message_users(associated_users, general_message, attachment)
   end
 
   private
@@ -51,7 +50,7 @@ class SlackNotif
     users.each do |user|
       next if user.slack_username.blank?
       actionable_attachment = @attachment_builder.wrap_approver_actions(attachment, user)
-      @notifier.post text: message, attachments: [actionable_attachment], channel: "@#{user.slack_username}"
+      @client.chat_postMessage(channel: "@#{user.slack_username}", text: message, attachments: [actionable_attachment])
     end
   end
 
