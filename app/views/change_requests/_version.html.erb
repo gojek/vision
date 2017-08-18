@@ -15,7 +15,7 @@
       <tbody>
         <%- @change_request.change_request_statuses.reverse.each do |cr_status| %>
           <tr>
-            <td><%= cr_status.status%></td>
+            <td><%= cr_status.status.humanize %> <%= cr_status.deploy_delayed ? '(with delay)' : '' %></td>
             <td><%= cr_status.reason %></td>
             <td><%=cr_status.created_at.to_s(:long) %></td>
             <td></td>
