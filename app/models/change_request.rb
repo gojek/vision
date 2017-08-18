@@ -91,36 +91,38 @@ class ChangeRequest < ActiveRecord::Base
     change_summary 'change summary'
     all_category 'category'
     all_type 'type'
+    aasm_state 'Status' do |status| status.humanize end
+    deploy_delayed? 'Delay status' do |delayed| delayed ? 'Yes' : 'No' end
     priority
     user name: 'requestor'
     tag_list 'tags' do |tag_list| tag_list.join(';') end
     collaborators do |collaborators| collaborators.collect(&:name).join(';') end
     approvals 'approvers' do |approvals| approvals.collect(&:user).collect(&:name).join(';') end
-    change_requirement 'change requirement'
-    business_justification 'business justification'
-    note
-    os 'operating system dependency'
-    db 'database dependency'
-    net 'network dependency'
-    other_dependency 'other dependency'
-    analysis
-    solution
-    impact
-    scope
-    design
-    backup
-    definition_of_success 'definition of success'
-    definition_of_failed 'definition of failed'
+    change_requirement 'change requirement' do |html| Sanitize.fragment(html) end
+    business_justification 'business justification' do |html| Sanitize.fragment(html) end
+    note do |html| Sanitize.fragment(html) end
+    os 'operating system dependency' do |html| Sanitize.fragment(html) end
+    db 'database dependency' do |html| Sanitize.fragment(html) end
+    net 'network dependency' do |html| Sanitize.fragment(html) end
+    other_dependency 'other dependency' do |html| Sanitize.fragment(html) end
+    analysis do |html| Sanitize.fragment(html) end
+    solution do |html| Sanitize.fragment(html) end
+    impact do |html| Sanitize.fragment(html) end
+    scope do |html| Sanitize.fragment(html) end
+    design do |html| Sanitize.fragment(html) end
+    backup do |html| Sanitize.fragment(html) end
+    definition_of_success 'definition of success' do |html| Sanitize.fragment(html) end
+    definition_of_failed 'definition of failed' do |html| Sanitize.fragment(html) end
     testing_environment_available to_s: 'testing environment available'
-    testing_procedure 'testing procedure'
-    testing_notes 'testing notes'
+    testing_procedure 'testing procedure' do |html| Sanitize.fragment(html) end
+    testing_notes 'testing notes' do |html| Sanitize.fragment(html) end
     testers do |testers| testers.collect(&:name).join(';') end
     schedule_change_date to_s: 'schedule change date'
     planned_completion to_s: 'planned completion'
-    implementation_notes to_s: 'implementation notes'
-    grace_period_starts to_s: 'grace period starts'
-    grace_period_end to_s: 'grace period end'
-    grace_period_notes to_s: 'grace period notes'
+    implementation_notes to_s: 'implementation notes' do |html| Sanitize.fragment(html) end
+    grace_period_starts to_s: 'grace period starts' do |html| Sanitize.fragment(html) end
+    grace_period_end to_s: 'grace period end' do |html| Sanitize.fragment(html) end
+    grace_period_notes to_s: 'grace period notes' do |html| Sanitize.fragment(html) end
     implementers do |implementers| implementers.collect(&:name).join(';') end
   end
 
@@ -279,6 +281,10 @@ class ChangeRequest < ActiveRecord::Base
            user.is_admin || user.role == 'release_manager') && 
            !self.terminal_state? && 
            !self.has_approver?(user)
+  end
+
+  def deploy_delayed?
+    ChangeRequestStatus.where(change_request_id: id, deploy_delayed: true).any?
   end
 
 end
