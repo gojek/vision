@@ -79,18 +79,11 @@
                    <th>Report ID</th>
                     <th>Service impacted</th>
                     <th>Problem details</th>
-                    <th>How was the problem detected</th>
-                    <th>Current Status</th>
                     <th><%= sort_link(@q, :occurrence_time) %></th>
-                    <th><%= sort_link(@q, :detection_time) %></th>
                     <th><%= sort_link(@q, :recovery_time) %></th>
-                    <th><%= sort_link(@q, :resolved_time) %></th>
-                    <th>Recovery duration(minutes)</th>
-                    <th>Resolution duration(minutes)</th>
+                    <th>Recovery duration (min)</th>
                     <th>Source</th>
                     <th><%= sort_link(@q, :rank) %></th>
-                    <th>Reported by</th>
-                    <th>last edited</th>
                     <th colspan="3">Actions</th>
 
               </tr>
@@ -99,19 +92,12 @@
                       <td><%= link_to incident_report.id, incident_report %></td>
                       <td><%= link_to incident_report.service_impact, incident_report %></td>
                       <td><%= link_to (raw incident_report.problem_details), incident_report, class: 'black-color' %></td>
-                      <td><%= incident_report.how_detected %></td>
-                      <td><%= incident_report.current_status %></td>
                       <td><%= incident_report.occurrence_time.to_s(:long) %></td>
-                      <td><%= incident_report.detection_time.to_s(:long) %></td>
                       <td><%= incident_report.recovery_time.blank? ? "-" : incident_report.recovery_time.to_s(:long)  %></td>
-
-                       <td> <%= incident_report.resolved_time.blank? ? "-" : incident_report.resolved_time.to_s(:long)  %> </td>
                       <td><%= incident_report.recovery_duration.blank? ? "-" : incident_report.recovery_duration %> </td>
-                      <td><%= incident_report.resolution_duration.blank? ? "-" : incident_report.resolution_duration %> </td>
                       <td><%= incident_report.source %></td>
                       <td><%= incident_report.rank %></td>
-                      <td><%= incident_report.user.name %></td>
-                      <td><%= incident_report.updated_at.to_s(:long) %></td>
+                      
                       <td><%= link_to '', incident_report, title: "View", class: 'glyphicon glyphicon-eye-open' %></td>
                       <td><%= link_to '', edit_incident_report_path(incident_report), title: "Edit", class: 'glyphicon glyphicon-edit'  %></td>
                       <%if current_user==incident_report.user || current_user.is_admin %>
