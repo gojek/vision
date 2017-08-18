@@ -3,7 +3,7 @@ class Calendar
 
   def set_cr(user, change_request)
     event = build_event_from_cr(change_request)
-    result = set_event(user, event, change_request.google_event_id)
+    set_event(user, event, change_request.google_event_id)
   end
 
   def build_event_from_cr(change_request)
