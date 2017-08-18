@@ -119,8 +119,8 @@
             </tr>
             <% @change_requests.each do |change_request| %>
               <tr>
-                <td><%= link_to change_request.id, change_request %></td>
-                <td><%= link_to (raw change_request.change_summary), change_request, {class: 'cr-title-link'} %></td>
+                <td><%= link_to change_request.id, change_request, target: :_blank %></td>
+                <td><%= link_to (raw change_request.change_summary), change_request, {class: 'cr-title-link', target: :_blank} %></td>
 
                 <td><%=raw change_request.created_at.to_s(:long) %></td>
                 <td><%=raw HTML_Truncator.truncate(change_request.business_justification, 10) %>
@@ -140,13 +140,13 @@
                 </td>
                 <td><%= change_request.schedule_change_date %></td>
                 <td>
-                  <%= link_to change_request, title: "Show" do %>
+                  <%= link_to change_request, title: "Show", target: :_blank do %>
                     <i class='glyphicon glyphicon-eye-open'><span style='display: none'> Show </span></i>
                   <% end %>
                 </td>
                 <%if (current_user==change_request.user || current_user.is_admin || current_user.role=='release_manager' || current_user.collaborate_change_requests.include?(change_request)) && (!change_request.closed?) && (!change_request.has_approver?(current_user))%>
                 <td>
-                  <%= link_to edit_change_request_path(change_request) do %>
+                  <%= link_to edit_change_request_path(change_request), target: :_blank do %>
                     <i class='glyphicon glyphicon-edit'><span style='display: none'> Edit </span></i>
                   <% end %>
                 </td>
@@ -163,7 +163,7 @@
                 <td></td>
                 <% end %>
                 <td>
-                  <%= link_to duplicate_path(change_request), title: "Duplicate" do%>
+                  <%= link_to duplicate_path(change_request), title: "Duplicate", target: :_blank do%>
                     <i class='glyphicon glyphicon-duplicate'><span style='display: none'> Duplicate </span></i>
                   <% end %>
                 </td>

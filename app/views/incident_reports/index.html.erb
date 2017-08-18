@@ -93,17 +93,20 @@
               </tr>
               <% @incident_reports.each do |incident_report| %>
                   <tr>
-                      <td><%= link_to incident_report.id, incident_report %></td>
-                      <td><%= link_to incident_report.service_impact, incident_report %></td>
-                      <td><%= link_to (raw incident_report.problem_details), incident_report, class: 'black-color' %></td>
+                      <td><%= link_to incident_report.id, incident_report, target: :_blank %></td>
+                      <td><%= link_to incident_report.service_impact, incident_report, target: :_blank %></td>
+                      <td><%= link_to (raw incident_report.problem_details), incident_report, class: 'black-color', target: :_blank %></td>
+                      <td><%= incident_report.how_detected %></td>
+                      <td><%= incident_report.current_status %></td>
                       <td><%= incident_report.occurrence_time.to_s(:long) %></td>
                       <td><%= incident_report.recovery_time.blank? ? "-" : incident_report.recovery_time.to_s(:long)  %></td>
                       <td><%= incident_report.recovery_duration.blank? ? "-" : incident_report.recovery_duration %> </td>
                       <td><%= incident_report.source %></td>
                       <td><%= incident_report.rank %></td>
-                      
-                      <td><%= link_to '', incident_report, title: "View", class: 'glyphicon glyphicon-eye-open' %></td>
-                      <td><%= link_to '', edit_incident_report_path(incident_report), title: "Edit", class: 'glyphicon glyphicon-edit'  %></td>
+                      <td><%= incident_report.user.name %></td>
+                      <td><%= incident_report.updated_at.to_s(:long) %></td>
+                      <td><%= link_to '', incident_report, title: "View", class: 'glyphicon glyphicon-eye-open', target: :_blank %></td>
+                      <td><%= link_to '', edit_incident_report_path(incident_report), title: "Edit", class: 'glyphicon glyphicon-edit', target: :_blank  %></td>
                       <%if current_user==incident_report.user || current_user.is_admin %>
                       <td><%= link_to '', incident_report, method: :delete, title: "Delete", data: { confirm: 'Are you sure?' }, class: 'glyphicon glyphicon-trash' %></td>
                       <% else %>
