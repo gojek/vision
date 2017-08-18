@@ -4,7 +4,7 @@ class ChangeRequestsController < ApplicationController
   before_action :owner_required, only: [:edit, :update, :destroy]
   before_action :not_closed_required, only: [:destroy]
   before_action :submitted_required, only: [:edit]
-  before_action :reference_rollbacked_required, only: [:create_hotfix]
+  before_action :reference_required, only: [:create_hotfix]
   after_action :unset_session_first_time, only: [:new], if: -> { session['first_time'] }
   before_action :role_not_approver_required, only: :edit
   require 'notifier.rb'
@@ -446,9 +446,9 @@ class ChangeRequestsController < ApplicationController
       redirect_to change_requests_path unless !@change_request.closed?
     end
 
-    def reference_rollbacked_required
+    def reference_required
       @reference_cr = ChangeRequest.find(params[:id])
-      redirect_to change_requests_path unless @reference_cr.rollbacked?
+      redirect_to change_requests_path unless @reference_cr.rollbacked? || @reference_cr.failed?
     end
 
     def role_not_approver_required
