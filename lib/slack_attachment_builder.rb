@@ -7,7 +7,7 @@ class SlackAttachmentBuilder
     attachment = {
       fallback: change_request.change_summary,
       color: "#439FE0",
-      title: change_request.change_summary,
+      title: "#{change_request.id}. #{change_request.change_summary}",
       title_link: change_request_url(change_request),
       callback_id: change_request.id,
       fields: [
