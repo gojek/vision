@@ -342,10 +342,10 @@ class ChangeRequestsController < ApplicationController
         end_week = start_week.end_of_week
       end
       if tag==nil
-        success = ChangeRequest.where("status = 'success' AND closed_date <= ? AND closed_date >= ?",end_week, start_week)
+        success = ChangeRequest.where("status = 'succeeded' AND closed_date <= ? AND closed_date >= ?",end_week, start_week)
         failed = ChangeRequest.where("status = 'failed' AND closed_date <= ? AND closed_date >= ?",end_week, start_week)
       else
-        success = ChangeRequest.where("status = 'success' AND closed_date <= ? AND closed_date >= ?",end_week, start_week).tagged_with(tag)
+        success = ChangeRequest.where("status = 'succeeded' AND closed_date <= ? AND closed_date >= ?",end_week, start_week).tagged_with(tag)
         failed = ChangeRequest.where("status = 'failed' AND closed_date <= ? AND closed_date >= ?",end_week, start_week).tagged_with(tag)
       end
       total_success = success.blank? ? 0 : success.count
@@ -373,10 +373,10 @@ class ChangeRequestsController < ApplicationController
         end_month = start_month.end_of_month
       end
       if tag==nil
-        success = ChangeRequest.where("status = 'success' AND closed_date <= ? AND closed_date >= ?",end_month, start_month)
+        success = ChangeRequest.where("status = 'succeeded' AND closed_date <= ? AND closed_date >= ?",end_month, start_month)
         failed = ChangeRequest.where("status = 'failed' AND closed_date <= ? AND closed_date >= ?",end_month, start_month)
       else
-        success = ChangeRequest.where("status = 'success' AND closed_date <= ? AND closed_date >= ?",end_month, start_month).tagged_with(tag)
+        success = ChangeRequest.where("status = 'succeeded' AND closed_date <= ? AND closed_date >= ?",end_month, start_month).tagged_with(tag)
         failed = ChangeRequest.where("status = 'failed' AND closed_date <= ? AND closed_date >= ?",end_month, start_month).tagged_with(tag)
       end
       total_success = success.blank? ? 0 : success.count
