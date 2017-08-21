@@ -25,10 +25,13 @@ require 'notifier.rb'
           # download current page only
           render csv: @incident_reports, filename: 'incident_reports', force_quotes: true
         else
-          # download all page through sucker punch
-          email = current_user.email
-          IncidentReportJob.perform_async(IncidentReport.ids, email)
-          redirect_to incident_reports_path, notice: "CSV is being sent to #{email}"
+          enumerator = Enumerator.new do |lines|
+            lines << IncidentReport.to_comma_headers.to_csv
+            IncidentReport.find_each do |record|
+              lines << record.to_comma.to_csv
+            end
+          end
+          self.stream('incident_reports_all.csv', 'text/csv', enumerator)
         end
       end
       format.xls { send_data(@incident_reports.to_xls) }
