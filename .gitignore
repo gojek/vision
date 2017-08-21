@@ -44,4 +44,11 @@ coverage/*
 .keep
 
 # Ignore solr data
-solr/**
+solr/*
+!solr/configsets
+solr/configsets/*
+!solr/configsets/sunspot
+solr/configsets/sunspot/*
+!solr/configsets/sunspot/conf
+solr/configsets/sunspot/conf/*
+!solr/configsets/sunspot/conf/schema.xml

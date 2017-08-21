@@ -12,15 +12,7 @@ class ChangeRequestsController < ApplicationController
   require 'calendar.rb'
 
   def index
-    if params[:search]
-      search = ChangeRequest.solr_search do
-        fulltext params[:search]
-        order_by :created_at, :desc
-      end
-      @change_requests = search.results
-      ids = @change_requests.map {|c| c.id}
-      @change_requests = ChangeRequest.where(id: ids).where.not(aasm_state: 'draft')
-    elsif params[:type]
+    if params[:type]
       @q = ChangeRequest.ransack(params[:q])
       case params[:type]
       when 'approval'
