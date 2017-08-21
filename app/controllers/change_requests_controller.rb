@@ -30,9 +30,7 @@ class ChangeRequestsController < ApplicationController
       end
       @change_requests = @change_requests.where.not(aasm_state: 'draft').order(id: :desc)
     else
-      @q = ChangeRequest.ransack((params[:q] || {}).merge({
-                                  aasm_state_not_eq:'draft', user_id_eq:current_user.id, m:'or'
-                                }))
+      @q = ChangeRequest.ransack(params[:q])
       @change_requests = @q.result(distinct: true).order(id: :desc)
       @change_requests = @change_requests.tagged_with(params[:tag_list]) if params[:tag_list]
     end
@@ -49,11 +47,13 @@ class ChangeRequestsController < ApplicationController
           @change_requests = @change_requests.page(params[:page] || 1).per(params[:per_page] || 20)
           render csv: @change_requests, filename: 'change_requests', force_quotes: true
         else
-          # download all crs
-          cr_ids = @change_requests.ids
-          email = current_user.email
-          ChangeRequestJob.perform_async(cr_ids, email)
-          redirect_to change_requests_path, notice: "CSV is being sent to #{email}"
+          enumerator = Enumerator.new do |lines|
+            lines << ChangeRequest.to_comma_headers.to_csv
+            ChangeRequest.find_each do |record|
+              lines << record.to_comma.to_csv
+            end
+          end
+          self.stream('change_requests_all.csv', 'text/csv', enumerator)
         end
       end
     end
@@ -288,15 +288,23 @@ class ChangeRequestsController < ApplicationController
   end
 
   def create_hotfix
-    @change_request = ChangeRequest.new
+    @old_change_request = ChangeRequest.find(params[:id])
     @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
-    @current_tags = []
-    @current_collaborators = []
-    @current_approvers = []
+    @current_tags = @old_change_request.tag_list
+    @current_collaborators = @old_change_request.collaborators.collect{|u| u.id}
+    @current_implementers = @old_change_request.implementers.collect{|u| u.id}
+    @current_testers = @old_change_request.testers.collect{|u| u.id}
     @users = User.all.collect{|u| [u.name, u.id]}
+    @current_approvers = @old_change_request.approvals.collect(&:user_id)
+    @change_request = @old_change_request.dup
     @approvers = User.approvers.collect{|u| [u.name, u.id] if u.id != current_user.id}
-    @current_implementers = []
-    @current_testers = []
+    # Clear certain fields
+    @change_request.user = current_user
+    @change_request.schedule_change_date = nil
+    @change_request.planned_completion = nil
+    @change_request.grace_period_starts = nil
+    @change_request.grace_period_end = nil
+    
     @change_request.reference_cr_id = @reference_cr.id
     render 'new'
   end

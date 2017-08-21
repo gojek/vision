@@ -7,7 +7,7 @@ class SlackAttachmentBuilder
     attachment = {
       fallback: change_request.change_summary,
       color: "#439FE0",
-      title: change_request.change_summary,
+      title: "#{change_request.id}. #{change_request.change_summary}",
       title_link: change_request_url(change_request),
       callback_id: change_request.id,
       fields: [
@@ -31,26 +31,33 @@ class SlackAttachmentBuilder
           title: "Approvers",
           value: (approvers_name.join ', '),
           short: false
-        },
-        actions: [
-          {
-            name: "act",
-            text: "Approve",
-            type: "button",
-            value: "approve"
-          },
-           {
-            name: "act",
-            text: "Reject",
-            type: "button",
-            style: "danger",
-            value: "reject"
-          }
-        ]
+        }
       ],
       footer: "VT-Vision",
       ts: change_request.created_at.to_datetime.to_f.round
     }
+  end
+
+  def wrap_approver_actions(attachment, user)
+    actionable_attachment = attachment.dup
+    actionable_attachment[:actions] = [
+      {
+        name: "act",
+        text: "Approve",
+        type: "button",
+        style: "success",
+        value: "approve"
+      },
+       {
+        name: "act",
+        text: "Reject",
+        type: "button",
+        style: "danger",
+        value: "reject"
+      }
+    ]
+
+    actionable_attachment
   end
 
   def generate_comment_attachment(comment)
