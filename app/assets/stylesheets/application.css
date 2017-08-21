@@ -99,7 +99,7 @@ z-index: 200000;
 	hyphens: auto;
 }
 
-.table * {
+.table tbody td * {
 	word-wrap: break-word;
 	-ms-word-break: break-all;
 	word-break: break-all;
