@@ -102,3 +102,7 @@ z-index: 200000;
 .well * {
 	word-wrap: break-word;
 }
+
+.table * {
+	word-wrap: break-word;
+}
