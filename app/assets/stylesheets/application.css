@@ -90,6 +90,6 @@ z-index: 200000;
 	right: -320px;
 }
 
-.well {
+.well * {
 	word-wrap: break-word;
 }
