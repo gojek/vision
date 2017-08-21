@@ -92,8 +92,18 @@ z-index: 200000;
 
 .well * {
 	word-wrap: break-word;
+	-ms-word-break: break-all;
+	word-break: break-all;
+	-webkit-hyphens: auto;
+  	-moz-hyphens: auto;
+	hyphens: auto;
 }
 
 .table * {
 	word-wrap: break-word;
+	-ms-word-break: break-all;
+	word-break: break-all;
+	-webkit-hyphens: auto;
+  	-moz-hyphens: auto;
+	hyphens: auto;
 }
