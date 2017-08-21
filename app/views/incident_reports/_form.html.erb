@@ -3,22 +3,6 @@
     function eventHandler(inst) {
         unsaved = true;
     };
-    tinyMCE.init({
-      selector: "textarea.tinymce",
-      menubar: false,
-      plugins: "textcolor link image tabfocus ",
-      toolbar: "undo redo | styleselect | bold italic| alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | forecolor",
-      content_style: "@media only screen and (max-width: 320px) {.mce-content-body {font-size:14px;font-family:Arial,sans-serif;} }",
-      theme: "modern",
-      toolbar_items_size: 'small',
-      browser_spellcheck: true,
-      statusbar: false,
-      setup: function (ed) {
-        ed.on("change", function () {
-            eventHandler(ed);
-        })
-    }
-    });
 </script>
 <%= form_for(@incident_report) do |f| %>
   
@@ -127,7 +111,7 @@
             <%else %>  
             <div class="field form-group">
             <% end %>
-          <%= f.label :rank %><br>
+          <a style="cursor: pointer;" id="rank-button"><%= f.label :rank %> <i class="glyphicon glyphicon-question-sign"></i></a><br>
           <%= f.number_field :rank, in:1..5, class: 'form-control' %>
         </div>
         </div>
@@ -219,6 +203,21 @@
 
 <% end %>
 
+<div id="rank-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Incident Level Guideline</h4>
+      </div>
+      <div class="modal-body">
+        <iframe id="guideline" src="" frameborder="0" style="width:100%;height:70vh;"></iframe>
+      </div>
+  </div>
+</div>
+
+<%= tinymce %>
+
 <script>
   $(document).ready(function () {
     $('body').attr("data-no-turbolink", "true");
@@ -241,7 +240,13 @@
       unsaved = true;
     });
 
+    $('#rank-button').click(function(){
+      $('#rank-modal').modal('show');
+    });
 
+    $('#rank-modal').on('shown.bs.modal',function(){
+      $(this).find('iframe#guideline').attr('src','https://drive.google.com/file/d/0Bxui8ihRvgbUb2wzbDdyY2ZCMVk/preview')
+    })
   });
   $(function(){
     var tags = []
