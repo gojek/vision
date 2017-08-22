@@ -49,6 +49,8 @@
         </div>
         <% end %>
       </div>
+    </div>
+    <div class="row">
       <div class="col-xs-12">
         <div class="box box-default">
           <div class="box-header">
@@ -68,12 +70,14 @@
           </div><!-- /.box-body -->
         </div>
       </div>
+    </div>
+    <div class="row">
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header with-border">
               <h3 class="box-title">Incident Report List</h3>
             </div><!-- /.box-header -->
-          <div class="box-body table-responsive" style="overflow-x: auto; height: 70vh">
+          <div class="box-body table-responsive table-autoheight" style="overflow-x: auto;">
             <table class="table table-hover">
               <tr>
                    <th>Report ID</th>
@@ -211,5 +215,7 @@
       }
     });
   });
+
+  tableAutoHeight('.table-autoheight', 200);
 
 </script>
