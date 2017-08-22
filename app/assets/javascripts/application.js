@@ -77,3 +77,18 @@ function show_comment(comment){
 	$(comment).addClass('hidden');
 	$('#p-comment-'+commentId).removeClass('hidden');
 }
+
+function tableAutoHeight(selector, min_height){
+  var dh = $(document).height();
+  var vh = $(window).height();
+  var th = $(selector).height();
+  var tp = $(selector).offset();
+
+  var toph = tp.top;
+  var bottomh = dh - toph - th;
+  var tr = vh - toph - bottomh;
+
+  if(tr < min_height) return;
+
+  $(selector).height(tr);
+}
