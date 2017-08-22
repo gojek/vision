@@ -107,3 +107,7 @@ z-index: 200000;
   	-moz-hyphens: auto;
 	hyphens: auto;
 }
+
+p.comment {
+	white-space: pre;
+}
