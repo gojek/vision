@@ -1,0 +1,89 @@
+<% require 'html_truncator' %>
+<section class="content-header">
+  <h1>
+    Access Requests
+    <%= link_to  new_access_request_path, class: 'btn btn-flat btn-primary pull-right'  do %>
+         <i class="fa fa-plus"></i> <strong>New Access Request</strong>
+    <% end %>
+  </h1>
+</section>
+<section class="content">
+ <div class="row">
+    <div class='col-lg-6'>
+      <%if flash[:alert] != nil %>
+        <div class="alert alert-danger alert-dismissable ">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+          <h4>  <i class="icon fa fa-check"></i> Warning</h4>
+          <p id="notice"><%= flash[:alert]  %></p>
+        </div>
+      <% end %>
+      <%if flash[:notice] != nil %>
+       <div class="alert alert-success alert-dismissable ">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4>  <i class="icon fa fa-check"></i> Success!</h4>
+          <p id="notice"><%= flash[:notice]  %></p>
+      </div>
+      <% end %>
+    </div>
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-body table-responsive" style="overflow-x: auto;">
+          <table class="table table-hover">
+            <tr>
+                <th>Request ID</th>
+                <th>Employee Name</th>
+                <th>Request Type</th>
+                <th>Access Type</th>
+                <th>Requested Date</th>
+                <th>Requestor</th>
+                <th>Status</th>
+                <th>Approval Status</th>
+                <th colspan="3">Action</th>
+            </tr>
+            <% @access_requests.each do |access_request| %>
+              <tr>
+                <td><%= link_to access_request.id, access_request %></td>
+                <td><%= access_request.employee_name %></td>
+                <td><%= access_request.request_type %></td>
+                <td><%= access_request.access_type %></td>
+                <td><%= access_request.created_at %></td>
+                <td><%= access_request.user.name %></td>
+                <td><%= access_request.aasm_state %></td>
+                <td>
+                  <% if change_request.approval_status == 'success' %>
+                    <i class="glyphicon glyphicon-ok" style="color:green;"></i>
+                  <% elsif change_request.approval_status == 'failed' %>
+                    <i class="glyphicon glyphicon-remove" style="color:red;"></i>
+                  <% else %>
+                    <i class="glyphicon glyphicon-exclamation-sign" style="color:orange;"></i>
+                  <% end %>
+                </td>
+                <td>
+                  <%= link_to change_request, title: "Show" do %>
+                    <i class='glyphicon glyphicon-eye-open'><span style='display: none'> Show </span></i>
+                  <% end %>
+                  <%if access_request.editable?(current_user) %>
+                    <%= link_to edit_access_request_path(access_request) do %>
+                      <i class='glyphicon glyphicon-edit'><span style='display: none'> Edit </span></i>
+                    <% end %>
+                  <% end %>
+                  <% if current_user==change_request.user || current_user.is_admin %>
+                    <%= link_to access_request, title: "Delete",  method: :delete, data: { confirm: 'Are you sure?' } do%>
+                      <i class='glyphicon glyphicon-trash'><span style='display: none'> Delete </span></i>
+                    <% end %>
+                  <% end %>
+                </td>
+            </tr>
+            <% end %>
+          </table>
+        </div><!-- /.box-body -->
+        <div class="box-footer clearfix">
+            <%= paginate @access_requests, :theme => 'twitter-bootstrap-3'%>
+        </div>
+      </div><!-- /.box -->
+    </div>
+
+</div>
+
+<script>
+</script>

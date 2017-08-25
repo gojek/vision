@@ -11,10 +11,66 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170816064245) do
+ActiveRecord::Schema.define(version: 20170825074421) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "access_request_approvals", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "access_request_id"
+    t.boolean  "approved"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "access_request_approvals", ["access_request_id"], name: "index_access_request_approvals_on_access_request_id", using: :btree
+  add_index "access_request_approvals", ["user_id"], name: "index_access_request_approvals_on_user_id", using: :btree
+
+  create_table "access_request_collaborators", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "access_request_id"
+  end
+
+  add_index "access_request_collaborators", ["access_request_id"], name: "index_access_request_collaborators_on_access_request_id", using: :btree
+  add_index "access_request_collaborators", ["user_id"], name: "index_access_request_collaborators_on_user_id", using: :btree
+
+  create_table "access_requests", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "request_type"
+    t.boolean  "permanent_access"
+    t.date     "start_date"
+    t.date     "end_date"
+    t.string   "employee_name"
+    t.string   "employee_position"
+    t.string   "employee_email_address"
+    t.string   "employee_department"
+    t.string   "employee_phone"
+    t.boolean  "employee_access"
+    t.boolean  "fingerprint_business_area"
+    t.boolean  "fingerprint_business_operations"
+    t.boolean  "fingerprint_it_operations"
+    t.boolean  "fingerprint_server_room"
+    t.boolean  "fingerprint_archive_room"
+    t.boolean  "fingerprint_engineering_area"
+    t.string   "corporate_email"
+    t.boolean  "internet_access"
+    t.boolean  "slack_access"
+    t.boolean  "admin_tools"
+    t.boolean  "vpn_access"
+    t.boolean  "github_gitlab"
+    t.boolean  "exit_interview"
+    t.boolean  "access_card"
+    t.boolean  "parking_cards"
+    t.boolean  "id_card"
+    t.boolean  "name_card"
+    t.boolean  "insurance_card"
+    t.boolean  "cash_advance"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
+
+  add_index "access_requests", ["user_id"], name: "index_access_requests_on_user_id", using: :btree
 
   create_table "approvals", force: :cascade do |t|
     t.integer  "change_request_id"
@@ -307,6 +363,11 @@ ActiveRecord::Schema.define(version: 20170816064245) do
 
   add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
 
+  add_foreign_key "access_request_approvals", "access_requests"
+  add_foreign_key "access_request_approvals", "users"
+  add_foreign_key "access_request_collaborators", "access_requests"
+  add_foreign_key "access_request_collaborators", "users"
+  add_foreign_key "access_requests", "users"
   add_foreign_key "approvals", "change_requests"
   add_foreign_key "approvals", "users"
   add_foreign_key "change_request_statuses", "change_requests"
