@@ -118,5 +118,5 @@ z-index: 200000;
 }
 
 p.comment {
-	white-space: pre;
+	white-space: pre-wrap;
 }
