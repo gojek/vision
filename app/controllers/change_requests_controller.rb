@@ -9,17 +9,10 @@ class ChangeRequestsController < ApplicationController
   before_action :role_not_approver_required, only: :edit
   require 'notifier.rb'
   require 'slack_notif.rb'
+  require 'calendar.rb'
 
   def index
-    if params[:search]
-      search = ChangeRequest.solr_search do
-        fulltext params[:search]
-        order_by :created_at, :desc
-      end
-      @change_requests = search.results
-      ids = @change_requests.map {|c| c.id}
-      @change_requests = ChangeRequest.where(id: ids).where.not(aasm_state: 'draft')
-    elsif params[:type]
+    if params[:type]
       @q = ChangeRequest.ransack(params[:q])
       case params[:type]
       when 'approval'
@@ -29,9 +22,7 @@ class ChangeRequestsController < ApplicationController
       end
       @change_requests = @change_requests.where.not(aasm_state: 'draft').order(id: :desc)
     else
-      @q = ChangeRequest.ransack((params[:q] || {}).merge({
-                                  aasm_state_not_eq:'draft', user_id_eq:current_user.id, m:'or'
-                                }))
+      @q = ChangeRequest.ransack(params[:q])
       @change_requests = @q.result(distinct: true).order(id: :desc)
       @change_requests = @change_requests.tagged_with(params[:tag_list]) if params[:tag_list]
     end
@@ -48,11 +39,13 @@ class ChangeRequestsController < ApplicationController
           @change_requests = @change_requests.page(params[:page] || 1).per(params[:per_page] || 20)
           render csv: @change_requests, filename: 'change_requests', force_quotes: true
         else
-          # download all crs
-          cr_ids = @change_requests.ids
-          email = current_user.email
-          ChangeRequestJob.perform_async(cr_ids, email)
-          redirect_to change_requests_path, notice: "CSV is being sent to #{email}"
+          enumerator = Enumerator.new do |lines|
+            lines << ChangeRequest.to_comma_headers.to_csv
+            ChangeRequest.find_each do |record|
+              lines << record.to_comma.to_csv
+            end
+          end
+          self.stream('change_requests_all.csv', 'text/csv', enumerator)
         end
       end
     end
@@ -133,6 +126,9 @@ class ChangeRequestsController < ApplicationController
         @status = @change_request.change_request_statuses.new(:status => 'draft')
         @status.save
       else
+        event = Calendar.new.set_cr(current_user, @change_request)
+        @change_request.update(google_event_id: event.data.id) unless event.error?
+
         @change_request.submit!
         @change_request.save
         @status = @change_request.change_request_statuses.new(:status => 'submitted')
@@ -150,6 +146,7 @@ class ChangeRequestsController < ApplicationController
           ActiveRecord::Base.connection.close
         end
         flash[:success] = 'Change request was successfully created.'
+        flash[:success] += " Calendar event creation failed: #{event.error_message}." if event.error?
       end
       format.html { redirect_to @change_request }
       format.json { render :show, status: :created, location: @change_request }
@@ -178,6 +175,9 @@ class ChangeRequestsController < ApplicationController
     @change_request.set_collaborators(@current_collaborators)
     respond_to do |format|
       if @change_request.update(change_request_params)
+        event = Calendar.new.set_cr(current_user, @change_request)
+        @change_request.update(google_event_id: event.data.id) unless event.error?
+
         if @change_request.draft?
           @change_request.submit!
         end
@@ -190,6 +190,7 @@ class ChangeRequestsController < ApplicationController
         Notifier.cr_notify(current_user, @change_request, 'update_cr')
         SlackNotif.new.notify_update_cr @change_request
         flash[:success] = 'Change request was successfully updated.'
+        flash[:success] += " Calendar event creation failed: #{event.error_message}." if event.error?
         format.html { redirect_to @change_request }
         format.json { render :show, status: :ok, location: @change_request }
       else
@@ -279,15 +280,23 @@ class ChangeRequestsController < ApplicationController
   end
 
   def create_hotfix
-    @change_request = ChangeRequest.new
+    @old_change_request = ChangeRequest.find(params[:id])
     @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
-    @current_tags = []
-    @current_collaborators = []
-    @current_approvers = []
+    @current_tags = @old_change_request.tag_list
+    @current_collaborators = @old_change_request.collaborators.collect{|u| u.id}
+    @current_implementers = @old_change_request.implementers.collect{|u| u.id}
+    @current_testers = @old_change_request.testers.collect{|u| u.id}
     @users = User.all.collect{|u| [u.name, u.id]}
+    @current_approvers = @old_change_request.approvals.collect(&:user_id)
+    @change_request = @old_change_request.dup
     @approvers = User.approvers.collect{|u| [u.name, u.id] if u.id != current_user.id}
-    @current_implementers = []
-    @current_testers = []
+    # Clear certain fields
+    @change_request.user = current_user
+    @change_request.schedule_change_date = nil
+    @change_request.planned_completion = nil
+    @change_request.grace_period_starts = nil
+    @change_request.grace_period_end = nil
+    
     @change_request.reference_cr_id = @reference_cr.id
     render 'new'
   end
