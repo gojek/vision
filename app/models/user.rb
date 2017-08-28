@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
   validates :email, presence: true
   has_many :IncidentReports
   has_many :ChangeRequests
+  has_many :AccessRequests
   has_and_belongs_to_many :associated_change_requests, join_table: :change_requests_associated_users, class_name: 'ChangeRequest'
   has_and_belongs_to_many :collaborate_change_requests, join_table: :collaborators, class_name: 'ChangeRequest'
   has_and_belongs_to_many :implement_change_requests, join_table: :implementers, class_name: :ChangeRequest
@@ -26,6 +27,7 @@ class User < ActiveRecord::Base
                   message: "must be a veritrans account" }
   validates :email, uniqueness: true
   scope :approvers, -> {where(role: 'approver')}
+  scope :approvers_ar, -> {where(role: 'approver_ar')}
 
 
   def account_active?
