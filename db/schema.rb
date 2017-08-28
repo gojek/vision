@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170825074421) do
+ActiveRecord::Schema.define(version: 20170828064008) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20170825074421) do
     t.integer  "user_id"
     t.integer  "access_request_id"
     t.boolean  "approved"
+    t.text     "notes"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
   end
@@ -35,10 +36,20 @@ ActiveRecord::Schema.define(version: 20170825074421) do
   add_index "access_request_collaborators", ["access_request_id"], name: "index_access_request_collaborators_on_access_request_id", using: :btree
   add_index "access_request_collaborators", ["user_id"], name: "index_access_request_collaborators_on_user_id", using: :btree
 
+  create_table "access_request_statuses", force: :cascade do |t|
+    t.integer  "access_request_id"
+    t.string   "status"
+    t.text     "reason"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "access_request_statuses", ["access_request_id"], name: "index_access_request_statuses_on_access_request_id", using: :btree
+
   create_table "access_requests", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "request_type"
-    t.boolean  "permanent_access"
+    t.string   "access_type"
     t.date     "start_date"
     t.date     "end_date"
     t.string   "employee_name"
@@ -66,6 +77,10 @@ ActiveRecord::Schema.define(version: 20170825074421) do
     t.boolean  "name_card"
     t.boolean  "insurance_card"
     t.boolean  "cash_advance"
+    t.boolean  "password_reset"
+    t.string   "user_identification"
+    t.string   "asset_name"
+    t.string   "aasm_state"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
   end
@@ -367,6 +382,7 @@ ActiveRecord::Schema.define(version: 20170825074421) do
   add_foreign_key "access_request_approvals", "users"
   add_foreign_key "access_request_collaborators", "access_requests"
   add_foreign_key "access_request_collaborators", "users"
+  add_foreign_key "access_request_statuses", "access_requests"
   add_foreign_key "access_requests", "users"
   add_foreign_key "approvals", "change_requests"
   add_foreign_key "approvals", "users"
