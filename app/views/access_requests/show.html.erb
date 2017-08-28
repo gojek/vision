@@ -1,0 +1,376 @@
+<section class="content-header">
+  <h1>
+  Access Request #<%= @access_request.id %>
+    <% if @access_request.aasm_state == "draft"%>
+      <span class="label label-info">Draft</span>
+    <% end %>
+  </h1>
+  <br>
+  <span class='pull-left'>
+    <% if @access_request.editable?(current_user) %>
+    <%= link_to 'Edit', edit_access_request_path, :class => 'btn btn-primary btn-flat'  %>
+    <% end %>
+  </span>
+
+  <span class='pull-right'>
+    <% if @access_request.previous %>
+      <%= link_to "< Previous", @access_request.previous, class: "btn btn-flat btn-primary"%>
+    <% end %>
+    <%if @access_request.next %>
+      <%= link_to "Next >", @access_request.next,  class: "btn btn-flat btn-primary" %>
+    <%end%>
+  </span>
+
+</section><!--/content-header-->
+
+<br><br>
+
+<section class="content">
+  <%if flash[:notice] != nil %>
+    <div class="alert alert-warning alert-dismissable ">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      <h4>  <i class="icon fa fa-check"></i> Notice!</h4>
+      <p id="notice"><%= flash[:notice]  %></p>
+    </div><!--/alert-->
+  <% end %>
+  <%if flash[:success] != nil %>
+    <div class="alert alert-success alert-dismissable ">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      <h4>  <i class="icon fa fa-check"></i> Success!</h4>
+      <p id="notice"><%= flash[:success]  %></p>
+    </div><!--/alert-->
+  <% end %>
+  <% if flash[:invalid] != nil %>
+   <div class="alert alert-danger alert-dismissable ">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      <h4>  <i class="icon fa fa-warning"></i> Alert!</h4>
+      <p id="notice">
+          <ul>
+          <% flash[:invalid].each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+          </ul>
+      </p>
+    </div><!--/alert-->
+  <% end %>
+  <% if @access_request.has_approver?(current_user) %>
+    <div class='approve-status form-group'>
+      <% if @access_request.is_approved?(current_user).nil? %>
+        <!-- Approve Button -->
+        <button class="btn btn-success" data-toggle="modal" data-target="#accept">
+          <i class="fa fa-check fa-fw"></i>Approve
+        </button>
+        <!-- Reject Button -->
+        <button class="btn btn-danger" data-toggle="modal" data-target="#reject">
+          <i class="fa fa-times fa-fw"></i>Reject
+        </button>
+      <% elsif @access_request.is_approved?(current_user) %>
+        <div class="label label-primary"> Approved by you </div>
+      <% else %>
+        <div class="label label-primary"> Rejected by you </div>
+      <% end %><!--/if approved-->
+    </div><!--/approve-status-->
+  <% end %><!--/current_user.role==approver-->
+  <div class="box box-default">
+    <div class="box-header with-border">
+      <h3 class="box-title">Access Request Lifeline: </h3>
+    </div>
+    <div class="box-body">
+      <%= render 'status' %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-lg-6 col-xs-12'>
+
+      <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">Access Request Summary</h3>
+        </div><!--/box-header-->
+        <div class="box-body">
+          <table class="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>Requestor Name</th>
+                <th>Request Date</th>
+                <th>Request Type</th>
+                <th>Access Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><%= @access_request.user.name %></td>
+                <td><%= @access_request.created_at %></td>
+                <td><%= @access_request.request_type %></td>
+                <td>
+                  <%= @access_request.access_type %>
+                  <% if @access_request.temporary? %>
+                     <a id="popoverOption" class="btn" href="#" data-content="<%= @access_request.start_date %> to <%= @access_request.end_date %>" rel="popover" data-placement="bottom" data-original-title="Duration" style='padding:0px'>(<%= @access_request.duration %> days)</a>
+                  <% end %>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">Employee Detail</h3>
+        </div><!--/box-header-->
+        <div class="box-body">
+          <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover">
+              <thead>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Employee Name</strong></td>
+                  <td colspan="2"><%= @access_request.employee_name %></td>
+                </tr>
+                <tr>
+                  <td><strong>Email Address</strong></td>
+                  <td colspan="2"><%= @access_request.employee_email_address %></td>
+                </tr>
+
+                <tr>
+                  <td><strong>Phone</strong></td>
+                  <td colspan="2"><%= @access_request.employee_phone %></td>
+                </tr>
+
+                <tr>
+                  <td><strong>Position</strong></td>
+                  <td colspan="2"><%= @access_request.employee_position %></td>
+                </tr>
+
+                <tr>
+                  <td><strong>Department</strong></td>
+                  <td colspan="2"><%= @access_request.employee_department %></td>
+                </tr>
+              </tbody>
+            </table>
+          </div><!--table-respomsive-->
+        </div>
+      </div>
+
+      <div class='box box-default'>
+        <div class='box-header with-border'>
+          <h3 class='box-title'>Approval</h3>
+        </div><!--/box-header-->
+        <div class='box-body'>
+          <h5>Approval:</h5>
+          <p>After viewing the testing procedures and confirmed the testing result are
+          positive, this CR has been confirmed appropiate to be deployed in production by
+          :</p>
+
+          <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Position</th>
+                  <th>Status </th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @access_request.approvals.each do |app| %>
+                <tr>
+                  <td><%= app.user.name %></td>
+                  <td><%= app.user.position %></td>
+                  <td>
+                    <%if app.approved %>
+                      <% if app.created_at %>
+                        <a id="popoverOption" class="btn" href="#" data-content="<%= app.notes %>" rel="popover" data-placement="bottom" data-original-title="Accept Note" style='padding:0px'>Approved on <%= app.created_at.to_s(:long) %></a>
+                      <% else %>
+                        <a id="popoverOption" class="btn" href="#" data-content="<%= app.notes %>" rel="popover" data-placement="bottom" data-original-title="Accept Note" style='padding:0px'>Approved</a>
+                      <% end %>
+                    <% elsif app.approved.nil? %>
+                      Waiting for approval
+                    <%elsif app.approved == false %>
+                       <a id="popoverOption" class="btn" href="#" data-content="<%= app.notes %>" rel="popover" data-placement="bottom" data-original-title="Reject Reason" style='padding:0px'>Rejected</a>
+                    <%end %>
+                  </td>
+                </tr>
+                <%end %>
+              </tbody>
+            </table>
+          </div><!--/table-responsive-->
+        </div><!--box-body-->
+      </div><!--box-->
+
+      <div class='box box-default'>
+        <div class='box-header with-border'>
+          <h3 class='box-title'>Status History<h3>
+        </div><!--/box-header-->
+        <div class='box-body'>
+          <table class='table table-striped table-bordered table-hover'>
+            <thead>
+              <tr>
+                <th>Action</th>
+                <th>Reason</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%- @access_request.statuses.reverse.each do |status| %>
+                <tr>
+                  <td><%= status.status%></td>
+                  <td><%= status.reason %></td>
+                  <td><%=status.created_at.to_s(:long) %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div><!--/box-body-->
+      </div><!--/box-->
+
+
+    </div>
+
+
+    <div class='col-lg-6 col-xs-12'>
+      <div class="box box-default">
+        <div class="box-header with border">Request Details</div>
+        <div class="box-body">
+          <%= form_for(@access_request) do |f| %>
+            <div class="field form-group">
+              <%= f.check_box :employee_access, :disabled => true  %>
+              <%= f.label :employee_access %><br>
+            </div><!--/field-->
+
+            <div class="field form-group">
+              <%= f.label :fingerprint_access, {class: 'control-label'} %><br>
+
+              <%= f.check_box :fingerprint_business_area, :disabled => true  %>
+              <%= f.label :fingerprint_business_area %><br>
+
+              <%= f.check_box :fingerprint_business_operations, :disabled => true  %>
+              <%= f.label :fingerprint_business_operations %><br>
+
+              <%= f.check_box :fingerprint_it_operations, :disabled => true  %>
+              <%= f.label :fingerprint_it_operations %><br>
+
+              <%= f.check_box :fingerprint_server_room, :disabled => true  %>
+              <%= f.label :fingerprint_server_room %><br>
+
+              <%= f.check_box :fingerprint_archive_room, :disabled => true  %>
+              <%= f.label :fingerprint_archive_room %><br>
+
+              <%= f.check_box :fingerprint_engineering_area, :disabled => true  %>
+              <%= f.label :fingerprint_engineering_area %><br>
+            </div><!--/field-->
+
+            <div class="field form-group">
+              <%= f.label :corporate_email, {class: 'control-label'} %><br>
+              <%= f.text_field :corporate_email, class: 'form-control', :disabled => true  %>            
+            </div><!--/field-->
+
+            <div class="field form-group">
+              <%= f.check_box :internet_access, :disabled => true  %>
+              <%= f.label :internet_access %><br>
+
+              <%= f.check_box :slack_access, :disabled => true  %>
+              <%= f.label :slack_access %><br>
+
+              <%= f.check_box :admin_tools, :disabled => true  %>
+              <%= f.label :admin_tools %><br>
+
+              <%= f.check_box :vpn_access, :disabled => true  %>
+              <%= f.label :vpn_access %><br>
+
+              <%= f.check_box :github_gitlab, :disabled => true  %>
+              <%= f.label :github_gitlab %><br>
+
+              <%= f.check_box :exit_interview , :disabled => true %>
+              <%= f.label :exit_interview %><br>
+
+              <%= f.check_box :access_card, :disabled => true  %>
+              <%= f.label :access_card %><br>
+
+              <%= f.check_box :parking_cards, :disabled => true  %>
+              <%= f.label :parking_cards %><br>
+
+              <%= f.check_box :id_card, :disabled => true  %>
+              <%= f.label :id_card %><br>
+
+              <%= f.check_box :name_card, :disabled => true  %>
+              <%= f.label :name_card %><br>
+
+              <%= f.check_box :insurance_card, :disabled => true  %>
+              <%= f.label :insurance_card %><br>
+
+              <%= f.check_box :cash_advance, :disabled => true  %>
+              <%= f.label :cash_advance %><br>
+            </div><!--/field-->
+
+            <div class="field form-group">
+              <%= f.check_box :password_reset, :disabled => true  %>
+              <%= f.label :password_reset %><br>
+            </div><!--/field-->
+          
+            <div class="field form-group">
+              <%= f.label :user_identification, {class: 'control-label'} %><br>
+              <%= f.text_field :user_identification, class: 'form-control', :disabled => true  %>            
+            </div><!--/field-->
+          
+            <div class="field form-group">
+              <%= f.label :asset_name, {class: 'control-label'} %><br>
+              <%= f.text_field :asset_name, class: 'form-control', :disabled => true  %>            
+            </div><!--/field-->
+            <% end %>
+        </div><!--/box-body-->
+      </div> <!--/box-->
+    </div>
+  </div><!--/row-->
+
+</section><!--/content-->
+
+<!-- modal for accept notes -->
+<div class="modal fade" id="accept" tabindex="-1" role="dialog" aria-labelledby="ScheduleModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+      <div class="modal-content">
+        <%= form_tag(ar_approve_path) do %>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h4 class="modal-title" id="myModalLabel">Accept Access Request </h4>
+        </div>
+        <div class="modal-body">
+          <%= text_field_tag 'notes',nil, class: 'form-control'%>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
+          <%= submit_tag 'Accept', class: "btn btn-success btn-flat" %>
+        </div>
+
+        <% end %>
+      </div>
+      <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- modal for reject reason -->
+<div class="modal fade" id="reject" tabindex="-1" role="dialog" aria-labelledby="ScheduleModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+      <div class="modal-content">
+        <%= form_tag(ar_reject_path) do %>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h4 class="modal-title" id="myModalLabel">Reject Access Request </h4>
+        </div>
+        <div class="modal-body">
+          <%= text_field_tag 'notes',nil, class: 'form-control'%>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
+          <%= submit_tag 'Reject', class: "btn btn-danger btn-flat" %>
+        </div>
+        <% end %>
+      </div>
+      <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<script type="text/javascript">
+$('#popoverData').popover();
+$('#popoverOption').popover({ trigger: "hover" });
+</script>

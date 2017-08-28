@@ -4,7 +4,7 @@ class CreateAccessRequests < ActiveRecord::Migration
       t.references :user, index: true, foreign_key: true
 
       t.string :request_type
-      t.boolean :permanent_access
+      t.string :access_type
       t.date :start_date
       t.date :end_date
       
@@ -36,6 +36,12 @@ class CreateAccessRequests < ActiveRecord::Migration
       t.boolean :name_card
       t.boolean :insurance_card
       t.boolean :cash_advance
+
+      t.boolean :password_reset
+      t.string :user_identification
+      t.string :asset_name
+
+      t.string :aasm_state
 
       t.timestamps null: false
     end
