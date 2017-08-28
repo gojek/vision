@@ -1,0 +1,58 @@
+<% if flash[:alert] %>
+    <div class="alert alert-danger">
+    <%= flash[:alert] %>
+    </div>
+<% end %>
+
+
+<div>
+  <% @access_request.statuses.each do |status| %>
+    <%= render 'status_button', status: status.status %>
+  <% end %>
+  <% if (current_user.is_admin || @access_request.is_associate?(current_user)) && !@access_request.draft? %>
+  <%= render 'next_actions' %>
+  <% else %>
+  <span>
+    <button class="btn btn-primary btn-lg">Waiting for next action</button>
+  </span>
+  <% end %>
+</div>
+
+<% unless @access_request.draft? %>
+<% @access_request.next_states.each do |state| %>
+<div class="modal fade" id="<%= state.to_s.humanize %>Modal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <%= form_for(@access_request_status, url: self.send("ar_#{state.to_s}_path")) do |f| %>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h4 class="modal-title"><%= state.to_s.humanize %></h4>
+        </div>
+        <div class="modal-body">
+          <div class="field form-group <%= @access_request.state_require_note?(state) ? 'required' : '' %>" id="reason-field-<%= state %>">
+            <%= f.label :reason, class: 'control-label' %>
+            <%= f.text_area :reason, class: 'form-control' %>
+          </div>
+          <% if state == :deploy %>
+          <div class="field form-group">
+            <%= f.check_box :deploy_delayed, class: 'control-label' %>
+            <%= f.label :deploy_delayed, 'Deployment is delayed from the scheduled time', class: 'control-label' %>
+          </div>
+          <script type="text/javascript">
+          $('#access_request_status_deploy_delayed').change(function(){
+            if($(this).is(":checked")) $('#reason-field-<%= state %>').addClass('required');
+            else $('#reason-field-<%= state %>').removeClass('required');
+          });
+          </script>
+          <% end %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <%= f.submit "Update Access Request Status to #{state.to_s.humanize}", class: 'btn btn-default'%>
+         </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<% end %>
+<% end %>

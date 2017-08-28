@@ -50,16 +50,16 @@
                 <td><%= access_request.user.name %></td>
                 <td><%= access_request.aasm_state %></td>
                 <td>
-                  <% if change_request.approval_status == 'success' %>
+                  <% if access_request.approval_status == 'success' %>
                     <i class="glyphicon glyphicon-ok" style="color:green;"></i>
-                  <% elsif change_request.approval_status == 'failed' %>
+                  <% elsif access_request.approval_status == 'failed' %>
                     <i class="glyphicon glyphicon-remove" style="color:red;"></i>
-                  <% else %>
+                  <% elsif access_request.approval_status == 'on progress' %>
                     <i class="glyphicon glyphicon-exclamation-sign" style="color:orange;"></i>
                   <% end %>
                 </td>
                 <td>
-                  <%= link_to change_request, title: "Show" do %>
+                  <%= link_to access_request, title: "Show" do %>
                     <i class='glyphicon glyphicon-eye-open'><span style='display: none'> Show </span></i>
                   <% end %>
                   <%if access_request.editable?(current_user) %>
@@ -67,7 +67,7 @@
                       <i class='glyphicon glyphicon-edit'><span style='display: none'> Edit </span></i>
                     <% end %>
                   <% end %>
-                  <% if current_user==change_request.user || current_user.is_admin %>
+                  <% if current_user==access_request.user || current_user.is_admin %>
                     <%= link_to access_request, title: "Delete",  method: :delete, data: { confirm: 'Are you sure?' } do%>
                       <i class='glyphicon glyphicon-trash'><span style='display: none'> Delete </span></i>
                     <% end %>
