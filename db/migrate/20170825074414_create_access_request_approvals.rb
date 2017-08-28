@@ -5,6 +5,7 @@ class CreateAccessRequestApprovals < ActiveRecord::Migration
       t.references :access_request, index: true, foreign_key: true
 
       t.boolean :approved
+      t.text :notes
 
       t.timestamps null: false
     end

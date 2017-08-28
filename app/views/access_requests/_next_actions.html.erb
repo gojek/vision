@@ -1,0 +1,20 @@
+<% unless @access_request.terminal_state? %>
+<i class="glyphicon glyphicon-menu-right" aria-hidden="true"style="font-size:1.5em;"></i>
+<span>
+  <div class="dropdown" style="display: inline;">
+    <button class="btn btn-primary dropdown-toggle btn-lg" data-toggle="dropdown">Next Action<span class="caret"></span></button>
+    <ul class="dropdown-menu">
+      <% @access_request.next_states.each do |state| %>
+        <li>
+          <a href="#" data-toggle="modal" data-target="#<%= state.to_s.humanize %>Modal">
+            <%= state.to_s.humanize %>
+          </a>
+        </li>
+        <% if state != @access_request.next_states.last %>
+          <li class="divider"></li>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
+</span>
+<% end %>

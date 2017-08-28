@@ -16,13 +16,32 @@
     </ul>
   </div><!--/error-explanation-->
   <% end %>
+  <%= f.submit class:"btn btn-primary pull-right", :id => "save", style: 'margin-top: -60px; position: relative;' %>
   <div class="row">
     <div class="col-md-12">
-      
       <div class="box box-default">
         <div class="box-header with border"></div>
         <div class="box-body">
           <div class="col-md-6">
+            <div class="field form-group required">
+              <%= f.label :request_type, {class: 'control-label'} %><br>
+              <%= f.select :request_type, options_for_select(AccessRequest::REQUEST_TYPE, @access_request.request_type), {:include_blank => false}, {class: 'form-control select2'} %>
+            </div><!--/field-->
+
+            <div class="field form-group required">
+              <%= f.label :access_type, {class: 'control-label'} %><br>
+              <%= f.select :access_type, options_for_select(AccessRequest::ACCESS_TYPE, @access_request.access_type), {:include_blank => false}, {class: 'form-control select2'} %>
+            </div><!--/field-->
+
+            <div class="field form-group temporary-group required">
+              <%= f.label :start_date, {class: 'control-label'} %><br>
+              <%= f.datetime_select :start_date %>
+            </div><!--/field-->
+
+            <div class="field form-group temporary-group required">
+              <%= f.label :end_date, {class: 'control-label'} %><br>
+              <%= f.datetime_select :end_date %>
+            </div><!--/field-->
             
           </div><!--/col-->
           <div class="col-md-6">
@@ -33,13 +52,145 @@
 
             <div class="field form-group">
               <label>Collaborators</label><br>
-                <%= select_tag "collaborators_list" ,options_for_select(@users), class: 'select2-collaborate form-control', multiple:true %>
+              <%= select_tag "collaborators_list" ,options_for_select(@users), class: 'select2-collaborate form-control', multiple:true %>
             </div><!--/field-->
             <div class="field form-group required">
               <label class="control-label">Approvers</label><br>
-                <%= select_tag "approvers_list" ,options_for_select(@approvers), class: 'select2-approve form-control', multiple:true %>
+              <%= select_tag "approvers_list" ,options_for_select(@approvers), class: 'select2-approve form-control', multiple:true %>
             </div><!--/field-->
 
+          </div><!--/col-->
+        </div><!--/box-body-->
+      </div> <!--/box-->
+
+
+      <div class="box box-default">
+        <div class="box-header with border">Employee Details</div>
+        <div class="box-body">
+          <div class="col-md-6">
+            <div class="field form-group required">
+              <%= f.label :employee_name, {class: 'control-label'} %><br>
+              <%= f.text_field :employee_name, class: 'form-control'  %>            
+            </div><!--/field-->
+
+            <div class="field form-group required">
+              <%= f.label :employee_position, {class: 'control-label'} %><br>
+              <%= f.text_field :employee_position, class: 'form-control'  %>            
+            </div><!--/field-->
+
+            <div class="field form-group required">
+              <%= f.label :employee_email_address, {class: 'control-label'} %><br>
+              <%= f.text_field :employee_email_address, class: 'form-control'  %>            
+            </div><!--/field-->
+            
+          </div><!--/col-->
+          <div class="col-md-6">
+          
+            <div class="field form-group required">
+              <%= f.label :employee_department, {class: 'control-label'} %><br>
+              <%= f.text_field :employee_department, class: 'form-control'  %>            
+            </div><!--/field-->
+
+            <div class="field form-group required">
+              <%= f.label :employee_phone, {class: 'control-label'} %><br>
+              <%= f.text_field :employee_phone, class: 'form-control'  %>            
+            </div><!--/field-->
+
+          </div><!--/col-->
+        </div><!--/box-body-->
+      </div> <!--/box-->
+
+      <div class="box box-default">
+        <div class="box-header with border">Request Details</div>
+        <div class="box-body">
+          <div class="col-md-6">
+            <div class="field form-group">
+              <%= f.check_box :employee_access  %>
+              <%= f.label :employee_access %><br>
+            </div><!--/field-->
+
+            <div class="field form-group">
+              <%= f.label :fingerprint_access, {class: 'control-label'} %><br>
+
+              <%= f.check_box :fingerprint_business_area  %>
+              <%= f.label :fingerprint_business_area %><br>
+
+              <%= f.check_box :fingerprint_business_operations  %>
+              <%= f.label :fingerprint_business_operations %><br>
+
+              <%= f.check_box :fingerprint_it_operations  %>
+              <%= f.label :fingerprint_it_operations %><br>
+
+              <%= f.check_box :fingerprint_server_room  %>
+              <%= f.label :fingerprint_server_room %><br>
+
+              <%= f.check_box :fingerprint_archive_room  %>
+              <%= f.label :fingerprint_archive_room %><br>
+
+              <%= f.check_box :fingerprint_engineering_area  %>
+              <%= f.label :fingerprint_engineering_area %><br>
+            </div><!--/field-->
+
+            <div class="field form-group">
+              <%= f.label :corporate_email, {class: 'control-label'} %><br>
+              <%= f.text_field :corporate_email, class: 'form-control'  %>            
+            </div><!--/field-->
+
+            <div class="field form-group">
+              <%= f.check_box :internet_access  %>
+              <%= f.label :internet_access %><br>
+
+              <%= f.check_box :slack_access  %>
+              <%= f.label :slack_access %><br>
+
+              <%= f.check_box :admin_tools  %>
+              <%= f.label :admin_tools %><br>
+
+              <%= f.check_box :vpn_access  %>
+              <%= f.label :vpn_access %><br>
+
+              <%= f.check_box :github_gitlab  %>
+              <%= f.label :github_gitlab %><br>
+
+              <%= f.check_box :exit_interview  %>
+              <%= f.label :exit_interview %><br>
+
+              <%= f.check_box :access_card  %>
+              <%= f.label :access_card %><br>
+
+              <%= f.check_box :parking_cards  %>
+              <%= f.label :parking_cards %><br>
+
+              <%= f.check_box :id_card  %>
+              <%= f.label :id_card %><br>
+
+              <%= f.check_box :name_card  %>
+              <%= f.label :name_card %><br>
+
+              <%= f.check_box :insurance_card  %>
+              <%= f.label :insurance_card %><br>
+
+              <%= f.check_box :cash_advance  %>
+              <%= f.label :cash_advance %><br>
+            </div><!--/field-->
+            
+          </div><!--/col-->
+          <div class="col-md-6">
+
+            <div class="field form-group">
+              <%= f.check_box :password_reset  %>
+              <%= f.label :password_reset %><br>
+            </div><!--/field-->
+          
+            <div class="field form-group">
+              <%= f.label :user_identification, {class: 'control-label'} %><br>
+              <%= f.text_field :user_identification, class: 'form-control'  %>            
+            </div><!--/field-->
+          
+            <div class="field form-group">
+              <%= f.label :asset_name, {class: 'control-label'} %><br>
+              <%= f.text_field :asset_name, class: 'form-control'  %>            
+            </div><!--/field-->
 
           </div><!--/col-->
         </div><!--/box-body-->
@@ -70,6 +221,16 @@
     $('.datetimepicker').on("dp.change", function(e) {
       unsaved = true;
     });
+
+    function onAccessTypeChange(){
+      if($('#access_request_access_type').val() == 'Temporary')
+        $('.temporary-group').show();
+      else
+        $('.temporary-group').hide();
+    }
+
+    $('#access_request_access_type').on('change', onAccessTypeChange);
+    onAccessTypeChange();
   });
   $(function(){
     var collaborators = []
@@ -82,7 +243,7 @@
     });
     var approvers = []
     <% @access_request.approvals.each do |approval| %>
-      approvers.push('<%= approval.user_id %>'p);
+      approvers.push('<%= approval.user_id %>');
     <% end %>
     $(".select2-approve").val(approvers);
     $(".select2-approve").select2({

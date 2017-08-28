@@ -108,6 +108,10 @@ Rails.application.routes.draw do
   get 'create_hotfix/:id' => 'change_requests#create_hotfix', :as => 'create_hotfix'
 
   resources :access_requests
+  post 'access_requests/:id/cancel' => 'access_requests#cancel', :as =>'ar_cancel'
+  post 'access_requests/:id/close' => 'access_requests#close', :as => 'ar_close'
+  post 'access_requests/:id/approve' => 'access_requests#approve', :as =>'ar_approve'
+  post 'access_requests/:id/reject' => 'access_requests#reject', :as => 'ar_reject'
 
   namespace :api do
     post 'change_requests/action'
