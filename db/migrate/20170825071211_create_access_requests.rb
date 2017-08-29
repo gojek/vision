@@ -43,6 +43,8 @@ class CreateAccessRequests < ActiveRecord::Migration
 
       t.string :aasm_state
 
+      t.datetime :request_date
+
       t.timestamps null: false
     end
   end
