@@ -26,7 +26,7 @@ class AccessRequest < ActiveRecord::Base
     state :cancelled
 
     event :submit do
-      transitions :from => :draft, :to => :submitted
+      transitions :from => :draft, :to => :submitted, :after => :set_request_date
     end
     event :close do
       transitions :from => :submitted, :to => :succeeded, :guard => :closeable?
@@ -36,11 +36,16 @@ class AccessRequest < ActiveRecord::Base
     end
   end
 
+  def set_request_date
+    self.request_date = Time.now
+  end
+
   def temporary?
     self.access_type == 'Temporary'
   end
 
   def duration
+    return nil if !self.temporary?
     (self.end_date - self.start_date).to_i
   end
 

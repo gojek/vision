@@ -81,6 +81,7 @@ ActiveRecord::Schema.define(version: 20170828064008) do
     t.string   "user_identification"
     t.string   "asset_name"
     t.string   "aasm_state"
+    t.datetime "request_date"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
   end
