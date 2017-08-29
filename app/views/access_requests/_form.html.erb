@@ -35,13 +35,31 @@
 
             <div class="field form-group temporary-group required">
               <%= f.label :start_date, {class: 'control-label'} %><br>
-              <%= f.datetime_select :start_date %>
+              <%= f.datetime_select :start_date  %>
             </div><!--/field-->
 
             <div class="field form-group temporary-group required">
               <%= f.label :end_date, {class: 'control-label'} %><br>
               <%= f.datetime_select :end_date %>
             </div><!--/field-->
+
+            <div class="field form-group temporary-group">
+              <%= label_tag 'Duration', nil, class: 'control-label' %><br>
+              <%= text_field_tag 'duration', nil, class: 'form-control', disabled: true %>
+            </div><!--/field-->
+
+            <script>
+            function onDateChange(){
+              var a = moment($('#access_request_start_date').val(), 'YYYY-MM-DD HH:mm A');
+              var b = moment($('#access_request_end_date').val(), 'YYYY-MM-DD HH:mm A');
+
+              $('#duration').val(b.diff(a, 'days') + ' days');
+            }
+            $(function(){
+              $('.datetimepicker').datetimepicker();
+              $('.datetimepicker').on('dp.hide', onDateChange);
+            });
+            </script>
             
           </div><!--/col-->
           <div class="col-md-6">
