@@ -164,6 +164,8 @@ GEM
       multi_json (~> 1.11)
       os (~> 0.9)
       signet (~> 0.7)
+    groupdate (3.2.0)
+      activesupport (>= 3)
     hashdiff (0.3.1)
     hashie (3.4.6)
     html_truncator (0.4.1)
@@ -450,6 +452,7 @@ DEPENDENCIES
   foreman (= 0.82)
   fullcalendar-rails
   google-api-client (~> 0.8.2)
+  groupdate
   html_truncator (~> 0.2)
   httpclient
   jbuilder (~> 2.0)
@@ -501,5 +504,4 @@ RUBY VERSION
    ruby 2.3.0p0
 
 BUNDLED WITH
-   1.13.7
    1.15.3

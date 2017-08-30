@@ -236,27 +236,13 @@ require 'notifier.rb'
     end_month = current.end_of_month
 
     title = start_month.strftime("%B %Y") + ' - ' + end_month.strftime("%B %Y")
-    result = []
 
-    while start_month <= end_month do
-      beginning = start_month
-      ending = start_month.end_of_month
-      internal = IncidentReport.where("occurrence_time <= ? AND occurrence_time >= ? AND source = 'Internal'", ending, beginning)
-      external = IncidentReport.where("occurrence_time <= ? AND occurrence_time >= ? AND source = 'External'", ending, beginning)
-      total_internal = internal.count
-      total_external = external.count
-
-      result << {
-        label: start_month.strftime("%B"),
-        total_internal: total_internal,
-        total_external: total_external,
-        start: beginning,
-        end: ending
-      }
-
-      start_month = (start_month + 1.months).beginning_of_month
-    end
-    final_result = [{title: title}, result]
+    irs = IncidentReport.group_by_month(:occurrence_time, format: "%b %Y", range: start_month..end_month)
+    internals = irs.where(source: 'Internal').count
+    results = irs.where(source: 'External').count
+      .map { |k,x| { label: k, total_internal: internals[k], total_external: x  } }
+    
+    final_result = [{title: title}, results]
     render :text => final_result.to_json
   end
 
