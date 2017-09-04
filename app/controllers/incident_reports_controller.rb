@@ -278,7 +278,8 @@ require 'notifier.rb'
               :occurrence_time, :detection_time, :recovery_time,:resolved_time,
               :source, :rank, :loss_related, :occurred_reason,
               :overlooked_reason, :solving_duration, :recovery_action, :prevent_action,
-              :recurrence_concern, :current_status, :measurer_status, :tag_list => [])
+              :recurrence_concern, :current_status, :measurer_status, :has_further_action, 
+              :action_item, :action_item_status, :tag_list => [])
   end
 
   def owner_required
