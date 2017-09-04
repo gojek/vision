@@ -4,7 +4,7 @@
   </h1>
   <br>
   <span class='pull-left'>
-    <% if current_user.is_admin || current_user == @incident_report.user%>
+    <% if @incident_report.editable?(current_user) %>
       <%= link_to 'Edit', edit_incident_report_path, :class => 'btn btn-primary btn-flat'  %>
     <%end %>
   </span>

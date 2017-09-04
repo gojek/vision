@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170904092416) do
+ActiveRecord::Schema.define(version: 20170904074712) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -244,17 +244,6 @@ ActiveRecord::Schema.define(version: 20170904092416) do
   add_index "incident_report_collaborators", ["incident_report_id"], name: "index_incident_report_collaborators_on_incident_report_id", using: :btree
   add_index "incident_report_collaborators", ["user_id"], name: "index_incident_report_collaborators_on_user_id", using: :btree
 
-  create_table "incident_report_logs", force: :cascade do |t|
-    t.integer  "incident_report_id"
-    t.integer  "user_id"
-    t.text     "reason"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
-  end
-
-  add_index "incident_report_logs", ["incident_report_id"], name: "index_incident_report_logs_on_incident_report_id", using: :btree
-  add_index "incident_report_logs", ["user_id"], name: "index_incident_report_logs_on_user_id", using: :btree
-
   create_table "incident_report_versions", force: :cascade do |t|
     t.string   "item_type",       null: false
     t.integer  "item_id",         null: false
@@ -422,8 +411,6 @@ ActiveRecord::Schema.define(version: 20170904092416) do
   add_foreign_key "implementers", "users"
   add_foreign_key "incident_report_collaborators", "incident_reports"
   add_foreign_key "incident_report_collaborators", "users"
-  add_foreign_key "incident_report_logs", "incident_reports"
-  add_foreign_key "incident_report_logs", "users"
   add_foreign_key "incident_reports", "users"
   add_foreign_key "notifications", "change_requests"
   add_foreign_key "notifications", "incident_reports"

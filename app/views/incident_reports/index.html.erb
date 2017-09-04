@@ -116,7 +116,9 @@
                         <% end %>
                       </td>
                       <td><%= link_to '', incident_report, title: "View", class: 'glyphicon glyphicon-eye-open', target: :_blank %></td>
+                      <% if incident_report.editable?(current_user) %>
                       <td><%= link_to '', edit_incident_report_path(incident_report), title: "Edit", class: 'glyphicon glyphicon-edit', target: :_blank  %></td>
+                      <% end %>
                       <%if current_user==incident_report.user || current_user.is_admin %>
                       <td><%= link_to '', incident_report, method: :delete, title: "Delete", data: { confirm: 'Are you sure?' }, class: 'glyphicon glyphicon-trash' %></td>
                       <% else %>
