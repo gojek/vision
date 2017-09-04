@@ -45,6 +45,17 @@ class SlackNotif
     message_users(associated_users, general_message, attachment)
   end
 
+  def notify_new_ir(incident_report)
+    notify_change_ir(incident_report, 'created')
+  end
+
+  def notify_change_ir(incident_report, type)
+    attachment = @attachment_builder.generate_incident_report_attachment(incident_report)
+    link = incident_report_url(incident_report)
+    general_message = "<#{link}|Incident report> has been #{type}"
+    message_channel('incidents', general_message, attachment)
+  end
+
   private
   def notify_users(users, message, attachment)
     users.each do |user|

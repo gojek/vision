@@ -4,7 +4,9 @@ class IncidentReportsController < ApplicationController
   before_action :set_incident_report, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
   before_action :owner_required, only: [:edit, :update, :destroy]
-  before_action :set_source_start_end_time, only: [:total_incident_per_level, :average_recovery_time_incident]
+
+  require 'notifier.rb'
+  require 'slack_notif.rb'
 
   def index
     if params[:tag]
@@ -66,7 +68,8 @@ class IncidentReportsController < ApplicationController
         flash[:success] = 'Incident report was successfully created.'
         format.html { redirect_to @incident_report }
         format.json { render :show, status: :created, location: @incident_report }
-         Notifier.ir_notify(current_user, @incident_report, 'new_ir')
+        Notifier.ir_notify(current_user, @incident_report, 'new_ir')
+        SlackNotif.new.notify_new_ir @incident_report
       else
         @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
         @current_tags = []

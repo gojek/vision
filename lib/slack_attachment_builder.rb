@@ -1,6 +1,7 @@
 class SlackAttachmentBuilder
   include Rails.application.routes.url_helpers
   include ActionView::Helpers::SanitizeHelper
+  include ActionView::Helpers::DateHelper
 
   def generate_change_request_attachment(change_request)
     approvers_name = change_request.approvals.includes(:user).pluck(:name)
@@ -70,6 +71,46 @@ class SlackAttachmentBuilder
       title_link: change_request_url(change_request),
       footer: "VT-Vision",
       ts: comment.created_at.to_datetime.to_f.round
+    }
+  end
+
+  def generate_incident_report_attachment(incident_report)
+    incident_duration = distance_of_time_in_words(incident_report.recovery_duration * 60)
+    attachment = {
+      fallback: incident_report.service_impact,
+      color: "#439FE0",
+      title: "#{incident_report.id}. #{incident_report.service_impact}",
+      title_link: incident_report_url(incident_report),
+      callback_id: incident_report.id,
+      fields: [
+        {
+          title: "Source",
+          value: incident_report.source,
+          short: true
+        },{
+          title: "Level",
+          value: incident_report.rank,
+          short: true
+        },{
+          title: "Details",
+          value: sanitize(incident_report.problem_details, tags: []),
+          short: false
+        },{
+          title: "Occurence Time",
+          value: incident_report.occurrence_time,
+          short: false
+        },{
+          title: "Recovery Time",
+          value: "#{incident_report.recovery_time} (#{incident_duration})",
+          short: false
+        },{
+          title: "Reporter",
+          value: incident_report.user.name,
+          short: false
+        }
+      ],
+      footer: "VT-Vision",
+      ts: incident_report.created_at.to_datetime.to_f.round
     }
   end
 
