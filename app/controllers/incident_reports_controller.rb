@@ -4,7 +4,10 @@ class IncidentReportsController < ApplicationController
   before_action :set_incident_report, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
   before_action :owner_required, only: [:edit, :update, :destroy]
-require 'notifier.rb'
+
+  require 'notifier.rb'
+  require 'slack_notif.rb'
+
   def index
     if params[:tag]
       @q = IncidentReport.ransack(params[:q])
@@ -65,7 +68,8 @@ require 'notifier.rb'
         flash[:success] = 'Incident report was successfully created.'
         format.html { redirect_to @incident_report }
         format.json { render :show, status: :created, location: @incident_report }
-         Notifier.ir_notify(current_user, @incident_report, 'new_ir')
+        Notifier.ir_notify(current_user, @incident_report, 'new_ir')
+        SlackNotif.new.notify_new_ir @incident_report
       else
         @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
         @current_tags = []
