@@ -117,17 +117,30 @@
     </div><!-- /.col -->
   </div><!-- /.row -->
 
-  <% if @incident_report.action_item? %>
   <div class="row">
-    <!-- accepted payments column -->
+    <!-- logs column -->
     <div class="col-xs-12 col-lg-6">
-      <label> <strong>Action Item:</strong></label>
-      <div class=" well well-sm no-shadow" style="margin-top: 10px;">
-        <%=raw @action_item %>
-      </div>
+      <h3>Changelog</h3>
+      <table class='table table-striped table-bordered table-hover'>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Reason</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%- @incident_report.logs.reverse.each do |log| %>
+            <tr>
+              <td><%= log.user.name%></td>
+              <td><%= log.reason %></td>
+              <td><%=log.created_at.to_s(:long) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
     </div><!-- /.col -->
   </div><!-- /.row -->
-  <% end %>
 
   <!-- this row will not appear when printing -->
 </section><!-- /.content -->
