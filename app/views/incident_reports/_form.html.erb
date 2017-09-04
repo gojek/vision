@@ -161,7 +161,6 @@
           <%= f.label :why_did_it_occured_? %><br>
           <%= f.text_area :occurred_reason, class: 'form-control tinymce'%>
         </div>
-        </div>
         <div class="form-group">
           <% if @incident_report.errors.messages[:overlooked_reason] %>
             <div class="field form-group has-error">
@@ -170,7 +169,6 @@
             <% end %>
           <%= f.label :why_was_it_overlooked_? %><br>
           <%= f.text_area :overlooked_reason, class: 'form-control tinymce'%>
-        </div>
         </div>
         <div class="form-group">
           <% if @incident_report.errors.messages[:recovery_action] %>
@@ -181,7 +179,6 @@
           <%= f.label :action_for_recovery %><br>
           <%= f.text_area :recovery_action, class: 'form-control tinymce'%>
         </div>
-        </div>
         <div class="form-group">
           <% if @incident_report.errors.messages[:prevent_action] %>
             <div class="field form-group has-error">
@@ -191,7 +188,17 @@
           <%= f.label :to_prevent_recurrence %><br>
           <%= f.text_area :prevent_action, class: 'form-control tinymce'%>
         </div>
+        <% unless @incident_report.new_record? %>
+        <div class="form-group">
+          <% if @incident_report.errors.messages[:reason] %>
+            <div class="field form-group has-error">
+            <%else %>  
+            <div class="field form-group">
+            <% end %>
+          <%= f.label :reason %><br>
+          <%= f.text_area :reason, class: 'form-control'%>
         </div>
+        <% end %>
         </br>
         <div class="actions">
           <%= f.submit class:"btn btn-flat btn-primary", :id => 'save' %>
