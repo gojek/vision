@@ -1,8 +1,9 @@
 # a model representating incident report document
 class IncidentReport < ActiveRecord::Base
   include ActiveModel::Dirty
-
+  
   belongs_to :user
+  has_and_belongs_to_many :collaborators, join_table: :incident_report_collaborators, class_name: 'User'
   acts_as_readable :on => :updated_at
   has_paper_trail class_name: 'IncidentReportVersion',
                   meta: { author_username: :user_name }
@@ -124,4 +125,16 @@ class IncidentReport < ActiveRecord::Base
       write_attribute :expected, (val.to_i == 1)
     end
   end
+
+  def editable?(user)
+    return (self.user == user) || user.is_admin || (self.collaborators.include? user)
+  end
+
+  def set_collaborators(collaborator_id_list)
+    self.collaborators = []
+    collaborator_id_list.each do |collaborator_id|
+      self.collaborators << User.find(collaborator_id)
+    end
+  end
+
 end

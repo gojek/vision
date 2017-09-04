@@ -48,11 +48,13 @@ require 'notifier.rb'
     @incident_report = IncidentReport.new
     @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
     @current_tags = []
+    @users = User.all.collect{|u| [u.name, u.id]}
   end
 
   def edit
     @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
     @current_tags = @incident_report.tag_list
+    @users = User.all.collect{|u| [u.name, u.id]}
   end
 
   def create
@@ -60,6 +62,8 @@ require 'notifier.rb'
     @incident_report.recovery_duration = (@incident_report.recovery_time)? (@incident_report.recovery_time - @incident_report.occurrence_time)/60 : 0
     @incident_report.resolution_duration = (@incident_report.resolved_time)? (@incident_report.resolved_time - @incident_report.occurrence_time)/60 : 0
     @incident_report.set_current_status
+    @current_collaborators = Array.wrap(params[:collaborators_list])
+    @incident_report.set_collaborators(@current_collaborators)
     respond_to do |format|
       if @incident_report.save
         flash[:success] = 'Incident report was successfully created.'
@@ -76,6 +80,9 @@ require 'notifier.rb'
   end
 
   def update
+    @current_collaborators = Array.wrap(params[:collaborators_list])
+    @incident_report.set_collaborators(@current_collaborators)
+
     respond_to do |format|
       if @incident_report.update(incident_report_params)
 
@@ -282,8 +289,7 @@ require 'notifier.rb'
   end
 
   def owner_required
-    redirect_to incident_reports_url if
-    current_user != @incident_report.user && !current_user.is_admin
+    redirect_to incident_reports_url if !(@incident_report.editable? current_user)
   end
 
 
