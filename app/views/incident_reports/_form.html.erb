@@ -151,6 +151,9 @@
 <!-- /.col-xs-12 -->
 <div class="col-lg-6 col-xs-12 col-md-12">
   <div class='box'>
+    <div class='box-header with-border'>
+        <h3 class='box-title'>Incident Detail</h3>
+    </div>
       <div class='box-body table-responsive'>
         <div class="form-group">
           <% if @incident_report.errors.messages[:occurred_reason] %>
@@ -192,14 +195,42 @@
           <%= f.text_area :prevent_action, class: 'form-control tinymce'%>
         </div>
         </div>
-        </br>
-        <div class="actions">
-          <%= f.submit class:"btn btn-flat btn-primary", :id => 'save' %>
-        </div>
       </div>
   </div>
+  <div class='box'>
+    <div class='box-header with-border'>
+        <h3 class='box-title'>Further Action</h3>
+    </div>
+    <div class='box-body table-responsive'>
+      <div class="form-group">
+        <div class="field form-group <%= @incident_report.errors.messages[:has_further_action] ? 'has-error' : '' %>">
+          <%= f.check_box :has_further_action %>
+          <%= f.label :has_further_action %>
+        </div>
+        <div class="field form-group field-action <%= @incident_report.errors.messages[:action_item] ? 'has-error' : '' %>">
+          <%= f.label :action_item %><br>
+          <%= f.text_area :action_item, class: 'form-control tinymce'%>
+        </div>
+        <div class="field form-group field-action <%= @incident_report.errors.messages[:action_item_status] ? 'has-error' : '' %>">
+          <%= f.label :action_item_status %><br>
+          <%=f.select :action_item_status, options_for_select(IncidentReport::ACTION_ITEM_STATUS, @incident_report.action_item_status), {include_blank: false}, {class: 'form-control select2'} %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class='box'>
+    <div class='box-body table-responsive'>
+      <div class="actions">
+        <%= f.submit class:"btn btn-flat btn-primary", :id => 'save' %>
+      </div>
+    </div>
+  </div>
+
 </div>
 <!-- /.col-xs-12 -->
+
+
 
 <% end %>
 
@@ -233,7 +264,15 @@
 
     $('#rank-modal').on('shown.bs.modal',function(){
       $(this).find('iframe#guideline').attr('src','https://drive.google.com/file/d/0Bxui8ihRvgbUb2wzbDdyY2ZCMVk/preview')
-    })
+    });
+
+    function onHasFurtherActionChange(){
+      if($('#incident_report_has_further_action').is(":checked")) $('.field-action').show();
+      else $('.field-action').hide();
+    }
+    onHasFurtherActionChange();
+    
+    $('#incident_report_has_further_action').change(onHasFurtherActionChange);
   });
   $(function(){
     var tags = []
