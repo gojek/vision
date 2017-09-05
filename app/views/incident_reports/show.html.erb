@@ -117,5 +117,17 @@
     </div><!-- /.col -->
   </div><!-- /.row -->
 
+  <% if @incident_report.action_item? %>
+  <div class="row">
+    <!-- accepted payments column -->
+    <div class="col-xs-12 col-lg-6">
+      <label> <strong>Action Item:</strong></label>
+      <div class=" well well-sm no-shadow" style="margin-top: 10px;">
+        <%=raw @action_item %>
+      </div>
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+  <% end %>
+
   <!-- this row will not appear when printing -->
 </section><!-- /.content -->
