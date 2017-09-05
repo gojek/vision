@@ -112,10 +112,41 @@ p.comment {
 	white-space: pre-wrap;
 }
 
-div.field > div.field {
-  margin-left: 15px;
+span.jira-button {
+	background: none repeat scroll 0 0 #f5f5f5;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	display: inline-block;
+	line-height: 14px;
+	padding-bottom: 1px;
 }
 
-.inherit-font-weight {
-  font-weight: inherit;
+span.jira-button span {
+	background-color: #fff;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	vertical-align: middle;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	color: #333;
+	display: inline-block;
+	font-size: 11px;
+	font-weight: bold;
+	margin: 0;
+	padding: 2px 5px;
+	text-align: center;
+	text-decoration: none;
+	text-transform: uppercase;
+}
+
+span.jira-button span.jira-green {
+	background-color: #fff;
+	border-color: #60b070;
+	color: #14892c;
+}
+
+span.jira-button span.jira-yellow {
+	background-color: #fff;
+	border-color: #ffe9a8;
+	color: #594300
 }
