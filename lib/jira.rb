@@ -25,7 +25,7 @@ class Jira
     url = URI::join(ENV['JIRA_URL'],'/browse/',key)
 
     html  = "<span class='jira-button'>"
-    html << "  <a href='#{url}' original-title='#{summary}'><img class='icon' src='#{issueTypeIcon}'> #{key} </a>"
+    html << "  <a href='#{url}' target='_blank' data-toggle='popover' title='Summary' data-content='#{summary}'><img class='icon' src='#{issueTypeIcon}'> #{key} </a>"
     html << "  <span class='jira-#{colorName.downcase}'>#{name}</span>"
     html << "</span>"
   end
