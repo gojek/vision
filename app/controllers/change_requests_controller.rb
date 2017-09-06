@@ -180,6 +180,9 @@ class ChangeRequestsController < ApplicationController
 
         if @change_request.draft?
           @change_request.submit!
+          @change_request.save
+          @status = @change_request.change_request_statuses.new(:status => 'submitted')
+          @status.save
         end
         associated_user_ids = ["#{@change_request.user.id}"]
         associated_user_ids.concat(@current_approvers)
@@ -339,10 +342,10 @@ class ChangeRequestsController < ApplicationController
         end_week = start_week.end_of_week
       end
       if tag==nil
-        success = ChangeRequest.where("status = 'success' AND closed_date <= ? AND closed_date >= ?",end_week, start_week)
+        success = ChangeRequest.where("status = 'succeeded' AND closed_date <= ? AND closed_date >= ?",end_week, start_week)
         failed = ChangeRequest.where("status = 'failed' AND closed_date <= ? AND closed_date >= ?",end_week, start_week)
       else
-        success = ChangeRequest.where("status = 'success' AND closed_date <= ? AND closed_date >= ?",end_week, start_week).tagged_with(tag)
+        success = ChangeRequest.where("status = 'succeeded' AND closed_date <= ? AND closed_date >= ?",end_week, start_week).tagged_with(tag)
         failed = ChangeRequest.where("status = 'failed' AND closed_date <= ? AND closed_date >= ?",end_week, start_week).tagged_with(tag)
       end
       total_success = success.blank? ? 0 : success.count
@@ -370,10 +373,10 @@ class ChangeRequestsController < ApplicationController
         end_month = start_month.end_of_month
       end
       if tag==nil
-        success = ChangeRequest.where("status = 'success' AND closed_date <= ? AND closed_date >= ?",end_month, start_month)
+        success = ChangeRequest.where("status = 'succeeded' AND closed_date <= ? AND closed_date >= ?",end_month, start_month)
         failed = ChangeRequest.where("status = 'failed' AND closed_date <= ? AND closed_date >= ?",end_month, start_month)
       else
-        success = ChangeRequest.where("status = 'success' AND closed_date <= ? AND closed_date >= ?",end_month, start_month).tagged_with(tag)
+        success = ChangeRequest.where("status = 'succeeded' AND closed_date <= ? AND closed_date >= ?",end_month, start_month).tagged_with(tag)
         failed = ChangeRequest.where("status = 'failed' AND closed_date <= ? AND closed_date >= ?",end_month, start_month).tagged_with(tag)
       end
       total_success = success.blank? ? 0 : success.count
@@ -430,9 +433,9 @@ class ChangeRequestsController < ApplicationController
     def submitted_required
       if @change_request.draft?
         #do nothing
-      elsif @change_request.closed?
+      elsif @change_request.terminal_state?
         redirect_to change_requests_path
-      elsif @change_request.scheduled? || @change_request.deployed?
+      elsif @change_request.deployed?
         redirect_to implementation_notes_path
       else
         redirect_to graceperiod_path if !@change_request.submitted?
