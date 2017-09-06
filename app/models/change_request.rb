@@ -59,34 +59,30 @@ class ChangeRequest < ActiveRecord::Base
 
   aasm do
     state :submitted
-    state :scheduled
     state :deployed
     state :rollbacked
     state :cancelled
-    state :closed
-    state :rejected
+    state :succeeded
+    state :failed
     state :draft, :initial => true
-    event :schedule do
-      transitions :from => :submitted, :to => :scheduled, :guard => :approvable?
-    end
-    event :reject do
-      transitions :from => :submitted, :to => :rejected
-    end
-    event :deploy do
-      transitions :from => :scheduled, :to => :deployed
-    end
-    event :rollback do
-      transitions :from => [:scheduled, :deployed], :to => :rollbacked
+
+    event :submit do
+      transitions :from => :draft, :to => :submitted
     end
     event :cancel do
-      transitions :from => :scheduled, :to => :cancelled
+      transitions :from => :submitted, :to => :cancelled
+    end
+    event :deploy do
+      transitions :from => :submitted, :to => :deployed, :guard => :deployable?
     end
     event :close do
-      transitions :from => [:submitted, :rejected, :rollbacked, :cancelled, :scheduled], :to => :closed, after: :failed_change_request
-      transitions :from => :deployed, :to => :closed, after: :success_change_request
+      transitions :from => :deployed, :to => :succeeded
     end
-    event :submit do
-      transitions :form => [:draft, :cancelled], :to => :submitted
+    event :rollback do
+      transitions :from => [:succeeded, :deployed], :to => :rollbacked
+    end
+    event :fail do
+      transitions :from => [:succeeded, :deployed], :to => :failed
     end
   end
 
@@ -126,16 +122,6 @@ class ChangeRequest < ActiveRecord::Base
     grace_period_end to_s: 'grace period end'
     grace_period_notes to_s: 'grace period notes'
     implementers do |implementers| implementers.collect(&:name).join(';') end
-  end
-
-  def failed_change_request
-    self.status = 'failed'
-    self.closed_date = Time.now
-  end
-
-  def success_change_request
-    self.status = 'success'
-    self.closed_date = Time.now
   end
 
   def at_least_one_category
@@ -190,7 +176,7 @@ class ChangeRequest < ActiveRecord::Base
     end
   end
 
-  def approvable?
+  def deployable?
     self.approvals.where(approve: true).count == self.approvals.count
   end
 
@@ -281,6 +267,30 @@ class ChangeRequest < ActiveRecord::Base
 
   def has_approver?(user)
     Approval.where(change_request_id: id, user_id: user.id).any?
+  end
+
+  def terminal_state?
+    return self.cancelled? || self.failed? || self.rollbacked? 
+  end
+
+  def state_require_note?(state)
+    states = [:cancel, :fail, :rollback]
+    states.include? state
+  end
+
+  def next_states
+    return self.aasm.events(:permitted => true).map(&:name)
+  end
+
+  def current_state
+    return self.aasm.current_event
+  end
+
+  def editable?(user)
+    return (user == self.user || user.collaborate_change_requests.include?(self) ||
+           user.is_admin || user.role == 'release_manager') && 
+           !self.terminal_state? && 
+           !self.has_approver?(user)
   end
 
 end
