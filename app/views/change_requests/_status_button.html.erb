@@ -1,42 +1,11 @@
-<% case status %>
-<% when 'submitted' %>
+<% terminal_statuses = ['cancelled', 'failed', 'rollbacked'] %>
+<% unless status == 'draft' %>
 <span>
-  <button class="btn btn-success btn-lg"> Submitted <i class="fa fa-check" aria-hidden="true"></i> </button>
-  <i class="glyphicon glyphicon-menu-right" aria-hidden="true"style="font-size:1.5em;"></i>
-</span>
-<% when 'scheduled' %>
-<span>
-  <button class="btn btn-success btn-lg"> Scheduled <i class="fa fa-check" aria-hidden="true"></i> </button>
-  <i class="glyphicon glyphicon-menu-right" aria-hidden="true"style="font-size:1.5em;"></i>
-</span>
-<% when 'deployed' %>
-<span>
-  <button class="btn btn-success btn-lg"> Deployed <i class="fa fa-check" aria-hidden="true"></i> </button>
-  <i class="glyphicon glyphicon-menu-right" aria-hidden="true"style="font-size:1.5em;"></i>
-</span>
-<% when 'closed' %>
-  <% if @change_request.status == 'success' %>
-  <span>
-    <button class="btn btn-success btn-lg"> Success <i class="fa fa-check" aria-hidden="true"></i> </button>
-  </span>
-  <% else %>
-  <span>
-    <button class="btn btn-danger btn-lg"> Failed <i class="fa fa-times" aria-hidden="true"></i> </button>
-  </span>
+	<% unless status == 'submitted' %>
+  	<i class="glyphicon glyphicon-menu-right" aria-hidden="true"style="font-size:1.5em;"></i>
   <% end %>
-<% when 'cancelled' %>
-<span>
-  <button class="btn btn-danger btn-lg"> Cancelled <i class="fa fa-times" aria-hidden="true"></i> </button>
-  <i class="glyphicon glyphicon-menu-right" aria-hidden="true"style="font-size:1.5em;"></i>
-</span>
-<% when 'rollbacked' %>
-<span>
-  <button class="btn btn-danger btn-lg"> Rollbacked <i class="fa fa-times" aria-hidden="true"></i> </button>
-  <i class="glyphicon glyphicon-menu-right" aria-hidden="true"style="font-size:1.5em;"></i>
-</span>
-<% when 'rejected' %>
-<span>
-  <button class="btn btn-danger btn-lg"> Rejected <i class="fa fa-times" aria-hidden="true"></i> </button>
-  <i class="glyphicon glyphicon-menu-right" aria-hidden="true"style="font-size:1.5em;"></i>
+  <button class="btn btn-<%= (!terminal_statuses.include? status) ? 'success' : 'danger' %> btn-lg"> 
+    <%= status.to_s.humanize %> <i class="fa fa-<%= (!terminal_statuses.include? status) ? 'check' : 'times' %>" aria-hidden="true"></i> 
+  </button>
 </span>
 <% end %>
