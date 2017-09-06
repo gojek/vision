@@ -1,89 +1,20 @@
-<% if !@change_request.closed? %>
+<% unless @change_request.terminal_state? %>
+<i class="glyphicon glyphicon-menu-right" aria-hidden="true"style="font-size:1.5em;"></i>
 <span>
   <div class="dropdown" style="display: inline;">
     <button class="btn btn-primary dropdown-toggle btn-lg" data-toggle="dropdown">Next Action<span class="caret"></span></button>
     <ul class="dropdown-menu">
-      <% if @change_request.submitted? %>
-      <li>
-        <a href="#" data-toggle="modal" data-target="#ScheduleModalLabel">
-          Schedule Change Request
-        </a>
-      </li>
-      <li class="divider"></li>
-      <li>
-        <a href="#" data-toggle="modal" data-target="#RejectModalLabel">
-          Reject Change Request
-        </a>
-      </li>
-      <li class="divider"></li>
-      <li>
-        <a href="#" data-toggle="modal" data-target="#CloseModalLabel">
-          Close Change Request
-        </a>
-      </li>
-      <% elsif @change_request.scheduled? %>
-      <li>
-        <a href="#" data-toggle="modal" data-target="#DeployModalLabel">
-          Deploy Change Request
-        </a>
-      </li>
-      <li class="divider"></li>
-      <li>
-        <a href="#" data-toggle="modal" data-target="#RollbackModalLabel">
-          Rollback Change Request
-        </a>
-      </li>
-      <li class="divider"></li>
-      <li>
-        <a href="#" data-toggle="modal" data-target="#CancelModalLabel">
-          Cancel Change Request
-        </a>
-      </li>
-      <li class="divider"></li>
-      <li>
-        <a href="#" data-toggle="modal" data-target="#CloseModalLabel">
-          Close Change Request
-        </a>
-      </li>
-      <% elsif @change_request.deployed? %>
-      <li>
-        <a href="#" data-toggle="modal" data-target="#RollbackModalLabel">
-          Rollback Change Request
-        </a>
-      </li>
-      <li class="divider"></li>
-      <li>
-        <a href="#" data-toggle="modal" data-target="#CloseModalLabel">
-          Close Change Request
-        </a>
-      </li>
-      <% elsif @change_request.rollbacked? %>
-      <li>
-        <a href="#" data-toggle="modal" data-target="#CloseModalLabel">
-          Close Change Request
-        </a>
-      </li>
-      <% elsif @change_request.cancelled? %>
-      <li>
-        <a href="#" data-toggle="modal" data-target="#SubmitModalLabel">
-          Submit Change Request
-        </a>
-      </li>
-      <li class="divider"></li>
-      <li>
-        <a href="#" data-toggle="modal" data-target="#CloseModalLabel">
-          Close Change Request
-        </a>
-      </li>
-      <% elsif @change_request.rejected? %>
-      <li>
-        <a href="#" data-toggle="modal" data-target="#CloseModalLabel">
-          Close Change Request
-        </a>
-      </li>
+      <% @change_request.next_states.each do |state| %>
+        <li>
+          <a href="#" data-toggle="modal" data-target="#<%= state.to_s.humanize %>Modal">
+            <%= state.to_s.humanize %>
+          </a>
+        </li>
+        <% if state != @change_request.next_states.last %>
+          <li class="divider"></li>
+        <% end %>
       <% end %>
     </ul>
   </div>
 </span>
-<% else %>
 <% end %>
