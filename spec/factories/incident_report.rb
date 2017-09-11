@@ -6,6 +6,7 @@ FactoryGirl.define do
     occurrence_time {3.days.ago}
     detection_time {2.days.ago}
     recovery_time  {Time.now}
+    recovery_duration {Time.now - 3.days.ago}
     source "Internal"
     rank 1
     loss_related  "lost"
@@ -18,22 +19,27 @@ FactoryGirl.define do
     measurer_status "Implemented"
 
     factory :invalid_incident_report do 
-        service_impact "Service impact"
-        problem_details "Problem details"
-        how_detected "How detected"
-        occurrence_time {Time.now}
-        detection_time {Time.now}
-        recovery_time  {Time.now}
-        source "Internal"
-        rank 1
-        loss_related  "lost"
-        occurred_reason "reason"
-        overlooked_reason "overlooked_reason"
-        recovery_action "recovery_action"
-        prevent_action "prevent_action"
-        recurrence_concern "Low"
-        current_status "curent"
-        measurer_status "Implemented"
-      end
-    end  
+      service_impact "Service impact"
+      problem_details "Problem details"
+      how_detected "How detected"
+      occurrence_time {Time.now}
+      detection_time {Time.now}
+      recovery_time  {Time.now}
+      source "Internal"
+      rank 1
+      loss_related  "lost"
+      occurred_reason "reason"
+      overlooked_reason "overlooked_reason"
+      recovery_action "recovery_action"
+      prevent_action "prevent_action"
+      recurrence_concern "Low"
+      current_status "curent"
+      measurer_status "Implemented"
+    end
+    
+    before(:create) do |ir|
+      ir.user = FactoryGirl.create(:user)
+    end
+  end  
+
 end

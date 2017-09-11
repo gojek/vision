@@ -5,9 +5,6 @@ class IncidentReportsController < ApplicationController
   before_action :authenticate_user!
   before_action :owner_required, only: [:edit, :update, :destroy]
 
-  require 'notifier.rb'
-  require 'slack_notif.rb'
-
   def index
     if params[:tag]
       @q = IncidentReport.ransack(params[:q])
