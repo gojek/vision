@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
   devise :trackable, :lockable, :timeoutable,
          :omniauthable, omniauth_providers: [:google_oauth2]
   acts_as_reader
-  ROLES = %w(requestor approver release_manager)
+  ROLES = %w(requestor approver release_manager approver_ar)
   ADMIN = %w(Admin User)
   validates :role, inclusion: { in: ROLES,
                               message: '%{value} is not a valid role' }
