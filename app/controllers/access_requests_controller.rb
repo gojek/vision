@@ -1,25 +1,20 @@
 class AccessRequestsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_access_request, only: [:show, :edit, :update, :destroy, :cancel, :close, :approve, :reject]
+  before_action :set_access_request, except: [:index, :new, :create]
   before_action :authorized_to_change_status, only: [:cancel, :close]
   before_action :set_access_request_reason, only: [:cancel, :close]
   before_action :set_access_request_approval, only: [:approve, :reject]
+  before_action :set_users_and_approvers, only: [:new, :edit]
 
   def index
     @q = AccessRequest.ransack(params[:q])
     @access_requests = @q.result(distinct: true).order(id: :desc)
 
-    respond_to do |format|
-      format.html do
-        @access_requests = @access_requests.page(params[:page]).per(params[:per_page])
-      end
-    end
+    @access_requests = @access_requests.page(params[:page]).per(params[:per_page])
   end
 
   def new
     @access_request = AccessRequest.new
-    @users = User.all.collect{|u| [u.name, u.id]}
-    @approvers = User.approvers_ar.collect{|u| [u.name, u.id] if u.id != current_user.id }
   end
 
   def create
@@ -29,13 +24,13 @@ class AccessRequestsController < ApplicationController
     @access_request.set_approvers(@current_approvers)
     @access_request.set_collaborators(@current_collaborators)
     
-    unless @access_request.save
-      @access_request.save(:validate=> false)
-      flash[:notice] = 'Access request was created as a draft.'
-      flash[:invalid] = @access_request.errors.full_messages
-    else
+    if @access_request.save
       @access_request.submit! if @access_request.draft?
       flash[:success] = 'Change request was successfully created.'
+    else
+      @access_request.save(validate: false)
+      flash[:notice] = 'Access request was created as a draft.'
+      flash[:invalid] = @access_request.errors.full_messages
     end
     
     redirect_to @access_request
@@ -46,8 +41,6 @@ class AccessRequestsController < ApplicationController
   end
 
   def edit
-    @users = User.all.collect{|u| [u.name, u.id]}
-    @approvers = User.approvers_ar.collect{|u| [u.name, u.id] if u.id != current_user.id }
   end
 
   def update
@@ -91,7 +84,7 @@ class AccessRequestsController < ApplicationController
   def close
     if @access_request.may_close? && @access_request.closeable?
       unless @access_request.close!
-        flash[:alert] = 'Reason must be filled Cancel AR'
+        flash[:alert] = @approval.errors.full_messages.to_sentece
       end
     else
       flash[:alert] = 'AR can\'t be closed'
@@ -128,16 +121,53 @@ class AccessRequestsController < ApplicationController
     end
 
     def access_request_params
-      params.require(:access_request).permit(:request_type, :access_type, :start_date, :end_date, :employee_name, 
-        :employee_position, :employee_email_address, :employee_department, :employee_phone, :employee_access, 
-        :fingerprint_business_area, :fingerprint_business_operations, :fingerprint_it_operations, :fingerprint_server_room, 
-        :fingerprint_archive_room, :fingerprint_engineering_area, :corporate_email, :internet_access, :slack_access, 
-        :admin_tools, :vpn_access, :github_gitlab, :exit_interview, :access_card, :parking_cards, :id_card, :name_card, 
-        :insurance_card, :cash_advance, :password_reset, :user_identification, :asset_name)
+      params
+        .require(:access_request)
+        .permit(
+          :request_type,
+          :access_type,
+          :start_date,
+          :end_date,
+          :employee_name, 
+          :employee_position,
+          :employee_email_address,
+          :employee_department,
+          :employee_phone,
+          :employee_access, 
+          :fingerprint_business_area,
+          :fingerprint_business_operations,
+          :fingerprint_it_operations,
+          :fingerprint_server_room, 
+          :fingerprint_archive_room,
+          :fingerprint_engineering_area,
+          :corporate_email,
+          :internet_access,
+          :slack_access, 
+          :admin_tools,
+          :vpn_access,
+          :github_gitlab,
+          :exit_interview,
+          :access_card,
+          :parking_cards,
+          :id_card,
+          :name_card, 
+          :insurance_card,
+          :cash_advance,
+          :password_reset,
+          :user_identification,
+          :asset_name
+      )
     end
 
     def set_access_request_reason
       @access_request.reason = params[:access_request_status][:reason]
+    end
+
+    def set_users_and_approvers
+      @users = User.all.collect{|u| [u.name, u.id]}
+      @approvers = User.approvers_ar.collect{|u| [u.name, u.id] if u.id != current_user.id }
+      puts @users
+      puts @approvers
     end
 
     def set_access_request_approval
@@ -149,6 +179,9 @@ class AccessRequestsController < ApplicationController
     end
 
     def authorized_to_change_status
-
+      unless @access_request.actionable?(current_user)
+        flash[:alert] = 'You are not eligible to change the status of this Access Request'
+        redirect_to @access_request
+      end
     end
 end
