@@ -9,7 +9,7 @@
   <% @access_request.statuses.each do |status| %>
     <%= render 'status_button', status: status.status %>
   <% end %>
-  <% if (current_user.is_admin || @access_request.is_associate?(current_user)) && !@access_request.draft? %>
+  <% if @access_request.actionable?(current_user) %>
   <%= render 'next_actions' %>
   <% else %>
   <span>
@@ -23,7 +23,7 @@
 <div class="modal fade" id="<%= state.to_s.humanize %>Modal" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
-      <%= form_for(@access_request_status, url: self.send("ar_#{state.to_s}_path")) do |f| %>
+      <%= form_for(@access_request_status, url: self.send("#{state.to_s}_access_request_path")) do |f| %>
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
           <h4 class="modal-title"><%= state.to_s.humanize %></h4>
