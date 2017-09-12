@@ -328,7 +328,7 @@
 <div class="modal fade" id="accept" tabindex="-1" role="dialog" aria-labelledby="ScheduleModalLabel" aria-hidden="true" style="display: none;">
   <div class="modal-dialog">
       <div class="modal-content">
-        <%= form_tag(ar_approve_path) do %>
+        <%= form_tag(approve_access_request_path) do %>
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
           <h4 class="modal-title" id="myModalLabel">Accept Access Request </h4>
@@ -351,7 +351,7 @@
 <div class="modal fade" id="reject" tabindex="-1" role="dialog" aria-labelledby="ScheduleModalLabel" aria-hidden="true" style="display: none;">
   <div class="modal-dialog">
       <div class="modal-content">
-        <%= form_tag(ar_reject_path) do %>
+        <%= form_tag(reject_access_request_path) do %>
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
           <h4 class="modal-title" id="myModalLabel">Reject Access Request </h4>

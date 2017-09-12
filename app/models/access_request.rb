@@ -7,12 +7,16 @@ class AccessRequest < ActiveRecord::Base
   has_many :approvals, join_table: :access_request_approvals, dependent: :destroy, class_name: 'AccessRequestApproval'
   has_many :statuses, join_table: :access_request_statuses, dependent: :destroy, class_name: 'AccessRequestStatus'
 
-  REQUEST_TYPE = %w(Create Delete Modify)
-  ACCESS_TYPE = %w(Permanent Temporary)
+  TEMPORARY = 'Temporary'.freeze
+  PERMANENT = 'Permanent'.freeze
+
+  REQUEST_TYPES = %w(Create Delete Modify).freeze
+  ACCESS_TYPES = [PERMANENT, TEMPORARY]
+
 
   validates :approvals, presence: true
-  validates :request_type, inclusion: { in: REQUEST_TYPE, message: '%{value} is not a valid scope' }
-  validates :access_type, inclusion: { in: ACCESS_TYPE, message: '%{value} is not a valid scope' }
+  validates :request_type, inclusion: { in: REQUEST_TYPES, message: '%{value} is not a valid scope' }
+  validates :access_type, inclusion: { in: ACCESS_TYPES, message: '%{value} is not a valid scope' }
   validates :start_date, :end_date, presence: true, if: :temporary?
   validates :employee_name, :employee_position, :employee_email_address, :employee_department, :employee_phone, 
             presence: true
@@ -37,35 +41,35 @@ class AccessRequest < ActiveRecord::Base
   end
 
   def set_request_date
-    self.request_date = Time.now
+    self.request_date = Time.current
   end
 
   def temporary?
-    self.access_type == 'Temporary'
+    access_type == TEMPORARY
   end
 
   def duration
-    return nil if !self.temporary?
-    (self.end_date - self.start_date).to_i
+    return nil if !temporary?
+    (end_date - start_date).to_i
   end
 
   def approved_count
-    self.approvals.where(approved: true).count
+    approvals.where(approved: true).count
   end
 
   def rejected_count
-    self.approvals.where(approved: false).count
+    approvals.where(approved: false).count
   end
 
   def approval_status
-    return 'none' if self.draft?
+    return 'none' if draft?
     return 'failed' if rejected_count > 0
-    self.closeable? ? 'success' : 'on progress'
+    closeable? ? 'success' : 'on progress'
   end
 
   def editable?(user)
-    return ((self.user == user) || user.is_admin || (self.collaborators.include? user)) &&
-      !self.terminal_state? && !self.has_approver?(user)
+    return ((self.user == user) || user.is_admin || (collaborators.include? user)) &&
+      !terminal_state? && !has_approver?(user)
   end
 
   def set_approvers(approver_id_list)
@@ -93,14 +97,14 @@ class AccessRequest < ActiveRecord::Base
   end
 
   def create_access_request_status
-    unless self.statuses.new(:status => self.aasm_state, :reason => self.reason).valid?
-      self.aasm_state = self.changes['aasm_state'].first
+    unless statuses.new(:status => aasm_state, :reason => reason).valid?
+      self.aasm_state = changes['aasm_state'].first
       return false
     end
   end
 
   def terminal_state?
-    return self.cancelled? || self.succeeded?
+    return cancelled? || succeeded?
   end
 
   def state_require_note?(state)
@@ -109,15 +113,15 @@ class AccessRequest < ActiveRecord::Base
   end
 
   def next_states
-    return self.aasm.events(:permitted => true).map(&:name)
+    return aasm.events(permitted: true).map(&:name)
   end
 
   def current_state
-    return self.aasm.current_event
+    return aasm.current_event
   end
 
   def closeable?
-    self.approvals.count > 0  && approved_count == self.approvals.count
+    self.approvals.count > 0  && self.approved_count == self.approvals.count
   end
 
   def has_approver?(user)
@@ -125,11 +129,15 @@ class AccessRequest < ActiveRecord::Base
   end
   
   def is_associate?(user)
-    stakeholders = [self.user] + self.collaborators + (self.approvals.map { |approval| approval.user })
+    stakeholders = [self.user] + collaborators + (approvals.map { |approval| approval.user })
     stakeholders.include? user
   end
 
   def is_approved?(user)
     AccessRequestApproval.where(access_request_id: id, user_id: user.id).first.approved
+  end
+
+  def actionable?(user)
+    (user.is_admin || is_associate?(user)) && !draft?
   end
 end
