@@ -79,7 +79,7 @@ class ChangeRequest < ActiveRecord::Base
       transitions :from => :deployed, :to => :succeeded, :after => :set_closed_date
     end
     event :rollback do
-      transitions :from => [:succeeded, :deployed], :to => :rollbacked
+      transitions :from => [:succeeded, :deployed], :to => :rollbacked, :after => :set_closed_date
     end
     event :fail do
       transitions :from => [:succeeded, :deployed], :to => :failed, :after => :set_closed_date
