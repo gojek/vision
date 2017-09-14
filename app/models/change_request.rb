@@ -76,13 +76,13 @@ class ChangeRequest < ActiveRecord::Base
       transitions :from => :submitted, :to => :deployed, :guard => :deployable?
     end
     event :close do
-      transitions :from => :deployed, :to => :succeeded
+      transitions :from => :deployed, :to => :succeeded, :after => :set_closed_date
     end
     event :rollback do
       transitions :from => [:succeeded, :deployed], :to => :rollbacked
     end
     event :fail do
-      transitions :from => [:succeeded, :deployed], :to => :failed
+      transitions :from => [:succeeded, :deployed], :to => :failed, :after => :set_closed_date
     end
   end
 
@@ -124,6 +124,10 @@ class ChangeRequest < ActiveRecord::Base
     grace_period_end to_s: 'grace period end' do |html| Sanitize.fragment(html) end
     grace_period_notes to_s: 'grace period notes' do |html| Sanitize.fragment(html) end
     implementers do |implementers| implementers.collect(&:name).join(';') end
+  end
+
+  def set_closed_date
+    self.closed_date = Time.now
   end
 
   def at_least_one_category
