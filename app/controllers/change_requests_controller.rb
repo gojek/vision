@@ -306,91 +306,30 @@ class ChangeRequestsController < ApplicationController
 
   respond_to :json
   def change_requests_by_success_rate
-    #default status is weekly
-    status = 'weekly'
-    start_time = Time.now.beginning_of_month
-    end_time = Time.now.end_of_month
-    if(params[:start_time])
-      start_time = params[:start_time].in_time_zone('Asia/Jakarta')
-    end
-    if(params[:end_time])
-      end_time = params[:end_time].in_time_zone('Asia/Jakarta')
-    end
-    if(params[:tag])
-      tag = params[:tag]
-    end
-    if(params[:status])
-      status = params[:status]
+    status = params[:status] ? params[:status] : 'weekly'
+    start_time = params[:start_time] ? Time.parse(params[:start_time]) : Time.now.beginning_of_month
+    end_time = params[:end_time] ? Time.parse(params[:end_time]) : Time.now.end_of_month
+    status = params[:status] ? params[:status] : 'weekly'
+    tag = params[:tag]
+
+    if status = 'weekly'
+      change_requests = ChangeRequest.group_by_week(:closed_date, range: start_time..end_time)
+    else 
+      change_requests = ChangeRequest.group_by_month(:closed_date, format: "%b %Y", range: start_time..end_time)
     end
 
-    if status == 'weekly'
-      result = change_request_by_success_rate_weekly(start_time, end_time, tag)
-    else
-      result = change_request_by_success_rate_monthly(start_time, end_time, tag)
+    if tag.nil?
+      change_requests.tagged_with(tag)
     end
-    render :text => result.to_json
-  end
 
-  def change_request_by_success_rate_weekly(start_time, end_time, tag)
-    i = 1
-    result = []
-    while start_time <= end_time do
-      start_week = start_time
-      if start_week.end_of_week > end_time
-        end_week = end_time
-      else
-        end_week = start_week.end_of_week
-      end
-      if tag==nil
-        success = ChangeRequest.where("aasm_state = 'succeeded' AND closed_date <= ? AND closed_date >= ?",end_week, start_week)
-        failed = ChangeRequest.where("aasm_state = 'failed' AND closed_date <= ? AND closed_date >= ?",end_week, start_week)
-      else
-        success = ChangeRequest.where("aasm_state = 'succeeded' AND closed_date <= ? AND closed_date >= ?",end_week, start_week).tagged_with(tag)
-        failed = ChangeRequest.where("aasm_state = 'failed' AND closed_date <= ? AND closed_date >= ?",end_week, start_week).tagged_with(tag)
-      end
-      total_success = success.blank? ? 0 : success.count
-      total_failed = failed.blank? ? 0 : failed.count
-      result << {
-        success: total_success,
-        failed: total_failed,
-        label: start_week.strftime("%d/%m")+' - '+end_week.strftime("%d/%m")
-      }
-      start_time = (end_week + 1.day).beginning_of_day
-      i = i + 1
-    end
-    final_result = [{title: 'Weekly'}, result]
-    final_result
-  end
+    succeeded = change_requests.where(aasm_state: 'succeeded').count
+    failed = change_requests.where(aasm_state: 'failed').count
+    rollbacked = change_requests.where(aasm_state: 'rollbacked').count
 
-  def change_request_by_success_rate_monthly(start_time, end_time, tag)
-    result = []
-    i = 1
-    while start_time <= end_time do
-      start_month = start_time
-      if start_month.end_of_month > end_time
-        end_month = end_time
-      else
-        end_month = start_month.end_of_month
-      end
-      if tag==nil
-        success = ChangeRequest.where("aasm_state = 'succeeded' AND closed_date <= ? AND closed_date >= ?",end_month, start_month)
-        failed = ChangeRequest.where("aasm_state = 'failed' AND closed_date <= ? AND closed_date >= ?",end_month, start_month)
-      else
-        success = ChangeRequest.where("aasm_state = 'succeeded' AND closed_date <= ? AND closed_date >= ?",end_month, start_month).tagged_with(tag)
-        failed = ChangeRequest.where("aasm_state = 'failed' AND closed_date <= ? AND closed_date >= ?",end_month, start_month).tagged_with(tag)
-      end
-      total_success = success.blank? ? 0 : success.count
-      total_failed = failed.blank? ? 0 : failed.count
-      result << {
-        success: total_success,
-        failed: total_failed,
-        label: start_month.strftime("%B")
-      }
-      start_time = (end_month + 1.day).beginning_of_day
-      i = i + 1
-    end
-    final_result = [{title: 'Monthly'}, result]
-    final_result
+    results = succeeded.map { |k,x| { label: k, succeeded: x, failed: failed[k], rollbacked: rollbacked[k] } }
+
+    final_result = [{title: status.humanize}, results]
+    render :text => final_result.to_json
   end
 
   private
