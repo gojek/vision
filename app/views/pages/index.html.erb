@@ -433,9 +433,19 @@
               "labelText": "[[value]]",
               "lineColor": '#84b761',
               "lineAlpha": 0.3,
-              "title": "Success",
+              "title": "Succeeded",
               "type": "column",
-              "valueField": "success"
+              "valueField": "succeeded"
+          }, {
+              "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+              "fillColors": '#e74c3c',
+              "fillAlphas": 0.8,
+              "labelText": "[[value]]",
+              "lineAlpha": 0.3,
+              "lineColor": '#e74c3c',
+              "title": "Failed",
+              "type": "column",
+              "valueField": "failed"
           }, {
               "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
               "fillColors": '#eba2a2',
@@ -443,9 +453,9 @@
               "labelText": "[[value]]",
               "lineAlpha": 0.3,
               "lineColor": '#eba2a2',
-              "title": "Failed",
+              "title": "Rollbacked",
               "type": "column",
-              "valueField": "failed"
+              "valueField": "rollbacked"
           }],
           "categoryField": "label",
           "categoryAxis": {
