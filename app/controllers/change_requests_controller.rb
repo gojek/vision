@@ -342,11 +342,11 @@ class ChangeRequestsController < ApplicationController
         end_week = start_week.end_of_week
       end
       if tag==nil
-        success = ChangeRequest.where("status = 'succeeded' AND closed_date <= ? AND closed_date >= ?",end_week, start_week)
-        failed = ChangeRequest.where("status = 'failed' AND closed_date <= ? AND closed_date >= ?",end_week, start_week)
+        success = ChangeRequest.where("aasm_state = 'succeeded' AND closed_date <= ? AND closed_date >= ?",end_week, start_week)
+        failed = ChangeRequest.where("aasm_state = 'failed' AND closed_date <= ? AND closed_date >= ?",end_week, start_week)
       else
-        success = ChangeRequest.where("status = 'succeeded' AND closed_date <= ? AND closed_date >= ?",end_week, start_week).tagged_with(tag)
-        failed = ChangeRequest.where("status = 'failed' AND closed_date <= ? AND closed_date >= ?",end_week, start_week).tagged_with(tag)
+        success = ChangeRequest.where("aasm_state = 'succeeded' AND closed_date <= ? AND closed_date >= ?",end_week, start_week).tagged_with(tag)
+        failed = ChangeRequest.where("aasm_state = 'failed' AND closed_date <= ? AND closed_date >= ?",end_week, start_week).tagged_with(tag)
       end
       total_success = success.blank? ? 0 : success.count
       total_failed = failed.blank? ? 0 : failed.count
