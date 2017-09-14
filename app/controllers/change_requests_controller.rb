@@ -373,11 +373,11 @@ class ChangeRequestsController < ApplicationController
         end_month = start_month.end_of_month
       end
       if tag==nil
-        success = ChangeRequest.where("status = 'succeeded' AND closed_date <= ? AND closed_date >= ?",end_month, start_month)
-        failed = ChangeRequest.where("status = 'failed' AND closed_date <= ? AND closed_date >= ?",end_month, start_month)
+        success = ChangeRequest.where("aasm_state = 'succeeded' AND closed_date <= ? AND closed_date >= ?",end_month, start_month)
+        failed = ChangeRequest.where("aasm_state = 'failed' AND closed_date <= ? AND closed_date >= ?",end_month, start_month)
       else
-        success = ChangeRequest.where("status = 'succeeded' AND closed_date <= ? AND closed_date >= ?",end_month, start_month).tagged_with(tag)
-        failed = ChangeRequest.where("status = 'failed' AND closed_date <= ? AND closed_date >= ?",end_month, start_month).tagged_with(tag)
+        success = ChangeRequest.where("aasm_state = 'succeeded' AND closed_date <= ? AND closed_date >= ?",end_month, start_month).tagged_with(tag)
+        failed = ChangeRequest.where("aasm_state = 'failed' AND closed_date <= ? AND closed_date >= ?",end_month, start_month).tagged_with(tag)
       end
       total_success = success.blank? ? 0 : success.count
       total_failed = failed.blank? ? 0 : failed.count
