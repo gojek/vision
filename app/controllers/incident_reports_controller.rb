@@ -4,6 +4,7 @@ class IncidentReportsController < ApplicationController
   before_action :set_incident_report, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
   before_action :owner_required, only: [:edit, :update, :destroy]
+  before_action :set_users_and_tags, only: [:new, :edit, :update]
 require 'notifier.rb'
   def index
     if params[:tag]
@@ -46,15 +47,11 @@ require 'notifier.rb'
 
   def new
     @incident_report = IncidentReport.new
-    @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
     @current_tags = []
-    @users = User.all.collect{|u| [u.name, u.id]}
   end
 
   def edit
-    @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
     @current_tags = @incident_report.tag_list
-    @users = User.all.collect{|u| [u.name, u.id]}
   end
 
   def create
@@ -292,6 +289,9 @@ require 'notifier.rb'
     redirect_to incident_reports_url if !(@incident_report.editable? current_user)
   end
 
-
+  def set_users_and_tags
+    @users = User.all.collect{|u| [u.name, u.id]}
+    @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
+  end
 
 end
