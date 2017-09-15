@@ -97,7 +97,9 @@ class AccessRequest < ActiveRecord::Base
   end
 
   def create_access_request_status
-    unless statuses.new(:status => aasm_state, :reason => reason).valid?
+    status = statuses.new(:status => aasm_state, :reason => reason)
+    unless status.valid?
+      self.errors[:status] << status.errors.full_messages
       self.aasm_state = changes['aasm_state'].first
       return false
     end

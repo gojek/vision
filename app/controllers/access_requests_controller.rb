@@ -73,7 +73,7 @@ class AccessRequestsController < ApplicationController
   def cancel
     if @access_request.may_cancel?
       unless @access_request.cancel!
-        flash[:alert] = 'Reason must be filled Cancel AR'
+        flash[:alert] = @access_request.errors.full_messages.to_sentence
       end
     else
       flash[:alert] = 'AR can\'t be cancelled'
@@ -84,7 +84,7 @@ class AccessRequestsController < ApplicationController
   def close
     if @access_request.may_close? && @access_request.closeable?
       unless @access_request.close!
-        flash[:alert] = @approval.errors.full_messages.to_sentece
+        flash[:alert] = @access_request.errors.full_messages.to_sentence
       end
     else
       flash[:alert] = 'AR can\'t be closed'
@@ -96,7 +96,7 @@ class AccessRequestsController < ApplicationController
     if @approval.update(approved: true, notes: params["notes"])
       flash[:success] = 'Access Request approved'
     else
-      flash[:notice] = 'You must fill notes'
+      flash[:notice] = @approval.errors.full_messages.to_sentence
     end
     redirect_to @access_request
   end
@@ -105,7 +105,7 @@ class AccessRequestsController < ApplicationController
     if @approval.update(approved: false, notes: params["notes"])
       flash[:success] = 'Access Request rejected'
     else
-      flash[:notice] = 'You must fill notes'
+      flash[:notice] = @approval.errors.full_messages.to_sentence
     end
     redirect_to @access_request
   end
