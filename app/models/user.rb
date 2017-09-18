@@ -8,13 +8,14 @@ class User < ActiveRecord::Base
   devise :trackable, :lockable, :timeoutable,
          :omniauthable, omniauth_providers: [:google_oauth2]
   acts_as_reader
-  ROLES = %w(requestor approver release_manager)
+  ROLES = %w(requestor approver release_manager approver_ar)
   ADMIN = %w(Admin User)
   validates :role, inclusion: { in: ROLES,
                               message: '%{value} is not a valid role' }
   validates :email, presence: true
   has_many :IncidentReports
   has_many :ChangeRequests
+  has_many :AccessRequests
   has_and_belongs_to_many :associated_change_requests, join_table: :change_requests_associated_users, class_name: 'ChangeRequest'
   has_and_belongs_to_many :collaborate_change_requests, join_table: :collaborators, class_name: 'ChangeRequest'
   has_and_belongs_to_many :implement_change_requests, join_table: :implementers, class_name: :ChangeRequest
@@ -26,6 +27,7 @@ class User < ActiveRecord::Base
                   message: "must be a veritrans account" }
   validates :email, uniqueness: true
   scope :approvers, -> {where(role: 'approver')}
+  scope :approvers_ar, -> {where(role: 'approver_ar')}
 
 
   def account_active?
