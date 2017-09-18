@@ -226,6 +226,29 @@ class IncidentReportsController < ApplicationController
     render :text => final_result.to_json
   end
 
+
+  respond_to :json
+  def incident_reports_internal_external
+    if params[:end_time]
+      current = Time.parse(params[:end_time])
+    else
+      current = Date.current
+    end
+
+    start_month = (current - 6.months).beginning_of_month
+    end_month = current.end_of_month
+
+    title = start_month.strftime("%B %Y") + ' - ' + end_month.strftime("%B %Y")
+
+    irs = IncidentReport.group_by_month(:occurrence_time, format: "%b %Y", range: start_month..end_month)
+    internals = irs.where(source: 'Internal').count
+    results = irs.where(source: 'External').count
+      .map { |k,x| { label: k, total_internal: internals[k], total_external: x  } }
+    
+    final_result = [{title: title}, results]
+    render :text => final_result.to_json
+  end
+
   respond_to :json
   def incident_reports_number
     start_month = (Time.now).beginning_of_month
