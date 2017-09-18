@@ -4,9 +4,6 @@ class IncidentReportsController < ApplicationController
   before_action :set_incident_report, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
   before_action :owner_required, only: [:edit, :update, :destroy]
-  
-  require 'notifier.rb'
-  require 'jira.rb'
 
   def index
     if params[:tag]
@@ -43,9 +40,11 @@ class IncidentReportsController < ApplicationController
   end
 
   def show
-     @incident_report.mark_as_read! :for => current_user
-     Notifier.ir_read(current_user,@incident_report)
-     @action_item = Jira.new.jiraize(@incident_report.action_item)
+    @incident_report.mark_as_read! :for => current_user
+    Notifier.ir_read(current_user,@incident_report)
+    unless @incident_report.action_item.nil?
+      @action_item = Jira.new.jiraize(@incident_report.action_item)
+    end
   end
 
   def new
