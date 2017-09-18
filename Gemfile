@@ -61,6 +61,7 @@ gem 'pry-byebug'
 gem 'omniauth'
 gem 'tinymce-rails', '4.3.8'
 gem 'comma', '~> 3.2.1'
+gem 'groupdate'
 
 # xml parser
 gem 'nokogiri'
