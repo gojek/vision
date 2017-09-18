@@ -111,3 +111,11 @@ z-index: 200000;
 p.comment {
 	white-space: pre-wrap;
 }
+
+div.field > div.field {
+  margin-left: 15px;
+}
+
+.inherit-font-weight {
+  font-weight: inherit;
+}
