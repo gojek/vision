@@ -97,12 +97,22 @@ class AccessRequest < ActiveRecord::Base
   end
 
   def create_access_request_status
+    return unless state_changed?
     status = statuses.new(:status => aasm_state, :reason => reason)
     unless status.valid?
       self.errors[:status] << status.errors.full_messages
-      self.aasm_state = changes['aasm_state'].first
+      self.aasm_state = previous_state
       return false
     end
+  end
+
+  def state_changed?
+    aasm_state != previous_state
+  end
+
+  def previous_state
+    return changes['aasm_state'].first if changes.key?('aasm_state')
+    aasm_state
   end
 
   def terminal_state?
