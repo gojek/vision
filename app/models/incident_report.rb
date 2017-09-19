@@ -2,9 +2,14 @@
 class IncidentReport < ActiveRecord::Base
   include ActiveModel::Dirty
 
+  before_save :create_incident_report_log, :unless => :new_record?
+  before_save :set_recovery_duration, :if => :recovery_time?
+  before_save :set_resolution_duration, :if => :resolved_time?
+  before_save :set_current_status
   before_save :set_action_item_done_time, if: :action_item_status_done?
 
   belongs_to :user
+  has_many :logs, join_table: :access_request_logs, dependent: :destroy, class_name: 'IncidentReportLog'
   acts_as_readable :on => :updated_at
   has_paper_trail class_name: 'IncidentReportVersion',
                   meta: { author_username: :user_name }
@@ -37,6 +42,9 @@ class IncidentReport < ActiveRecord::Base
   validate  :validate_recovery_time
   validate  :validate_resolution_time, if: :resolved_time?
   validate  :validate_detection_time
+
+  attr_accessor :editor
+  attr_accessor :reason
 
   searchable do
     text :service_impact, stored: true
@@ -147,4 +155,13 @@ class IncidentReport < ActiveRecord::Base
       write_attribute :expected, (val.to_i == 1)
     end
   end
+
+  def create_incident_report_log
+    log = self.logs.new(:user => self.editor, :reason => self.reason)
+    unless log.valid?
+      errors[:reason] << log.errors[:reason]
+      return false
+    end
+  end
+
 end
