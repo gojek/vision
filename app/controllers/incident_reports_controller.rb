@@ -5,7 +5,8 @@ class IncidentReportsController < ApplicationController
   before_action :authenticate_user!
   before_action :owner_required, only: [:edit, :update, :destroy]
   before_action :set_users_and_tags, only: [:new, :edit, :update]
-require 'notifier.rb'
+  before_action :set_incident_report_log, only: [:update]
+
   def index
     if params[:tag]
       @q = IncidentReport.ransack(params[:q])
@@ -56,11 +57,6 @@ require 'notifier.rb'
 
   def create
     @incident_report = current_user.IncidentReports.build(incident_report_params)
-    @incident_report.recovery_duration = (@incident_report.recovery_time)? (@incident_report.recovery_time - @incident_report.occurrence_time)/60 : 0
-    @incident_report.resolution_duration = (@incident_report.resolved_time)? (@incident_report.resolved_time - @incident_report.occurrence_time)/60 : 0
-    @incident_report.set_current_status
-    @current_collaborators = Array.wrap(params[:collaborators_list])
-    @incident_report.set_collaborators(@current_collaborators)
     respond_to do |format|
       if @incident_report.save
         flash[:success] = 'Incident report was successfully created.'
@@ -83,13 +79,9 @@ require 'notifier.rb'
     respond_to do |format|
       if @incident_report.update(incident_report_params)
 
-        (@incident_report.recovery_time)? @incident_report.recovery_duration = (@incident_report.recovery_time - @incident_report.occurrence_time)/60 : 0
-        (@incident_report.resolved_time)? @incident_report.resolution_duration = (@incident_report.resolved_time - @incident_report.occurrence_time)/60 : 0
-        @incident_report.set_current_status
         if @incident_report.check_status
           Notifier.ir_notify(current_user, @incident_report, 'resolved_ir')
         end
-        @incident_report.save
 
         flash[:success] = 'Incident report was successfully updated.'
         format.html { redirect_to @incident_report }
@@ -299,13 +291,19 @@ require 'notifier.rb'
     @incident_report = IncidentReport.find(params[:id])
   end
 
+  def set_incident_report_log
+    @incident_report.editor = current_user
+    @incident_report.reason = params[:incident_report][:reason]
+  end
+
   def incident_report_params
     params.require(:incident_report)
       .permit(:service_impact, :expected, :problem_details, :how_detected,
               :occurrence_time, :detection_time, :recovery_time,:resolved_time,
               :source, :rank, :loss_related, :occurred_reason,
               :overlooked_reason, :solving_duration, :recovery_action, :prevent_action,
-              :recurrence_concern, :current_status, :measurer_status, :tag_list => [])
+              :recurrence_concern, :current_status, :measurer_status, :has_further_action, 
+              :action_item, :action_item_status, :tag_list => [])
   end
 
   def owner_required
