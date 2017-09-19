@@ -4,6 +4,8 @@ class IncidentReportsController < ApplicationController
   before_action :set_incident_report, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
   before_action :owner_required, only: [:edit, :update, :destroy]
+  before_action :set_users_and_tags, only: [:new, :edit, :update]
+  before_action :set_incident_report_log, only: [:update]
 
   def index
     if params[:tag]
@@ -40,26 +42,24 @@ class IncidentReportsController < ApplicationController
   end
 
   def show
-     @incident_report.mark_as_read! :for => current_user
-     Notifier.ir_read(current_user,@incident_report)
+    @incident_report.mark_as_read! :for => current_user
+    Notifier.ir_read(current_user,@incident_report)
+    unless @incident_report.action_item.nil?
+      @action_item = Jira.new.jiraize(@incident_report.action_item)
+    end
   end
 
   def new
     @incident_report = IncidentReport.new
-    @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
     @current_tags = []
   end
 
   def edit
-    @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
     @current_tags = @incident_report.tag_list
   end
 
   def create
     @incident_report = current_user.IncidentReports.build(incident_report_params)
-    @incident_report.recovery_duration = (@incident_report.recovery_time)? (@incident_report.recovery_time - @incident_report.occurrence_time)/60 : 0
-    @incident_report.resolution_duration = (@incident_report.resolved_time)? (@incident_report.resolved_time - @incident_report.occurrence_time)/60 : 0
-    @incident_report.set_current_status
     respond_to do |format|
       if @incident_report.save
         flash[:success] = 'Incident report was successfully created.'
@@ -77,16 +77,15 @@ class IncidentReportsController < ApplicationController
   end
 
   def update
+    @current_collaborators = Array.wrap(params[:collaborators_list])
+    @incident_report.set_collaborators(@current_collaborators)
+
     respond_to do |format|
       if @incident_report.update(incident_report_params)
 
-        (@incident_report.recovery_time)? @incident_report.recovery_duration = (@incident_report.recovery_time - @incident_report.occurrence_time)/60 : 0
-        (@incident_report.resolved_time)? @incident_report.resolution_duration = (@incident_report.resolved_time - @incident_report.occurrence_time)/60 : 0
-        @incident_report.set_current_status
         if @incident_report.check_status
           Notifier.ir_notify(current_user, @incident_report, 'resolved_ir')
         end
-        @incident_report.save
 
         flash[:success] = 'Incident report was successfully updated.'
         format.html { redirect_to @incident_report }
@@ -224,6 +223,29 @@ class IncidentReportsController < ApplicationController
     render :text => final_result.to_json
   end
 
+
+  respond_to :json
+  def incident_reports_internal_external
+    if params[:end_time]
+      current = Time.parse(params[:end_time])
+    else
+      current = Date.current
+    end
+
+    start_month = (current - 6.months).beginning_of_month
+    end_month = current.end_of_month
+
+    title = start_month.strftime("%B %Y") + ' - ' + end_month.strftime("%B %Y")
+
+    irs = IncidentReport.group_by_month(:occurrence_time, format: "%b %Y", range: start_month..end_month)
+    internals = irs.where(source: 'Internal').count
+    results = irs.where(source: 'External').count
+      .map { |k,x| { label: k, total_internal: internals[k], total_external: x  } }
+    
+    final_result = [{title: title}, results]
+    render :text => final_result.to_json
+  end
+
   respond_to :json
   def incident_reports_number
     start_month = (Time.now).beginning_of_month
@@ -273,20 +295,28 @@ class IncidentReportsController < ApplicationController
     @incident_report = IncidentReport.find(params[:id])
   end
 
+  def set_incident_report_log
+    @incident_report.editor = current_user
+    @incident_report.reason = params[:incident_report][:reason]
+  end
+
   def incident_report_params
     params.require(:incident_report)
       .permit(:service_impact, :expected, :problem_details, :how_detected,
               :occurrence_time, :detection_time, :recovery_time,:resolved_time,
               :source, :rank, :loss_related, :occurred_reason,
               :overlooked_reason, :solving_duration, :recovery_action, :prevent_action,
-              :recurrence_concern, :current_status, :measurer_status, :tag_list => [])
+              :recurrence_concern, :current_status, :measurer_status, :has_further_action, 
+              :action_item, :action_item_status, :tag_list => [])
   end
 
   def owner_required
-    redirect_to incident_reports_url if
-    current_user != @incident_report.user && !current_user.is_admin
+    redirect_to incident_reports_url if !(@incident_report.editable? current_user)
   end
 
-
+  def set_users_and_tags
+    @users = User.all.collect{|u| [u.name, u.id]}
+    @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
+  end
 
 end
