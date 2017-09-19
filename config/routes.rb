@@ -13,8 +13,7 @@ Rails.application.routes.draw do
   post 'change_requests/:id/rollback' => 'change_request_statuses#rollback', :as =>'rollback'
   post 'change_requests/:id/cancel' => 'change_request_statuses#cancel', :as =>'cancel'
   post 'change_requests/:id/close' => 'change_request_statuses#close', :as => 'close'
-  post 'change_requests/:id/final_reject' => 'change_request_statuses#final_reject', :as => 'final_reject'
-  post 'change_requests/:id/schedule' => 'change_request_statuses#schedule', :as => 'schedule'
+  post 'change_requests/:id/fail' => 'change_request_statuses#fail', :as => 'fail'
   post 'change_requests/:id/submit' => 'change_request_statuses#submit', :as => 'submit'
 
   resources :change_requests do
@@ -49,6 +48,7 @@ Rails.application.routes.draw do
   get 'change_requests_by_success_rate' => 'change_requests#change_requests_by_success_rate'
   get 'incident_reports_by_recovered_resolved_duration' => 'incident_reports#incident_reports_by_recovered_resolved_duration'
   get 'incident_reports_number' => 'incident_reports#incident_reports_number'
+  get 'incident_reports_internal_external' => 'incident_reports#incident_reports_internal_external'
   get 'signin' => 'pages#signin'
   get 'blank' => 'pages#blank'
 
@@ -104,6 +104,16 @@ Rails.application.routes.draw do
   get 'duplicate/:id' => 'change_requests#duplicate', :as => 'duplicate'
   get 'notifications/index' => 'notifications#index'
   get 'create_hotfix/:id' => 'change_requests#create_hotfix', :as => 'create_hotfix'
+
+  resources :access_requests do
+    member do
+      post :cancel
+      post :close
+      post :approve
+      post :reject
+    end
+  end
+  
 
   namespace :api do
     post 'change_requests/action'
