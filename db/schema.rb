@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170816064245) do
+ActiveRecord::Schema.define(version: 20170828064008) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,6 +80,9 @@ ActiveRecord::Schema.define(version: 20170816064245) do
     t.boolean  "password_reset"
     t.string   "user_identification"
     t.string   "asset_name"
+    t.boolean  "production_access"
+    t.string   "production_user_id"
+    t.string   "production_asset"
     t.string   "aasm_state"
     t.datetime "request_date"
     t.datetime "created_at",                      null: false
@@ -119,6 +122,7 @@ ActiveRecord::Schema.define(version: 20170816064245) do
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
     t.integer  "change_request_id"
+    t.boolean  "deploy_delayed"
   end
 
   add_index "change_request_statuses", ["change_request_id"], name: "index_change_request_statuses_on_change_request_id", using: :btree
