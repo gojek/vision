@@ -260,86 +260,103 @@
             <div class="field form-group">
               <%= f.check_box :employee_access, :disabled => true  %>
               <%= f.label :employee_access %><br>
-            </div><!--/field-->
 
-            <div class="field form-group">
-              <%= f.label :fingerprint_access, {class: 'control-label'} %><br>
+              <div class="field form-group">
+                <%= f.label :fingerprint_access, {class: 'control-label'} %><br>
 
-              <%= f.check_box :fingerprint_business_area, :disabled => true  %>
-              <%= f.label :fingerprint_business_area %><br>
+                <%= f.check_box :fingerprint_business_area, :disabled => true  %>
+                <%= f.label :fingerprint_business_area, class: 'inherit-font-weight' %><br>
 
-              <%= f.check_box :fingerprint_business_operations, :disabled => true  %>
-              <%= f.label :fingerprint_business_operations %><br>
+                <%= f.check_box :fingerprint_business_operations, :disabled => true  %>
+                <%= f.label :fingerprint_business_operations, class: 'inherit-font-weight' %><br>
 
-              <%= f.check_box :fingerprint_it_operations, :disabled => true  %>
-              <%= f.label :fingerprint_it_operations %><br>
+                <%= f.check_box :fingerprint_it_operations, :disabled => true  %>
+                <%= f.label :fingerprint_it_operations, class: 'inherit-font-weight' %><br>
 
-              <%= f.check_box :fingerprint_server_room, :disabled => true  %>
-              <%= f.label :fingerprint_server_room %><br>
+                <%= f.check_box :fingerprint_server_room, :disabled => true  %>
+                <%= f.label :fingerprint_server_room, class: 'inherit-font-weight' %><br>
 
-              <%= f.check_box :fingerprint_archive_room, :disabled => true  %>
-              <%= f.label :fingerprint_archive_room %><br>
+                <%= f.check_box :fingerprint_archive_room, :disabled => true  %>
+                <%= f.label :fingerprint_archive_room, class: 'inherit-font-weight' %><br>
 
-              <%= f.check_box :fingerprint_engineering_area, :disabled => true  %>
-              <%= f.label :fingerprint_engineering_area %><br>
-            </div><!--/field-->
+                <%= f.check_box :fingerprint_engineering_area, :disabled => true  %>
+                <%= f.label :fingerprint_engineering_area, class: 'inherit-font-weight' %><br>
+              </div><!--/field-->
 
-            <div class="field form-group">
-              <%= f.label :corporate_email, {class: 'control-label'} %><br>
-              <%= f.text_field :corporate_email, class: 'form-control', :disabled => true  %>            
-            </div><!--/field-->
+              <div class="field form-group">
+                <%= f.label :corporate_email, {class: 'control-label'} %><br>
+                <%= f.text_field :corporate_email, class: 'form-control', :disabled => true  %>            
+              </div><!--/field-->
 
-            <div class="field form-group">
-              <%= f.check_box :internet_access, :disabled => true  %>
-              <%= f.label :internet_access %><br>
+              <div class="field form-group">
+                <%= f.label :other_access %><br>
+                
+                <%= f.check_box :internet_access, :disabled => true  %>
+                <%= f.label :internet_access, class: 'inherit-font-weight' %><br>
 
-              <%= f.check_box :slack_access, :disabled => true  %>
-              <%= f.label :slack_access %><br>
+                <%= f.check_box :slack_access, :disabled => true  %>
+                <%= f.label :slack_access, class: 'inherit-font-weight' %><br>
 
-              <%= f.check_box :admin_tools, :disabled => true  %>
-              <%= f.label :admin_tools %><br>
+                <%= f.check_box :admin_tools, :disabled => true  %>
+                <%= f.label :admin_tools, class: 'inherit-font-weight' %><br>
 
-              <%= f.check_box :vpn_access, :disabled => true  %>
-              <%= f.label :vpn_access %><br>
+                <%= f.check_box :vpn_access, :disabled => true  %>
+                <%= f.label :vpn_access, class: 'inherit-font-weight' %><br>
 
-              <%= f.check_box :github_gitlab, :disabled => true  %>
-              <%= f.label :github_gitlab %><br>
+                <%= f.check_box :github_gitlab, :disabled => true  %>
+                <%= f.label :github_gitlab, class: 'inherit-font-weight' %><br>
 
-              <%= f.check_box :exit_interview , :disabled => true %>
-              <%= f.label :exit_interview %><br>
+                <%= f.check_box :exit_interview , :disabled => true %>
+                <%= f.label :exit_interview, class: 'inherit-font-weight' %><br>
 
-              <%= f.check_box :access_card, :disabled => true  %>
-              <%= f.label :access_card %><br>
+                <%= f.check_box :access_card, :disabled => true  %>
+                <%= f.label :access_card, class: 'inherit-font-weight' %><br>
 
-              <%= f.check_box :parking_cards, :disabled => true  %>
-              <%= f.label :parking_cards %><br>
+                <%= f.check_box :parking_cards, :disabled => true  %>
+                <%= f.label :parking_cards, class: 'inherit-font-weight' %><br>
 
-              <%= f.check_box :id_card, :disabled => true  %>
-              <%= f.label :id_card %><br>
+                <%= f.check_box :id_card, :disabled => true  %>
+                <%= f.label :id_card, class: 'inherit-font-weight'%><br>
 
-              <%= f.check_box :name_card, :disabled => true  %>
-              <%= f.label :name_card %><br>
+                <%= f.check_box :name_card, :disabled => true  %>
+                <%= f.label :name_card, class: 'inherit-font-weight' %><br>
 
-              <%= f.check_box :insurance_card, :disabled => true  %>
-              <%= f.label :insurance_card %><br>
+                <%= f.check_box :insurance_card, :disabled => true  %>
+                <%= f.label :insurance_card, class: 'inherit-font-weight' %><br>
 
-              <%= f.check_box :cash_advance, :disabled => true  %>
-              <%= f.label :cash_advance %><br>
+                <%= f.check_box :cash_advance, :disabled => true  %>
+                <%= f.label :cash_advance, class: 'inherit-font-weight' %><br>
+              </div><!--/field-->
             </div><!--/field-->
 
             <div class="field form-group">
               <%= f.check_box :password_reset, :disabled => true  %>
               <%= f.label :password_reset %><br>
-            </div><!--/field-->
           
-            <div class="field form-group">
-              <%= f.label :user_identification, {class: 'control-label'} %><br>
-              <%= f.text_field :user_identification, class: 'form-control', :disabled => true  %>            
+              <div class="field form-group">
+                <%= f.label :user_identification, {class: 'control-label'} %><br>
+                <%= f.text_field :user_identification, class: 'form-control', :disabled => true  %>            
+              </div><!--/field-->
+            
+              <div class="field form-group">
+                <%= f.label :asset_name, {class: 'control-label'} %><br>
+                <%= f.text_field :asset_name, class: 'form-control', :disabled => true  %>            
+              </div><!--/field-->
             </div><!--/field-->
-          
+
             <div class="field form-group">
-              <%= f.label :asset_name, {class: 'control-label'} %><br>
-              <%= f.text_field :asset_name, class: 'form-control', :disabled => true  %>            
+              <%= f.check_box :production_access, :disabled => true  %>
+              <%= f.label :production_access %><br>
+
+              <div class="field form-group">
+                <%= f.label :production_user_id, {class: 'control-label'} %><br>
+                <%= f.text_field :production_user_id, class: 'form-control', :disabled => true  %>            
+              </div><!--/field-->
+            
+              <div class="field form-group">
+                <%= f.label :production_asset, {class: 'control-label'} %><br>
+                <%= f.text_field :production_asset, class: 'form-control', :disabled => true  %>            
+              </div><!--/field-->
             </div><!--/field-->
             <% end %>
         </div><!--/box-body-->

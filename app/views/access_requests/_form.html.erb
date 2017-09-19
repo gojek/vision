@@ -212,6 +212,21 @@
               </div><!--/field-->
             </div><!--/field-->
 
+            <div class="field form-group">
+              <%= f.check_box :production_access  %>
+              <%= f.label :production_access %><br>
+
+              <div class="field form-group">
+                <%= f.label :production_user_id, {class: 'control-label'} %><br>
+                <%= f.text_field :production_user_id, class: 'form-control'  %>            
+              </div><!--/field-->
+            
+              <div class="field form-group">
+                <%= f.label :production_asset, {class: 'control-label'} %><br>
+                <%= f.text_field :production_asset, class: 'form-control'  %>            
+              </div><!--/field-->
+            </div><!--/field-->
+
           </div><!--/col-->
         </div><!--/box-body-->
       </div> <!--/box-->

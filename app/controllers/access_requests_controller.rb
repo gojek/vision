@@ -157,7 +157,10 @@ class AccessRequestsController < ApplicationController
           :cash_advance,
           :password_reset,
           :user_identification,
-          :asset_name
+          :asset_name,
+          :production_access,
+          :production_user_id,
+          :production_asset
       )
     end
 
