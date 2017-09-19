@@ -80,6 +80,9 @@ ActiveRecord::Schema.define(version: 20170904092416) do
     t.boolean  "password_reset"
     t.string   "user_identification"
     t.string   "asset_name"
+    t.boolean  "production_access"
+    t.string   "production_user_id"
+    t.string   "production_asset"
     t.string   "aasm_state"
     t.datetime "request_date"
     t.datetime "created_at",                      null: false
