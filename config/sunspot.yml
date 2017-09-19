@@ -1,3 +1,5 @@
+staging:
+  disabled: true
 development:
   solr:
     hostname: localhost
