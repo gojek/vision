@@ -61,6 +61,7 @@ gem 'pry-byebug'
 gem 'omniauth'
 gem 'tinymce-rails', '4.3.8'
 gem 'comma', '~> 3.2.1'
+gem 'groupdate'
 
 # xml parser
 gem 'nokogiri'
@@ -75,6 +76,8 @@ gem 'colorize'
 gem 'slack-ruby-client'
 gem "slack-notifier"
 
+#jira
+gem 'jira-ruby', :require => 'jira-ruby'
 
 # full-text search
 gem 'sunspot_rails'
