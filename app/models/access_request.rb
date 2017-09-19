@@ -1,4 +1,6 @@
 class AccessRequest < ActiveRecord::Base
+  has_paper_trail
+
   before_save :create_access_request_status
 
   include AASM
