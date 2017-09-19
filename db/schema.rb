@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170904081349) do
+ActiveRecord::Schema.define(version: 20170904092416) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,6 +80,9 @@ ActiveRecord::Schema.define(version: 20170904081349) do
     t.boolean  "password_reset"
     t.string   "user_identification"
     t.string   "asset_name"
+    t.boolean  "production_access"
+    t.string   "production_user_id"
+    t.string   "production_asset"
     t.string   "aasm_state"
     t.datetime "request_date"
     t.datetime "created_at",                      null: false
@@ -287,12 +290,16 @@ ActiveRecord::Schema.define(version: 20170904081349) do
     t.string   "current_status"
     t.string   "measurer_status"
     t.integer  "user_id"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
     t.datetime "resolved_time"
     t.decimal  "resolution_duration"
     t.decimal  "recovery_duration"
-    t.boolean  "expected",            default: false
+    t.boolean  "expected",              default: false
+    t.boolean  "has_further_action",    default: false
+    t.text     "action_item"
+    t.string   "action_item_status"
+    t.datetime "action_item_done_time"
   end
 
   add_index "incident_reports", ["user_id"], name: "index_incident_reports_on_user_id", using: :btree

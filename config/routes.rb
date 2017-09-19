@@ -105,6 +105,16 @@ Rails.application.routes.draw do
   get 'notifications/index' => 'notifications#index'
   get 'create_hotfix/:id' => 'change_requests#create_hotfix', :as => 'create_hotfix'
 
+  resources :access_requests do
+    member do
+      post :cancel
+      post :close
+      post :approve
+      post :reject
+    end
+  end
+  
+
   namespace :api do
     post 'change_requests/action'
   end
