@@ -18,7 +18,7 @@ class ChangeRequest < ActiveRecord::Base
             inclusion: { in: SCOPE, message: '%{value} is not a valid scope' }
   validates :priority,
             inclusion: { in: PRIORITY, message: '%{value} is not a valid scope' }
-  STATUS = %w(submitted scheduled rollbacked cancelled rejected deployed closed)
+  STATUS = %w(submitted deployed rollbacked cancelled succeeded failed draft)
 
   validates :change_summary, :priority,:change_requirement, :business_justification, :analysis, :solution, :impact, :scope, :design,
             :backup, :testing_procedure, :testing_notes, :schedule_change_date, :planned_completion, :definition_of_success, :definition_of_failed, presence: true
@@ -76,13 +76,13 @@ class ChangeRequest < ActiveRecord::Base
       transitions :from => :submitted, :to => :deployed, :guard => :deployable?
     end
     event :close do
-      transitions :from => :deployed, :to => :succeeded
+      transitions :from => :deployed, :to => :succeeded, :after => :set_closed_date
     end
     event :rollback do
-      transitions :from => [:succeeded, :deployed], :to => :rollbacked
+      transitions :from => [:succeeded, :deployed], :to => :rollbacked, :after => :set_closed_date
     end
     event :fail do
-      transitions :from => [:succeeded, :deployed], :to => :failed
+      transitions :from => [:succeeded, :deployed], :to => :failed, :after => :set_closed_date
     end
   end
 
@@ -124,6 +124,10 @@ class ChangeRequest < ActiveRecord::Base
     grace_period_end to_s: 'grace period end' do |html| Sanitize.fragment(html) end
     grace_period_notes to_s: 'grace period notes' do |html| Sanitize.fragment(html) end
     implementers do |implementers| implementers.collect(&:name).join(';') end
+  end
+
+  def set_closed_date
+    self.closed_date = Time.now
   end
 
   def at_least_one_category
@@ -299,4 +303,7 @@ class ChangeRequest < ActiveRecord::Base
     ChangeRequestStatus.where(change_request_id: id, deploy_delayed: true).any?
   end
 
+  def is_approved?(user)
+    Approval.where(change_request_id: id, user_id: user.id).first.approve
+  end
 end

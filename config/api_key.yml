@@ -9,6 +9,9 @@ development:
 test:
   <<: *defaults
 
+staging:
+  <<: *defaults
+
 production:
   google:
     api_key: "772021837446-rmg7jpjr3lk3uruq3k7i466nidj707ln.apps.googleusercontent.com"
