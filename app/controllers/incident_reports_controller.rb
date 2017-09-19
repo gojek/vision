@@ -303,11 +303,11 @@ require 'notifier.rb'
     end
 
     results = []
-    totals.first.last.map do |k, x|
+    totals.first.last.each do |k, x|
       current = {}
-      current[:label] = k
+      current[:label] = "#{(k - 1.week)} to #{k}"
       for rank in ranks
-        current[rank] = totals[rank][k]
+        current["Level #{rank}"] = totals[rank][k]
       end
       results << current
     end
