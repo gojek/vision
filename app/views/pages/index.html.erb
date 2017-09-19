@@ -13,60 +13,7 @@
   </div>
   <div class='tab-content'>
     <div id='incident_report' class='tab-pane fade in active'>
-      <div class='row'>
 
-        <div class='col-lg-6'>
-          <div class='box '>
-            <div class='box-header with-border'>
-              <h3 class='box-title'>Internal Incident Level</h3>
-            </div>
-            <div class='box-body'>
-              <div class='row'>
-                <div class='col-lg-12'>
-                  <div class="btn-group pull-right">
-                    <button id="incident-level-internal-daterange" class="selectbox pull-right btn btn-default">
-                      <i class="fa fa-calendar"></i>
-                      <span>Custom Range</span> <b class="caret"></b>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div class='row'>
-                <div class='col-lg-12'>
-                  <div id="incident-level-internal-chart" class="general-chart" width="300" height="300"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-        <div class='col-lg-6'>
-          <div class='box '>
-            <div class='box-header with-border'>
-              <h3 class='box-title'>External Incident Level</h3>
-            </div>
-            <div class='box-body'>
-              <div class='row'>
-                <div class='col-lg-12'>
-                  <div class="btn-group pull-right">
-                    <button id="incident-level-external-daterange" class="selectbox pull-right btn btn-default">
-                      <i class="fa fa-calendar"></i>
-                      <span>Custom Range</span> <b class="caret"></b>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div class='row'>
-                <div class='col-lg-12'>
-                  <div id="incident-level-external-chart" class="general-chart" width="300" height="300"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-      </div>
 
       <div class='row'>
         <div class='col-lg-6'>
@@ -96,71 +43,12 @@
             </div>
           </div>
         </div>
-        <div class='col-lg-6'>
-          <div class='box '>
-            <div class='box-header with-border'>
-              <h3 class='box-title'>Average Time</h3>
-              <div class='box-tools'>
 
-              <!--   <button id='reset'>reset</button> -->
-              </div>
-             </div>
-            <div class='box-body'>
-              <div class='row'>
-                <div class='col-lg-12'>
-                  <div class="btn-group pull-right">
-                    <div class='input-group date col-lg-2 col-md-2 col-xs-2 pull-right'  id='selected_month'>
-                      <input type='text' class="form-control" />
-                      <span class="input-group-addon">
-                          <span class="glyphicon glyphicon-calendar">
-                          </span>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class='row'>
-                <div class='col-lg-12'>
-                  <div id="average-chart" width="300" height="300"> </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class='row'>
-        <div class='col-lg-6'>
-          <div class='box'>
-            <div class='box-header with-border'>
-              <h3 class='box-title'>Incident Number</h3>
-            </div>
-            <div class='box-body'>
-              <div class='row'>
-                <div class='col-lg-12'>
-                   <div class='input-group date col-lg-2 col-md-2 col-xs-2 pull-right'  id='number_chart_selected_month'>
-                    <input type='text' class="form-control" />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar">
-                        </span>
-                    </span>
-                </div>
-                </div>
-              </div>
-              <div class='row'>
-                <div class='col-lg-12'>
-                  <div id='number-chart' width='300' height='300'></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
         <div class='col-lg-6'>
           <div class='box '>
             <div class='box-header with-border'>
               <h3 class='box-title'>Internal vs External</h3>
               <div class='box-tools'>
-
-              <!--   <button id='reset'>reset</button> -->
               </div>
              </div>
             <div class='box-body'>
@@ -190,6 +78,126 @@
           </div>
         </div>
       </div>
+
+
+      <div class='row'>
+
+        <div class='col-lg-6'>
+          <div class='box '>
+            <div class='box-header with-border'>
+              <h3 class='box-title'>Weekly Internal Average Recovery Time</h3>
+            </div>
+            <div class='box-body'>
+              <div class='row'>
+                <div class='col-lg-12'>
+                  <div class="btn-group pull-right">
+                    <button id="incident-avg-recovery-internal-daterange" class="selectbox pull-right btn btn-default">
+                      <i class="fa fa-calendar"></i>
+                      <span>Custom Range</span> <b class="caret"></b>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class='row'>
+                <div class='col-lg-12'>
+                  <div id="incident-avg-recovery-internal-chart" class="general-chart" width="300" height="300"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class='col-lg-6'>
+          <div class='box '>
+            <div class='box-header with-border'>
+              <h3 class='box-title'>Weekly External Average Recovery Time</h3>
+            </div>
+            <div class='box-body'>
+              <div class='row'>
+                <div class='col-lg-12'>
+                  <div class="btn-group pull-right">
+                    <button id="incident-avg-recovery-external-daterange" class="selectbox pull-right btn btn-default">
+                      <i class="fa fa-calendar"></i>
+                      <span>Custom Range</span> <b class="caret"></b>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class='row'>
+                <div class='col-lg-12'>
+                  <div id="incident-avg-recovery-external-chart" class="general-chart" width="300" height="300"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+
+
+
+
+      <div class='row'>
+
+        <div class='col-lg-6'>
+          <div class='box '>
+            <div class='box-header with-border'>
+              <h3 class='box-title'>Weekly Internal Incident Level</h3>
+            </div>
+            <div class='box-body'>
+              <div class='row'>
+                <div class='col-lg-12'>
+                  <div class="btn-group pull-right">
+                    <button id="incident-level-internal-daterange" class="selectbox pull-right btn btn-default">
+                      <i class="fa fa-calendar"></i>
+                      <span>Custom Range</span> <b class="caret"></b>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class='row'>
+                <div class='col-lg-12'>
+                  <div id="incident-level-internal-chart" class="general-chart" width="300" height="300"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class='col-lg-6'>
+          <div class='box '>
+            <div class='box-header with-border'>
+              <h3 class='box-title'>Weekly External Incident Level</h3>
+            </div>
+            <div class='box-body'>
+              <div class='row'>
+                <div class='col-lg-12'>
+                  <div class="btn-group pull-right">
+                    <button id="incident-level-external-daterange" class="selectbox pull-right btn btn-default">
+                      <i class="fa fa-calendar"></i>
+                      <span>Custom Range</span> <b class="caret"></b>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class='row'>
+                <div class='col-lg-12'>
+                  <div id="incident-level-external-chart" class="general-chart" width="300" height="300"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+
+
+
+
+
+
     </div>
     <div id='change_request' class='tab-pane fade'>
       <div class='row'>
@@ -228,17 +236,7 @@
   </div>
 </section>
 <style>
-  #source-chart {
-  width   : 100%;
-  height    : 500px;
-  font-size : 11px;
-}
-#average-chart {
-  width   : 100%;
-  height    : 500px;
-  font-size : 11px;
-}
-#number-chart {
+#source-chart {
   width   : 100%;
   height    : 500px;
   font-size : 11px;
@@ -295,61 +293,6 @@
     });
   };
 
-  function loadAverageChart(url) {
-    $.get(url, function(data, status){
-      var barChartData = jQuery.parseJSON(data);
-      var chart = AmCharts.makeChart("average-chart", {
-         "titles": [
-            {
-              "text": barChartData[0].title,
-              "size": 15
-            }
-          ],
-          "type": "serial",
-             "theme": "light",
-          "categoryField": "label",
-          "startDuration": 1,
-          "categoryAxis": {
-            "gridPosition": "start",
-            "position": "left"
-          },
-          "trendLines": [],
-          "graphs": [
-            {
-          "balloonText": "Recovery duration: <b>[[value]]</b>",
-          "fillAlphas": 0.8,
-          "lineAlpha": 0.2,
-          "type": "column",
-          "valueField": "recovery_duration"
-        } ,{
-          "balloonText": "Resolution duration: <b>[[value]]</b>",
-          "fillAlphas": 0.8,
-          "lineAlpha": 0.2,
-          "type": "column",
-          "valueField": "resolution_duration"
-        }],
-        "guides": [],
-        "valueAxes": [
-          {
-            "id": "ValueAxis-1",
-          }
-        ],
-        "allLabels": [],
-        "balloon": {},
-        "dataProvider": barChartData[1],
-        "export": {
-          "enabled": true
-        }
-      });
-      isEmpty = true;
-      for (bar of barChartData[1]) {
-        isEmpty = isEmpty && bar.recovery_duration == 0 && bar.resolution_duration == 0;
-      }
-      if(isEmpty)
-        chart.addLabel(0, '50%', 'There are no incident reports in the specfied periods','center');
-    });
-  };
-
   function loadInternalExternalChart(url) {
     $.get(url, function(data, status){
       var barChartData = jQuery.parseJSON(data);
@@ -399,67 +342,6 @@
       isEmpty = true;
       for (bar of barChartData[1]) {
         isEmpty = isEmpty && bar.recovery_duration == 0 && bar.resolution_duration == 0;
-      }
-      if(isEmpty)
-        chart.addLabel(0, '50%', 'There are no incident reports in the specfied periods','center');
-    });
-  };
-
-  function loadNumberChart(url) {
-    $.get(url, function(data, status){
-      var numberBarData = jQuery.parseJSON(data);
-      var chart = AmCharts.makeChart("number-chart", {
-        "titles": [
-          {
-            "text": numberBarData[0].title,
-            "size": 15
-          }
-        ],
-        "startDuration": 1.5,
-        "type": "serial",
-        "theme": "light",
-        "categoryField": "label",
-        "categoryAxis": {
-          "gridPosition": "start",
-          "position": "left"
-        },
-        "trendLines": [],
-        "graphs": [
-          {
-          "balloonText": "Incident Occured: <b>[[value]]</b>",
-          "fillAlphas": 0.8,
-          "lineAlpha": 0.2,
-          "type": "column",
-          "valueField": "occured_number"
-        } ,{
-          "balloonText": "Incident Recovered: <b>[[value]]</b>",
-          "fillAlphas": 0.8,
-          "lineAlpha": 0.2,
-          "type": "column",
-          "valueField": "recovered_number"
-        } ,{
-          "balloonText": "Incident Resolved: <b>[[value]]</b>",
-          "fillAlphas": 0.8,
-          "lineAlpha": 0.2,
-          "type": "column",
-          "valueField": "resolved_number"
-        }],
-        "guides": [],
-        "valueAxes": [
-          {
-            "id": "ValueAxis-1",
-          }
-        ],
-        "allLabels": [],
-        "balloon": {},
-        "dataProvider": numberBarData[1],
-          "export": {
-            "enabled": true
-           }
-      });
-      isEmpty = true;
-      for (bar of numberBarData[1]) {
-        isEmpty = isEmpty && bar.occured_number == 0 && bar.recovered_number == 0 && bar.resolved_number == 0;
       }
       if(isEmpty)
         chart.addLabel(0, '50%', 'There are no incident reports in the specfied periods','center');
@@ -551,10 +433,10 @@
     var graphs = [];
     Object.keys(data[1][0]).forEach(function (k) { 
       if(k == 'label') return;
-      if(colors === undefined) {
-        var color = "#"+((1<<24)*Math.random()|0).toString(16);
-      } else {
+      if(colors !== undefined && k in colors) {
         var color = colors[k];
+      } else {
+        var color = "#"+((1<<24)*Math.random()|0).toString(16);
       }
       graphs.push({
         "balloonText": "<span style='font-size:14px'>[[title]]: <b>[[value]]</b></span>",
@@ -616,6 +498,13 @@
 
   // INTERNAL INCIDENT LEVEL
   function onIncidentLevelInternalControlChange(){
+    var colors = {
+      'Level 1': '#67B7DC',
+      'Level 2': '#55A3C8',
+      'Level 3': '#4490B4',
+      'Level 4': '#327DA0',
+      'Level 5': '#216A8C',
+    }
     var datePicker = $('#incident-level-internal-daterange').data('daterangepicker');
     var start = datePicker.startDate.format('YYYY-MM-DD');
     var end = datePicker.endDate.format('YYYY-MM-DD');
@@ -625,7 +514,7 @@
     url += '?source=Internal';
     url += '&start_time='+ start
     url += '&end_time=' + end
-    loadAndSetupChart(stackedChart, 'incident-level-internal-chart', url);
+    loadAndSetupChart(stackedChart, 'incident-level-internal-chart', url, colors);
   }
   $('#incident-level-internal-daterange').daterangepicker({
     startDate: moment().startOf('month'),
@@ -635,6 +524,13 @@
 
   // EXTERNAL INCIDENT LEVEL
   function onIncidentLevelExternalControlChange(){
+    var colors = {
+      'Level 1': '#FDD400',
+      'Level 2': '#E6BA00',
+      'Level 3': '#CFA000',
+      'Level 4': '#B88600',
+      'Level 5': '#A26C01',
+    }
     var datePicker = $('#incident-level-external-daterange').data('daterangepicker');
     var start = datePicker.startDate.format('YYYY-MM-DD');
     var end = datePicker.endDate.format('YYYY-MM-DD');
@@ -644,7 +540,7 @@
     url += '?source=External';
     url += '&start_time='+ start
     url += '&end_time=' + end
-    loadAndSetupChart(stackedChart, 'incident-level-external-chart', url);
+    loadAndSetupChart(stackedChart, 'incident-level-external-chart', url, colors);
   }
   $('#incident-level-external-daterange').daterangepicker({
     startDate: moment().startOf('month'),
@@ -652,10 +548,54 @@
   }, onIncidentLevelExternalControlChange);
   onIncidentLevelExternalControlChange();
 
+  // INTERNAL INCIDENT AVG RECOVERY
+  function onIncidentAvgRecoveryInternalControlChange(){
+    var colors = {
+      'detection': '#fdd400',
+      'fixing': '#67b7dc',
+    }
+    var datePicker = $('#incident-avg-recovery-internal-daterange').data('daterangepicker');
+    var start = datePicker.startDate.format('YYYY-MM-DD');
+    var end = datePicker.endDate.format('YYYY-MM-DD');
+    $('#incident-avg-recovery-internal-daterange span').html(start + ' - ' + end);
+
+    var url = '<%= average_recovery_time_incident_path %>';
+    url += '?source=Internal';
+    url += '&start_time='+ start
+    url += '&end_time=' + end
+    loadAndSetupChart(stackedChart, 'incident-avg-recovery-internal-chart', url, colors);
+  }
+  $('#incident-avg-recovery-internal-daterange').daterangepicker({
+    startDate: moment().startOf('month'),
+    endDate: moment().endOf('month')
+  }, onIncidentAvgRecoveryInternalControlChange);
+  onIncidentAvgRecoveryInternalControlChange();
+
+  // EXTERNAL INCIDENT AVG RECOVERY
+  function onIncidentAvgRecoveryExternalControlChange(){
+    var colors = {
+      'detection': '#fdd400',
+      'fixing': '#67b7dc',
+    }
+    var datePicker = $('#incident-avg-recovery-external-daterange').data('daterangepicker');
+    var start = datePicker.startDate.format('YYYY-MM-DD');
+    var end = datePicker.endDate.format('YYYY-MM-DD');
+    $('#incident-avg-recovery-external-daterange span').html(start + ' - ' + end);
+
+    var url = '<%= average_recovery_time_incident_path %>';
+    url += '?source=External';
+    url += '&start_time='+ start
+    url += '&end_time=' + end
+    loadAndSetupChart(stackedChart, 'incident-avg-recovery-external-chart', url, colors);
+  }
+  $('#incident-avg-recovery-external-daterange').daterangepicker({
+    startDate: moment().startOf('month'),
+    endDate: moment().endOf('month')
+  }, onIncidentAvgRecoveryExternalControlChange);
+  onIncidentAvgRecoveryExternalControlChange();
+
 	window.onload = function(){
     loadSourceChart("<%=incident_reports_by_source_path %>");
-    loadAverageChart("<%=incident_reports_by_recovered_resolved_duration_path %>");
-    loadNumberChart("<%=incident_reports_number_path %>");
     loadDeploymentChart("<%=change_requests_by_success_rate_path %>");
     loadInternalExternalChart("<%=incident_reports_internal_external_path %>");
 
@@ -688,15 +628,6 @@
 	};
 
   $(document).ready(function() {
-    $('#selected_month').datetimepicker({
-        viewMode: 'years',
-        format: 'MM/YYYY'
-    });
-
-    $('#number_chart_selected_month').datetimepicker({
-      viewMode: 'years',
-      format: 'MM/YYYY'
-    });
 
     $(".deployment-duration-filter").select2();
 
@@ -742,19 +673,6 @@
         format: 'MM/YYYY'
     });
 
-
-    $('#selected_month').on("dp.change", function(e) {
-      var time = (e.date.format('YYYY/MM'));
-      var url = "<%=incident_reports_by_recovered_resolved_duration_path %>";
-      url = url+'?start_time='+time;
-      loadAverageChart(url);
-    });
-    $('#number_chart_selected_month').on("dp.change", function(e) {
-      var time = (e.date.format('YYYY/MM'));
-      var url = "<%=incident_reports_number_path %>";
-      url = url+'?start_time='+time;
-      loadNumberChart(url);
-    });
 
     $('#internal_external_month').on("dp.change", function(e) {
       var time = (e.date.format('YYYY/MM'));
