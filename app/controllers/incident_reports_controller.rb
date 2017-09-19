@@ -4,8 +4,9 @@ class IncidentReportsController < ApplicationController
   before_action :set_incident_report, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
   before_action :owner_required, only: [:edit, :update, :destroy]
+  before_action :set_users_and_tags, only: [:new, :edit, :update]
   before_action :set_incident_report_log, only: [:update]
-require 'notifier.rb'
+
   def index
     if params[:tag]
       @q = IncidentReport.ransack(params[:q])
@@ -47,12 +48,10 @@ require 'notifier.rb'
 
   def new
     @incident_report = IncidentReport.new
-    @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
     @current_tags = []
   end
 
   def edit
-    @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
     @current_tags = @incident_report.tag_list
   end
 
@@ -74,6 +73,9 @@ require 'notifier.rb'
   end
 
   def update
+    @current_collaborators = Array.wrap(params[:collaborators_list])
+    @incident_report.set_collaborators(@current_collaborators)
+
     respond_to do |format|
       if @incident_report.update(incident_report_params)
 
@@ -305,10 +307,12 @@ require 'notifier.rb'
   end
 
   def owner_required
-    redirect_to incident_reports_url if
-    current_user != @incident_report.user && !current_user.is_admin
+    redirect_to incident_reports_url if !(@incident_report.editable? current_user)
   end
 
-
+  def set_users_and_tags
+    @users = User.all.collect{|u| [u.name, u.id]}
+    @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
+  end
 
 end
