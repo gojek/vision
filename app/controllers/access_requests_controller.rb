@@ -5,6 +5,7 @@ class AccessRequestsController < ApplicationController
   before_action :set_access_request_reason, only: [:cancel, :close]
   before_action :set_access_request_approval, only: [:approve, :reject]
   before_action :set_users_and_approvers, only: [:new, :edit]
+  before_action :set_paper_trail_whodunnit
 
   def index
     @q = AccessRequest.ransack(params[:q])
