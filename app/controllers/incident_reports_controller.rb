@@ -305,7 +305,7 @@ require 'notifier.rb'
     results = []
     totals.first.last.each do |k, x|
       current = {}
-      current[:label] = "#{(k - 1.week)} to #{k}"
+      current[:label] = "#{(k - 1.week).strftime("%d/%m")} - #{k.strftime("%d/%m")}"
       for rank in ranks
         current["Level #{rank}"] = totals[rank][k]
       end
@@ -313,6 +313,27 @@ require 'notifier.rb'
     end
 
     final_result = [{title: "Total #{source} Incident Per Level"}, results]
+    render :text => final_result.to_json
+  end
+
+  respond_to :json
+  def average_recovery_time_incident
+    source = params[:source] || 'Internal'
+    start_time = params[:start_time] ? Time.parse(params[:start_time]) : Time.now.beginning_of_month
+    end_time = params[:end_time] ? Time.parse(params[:end_time]) : Time.now.end_of_month
+
+    irs = IncidentReport.group_by_week(:occurrence_time, range: start_time..end_time).where(source: source)
+
+    fixing_duration_avg = irs.average('detection_time - occurrence_time')
+    detection_duration_avg = irs.average('recovery_time - detection_time')
+
+    results = fixing_duration_avg.map do |k, v|
+      { label: "#{(k - 1.week).strftime("%d/%m")} - #{k.strftime("%d/%m")}", 
+        detection: detection_duration_avg[k].day / 60,
+        fixing: v.day / 60 }
+    end
+
+    final_result = [{title: "Average Recovery Time for #{source} Incident"}, results]
     render :text => final_result.to_json
   end
 
