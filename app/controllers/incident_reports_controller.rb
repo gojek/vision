@@ -4,6 +4,7 @@ class IncidentReportsController < ApplicationController
   before_action :set_incident_report, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
   before_action :owner_required, only: [:edit, :update, :destroy]
+  before_action :set_incident_report_log, only: [:update]
 require 'notifier.rb'
   def index
     if params[:tag]
@@ -57,9 +58,6 @@ require 'notifier.rb'
 
   def create
     @incident_report = current_user.IncidentReports.build(incident_report_params)
-    @incident_report.recovery_duration = (@incident_report.recovery_time)? (@incident_report.recovery_time - @incident_report.occurrence_time)/60 : 0
-    @incident_report.resolution_duration = (@incident_report.resolved_time)? (@incident_report.resolved_time - @incident_report.occurrence_time)/60 : 0
-    @incident_report.set_current_status
     respond_to do |format|
       if @incident_report.save
         flash[:success] = 'Incident report was successfully created.'
@@ -79,13 +77,9 @@ require 'notifier.rb'
     respond_to do |format|
       if @incident_report.update(incident_report_params)
 
-        (@incident_report.recovery_time)? @incident_report.recovery_duration = (@incident_report.recovery_time - @incident_report.occurrence_time)/60 : 0
-        (@incident_report.resolved_time)? @incident_report.resolution_duration = (@incident_report.resolved_time - @incident_report.occurrence_time)/60 : 0
-        @incident_report.set_current_status
         if @incident_report.check_status
           Notifier.ir_notify(current_user, @incident_report, 'resolved_ir')
         end
-        @incident_report.save
 
         flash[:success] = 'Incident report was successfully updated.'
         format.html { redirect_to @incident_report }
@@ -293,6 +287,11 @@ require 'notifier.rb'
 
   def set_incident_report
     @incident_report = IncidentReport.find(params[:id])
+  end
+
+  def set_incident_report_log
+    @incident_report.editor = current_user
+    @incident_report.reason = params[:incident_report][:reason]
   end
 
   def incident_report_params
