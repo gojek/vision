@@ -1,6 +1,10 @@
 # a model representating incident report document
 class IncidentReport < ActiveRecord::Base
   include ActiveModel::Dirty
+  
+  belongs_to :user
+  has_and_belongs_to_many :collaborators, join_table: :incident_report_collaborators, class_name: 'User'
+  has_many :logs, join_table: :access_request_logs, dependent: :destroy, class_name: 'IncidentReportLog'
 
   before_save :create_incident_report_log, :unless => :new_record?
   before_save :set_recovery_duration, :if => :recovery_time?
@@ -8,8 +12,6 @@ class IncidentReport < ActiveRecord::Base
   before_save :set_current_status
   before_save :set_action_item_done_time, if: :action_item_status_done?
 
-  belongs_to :user
-  has_many :logs, join_table: :access_request_logs, dependent: :destroy, class_name: 'IncidentReportLog'
   acts_as_readable :on => :updated_at
   has_paper_trail class_name: 'IncidentReportVersion',
                   meta: { author_username: :user_name }
@@ -153,6 +155,17 @@ class IncidentReport < ActiveRecord::Base
       write_attribute :expected, val
     else
       write_attribute :expected, (val.to_i == 1)
+    end
+  end
+
+  def editable?(user)
+    return (self.user == user) || user.is_admin || (self.collaborators.include? user)
+  end
+
+  def set_collaborators(collaborator_id_list)
+    self.collaborators = []
+    collaborator_id_list.each do |collaborator_id|
+      self.collaborators << User.find(collaborator_id)
     end
   end
 
