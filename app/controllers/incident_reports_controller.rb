@@ -288,6 +288,34 @@ require 'notifier.rb'
     render :text => final_result.to_json
   end
 
+  respond_to :json
+  def total_incident_per_level
+    source = params[:source] || 'Internal'
+    start_time = params[:start_time] ? Time.parse(params[:start_time]) : Time.now.beginning_of_month
+    end_time = params[:end_time] ? Time.parse(params[:end_time]) : Time.now.end_of_month
+
+    irs = IncidentReport.group_by_week(:occurrence_time, range: start_time..end_time).where(source: source)
+
+    ranks = 1..5
+    totals = {}
+    for rank in ranks
+      totals[rank] = irs.where(rank: rank).count
+    end
+
+    results = []
+    totals.first.last.map do |k, x|
+      current = {}
+      current[:label] = k
+      for rank in ranks
+        current[rank] = totals[rank][k]
+      end
+      results << current
+    end
+
+    final_result = [{title: "Total #{source} Incident Per Level"}, results]
+    render :text => final_result.to_json
+  end
+
 
   private
 
