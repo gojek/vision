@@ -5,6 +5,7 @@ class AccessRequestsController < ApplicationController
   before_action :set_access_request_reason, only: [:cancel, :close]
   before_action :set_access_request_approval, only: [:approve, :reject]
   before_action :set_users_and_approvers, only: [:new, :edit]
+  before_action :set_paper_trail_whodunnit
 
   def index
     @q = AccessRequest.ransack(params[:q])
@@ -156,7 +157,10 @@ class AccessRequestsController < ApplicationController
           :cash_advance,
           :password_reset,
           :user_identification,
-          :asset_name
+          :asset_name,
+          :production_access,
+          :production_user_id,
+          :production_asset
       )
     end
 

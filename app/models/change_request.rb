@@ -303,4 +303,7 @@ class ChangeRequest < ActiveRecord::Base
     ChangeRequestStatus.where(change_request_id: id, deploy_delayed: true).any?
   end
 
+  def is_approved?(user)
+    Approval.where(change_request_id: id, user_id: user.id).first.approve
+  end
 end

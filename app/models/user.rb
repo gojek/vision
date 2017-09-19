@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
   devise :trackable, :lockable, :timeoutable,
          :omniauthable, omniauth_providers: [:google_oauth2]
   acts_as_reader
-  ROLES = %w(requestor approver release_manager approver_ar)
+  ROLES = %w(requestor approver release_manager approver_ar approver_all)
   ADMIN = %w(Admin User)
   validates :role, inclusion: { in: ROLES,
                               message: '%{value} is not a valid role' }
@@ -26,8 +26,8 @@ class User < ActiveRecord::Base
   validates :email, format: { with: /\b[A-Z0-9._%a-z\-]+@(veritrans\.co\.id|midtrans\.com|associate\.midtrans\.com)\z/,
                   message: "must be a veritrans account" }
   validates :email, uniqueness: true
-  scope :approvers, -> {where(role: 'approver')}
-  scope :approvers_ar, -> {where(role: 'approver_ar')}
+  scope :approvers, -> {where('role = ? OR role = ?', 'approver', 'approver_all')}
+  scope :approvers_ar, -> {where('role = ? OR role = ?', 'approver_ar', 'approver_all')}
 
 
   def account_active?
@@ -118,7 +118,7 @@ class User < ActiveRecord::Base
   end
 
   def is_approver?
-    role == 'approver'
+    ['approver', 'approver_all'].include?(role)
   end
 
   def is_associated?(change_request)
