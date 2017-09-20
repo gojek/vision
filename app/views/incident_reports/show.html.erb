@@ -4,7 +4,7 @@
   </h1>
   <br>
   <span class='pull-left'>
-    <% if current_user.is_admin || current_user == @incident_report.user%>
+    <% if @incident_report.editable?(current_user) %>
       <%= link_to 'Edit', edit_incident_report_path, :class => 'btn btn-primary btn-flat'  %>
     <%end %>
   </span>
@@ -117,5 +117,48 @@
     </div><!-- /.col -->
   </div><!-- /.row -->
 
+  <% if @incident_report.action_item? %>
+  <div class="row">
+    <!-- accepted payments column -->
+    <div class="col-xs-12 col-lg-6">
+      <label> <strong>Action Item:</strong></label>
+      <div class=" well well-sm no-shadow" style="margin-top: 10px;">
+        <%=raw @action_item %>
+      </div>
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+  <% end %>
+
+  <div class="row">
+    <!-- logs column -->
+    <div class="col-xs-12 col-lg-6">
+      <h3>Changelog</h3>
+      <table class='table table-striped table-bordered table-hover'>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Reason</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%- @incident_report.logs.reverse.each do |log| %>
+            <tr>
+              <td><%= log.user.name%></td>
+              <td><%= log.reason %></td>
+              <td><%=log.created_at.to_s(:long) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+
   <!-- this row will not appear when printing -->
 </section><!-- /.content -->
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $('[data-toggle="popover"]').popover({ trigger: "hover", placement: "top" }); 
+});
+</script>
