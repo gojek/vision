@@ -288,17 +288,16 @@ require 'notifier.rb'
     render :text => final_result.to_json
   end
 
-  respond_to :json
   def total_incident_per_level
-    source = params[:source] || 'Internal'
-    start_time = params[:start_time] ? Time.parse(params[:start_time]) : Time.now.beginning_of_month
-    end_time = params[:end_time] ? Time.parse(params[:end_time]) : Time.now.end_of_month
+    source = params.fetch(:source, 'Internal')
+    start_time = Time.zone.parse(params.fetch(:start_time, Time.current.beginning_of_month.to_s))
+    end_time = Time.zone.parse(params.fetch(:end_time, Time.current.end_of_month.to_s))
 
     irs = IncidentReport.group_by_week(:occurrence_time, range: start_time..end_time).where(source: source)
 
     ranks = 1..5
     totals = {}
-    for rank in ranks
+    ranks.each do |rank|
       totals[rank] = irs.where(rank: rank).count
     end
 
@@ -306,7 +305,7 @@ require 'notifier.rb'
     totals.first.last.each do |k, x|
       current = {}
       current[:label] = "#{(k - 1.week).strftime("%d/%m")} - #{k.strftime("%d/%m")}"
-      for rank in ranks
+      ranks.each do |rank|
         current["Level #{rank}"] = totals[rank][k]
       end
       results << current
@@ -316,11 +315,10 @@ require 'notifier.rb'
     render :text => final_result.to_json
   end
 
-  respond_to :json
   def average_recovery_time_incident
-    source = params[:source] || 'Internal'
-    start_time = params[:start_time] ? Time.parse(params[:start_time]) : Time.now.beginning_of_month
-    end_time = params[:end_time] ? Time.parse(params[:end_time]) : Time.now.end_of_month
+    source = params.fetch(:source, 'Internal')
+    start_time = Time.zone.parse(params.fetch(:start_time, Time.current.beginning_of_month.to_s))
+    end_time = Time.zone.parse(params.fetch(:end_time, Time.current.end_of_month.to_s))
 
     irs = IncidentReport.group_by_week(:occurrence_time, range: start_time..end_time).where(source: source)
 
@@ -328,9 +326,11 @@ require 'notifier.rb'
     detection_duration_avg = irs.average('recovery_time - detection_time')
 
     results = fixing_duration_avg.map do |k, v|
-      { label: "#{(k - 1.week).strftime("%d/%m")} - #{k.strftime("%d/%m")}", 
+      { 
+        label: "#{(k - 1.week).strftime("%d/%m")} - #{k.strftime("%d/%m")}", 
         detection: detection_duration_avg[k].day / 60,
-        fixing: v.day / 60 }
+        fixing: v.day / 60 
+      }
     end
 
     final_result = [{title: "Average Recovery Time for #{source} Incident"}, results]

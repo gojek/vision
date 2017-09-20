@@ -326,10 +326,14 @@ class ChangeRequestsController < ApplicationController
     failed = change_requests.where(aasm_state: 'failed').count
     rollbacked = change_requests.where(aasm_state: 'rollbacked').count
 
-    results = succeeded.map { |k,x| 
-      { label:"#{(k - 1.week).strftime("%d/%m")} - #{k.strftime("%d/%m")}", 
-        succeeded: x, failed: failed[k], rollbacked: rollbacked[k] } 
-    }
+    results = succeeded.map do |k,x| 
+      { 
+        label: "#{(k - 1.week).strftime("%d/%m")} - #{k.strftime("%d/%m")}", 
+        succeeded: x, 
+        failed: failed[k], 
+        rollbacked: rollbacked[k] 
+      } 
+    end
 
     final_result = [{title: status.humanize}, results]
     render :text => final_result.to_json
