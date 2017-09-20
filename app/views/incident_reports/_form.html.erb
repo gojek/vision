@@ -159,54 +159,48 @@
     <div class='box-header with-border'>
         <h3 class='box-title'>Incident Detail</h3>
     </div>
-      <div class='box-body table-responsive'>
-        <div class="form-group">
-          <% if @incident_report.errors.messages[:occurred_reason] %>
-            <div class="field form-group has-error">
-            <%else %>  
-            <div class="field form-group">
-            <% end %>
-          <%= f.label :why_did_it_occured_? %><br>
-          <%= f.text_area :occurred_reason, class: 'form-control tinymce'%>
-        </div>
-        <div class="form-group">
-          <% if @incident_report.errors.messages[:overlooked_reason] %>
-            <div class="field form-group has-error">
-            <%else %>  
-            <div class="field form-group">
-            <% end %>
-          <%= f.label :why_was_it_overlooked_? %><br>
-          <%= f.text_area :overlooked_reason, class: 'form-control tinymce'%>
-        </div>
-        <div class="form-group">
-          <% if @incident_report.errors.messages[:recovery_action] %>
-            <div class="field form-group has-error">
-            <%else %>  
-            <div class="field form-group">
-            <% end %>
-          <%= f.label :action_for_recovery %><br>
-          <%= f.text_area :recovery_action, class: 'form-control tinymce'%>
-        </div>
-        <div class="form-group">
-          <% if @incident_report.errors.messages[:prevent_action] %>
-            <div class="field form-group has-error">
-            <%else %>  
-            <div class="field form-group">
-            <% end %>
-          <%= f.label :to_prevent_recurrence %><br>
-          <%= f.text_area :prevent_action, class: 'form-control tinymce'%>
-        </div>
-        <% unless @incident_report.new_record? %>
-        <div class="form-group">
-          <% if @incident_report.errors.messages[:reason] %>
-            <div class="field form-group has-error">
-            <%else %>  
-            <div class="field form-group">
-            <% end %>
-          <%= f.label :reason %><br>
-          <%= f.text_area :reason, class: 'form-control'%>
+    <div class='box-body table-responsive'>
+      <div class="form-group">
+        <% if @incident_report.errors.messages[:occurred_reason] %>
+          <div class="field form-group has-error">
+          <%else %>  
+          <div class="field form-group">
+          <% end %>
+        <%= f.label :why_did_it_occured_? %><br>
+        <%= f.text_area :occurred_reason, class: 'form-control tinymce'%>
         </div>
       </div>
+      <div class="form-group">
+        <% if @incident_report.errors.messages[:overlooked_reason] %>
+          <div class="field form-group has-error">
+          <%else %>  
+          <div class="field form-group">
+          <% end %>
+        <%= f.label :why_was_it_overlooked_? %><br>
+        <%= f.text_area :overlooked_reason, class: 'form-control tinymce'%>
+        </div>
+      </div>
+      <div class="form-group">
+        <% if @incident_report.errors.messages[:recovery_action] %>
+          <div class="field form-group has-error">
+          <%else %>  
+          <div class="field form-group">
+          <% end %>
+        <%= f.label :action_for_recovery %><br>
+        <%= f.text_area :recovery_action, class: 'form-control tinymce'%>
+        </div>
+      </div>
+      <div class="form-group">
+        <% if @incident_report.errors.messages[:prevent_action] %>
+          <div class="field form-group has-error">
+          <%else %>  
+          <div class="field form-group">
+          <% end %>
+        <%= f.label :to_prevent_recurrence %><br>
+        <%= f.text_area :prevent_action, class: 'form-control tinymce'%>
+        </div>
+      </div>
+    </div>
   </div>
   <div class='box'>
     <div class='box-header with-border'>
@@ -229,6 +223,22 @@
       </div>
     </div>
   </div>
+
+  <% unless @incident_report.new_record? %>
+  <div class='box'>
+    <div class='box-header with-border'>
+        <h3 class='box-title'>Reason</h3>
+    </div>
+    <div class='box-body table-responsive'>
+      <div class="form-group">
+        <div class="field form-group <%= @incident_report.errors.messages[:reason] ? 'has-error' : '' %>">
+        <%= f.label :reason %><br>
+        <%= f.text_area :reason, class: 'form-control'%>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%end%>
 
   <div class='box'>
     <div class='box-body table-responsive'>
