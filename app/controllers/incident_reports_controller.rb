@@ -4,7 +4,8 @@ class IncidentReportsController < ApplicationController
   before_action :set_incident_report, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
   before_action :owner_required, only: [:edit, :update, :destroy]
-require 'notifier.rb'
+  before_action :set_source_start_end_time, only: [:total_incident_per_level, :average_recovery_time_incident]
+
   def index
     if params[:tag]
       @q = IncidentReport.ransack(params[:q])
@@ -289,11 +290,7 @@ require 'notifier.rb'
   end
 
   def total_incident_per_level
-    source = params.fetch(:source, 'Internal')
-    start_time = Time.zone.parse(params.fetch(:start_time, Time.current.beginning_of_month.to_s))
-    end_time = Time.zone.parse(params.fetch(:end_time, Time.current.end_of_month.to_s))
-
-    irs = IncidentReport.group_by_week(:occurrence_time, range: start_time..end_time).where(source: source)
+    irs = IncidentReport.group_by_week(:occurrence_time, range: @start_time..@end_time).where(source: @source)
 
     ranks = 1..5
     totals = {}
@@ -311,16 +308,12 @@ require 'notifier.rb'
       results << current
     end
 
-    final_result = [{title: "Total #{source} Incident Per Level"}, results]
+    final_result = [{title: "Total #{@source} Incident Per Level"}, results]
     render :text => final_result.to_json
   end
 
   def average_recovery_time_incident
-    source = params.fetch(:source, 'Internal')
-    start_time = Time.zone.parse(params.fetch(:start_time, Time.current.beginning_of_month.to_s))
-    end_time = Time.zone.parse(params.fetch(:end_time, Time.current.end_of_month.to_s))
-
-    irs = IncidentReport.group_by_week(:occurrence_time, range: start_time..end_time).where(source: source)
+    irs = IncidentReport.group_by_week(:occurrence_time, range: @start_time..@end_time).where(source: @source)
 
     fixing_duration_avg = irs.average('detection_time - occurrence_time')
     detection_duration_avg = irs.average('recovery_time - detection_time')
@@ -333,7 +326,7 @@ require 'notifier.rb'
       }
     end
 
-    final_result = [{title: "Average Recovery Time for #{source} Incident"}, results]
+    final_result = [{title: "Average Recovery Time for #{@source} Incident"}, results]
     render :text => final_result.to_json
   end
 
@@ -342,6 +335,12 @@ require 'notifier.rb'
 
   def set_incident_report
     @incident_report = IncidentReport.find(params[:id])
+  end
+
+  def set_source_start_end_time
+    @source = params.fetch(:source, 'Internal')
+    @start_time = Time.zone.parse(params.fetch(:start_time, Time.current.beginning_of_month.to_s))
+    @end_time = Time.zone.parse(params.fetch(:end_time, Time.current.end_of_month.to_s))
   end
 
   def incident_report_params
