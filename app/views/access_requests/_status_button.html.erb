@@ -1,0 +1,11 @@
+<% terminal_statuses = ['cancelled'] %>
+<% unless status == 'draft' %>
+<span>
+	<% unless status == 'submitted' %>
+  	<i class="glyphicon glyphicon-menu-right" aria-hidden="true"style="font-size:1.5em;"></i>
+  <% end %>
+  <button class="btn btn-<%= (!terminal_statuses.include? status) ? 'success' : 'danger' %> btn-lg"> 
+    <%= status.to_s.humanize %> <i class="fa fa-<%= (!terminal_statuses.include? status) ? 'check' : 'times' %>" aria-hidden="true"></i> 
+  </button>
+</span>
+<% end %>
