@@ -6,10 +6,12 @@ describe SlackNotif do
   let(:user) {FactoryGirl.create(:approver, email: 'dwiyan@veritrans.co.id', slack_username: 'dwiyan')}
   let(:other_user) {FactoryGirl.create(:approver, email: 'kevin@veritrans.co.id', slack_username: 'kevin')}
   let(:change_request) {FactoryGirl.create(:change_request)}
+  let(:incident_report) {FactoryGirl.create(:incident_report)}
   let(:slack_notifier) {SlackNotif.new}
   let(:attachment_builder) {SlackAttachmentBuilder.new}
   let(:routes) {Rails.application.routes.url_helpers}
   let(:change_request_link){routes.change_request_url(change_request)}
+  let(:incident_report_link){routes.incident_report_url(incident_report)}
 
   describe 'Notify about change request' do
     let(:change_request_attachment){attachment_builder.generate_change_request_attachment(change_request)}
@@ -120,5 +122,13 @@ describe SlackNotif do
     #   end
     # end
 
+  end
+
+  describe 'Sending notification about new Incident Report' do
+    it 'Send message to incidents channel' do
+      general_message = "<#{incident_report_link}|Incident report> has been created"
+      expect(slack_notifier).to receive(:message_channel).with('incidents', general_message, anything())
+      slack_notifier.notify_new_ir(incident_report)
+    end
   end
 end

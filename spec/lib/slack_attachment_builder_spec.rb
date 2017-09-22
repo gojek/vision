@@ -4,6 +4,7 @@ require 'slack_attachment_builder.rb'
 describe SlackAttachmentBuilder do
   let(:user) {FactoryGirl.create(:approver, slack_username: "dwiyan")}
   let(:change_request) {FactoryGirl.create(:change_request)}
+  let(:incident_report) {FactoryGirl.create(:incident_report)}
   let(:comment) {FactoryGirl.create(:comment, user: user, change_request: change_request)}
   let(:attachment_builder) {SlackAttachmentBuilder.new}
 
@@ -80,6 +81,74 @@ describe SlackAttachmentBuilder do
     it 'use url_helpers to generate link before put into title_link' do
       expect(attachment_builder).to receive(:change_request_url).with(change_request)
       attachment_builder.generate_comment_attachment(comment)
+    end
+  end
+
+  describe 'generate incident report attachment' do
+    it 'put service impact in fallback' do
+      attachment_generated = attachment_builder.generate_incident_report_attachment(incident_report)
+      expect(attachment_generated).to include(fallback: incident_report.service_impact)
+    end
+
+    it 'put id and service impact in title' do
+      attachment_generated = attachment_builder.generate_incident_report_attachment(incident_report)
+      expect(attachment_generated).to include(title: "#{incident_report.id}. #{incident_report.service_impact}")
+    end
+
+    it 'put source as field in attachment' do
+      attachment_generated = attachment_builder.generate_incident_report_attachment(incident_report)
+      expect(attachment_generated[:fields]).to include({
+        title: "Source", 
+        value: incident_report.source, 
+        short: true
+      })
+    end
+
+    it 'put level as field in attachment' do
+      attachment_generated = attachment_builder.generate_incident_report_attachment(incident_report)
+      expect(attachment_generated[:fields]).to include({
+        title: "Level", 
+        value: incident_report.rank, 
+        short: true
+      })
+    end
+    
+    it 'put occurence time as field in attachment' do
+      attachment_generated = attachment_builder.generate_incident_report_attachment(incident_report)
+      expect(attachment_generated[:fields]).to include({
+        title: "Occurence Time", 
+        value: incident_report.occurrence_time, 
+        short: false
+      })
+    end
+
+    it 'put reporter as field in attachment' do
+      attachment_generated = attachment_builder.generate_incident_report_attachment(incident_report)
+      expect(attachment_generated[:fields]).to include({
+        title: "Reporter", 
+        value: incident_report.user.name, 
+        short: false
+      })
+    end
+
+    it 'put created_at as timestamp' do
+      attachment_generated = attachment_builder.generate_incident_report_attachment(incident_report)
+      expect(attachment_generated).to include(ts: incident_report.created_at.to_datetime.to_f.round)
+    end
+
+    it 'use url_helpers to generate link before put into title_link' do
+      expect(attachment_builder).to receive(:incident_report_url).with(incident_report)
+      attachment_builder.generate_incident_report_attachment(incident_report)
+    end
+
+    it 'use SanitizeHelper to sanitize bussines Justification before put into field attachment' do
+      expect(attachment_builder).to receive(:sanitize).with(incident_report.problem_details, tags: [])
+      attachment_builder.generate_incident_report_attachment(incident_report)
+    end
+
+    it 'use DateHelper to compute distance time in words before put into field attachment' do
+      expect(attachment_builder).to receive(:distance_of_time_in_words).with(incident_report.recovery_duration * 60)
+      attachment_builder.generate_incident_report_attachment(incident_report)
     end
   end
 end
