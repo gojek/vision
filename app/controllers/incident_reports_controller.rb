@@ -4,7 +4,10 @@ class IncidentReportsController < ApplicationController
   before_action :set_incident_report, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
   before_action :owner_required, only: [:edit, :update, :destroy]
-require 'notifier.rb'
+  before_action :set_source_start_end_time, only: [:total_incident_per_level, :average_recovery_time_incident]
+  before_action :set_users_and_tags, only: [:new, :create, :edit, :update]
+  before_action :set_incident_report_log, only: [:update]
+
   def index
     if params[:tag]
       @q = IncidentReport.ransack(params[:q])
@@ -40,32 +43,31 @@ require 'notifier.rb'
   end
 
   def show
-     @incident_report.mark_as_read! :for => current_user
-     Notifier.ir_read(current_user,@incident_report)
+    @incident_report.mark_as_read! :for => current_user
+    Notifier.ir_read(current_user,@incident_report)
+    unless @incident_report.action_item.nil?
+      @action_item = Jira.new.jiraize(@incident_report.action_item)
+    end
   end
 
   def new
     @incident_report = IncidentReport.new
-    @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
     @current_tags = []
   end
 
   def edit
-    @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
     @current_tags = @incident_report.tag_list
   end
 
   def create
     @incident_report = current_user.IncidentReports.build(incident_report_params)
-    @incident_report.recovery_duration = (@incident_report.recovery_time)? (@incident_report.recovery_time - @incident_report.occurrence_time)/60 : 0
-    @incident_report.resolution_duration = (@incident_report.resolved_time)? (@incident_report.resolved_time - @incident_report.occurrence_time)/60 : 0
-    @incident_report.set_current_status
     respond_to do |format|
       if @incident_report.save
         flash[:success] = 'Incident report was successfully created.'
         format.html { redirect_to @incident_report }
         format.json { render :show, status: :created, location: @incident_report }
-         Notifier.ir_notify(current_user, @incident_report, 'new_ir')
+        Notifier.ir_notify(current_user, @incident_report, 'new_ir')
+        SlackNotif.new.notify_new_ir @incident_report
       else
         @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
         @current_tags = []
@@ -76,16 +78,15 @@ require 'notifier.rb'
   end
 
   def update
+    @current_collaborators = Array.wrap(params[:collaborators_list])
+    @incident_report.set_collaborators(@current_collaborators)
+
     respond_to do |format|
       if @incident_report.update(incident_report_params)
 
-        (@incident_report.recovery_time)? @incident_report.recovery_duration = (@incident_report.recovery_time - @incident_report.occurrence_time)/60 : 0
-        (@incident_report.resolved_time)? @incident_report.resolution_duration = (@incident_report.resolved_time - @incident_report.occurrence_time)/60 : 0
-        @incident_report.set_current_status
         if @incident_report.check_status
           Notifier.ir_notify(current_user, @incident_report, 'resolved_ir')
         end
-        @incident_report.save
 
         flash[:success] = 'Incident report was successfully updated.'
         format.html { redirect_to @incident_report }
@@ -288,11 +289,65 @@ require 'notifier.rb'
     render :text => final_result.to_json
   end
 
+  def total_incident_per_level
+    irs = IncidentReport.group_by_week(:occurrence_time, range: @start_time..@end_time).where(source: @source)
+
+    ranks = 1..5
+    totals = {}
+    ranks.each do |rank|
+      totals[rank] = irs.where(rank: rank).count
+    end
+
+    results = []
+    totals.first.last.each do |k, x|
+      current = {}
+      current[:label] = "#{k.strftime("%d/%m")} - #{(k + 6.day).strftime("%d/%m")}"
+      ranks.each do |rank|
+        current["Level #{rank}"] = totals[rank][k]
+      end
+      results << current
+    end
+
+    final_result = [{title: "Total #{@source} Incident Per Level"}, results]
+    render :text => final_result.to_json
+  end
+
+  def average_recovery_time_incident
+    irs = IncidentReport.group_by_week(:occurrence_time, range: @start_time..@end_time).where(source: @source)
+
+    count = irs.count
+    fixing_duration_sum = irs.sum('extract(epoch from detection_time - occurrence_time)')
+    detection_duration_sum = irs.sum('extract(epoch from recovery_time - detection_time)')
+
+    results = fixing_duration_sum.map do |k, v|
+      n = [count[k], 1].max
+      { 
+        label: "#{k.strftime("%d/%m")} - #{(k + 6.day).strftime("%d/%m")}", 
+        detection: '%.2f' % ((detection_duration_sum[k] / n) / 60),
+        fixing: '%.2f' % ((v / n) / 60) 
+      }
+    end
+
+    final_result = [{title: "Average Recovery Time for #{@source} Incident"}, results]
+    render :text => final_result.to_json
+  end
+
 
   private
 
   def set_incident_report
     @incident_report = IncidentReport.find(params[:id])
+  end
+
+  def set_source_start_end_time
+    @source = params.fetch(:source, 'Internal')
+    @start_time = Time.zone.parse(params.fetch(:start_time, Time.current.beginning_of_month.to_s))
+    @end_time = Time.zone.parse(params.fetch(:end_time, Time.current.end_of_month.to_s))
+  end
+
+  def set_incident_report_log
+    @incident_report.editor = current_user
+    @incident_report.reason = params[:incident_report][:reason]
   end
 
   def incident_report_params
@@ -301,14 +356,17 @@ require 'notifier.rb'
               :occurrence_time, :detection_time, :recovery_time,:resolved_time,
               :source, :rank, :loss_related, :occurred_reason,
               :overlooked_reason, :solving_duration, :recovery_action, :prevent_action,
-              :recurrence_concern, :current_status, :measurer_status, :tag_list => [])
+              :recurrence_concern, :current_status, :measurer_status, :has_further_action, 
+              :action_item, :action_item_status, :tag_list => [])
   end
 
   def owner_required
-    redirect_to incident_reports_url if
-    current_user != @incident_report.user && !current_user.is_admin
+    redirect_to incident_reports_url if !(@incident_report.editable? current_user)
   end
 
-
+  def set_users_and_tags
+    @users = User.all.collect{|u| [u.name, u.id]}
+    @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
+  end
 
 end
