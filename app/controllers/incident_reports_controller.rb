@@ -323,8 +323,8 @@ require 'notifier.rb'
       n = [count[k], 1].max
       { 
         label: "#{k.strftime("%d/%m")} - #{(k + 6.day).strftime("%d/%m")}", 
-        detection: (detection_duration_sum[k] / n) / 60,
-        fixing: (v / n) / 60 
+        detection: '%.2f' % ((detection_duration_sum[k] / n) / 60),
+        fixing: '%.2f' % ((v / n) / 60) 
       }
     end
 
