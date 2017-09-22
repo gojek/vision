@@ -76,6 +76,8 @@ gem 'colorize'
 gem 'slack-ruby-client'
 gem "slack-notifier"
 
+#jira
+gem 'jira-ruby', :require => 'jira-ruby'
 
 # full-text search
 gem 'sunspot_rails'
