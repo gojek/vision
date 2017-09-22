@@ -117,6 +117,26 @@
     </div><!-- /.col -->
   </div><!-- /.row -->
 
+<<<<<<< HEAD
+=======
+  <% if @incident_report.action_item? %>
+  <div class="row">
+    <!-- accepted payments column -->
+    <div class="col-xs-12 col-lg-6">
+      <label> <strong>Action Item:</strong></label>
+      <div class=" well well-sm no-shadow" style="margin-top: 10px;">
+        <%=raw @action_item %>
+      </div>
+
+      <label> <strong>Action Item Status:</strong></label>
+      <div class=" well well-sm no-shadow" style="margin-top: 10px;">
+        <%=raw @incident_report.action_item_status %>
+      </div>
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+  <% end %>
+
+>>>>>>> 91533a47 (Fix week selection bug)
   <div class="row">
     <!-- logs column -->
     <div class="col-xs-12 col-lg-6">

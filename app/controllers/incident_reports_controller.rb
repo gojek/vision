@@ -301,7 +301,7 @@ require 'notifier.rb'
     results = []
     totals.first.last.each do |k, x|
       current = {}
-      current[:label] = "#{(k - 1.week).strftime("%d/%m")} - #{k.strftime("%d/%m")}"
+      current[:label] = "#{k.strftime("%d/%m")} - #{(k + 6.day).strftime("%d/%m")}"
       ranks.each do |rank|
         current["Level #{rank}"] = totals[rank][k]
       end
@@ -315,14 +315,15 @@ require 'notifier.rb'
   def average_recovery_time_incident
     irs = IncidentReport.group_by_week(:occurrence_time, range: @start_time..@end_time).where(source: @source)
 
-    fixing_duration_avg = irs.average('detection_time - occurrence_time')
-    detection_duration_avg = irs.average('recovery_time - detection_time')
+    count = irs.count
+    fixing_duration_sum = irs.sum('extract(epoch from detection_time - occurrence_time)')
+    detection_duration_sum = irs.sum('extract(epoch from recovery_time - detection_time)')
 
-    results = fixing_duration_avg.map do |k, v|
+    results = fixing_duration_sum.map do |k, v|
       { 
-        label: "#{(k - 1.week).strftime("%d/%m")} - #{k.strftime("%d/%m")}", 
-        detection: detection_duration_avg[k].day / 60,
-        fixing: v.day / 60 
+        label: "#{k.strftime("%d/%m")} - #{(k + 6.day).strftime("%d/%m")}", 
+        detection: (detection_duration_sum[k] / (count[k] | 1)) / 60,
+        fixing: (v / (count[k] | 1)) / 60 
       }
     end
 
