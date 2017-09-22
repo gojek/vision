@@ -320,10 +320,11 @@ require 'notifier.rb'
     detection_duration_sum = irs.sum('extract(epoch from recovery_time - detection_time)')
 
     results = fixing_duration_sum.map do |k, v|
+      n = [count[k], 1].max
       { 
         label: "#{k.strftime("%d/%m")} - #{(k + 6.day).strftime("%d/%m")}", 
-        detection: (detection_duration_sum[k] / (count[k] | 1)) / 60,
-        fixing: (v / (count[k] | 1)) / 60 
+        detection: (detection_duration_sum[k] / n) / 60,
+        fixing: (v / n) / 60 
       }
     end
 
