@@ -316,8 +316,8 @@ require 'notifier.rb'
     irs = IncidentReport.group_by_week(:occurrence_time, range: @start_time..@end_time).where(source: @source)
 
     count = irs.count
-    fixing_duration_sum = irs.sum('extract(epoch from detection_time - occurrence_time)')
-    detection_duration_sum = irs.sum('extract(epoch from recovery_time - detection_time)')
+    detection_duration_sum = irs.sum('extract(epoch from detection_time - occurrence_time)')
+    fixing_duration_sum = irs.sum('extract(epoch from recovery_time - detection_time)')
 
     results = fixing_duration_sum.map do |k, v|
       n = [count[k], 1].max
