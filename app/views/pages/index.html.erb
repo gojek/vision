@@ -496,15 +496,18 @@
     });
   }
 
+  // INCODENT LEVEL
+  var incidentLevelColors = {
+    'Level 1': '#9BBB58',
+    'Level 2': '#4AACC5',
+    'Level 3': '#8064A1',
+    'Level 4': '#F79647',
+    'Level 5': '#C0504E',
+  }
+    
   // INTERNAL INCIDENT LEVEL
   function onIncidentLevelInternalControlChange(){
-    var colors = {
-      'Level 1': '#67B7DC',
-      'Level 2': '#55A3C8',
-      'Level 3': '#4490B4',
-      'Level 4': '#327DA0',
-      'Level 5': '#216A8C',
-    }
+    var colors = incidentLevelColors;
     var datePicker = $('#incident-level-internal-daterange').data('daterangepicker');
     var start = datePicker.startDate.format('YYYY-MM-DD');
     var end = datePicker.endDate.format('YYYY-MM-DD');
@@ -524,13 +527,7 @@
 
   // EXTERNAL INCIDENT LEVEL
   function onIncidentLevelExternalControlChange(){
-    var colors = {
-      'Level 1': '#FDD400',
-      'Level 2': '#E6BA00',
-      'Level 3': '#CFA000',
-      'Level 4': '#B88600',
-      'Level 5': '#A26C01',
-    }
+    var colors = incidentLevelColors;
     var datePicker = $('#incident-level-external-daterange').data('daterangepicker');
     var start = datePicker.startDate.format('YYYY-MM-DD');
     var end = datePicker.endDate.format('YYYY-MM-DD');
