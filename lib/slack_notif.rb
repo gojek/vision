@@ -59,7 +59,7 @@ class SlackNotif
 
   private
   def get_slack_username(user)
-    @members.select { |u| user.email == u.profile.email }.try(:name)
+    @members.select { |u| user.email == u.profile.email }.first.try(:name)
   end
 
   def reassign_slack_username(user)
