@@ -7,6 +7,7 @@ class SlackNotif
   def initialize
     @client = Slack::Web::Client.new
     @attachment_builder = SlackAttachmentBuilder.new
+    @members = @client.users_list.members
   end
 
   def notify_new_cr(change_request)
@@ -57,27 +58,35 @@ class SlackNotif
   end
 
   private
+  def get_slack_username(user)
+    @members.select { |u| user.email == u.profile.email }.try(:name)
+  end
+
+  def reassign_slack_username(user)
+    user.slack_username = get_slack_username(user)
+    user.save
+  end
+
+  def try_send(user, message, attachments)
+    tries ||= 2
+    @client.chat_postMessage(channel: "@#{user.slack_username}", text: message, attachments: attachments)
+  rescue Slack::Web::Api::Error => e
+    return if e.message != 'channel_not_found'
+    reassign_slack_username(user)
+    retry unless (tries -= 1).zero?
+  end
+
   def notify_users(users, message, attachment)
     users.each do |user|
-      next if user.slack_username.blank?
       actionable_attachment = @attachment_builder.wrap_approver_actions(attachment, user)
-      @client.chat_postMessage(channel: "@#{user.slack_username}", text: message, attachments: [actionable_attachment])
+      try_send(user, message, [actionable_attachment])
     end
   end
 
   private
   def message_users(users, message, attachment)
     users.each do |user|
-      next if user.slack_username.blank?
-      begin
-        @client.chat_postMessage(channel: "@#{user.slack_username}", text: message, attachments: [attachment])
-      rescue Slack::Web::Api::Error
-        # TODO add test for it !
-        slack_username = user.get_slack_username
-        user.slack_username = slack_username
-        user.save      
-        next
-      end
+      try_send(user, message, [attachment])
     end
   end
 
