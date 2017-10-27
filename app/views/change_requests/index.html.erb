@@ -88,28 +88,27 @@
             <%= link_to "Relevant to me", change_requests_path(type: 'relevant'), class: 'btn-sm btn-primary' %>
           </div>
         </div><!-- /.box-header -->
-        <div class="box-body table-responsive" style="overflow-x: auto;">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th width=6% style="vertical-align: top">Request ID</th>
-                        <th width=21% style="vertical-align: top">Change Summary</th>
-                        <th width=8% style="vertical-align: top">Scheduled on</th>
-                        <th width=15% style="vertical-align: top">Bussines Justification</th>
-                        <th width=5% style="vertical-align: top">Priority</th>
-                        <th width=8% style="vertical-align: top">Category</th>
-                        <th width=10% style="vertical-align: top">Type</th>
-                        <th width=6% style="vertical-align: top">Status</th>
-                        <th width=8% style="vertical-align: top">Approvers</th>
-                        <th width=6% style="vertical-align: top">Approval Status</th>
-                        <th colspan="4" style="vertical-align: top">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <% @change_requests.each do |change_request| %>
-                  <tr>
-                    <td width=6%><%= link_to change_request.id, change_request, target: :_blank %></td>
-                    <td width=21%><%= link_to (raw change_request.change_summary), change_request, {class: 'cr-title-link', target: :_blank} %></td>
+        <div class="box-body table-responsive table-autoheight" style="overflow-x: auto;">
+          <table class="table table-hover">
+            <tr>
+                <th>Request ID</th>
+                <th>Change Summary</th>
+                <th>Request Date</th>
+                <th>Business Justification</th>
+                <th>Priority</th>
+                <th>Category</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Approvers</th>
+                <th>Approval Status</th>
+                <th>Scheduled on</th>
+                <th colspan="3">Action</th>
+                <th> </th>
+            </tr>
+            <% @change_requests.each do |change_request| %>
+              <tr>
+                <td><%= link_to change_request.id, change_request, target: :_blank %></td>
+                <td><%= link_to (raw change_request.change_summary), change_request, {class: 'cr-title-link', target: :_blank} %></td>
 
                     <td width=8%><%= change_request.schedule_change_date %></td>
                     <td width=15%><%=raw HTML_Truncator.truncate(change_request.business_justification, 10) %>
