@@ -75,6 +75,7 @@ class User < ActiveRecord::Base
   def refresh!
     response = request_token_from_google
     data = JSON.parse(response.body)
+    logger.info("Got This from Response: #{data.inspect}" )
     update_attributes(
       token: data['access_token'],
       expired_at: Time.now + (data['expires_in'].to_i).seconds)
