@@ -106,7 +106,7 @@
             <tr>
                 <th>Request ID</th>
                 <th>Change Summary</th>
-                <th>Request Date</th>
+                <th>Scheduled on</th>
                 <th>Business Justification</th>
                 <th>Priority</th>
                 <th>Category</th>
@@ -114,7 +114,7 @@
                 <th>Status</th>
                 <th>Approvers</th>
                 <th>Approval Status</th>
-                <th>Scheduled on</th>
+
                 <th colspan="3">Action</th>
                 <th> </th>
             </tr>
@@ -122,8 +122,7 @@
               <tr>
                 <td><%= link_to change_request.id, change_request, target: :_blank %></td>
                 <td><%= link_to (raw change_request.change_summary), change_request, {class: 'cr-title-link', target: :_blank} %></td>
-
-                <td><%=raw change_request.created_at.to_s(:long) %></td>
+                <td><%= change_request.schedule_change_date %></td>
                 <td><%=raw HTML_Truncator.truncate(change_request.business_justification, 10) %>
                 <td><%=raw change_request.priority%></td>
                 <td><%=raw change_request.all_category %></td>
@@ -139,7 +138,7 @@
                     <i class="glyphicon glyphicon-exclamation-sign" style="color:orange;"></i>
                   <% end %>
                 </td>
-                <td><%= change_request.schedule_change_date %></td>
+
                 <td>
                   <%= link_to change_request, title: "Show", target: :_blank do %>
                     <i class='glyphicon glyphicon-eye-open'><span style='display: none'> Show </span></i>
