@@ -65,7 +65,7 @@
               $('.datetimepicker').on('dp.hide', onDateChange);
             });
             </script>
-            
+
           </div><!--/col-->
           <div class="col-md-6">
             <div class="field form-group">
@@ -82,6 +82,18 @@
               <%= select_tag "approvers_list" ,options_for_select(@approvers), class: 'select2-approve form-control', multiple:true %>
             </div><!--/field-->
 
+            <div class="field form-group">
+              <div class="field">
+                <%= f.label :downtime_expected %><br />
+                <%= f.label :downtime_expected, "Downtime Expected", :value => "true"  %>
+                <%= f.radio_button :downtime_expected, true %>
+                <%= f.label :autolyse, "None", :value => "false" %>
+                <%= f.radio_button :downtime_expected, false, :checked => true %>
+              </div>
+
+              <%= f.text_field :expected_downtime_in_minutes,  class: 'form-control' %>
+            </div><!--/field-->
+
           </div><!--/col-->
         </div><!--/box-body-->
       </div> <!--/box-->
@@ -93,30 +105,30 @@
           <div class="col-md-6">
             <div class="field form-group required">
               <%= f.label :employee_name, {class: 'control-label'} %><br>
-              <%= f.text_field :employee_name, class: 'form-control'  %>            
+              <%= f.text_field :employee_name, class: 'form-control'  %>
             </div><!--/field-->
 
             <div class="field form-group required">
               <%= f.label :employee_position, {class: 'control-label'} %><br>
-              <%= f.text_field :employee_position, class: 'form-control'  %>            
+              <%= f.text_field :employee_position, class: 'form-control'  %>
             </div><!--/field-->
 
             <div class="field form-group required">
               <%= f.label :employee_email_address, {class: 'control-label'} %><br>
-              <%= f.text_field :employee_email_address, class: 'form-control'  %>            
+              <%= f.text_field :employee_email_address, class: 'form-control'  %>
             </div><!--/field-->
-            
+
           </div><!--/col-->
           <div class="col-md-6">
-          
+
             <div class="field form-group required">
               <%= f.label :employee_department, {class: 'control-label'} %><br>
-              <%= f.text_field :employee_department, class: 'form-control'  %>            
+              <%= f.text_field :employee_department, class: 'form-control'  %>
             </div><!--/field-->
 
             <div class="field form-group required">
               <%= f.label :employee_phone, {class: 'control-label'} %><br>
-              <%= f.text_field :employee_phone, class: 'form-control'  %>            
+              <%= f.text_field :employee_phone, class: 'form-control'  %>
             </div><!--/field-->
 
           </div><!--/col-->
@@ -155,7 +167,7 @@
 
               <div class="field form-group">
                 <%= f.label :corporate_email, {class: 'control-label'} %><br>
-                <%= f.text_field :corporate_email, class: 'form-control'  %>            
+                <%= f.text_field :corporate_email, class: 'form-control'  %>
               </div><!--/field-->
 
               <div class="field form-group">
@@ -198,7 +210,7 @@
                 <%= f.label :cash_advance, class: 'inherit-font-weight' %><br>
               </div><!--/field-->
             </div><!--/field-->
-            
+
           </div><!--/col-->
           <div class="col-md-6">
 
@@ -208,12 +220,12 @@
 
               <div class="field form-group">
                 <%= f.label :user_identification, {class: 'control-label'} %><br>
-                <%= f.text_field :user_identification, class: 'form-control'  %>            
+                <%= f.text_field :user_identification, class: 'form-control'  %>
               </div><!--/field-->
-            
+
               <div class="field form-group">
                 <%= f.label :asset_name, {class: 'control-label'} %><br>
-                <%= f.text_field :asset_name, class: 'form-control'  %>            
+                <%= f.text_field :asset_name, class: 'form-control'  %>
               </div><!--/field-->
             </div><!--/field-->
 
@@ -223,12 +235,12 @@
 
               <div class="field form-group">
                 <%= f.label :production_user_id, {class: 'control-label'} %><br>
-                <%= f.text_field :production_user_id, class: 'form-control'  %>            
+                <%= f.text_field :production_user_id, class: 'form-control'  %>
               </div><!--/field-->
-            
+
               <div class="field form-group">
                 <%= f.label :production_asset, {class: 'control-label'} %><br>
-                <%= f.text_field :production_asset, class: 'form-control'  %>            
+                <%= f.text_field :production_asset, class: 'form-control'  %>
               </div><!--/field-->
             </div><!--/field-->
 
