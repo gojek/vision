@@ -82,17 +82,6 @@
               <%= select_tag "approvers_list" ,options_for_select(@approvers), class: 'select2-approve form-control', multiple:true %>
             </div><!--/field-->
 
-            <div class="field form-group">
-              <div class="field">
-                <%= f.label :downtime_expected %><br />
-                <%= f.label :downtime_expected, "Downtime Expected", :value => "true"  %>
-                <%= f.radio_button :downtime_expected, true %>
-                <%= f.label :autolyse, "None", :value => "false" %>
-                <%= f.radio_button :downtime_expected, false, :checked => true %>
-              </div>
-
-              <%= f.text_field :expected_downtime_in_minutes,  class: 'form-control' %>
-            </div><!--/field-->
 
           </div><!--/col-->
         </div><!--/box-body-->
