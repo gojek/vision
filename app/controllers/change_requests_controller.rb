@@ -191,7 +191,7 @@ class ChangeRequestsController < ApplicationController
         associated_user_ids.concat(@current_collaborators)
         @change_request.associated_user_ids = associated_user_ids.uniq
         Notifier.cr_notify(current_user, @change_request, 'update_cr')
-        #SlackNotif.new.notify_update_cr @change_request
+        SlackNotif.new.notify_update_cr @change_request
         flash[:success] = 'Change request was successfully updated.'
         flash[:success] += " Calendar event creation failed: #{event.error_message}." if event.error?
         format.html { redirect_to @change_request }
@@ -301,7 +301,7 @@ class ChangeRequestsController < ApplicationController
     @change_request.planned_completion = nil
     @change_request.grace_period_starts = nil
     @change_request.grace_period_end = nil
-
+    
     @change_request.reference_cr_id = @reference_cr.id
     render 'new'
   end
@@ -316,7 +316,7 @@ class ChangeRequestsController < ApplicationController
 
     if status = 'weekly'
       change_requests = ChangeRequest.group_by_week(:closed_date, range: start_time..end_time)
-    else
+    else 
       change_requests = ChangeRequest.group_by_month(:closed_date, format: "%b %Y", range: start_time..end_time)
     end
 
@@ -328,13 +328,13 @@ class ChangeRequestsController < ApplicationController
     failed = change_requests.where(aasm_state: 'failed').count
     rollbacked = change_requests.where(aasm_state: 'rollbacked').count
 
-    results = succeeded.map do |k,x|
-      {
-        label: "#{(k - 1.week).strftime("%d/%m")} - #{k.strftime("%d/%m")}",
-        succeeded: x,
-        failed: failed[k],
-        rollbacked: rollbacked[k]
-      }
+    results = succeeded.map do |k,x| 
+      { 
+        label: "#{(k - 1.week).strftime("%d/%m")} - #{k.strftime("%d/%m")}", 
+        succeeded: x, 
+        failed: failed[k], 
+        rollbacked: rollbacked[k] 
+      } 
     end
 
     final_result = [{title: status.humanize}, results]
