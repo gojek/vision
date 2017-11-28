@@ -31,6 +31,7 @@ class ChangeRequest < ActiveRecord::Base
   validates :implementers, presence: true
   validates :testers, presence: true
   validates :approvals, presence: true
+  validates :expected_downtime_in_minutes, :if => :downtime_expected
   validate :deploy_date, :if => :schedule_change_date? && :planned_completion?
   validate :grace_period_date, :if => :grace_period_date_starts? && :grace_period_end
 
@@ -177,7 +178,7 @@ class ChangeRequest < ActiveRecord::Base
   def grace_period_date
     if !grace_period_starts.nil?
       if grace_period_starts > grace_period_end
-        errors.add(:grace_period_time, "is invalid") 
+        errors.add(:grace_period_time, "is invalid")
       end
     end
   end
@@ -276,7 +277,7 @@ class ChangeRequest < ActiveRecord::Base
   end
 
   def terminal_state?
-    return self.cancelled? || self.failed? || self.rollbacked? 
+    return self.cancelled? || self.failed? || self.rollbacked?
   end
 
   def state_require_note?(state)
@@ -294,8 +295,8 @@ class ChangeRequest < ActiveRecord::Base
 
   def editable?(user)
     return (user == self.user || user.collaborate_change_requests.include?(self) ||
-           user.is_admin || user.role == 'release_manager') && 
-           !self.terminal_state? && 
+           user.is_admin || user.role == 'release_manager') &&
+           !self.terminal_state? &&
            !self.has_approver?(user)
   end
 
