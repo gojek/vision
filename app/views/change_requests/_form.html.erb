@@ -107,10 +107,11 @@
                 </div><!--/field-->
 
 
-            <div class="field form-group">
+                  <div class="field form-group">
+                    <%= f.label :downtime_expected %><br />
               <div class="field">
-                <%= f.label :downtime_expected %><br />
-                <%= f.label :downtime_expected, "Downtime Expected", :value => "true"  %>
+
+                <%= f.label :downtime_expected, "Expected: ", :value => "true"  %>
                 <%= f.radio_button :downtime_expected, true %>
                 <%= f.label :autolyse, "None", :value => "false" %>
                 <%= f.radio_button :downtime_expected, false, :checked => true %>
