@@ -107,7 +107,7 @@
                   <%= @change_request.created_at.to_s(:long) %>
                 </th>
               </tr>
-              <tr class = <%= @change_request.downtime_expected] ? 'bg-danger' : 'bg-success' %>>
+              <tr class = <%= @change_request.downtime_expected ? 'bg-danger' : 'bg-success' %>>
                 <th colspan="2">
                   <div class="c1">
                     <h2><%= @change_request.change_summary %></h2>
