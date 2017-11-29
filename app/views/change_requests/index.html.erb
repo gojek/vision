@@ -106,7 +106,7 @@
                 <th> </th>
             </tr>
             <% @change_requests.each do |change_request| %>
-              <tr>
+              <tr class ="<%= change_request.downtime_expected ? 'danger': 'info'%>">
                 <td><%= link_to change_request.id, change_request, target: :_blank %></td>
                 <td><%= link_to (raw change_request.change_summary), change_request, {class: 'cr-title-link', target: :_blank} %></td>
                 <td><%= change_request.schedule_change_date %></td>
