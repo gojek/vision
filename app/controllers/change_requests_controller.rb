@@ -113,6 +113,9 @@ class ChangeRequestsController < ApplicationController
     @current_implementers = Array.wrap(params[:implementers_list])
     @current_testers = Array.wrap(params[:testers_list])
     @current_collaborators = Array.wrap(params[:collaborators_list])
+    @change_request.downtime_expected = params[:downtime_expected]
+    @change_request.expected_downtime_in_minutes = params[:expected_downtime_in_minutes]
+
     @change_request.set_approvers(@current_approvers)
     @change_request.set_implementers(@current_implementers)
     @change_request.set_testers(@current_testers)
