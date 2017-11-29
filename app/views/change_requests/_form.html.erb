@@ -109,16 +109,16 @@
 
                   <div class="field form-group">
                     <%= f.label :downtime_expected %><br />
-              <div class="field">
+                    <div class="field">
 
-                <%= f.label :downtime_expected, "Expected: ", :value => "true"  %>
-                <%= f.radio_button :downtime_expected, true %>
-                <%= f.label :autolyse, "None", :value => "false" %>
-                <%= f.radio_button :downtime_expected, false, :checked => true %>
-              </div>
+                      <%= f.label :downtime_expected, "Expected: ", :value => "true"  %>
+                      <%= f.radio_button :downtime_expected, true %>
+                      <%= f.label :autolyse, "None", :value => "false" %>
+                      <%= f.radio_button :downtime_expected, false, :checked => true %>
+                    </div>
 
-              <%= f.text_field :expected_downtime_in_minutes,  class: 'form-control' %>
-
+                    <%= f.text_field :expected_downtime_in_minutes,  size: 10, class: 'form-control' %> minutes
+                   </div>
               </div><!--/col-->
             </div><!--/box-body-->
           </div> <!--/box-->
