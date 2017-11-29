@@ -67,7 +67,7 @@ require 'notifier.rb'
         format.html { redirect_to @incident_report }
         format.json { render :show, status: :created, location: @incident_report }
         Notifier.ir_notify(current_user, @incident_report, 'new_ir')
-        SlackNotif.new.notify_new_ir @incident_report
+        #SlackNotif.new.notify_new_ir @incident_report
       else
         @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
         @current_tags = []
@@ -242,7 +242,7 @@ require 'notifier.rb'
     internals = irs.where(source: 'Internal').count
     results = irs.where(source: 'External').count
       .map { |k,x| { label: k, total_internal: internals[k], total_external: x  } }
-    
+
     final_result = [{title: title}, results]
     render :text => final_result.to_json
   end
@@ -321,10 +321,10 @@ require 'notifier.rb'
 
     results = fixing_duration_sum.map do |k, v|
       n = [count[k], 1].max
-      { 
-        label: "#{k.strftime("%d/%m")} - #{(k + 6.day).strftime("%d/%m")}", 
+      {
+        label: "#{k.strftime("%d/%m")} - #{(k + 6.day).strftime("%d/%m")}",
         detection: '%.2f' % ((detection_duration_sum[k] / n) / 60),
-        fixing: '%.2f' % ((v / n) / 60) 
+        fixing: '%.2f' % ((v / n) / 60)
       }
     end
 
@@ -350,7 +350,7 @@ require 'notifier.rb'
               :occurrence_time, :detection_time, :recovery_time,:resolved_time,
               :source, :rank, :loss_related, :occurred_reason,
               :overlooked_reason, :solving_duration, :recovery_action, :prevent_action,
-              :recurrence_concern, :current_status, :measurer_status, :has_further_action, 
+              :recurrence_concern, :current_status, :measurer_status, :has_further_action,
               :action_item, :action_item_status, :tag_list => [])
   end
 
