@@ -143,7 +143,7 @@ class ChangeRequestsController < ApplicationController
         associated_user_ids.concat(@current_collaborators)
         @change_request.associated_user_ids = associated_user_ids.uniq
         Notifier.cr_notify(current_user, @change_request, 'new_cr')
-        SlackNotif.new.notify_new_cr @change_request
+        #SlackNotif.new.notify_new_cr @change_request
         Thread.new do
           UserMailer.notif_email(@change_request.user, @change_request, @status).deliver_now
           ActiveRecord::Base.connection.close
