@@ -28,7 +28,13 @@ class SlackAttachmentBuilder
           title: "Deployment Time",
           value: change_request.schedule_change_date,
           short: false
-        },{
+        },
+        {
+          title: "Downtime Impact",
+          value: change_request.downtime_expected  ? "#{change_request.expected_downtime_in_minutes} minute(s)" : "No",
+          short: false
+        }
+        ,{
           title: "Approvers",
           value: (approvers_name.join ', '),
           short: false
