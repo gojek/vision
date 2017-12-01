@@ -3,6 +3,10 @@ class SlackAttachmentBuilder
   include ActionView::Helpers::SanitizeHelper
   include ActionView::Helpers::DateHelper
 
+
+
+
+
   def generate_change_request_attachment(change_request)
     approvers_name = change_request.approvals.includes(:user).pluck(:name)
     attachment = {
@@ -25,16 +29,14 @@ class SlackAttachmentBuilder
           value: change_request.scope,
           short: true
         },{
+          title: "Downtime Impact",
+          value: change_request.downtime_expected ? "#{change_request.expected_downtime_in_minutes} minute(s)" : "No",
+          short: false
+        },{
           title: "Deployment Time",
           value: change_request.schedule_change_date,
           short: false
-        },
-        {
-          title: "Downtime Impact",
-          value: change_request.downtime_expected  ? "#{change_request.expected_downtime_in_minutes} minute(s)" : "No",
-          short: false
-        }
-        ,{
+        },{
           title: "Approvers",
           value: (approvers_name.join ', '),
           short: false
