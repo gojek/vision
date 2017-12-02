@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     session[:first_time] = true
-    change_requests_path
+    request.env['omniauth.origin'] || stored_location_for(resource) || change_requests_path
   end
 
   def stream(filename, content_type, enumerator)
