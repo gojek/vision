@@ -1,6 +1,6 @@
 class ChangeRequestStatusesController < ApplicationController
-	before_action :set_change_request, only:[:deploy, :rollback, :cancel, :close, :fail, :submit]
-	before_action :authorized_user_required, only:[:deploy, :rollback, :cancel, :close, :fail, :submit]
+        before_action :set_change_request, only:[:deploy, :rollback, :cancel, :close, :fail, :submit]
+        before_action :authorized_user_required, only:[:deploy, :rollback, :cancel, :close, :fail, :submit]
   before_action :authenticate_user!
 
   private def alert_users(status:)
@@ -8,6 +8,7 @@ class ChangeRequestStatusesController < ApplicationController
       begin
         UserMailer.notif_email(@change_request.user, @change_request, @status).deliver_now
         Notifier.cr_notify(current_user, @change_request, status)
+        SlackNotif.new.notify_terminate_cr(@change_request, status)
       rescue => e
         Rails.logger.error e.message
         Rails.logger.error e.backtrace.join("\n")
@@ -19,9 +20,9 @@ class ChangeRequestStatusesController < ApplicationController
 
   def deploy
     if @change_request.may_deploy? && @change_request.deployable?
-    	@status = @change_request.change_request_statuses.new(change_request_status_params)
-    	@status.status = 'deployed'
-    	if @status.save
+        @status = @change_request.change_request_statuses.new(change_request_status_params)
+        @status.status = 'deployed'
+        if @status.save
         @change_request.deploy!
         alert_users status: 'cr_deployed'
       else
@@ -103,11 +104,11 @@ class ChangeRequestStatusesController < ApplicationController
   private
 
   def set_change_request
-  	@change_request = ChangeRequest.find(params[:id])
+        @change_request = ChangeRequest.find(params[:id])
   end
 
   def change_request_status_params
-  	params.require(:change_request_status).permit(:reason, :deploy_delayed)
+        params.require(:change_request_status).permit(:reason, :deploy_delayed)
   end
 
   def authorized_user_required
