@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    session[:first_time] = true
+#    session[:first_time] = true
     logger.info "-----------------"
     logger.info request.env
     logger.info "-----------------"
