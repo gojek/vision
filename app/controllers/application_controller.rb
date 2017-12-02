@@ -17,12 +17,13 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(resource)
 #    session[:first_time] = true
     logger.info "-----------------"
-    logger.info request.env
+    logger.info "Omni auth origin -> #{request.env['omniauth.origin']}"
     logger.info "-----------------"
-    logger.info(stored_location_for(resource))
+    logger.info "Stored location = #{stored_location_for(resource)}"
     logger.info "-----------------"
     return_url = stored_location_for(resource) || change_requests_path
     logger.info "Returning User to.......... #{return_url}"
+    logger.info "-----------------"
     return_url
   end
 
