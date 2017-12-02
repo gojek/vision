@@ -7,11 +7,11 @@ class ApplicationController < ActionController::Base
   require 'notifier.rb'
 
   def check_user
-  	token_required! unless current_user.nil?
+    token_required! unless current_user.nil?
   end
 
   def token_required!
-  	sign_out current_user if current_user.token.nil? or current_user.expired?
+    sign_out current_user if current_user.token.nil? or current_user.expired?
   end
 
   def after_sign_in_path_for(resource)
