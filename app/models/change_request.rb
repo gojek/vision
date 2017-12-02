@@ -307,4 +307,7 @@ class ChangeRequest < ActiveRecord::Base
   def is_approved?(user)
     Approval.where(change_request_id: id, user_id: user.id).first.approve
   end
+  def closed?
+    closed_date.present?
+  end
 end
