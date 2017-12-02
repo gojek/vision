@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
     logger.info "-----------------"
     logger.info(stored_location_for(resource))
     logger.info "-----------------"
-    return_url = request.env['omniauth.origin'] || stored_location_for(resource) || change_requests_path
+    return_url = stored_location_for(resource) || change_requests_path
     logger.info "Returning User to.......... #{return_url}"
     return_url
   end
