@@ -3,10 +3,6 @@ class SlackAttachmentBuilder
   include ActionView::Helpers::SanitizeHelper
   include ActionView::Helpers::DateHelper
 
-
-
-
-
   def generate_change_request_attachment(change_request)
     approvers_name = change_request.approvals.includes(:user).pluck(:name)
     attachment = {
@@ -30,7 +26,7 @@ class SlackAttachmentBuilder
           short: true
         },{
           title: "Downtime Impact",
-          value: change_request.downtime_expected ? "#{change_request.expected_downtime_in_minutes} minute(s)" : "No",
+          value: change_request.downtime_expected ? "#{change_request.expected_downtime_in_minutes} minute(s)" : "No expected Downtime",
           short: false
         },{
           title: "Deployment Time",
@@ -47,6 +43,25 @@ class SlackAttachmentBuilder
     }
   end
 
+  def generate_simple_change_request_attachment(change_request)
+    approvers_name = change_request.approvals.includes(:user).pluck(:name)
+    attachment = {
+      fallback: change_request.change_summary,
+      color: "#439FE0",
+      title: "#{change_request.id}. #{change_request.change_summary}",
+      title_link: change_request_url(change_request),
+      callback_id: change_request.id,
+      fields: [
+        {
+          title: "Business Justification",
+          value: sanitize(change_request.business_justification, tags: []),
+          short: false
+        }
+      ],
+      footer: "VT-Vision",
+      ts: change_request.created_at.to_datetime.to_f.round
+    }
+  end
 
   def wrap_approver_actions(attachment, user)
     actionable_attachment = attachment.dup
