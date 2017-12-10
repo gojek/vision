@@ -82,7 +82,7 @@ class ChangeRequestStatusesController < ApplicationController
       @status.status = 'succeeded'
       if @status.save
         @change_request.close!
-        alert_users status: 'cr_closed'
+        #alert_users status: 'cr_closed'
       end
     end
     redirect_to @change_request
