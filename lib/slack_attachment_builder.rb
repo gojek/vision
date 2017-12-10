@@ -3,10 +3,6 @@ class SlackAttachmentBuilder
   include ActionView::Helpers::SanitizeHelper
   include ActionView::Helpers::DateHelper
 
-
-
-
-
   def generate_change_request_attachment(change_request)
     approvers_name = change_request.approvals.includes(:user).pluck(:name)
     attachment = {
@@ -30,7 +26,7 @@ class SlackAttachmentBuilder
           short: true
         },{
           title: "Downtime Impact",
-          value: change_request.downtime_expected ? "#{change_request.expected_downtime_in_minutes} minute(s)" : "No",
+          value: change_request.downtime_expected ? "#{change_request.expected_downtime_in_minutes} minute(s)" : "No expected Downtime",
           short: false
         },{
           title: "Deployment Time",
@@ -47,39 +43,23 @@ class SlackAttachmentBuilder
     }
   end
 
-  def generate_access_request_attachment(access_request)
-    approvers_name = access_request.approvals.includes(:user).pluck(:name)
+  def generate_simple_change_request_attachment(change_request)
+    approvers_name = change_request.approvals.includes(:user).pluck(:name)
     attachment = {
-      fallback: access_request.employee_name,
+      fallback: change_request.change_summary,
       color: "#439FE0",
-      title: "#{access_request.id}. #{access_request.employee_name}",
-      title_link: access_request_url(access_request),
-      callback_id: access_request.id,
+      title: "#{change_request.id}. #{change_request.change_summary}",
+      title_link: change_request_url(change_request),
+      callback_id: change_request.id,
       fields: [
         {
-          title: "Request Type",
-          value: access_request.request_type,
-          short: true
-        },{
-          title: "Access Type",
-          value: access_request.access_type,
-          short: true
-        },{
-          title: "Requested Date",
-          value: access_request.request_date,
-          short: true
-        },{
-          title: "Requestor",
-          value: User.find(access_request.user_id).name,
-          short: true
-        },{
-          title: "Approvers",
-          value: (approvers_name.join ', '),
+          title: "Business Justification",
+          value: sanitize(change_request.business_justification, tags: []),
           short: false
         }
       ],
       footer: "VT-Vision",
-      ts: access_request.created_at.to_datetime.to_f.round
+      ts: change_request.created_at.to_datetime.to_f.round
     }
   end
 

@@ -67,7 +67,7 @@ class SlackNotif
   end
 
   def notify_terminate_cr(change_request, status)
-    attachment = @attachment_builder.generate_change_request_attachment(change_request)
+    attachment = @attachment_builder.generate_simple_change_request_attachment(change_request)
     link = change_request_url(change_request)
     general_message = "<#{link}|Change request> has been #{status}"
     message_channel('cab', general_message, attachment)
