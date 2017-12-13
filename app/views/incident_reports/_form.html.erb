@@ -5,7 +5,7 @@
     };
 </script>
 <%= form_for(@incident_report) do |f| %>
-  
+
 <div class="col-lg-6 col-xs-12 col-md-12">
   <% if @incident_report.errors.any? %>
     <div id="error_explanation" class="alert alert-danger" role="alert">
@@ -33,7 +33,7 @@
         <div class="form-group">
           <% if @incident_report.errors.messages[:service_impact] %>
             <div class="field form-group has-error">
-            <%else %>  
+            <%else %>
             <div class="field form-group">
             <% end %>
           <%= f.label :service_impacted %><br>
@@ -53,7 +53,7 @@
         <div class="form-group">
           <% if @incident_report.errors.messages[:how_detected] %>
             <div class="field form-group has-error">
-            <%else %>  
+            <%else %>
             <div class="field form-group">
             <% end %>
           <%= f.label :how_was_the_problem_detected_? %><br>
@@ -63,7 +63,7 @@
         <div class="form-group">
          <% if @incident_report.errors.messages[:occurrence_time] %>
             <div class="field form-group has-error">
-            <%else %>  
+            <%else %>
             <div class="field form-group">
             <% end %>
           <%= f.label :occurrence_time %><br>
@@ -73,7 +73,7 @@
         <div class="form-group">
          <% if @incident_report.errors.messages[:detection_time] %>
             <div class="field form-group has-error">
-            <%else %>  
+            <%else %>
             <div class="field form-group">
             <% end %>
           <%= f.label :detection_time %><br>
@@ -83,7 +83,7 @@
         <div class="form-group">
           <% if @incident_report.errors.messages[:recovery_time] %>
             <div class="field form-group has-error">
-            <%else %>  
+            <%else %>
             <div class="field form-group">
             <% end %>
           <%= f.label :recovery_time %><br>
@@ -93,7 +93,7 @@
         <div class="form-group">
           <% if @incident_report.errors.messages[:resolution_time] %>
             <div class="field form-group has-error">
-            <%else %>  
+            <%else %>
             <div class="field form-group">
             <% end %>
           <%= f.label :resolved_time %><br>
@@ -103,7 +103,7 @@
         <div class="form-group">
           <% if @incident_report.errors.messages[:source] %>
             <div class="field form-group has-error">
-            <%else %>  
+            <%else %>
             <div class="field form-group">
             <% end %>
           <%= f.label :source %><br>
@@ -113,7 +113,7 @@
         <div class="form-group">
           <% if @incident_report.errors.messages[:rank] %>
             <div class="field form-group has-error">
-            <%else %>  
+            <%else %>
             <div class="field form-group">
             <% end %>
           <a style="cursor: pointer;" id="rank-button"><%= f.label :rank %> <i class="glyphicon glyphicon-question-sign"></i></a><br>
@@ -123,7 +123,7 @@
         <div class="form-group">
           <% if @incident_report.errors.messages[:loss_related] %>
             <div class="field form-group has-error">
-            <%else %>  
+            <%else %>
             <div class="field form-group">
             <% end %>
           <%= f.label :loss_related_to_the_issue %><br>
@@ -133,7 +133,7 @@
         <div class="form-group">
           <% if @incident_report.errors.messages[:recurrence_concern] %>
             <div class="field form-group has-error">
-            <%else %>  
+            <%else %>
             <div class="field form-group">
             <% end %>
           <%= f.label :concern_of_recurrence %><br>
@@ -143,7 +143,7 @@
         <div class="form-group">
           <% if @incident_report.errors.messages[:measurer_status] %>
             <div class="field form-group has-error">
-            <%else %>  
+            <%else %>
             <div class="field form-group">
             <% end %>
           <%= f.label :status_of_the_measurer %><br>
@@ -163,7 +163,7 @@
       <div class="form-group">
         <% if @incident_report.errors.messages[:occurred_reason] %>
           <div class="field form-group has-error">
-          <%else %>  
+          <%else %>
           <div class="field form-group">
           <% end %>
         <%= f.label :why_did_it_occured_? %><br>
@@ -173,7 +173,7 @@
       <div class="form-group">
         <% if @incident_report.errors.messages[:overlooked_reason] %>
           <div class="field form-group has-error">
-          <%else %>  
+          <%else %>
           <div class="field form-group">
           <% end %>
         <%= f.label :why_was_it_overlooked_? %><br>
@@ -183,7 +183,7 @@
       <div class="form-group">
         <% if @incident_report.errors.messages[:recovery_action] %>
           <div class="field form-group has-error">
-          <%else %>  
+          <%else %>
           <div class="field form-group">
           <% end %>
         <%= f.label :action_for_recovery %><br>
@@ -193,7 +193,7 @@
       <div class="form-group">
         <% if @incident_report.errors.messages[:prevent_action] %>
           <div class="field form-group has-error">
-          <%else %>  
+          <%else %>
           <div class="field form-group">
           <% end %>
         <%= f.label :to_prevent_recurrence %><br>
@@ -260,7 +260,7 @@
 <script>
   $(document).ready(function () {
     $('body').attr("data-no-turbolink", "true");
-    
+
     $('#save').click(function() {
       unsaved = false;
     });
@@ -284,7 +284,7 @@
     });
 
     $('#rank-modal').on('shown.bs.modal',function(){
-      $(this).find('iframe#guideline').attr('src', '<%= ENV['INCIDENT_LEVEL_GUIDELINE'] %>')
+      $(this).find('iframe#guideline').attr('src','https://drive.google.com/file/d/10X9zJ6hTB2vbjjBU94WKZHQHWyRqNN_-/view')
     });
 
     function onHasFurtherActionChange(){
@@ -292,7 +292,7 @@
       else $('.field-action').hide();
     }
     onHasFurtherActionChange();
-    
+
     $('#incident_report_has_further_action').change(onHasFurtherActionChange);
   });
   $(function(){
