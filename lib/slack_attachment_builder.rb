@@ -177,9 +177,8 @@ class SlackAttachmentBuilder
 
 
   def generate_access_request_attachment(access_request)
-    incident_duration = distance_of_time_in_words(incident_report.recovery_duration * 60)
     attachment = {
-      fallback: incident_report.service_impact,
+      fallback: access_request.request_type,
       color: "#439FE0",
       title: "#{access_request.id}. #{access_request.employee_name}(#{access_request.employee_department})",
       title_link: access_request_url(access_request),
