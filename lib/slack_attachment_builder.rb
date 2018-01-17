@@ -175,4 +175,30 @@ class SlackAttachmentBuilder
     }
   end
 
+
+  def generate_access_request_attachment(access_request)
+    incident_duration = distance_of_time_in_words(incident_report.recovery_duration * 60)
+    attachment = {
+      fallback: incident_report.service_impact,
+      color: "#439FE0",
+      title: "#{access_request.id}. #{access_request.employee_name}(#{access_request.employee_department})",
+      title_link: access_request_url(access_request),
+      callback_id: access_request.id,
+      fields: [
+        {
+          title: "Access type",
+          value: access_request.access_type,
+          short: false
+        },{
+          title: "Email",
+          value: access_request.email_address
+          short: false
+        }
+      ],
+      footer: "VT-Vision",
+      ts: access_request.created_at.to_datetime.to_f.round
+    }
+  end
+
+
 end

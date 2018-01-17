@@ -85,6 +85,17 @@ class SlackNotif
     message_channel('incidents', general_message, attachment)
   end
 
+
+  def notify_new_access_request(access_request)
+    attachment = @attachment_builder.generate_access_request_attachment(access_request)
+    link = access_request_url(access_request)
+    general_message = "<#{link}|Access request> has been created for #{access_request.employee_name}(#{access_request.employee_department})"
+    message_channel('cab', general_message, attachment)
+
+
+  end
+
+
   private
   def get_slack_username(user)
     @members.select { |u| user.email == u.profile.email }.first.try(:name)
