@@ -74,6 +74,16 @@ class AccessRequestsController < ApplicationController
     if @access_request.update(access_request_params)
       if @access_request.draft?
         @access_request.submit! 
+      if @access_request.update(access_request_params)
+        if @access_request.draft?
+          @access_request.submit!
+          SlackNotif.new.notify_new_access_request(@access_request)
+        end
+        flash[:success] = 'Access request was successfully edited.'
+      else
+        @access_request.save(:validate=> false)
+        flash[:notice] = 'Access request was edited as a draft.'
+        flash[:invalid] = @access_request.errors.full_messages
       end
       flash[:success] = 'Access request was successfully edited.'
     else
