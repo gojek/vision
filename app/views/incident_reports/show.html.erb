@@ -57,9 +57,9 @@
       <br/>
       <b>Occurance Time:</b> <%= @incident_report.occurrence_time.to_s(:long) %><br/>
       <b>Detection Time:</b>  <%= @incident_report.detection_time.to_s(:long) %><br/>
-      <% unless @incident_report.recovery_time.blank? %> 
+      <% unless @incident_report.recovery_time.blank? %>
       <b>Recovery Time:</b>  <%= @incident_report.recovery_time.to_s(:long) %><br>
-      <b>Recovery Duration:</b>  <%= @incident_report.recovery_duration %> minutes<br>
+      <b>Recovery Duration:</b>  <%= time_ago_in_words(@incident_report.recovery_duration) %> minutes<br>
         <% end %>
       <%if @incident_report.resolved_time != nil %>
       <b>Resolve Time:</b>  <%= @incident_report.resolved_time.to_s(:long) %><br>
@@ -172,6 +172,6 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
-  $('[data-toggle="popover"]').popover({ trigger: "hover", placement: "top" }); 
+  $('[data-toggle="popover"]').popover({ trigger: "hover", placement: "top" });
 });
 </script>
