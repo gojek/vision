@@ -191,7 +191,7 @@ class SlackAttachmentBuilder
           short: false
         },{
           title: "Email",
-          value: access_request.email_address
+          value: access_request.email_address,
           short: false
         }
       ],
