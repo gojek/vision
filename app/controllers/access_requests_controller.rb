@@ -26,14 +26,16 @@ class AccessRequestsController < ApplicationController
         if @access_request.draft?
           @access_request.submit!
         end
-        flash[:success] = 'Change request was successfully created.'
+
+        SlackNotif.new.notify_new_access_request(@access_request)
+        flash[:success] = 'Access request was successfully created.'
       else
         @access_request.save(validate: false)
         flash[:notice] = 'Access request was created as a draft.'
         flash[:invalid] = @access_request.errors.full_messages
       end
     end
-    
+
     redirect_to @access_request
   end
 
@@ -50,7 +52,7 @@ class AccessRequestsController < ApplicationController
 
       if @access_request.update(access_request_params)
         if @access_request.draft?
-          @access_request.submit! 
+          @access_request.submit!
         end
         flash[:success] = 'Change request was successfully edited.'
       else
@@ -59,7 +61,7 @@ class AccessRequestsController < ApplicationController
         flash[:invalid] = @access_request.errors.full_messages
       end
     end
-    
+
     redirect_to @access_request
   end
 
@@ -130,21 +132,21 @@ class AccessRequestsController < ApplicationController
           :access_type,
           :start_date,
           :end_date,
-          :employee_name, 
+          :employee_name,
           :employee_position,
           :employee_email_address,
           :employee_department,
           :employee_phone,
-          :employee_access, 
+          :employee_access,
           :fingerprint_business_area,
           :fingerprint_business_operations,
           :fingerprint_it_operations,
-          :fingerprint_server_room, 
+          :fingerprint_server_room,
           :fingerprint_archive_room,
           :fingerprint_engineering_area,
           :corporate_email,
           :internet_access,
-          :slack_access, 
+          :slack_access,
           :admin_tools,
           :vpn_access,
           :github_gitlab,
@@ -152,7 +154,7 @@ class AccessRequestsController < ApplicationController
           :access_card,
           :parking_cards,
           :id_card,
-          :name_card, 
+          :name_card,
           :insurance_card,
           :cash_advance,
           :password_reset,
