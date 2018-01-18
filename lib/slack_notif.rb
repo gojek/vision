@@ -90,7 +90,8 @@ class SlackNotif
     attachment = @attachment_builder.generate_access_request_attachment(access_request)
     link = access_request_url(access_request)
     general_message = "<#{link}|Access request> has been created for #{access_request.employee_name}(#{access_request.employee_department})"
-    message_channel('cab', general_message, attachment)
+
+    message_users(access_request.associated_users, general_message, attachment)
 
 
   end
