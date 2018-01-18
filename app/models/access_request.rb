@@ -100,7 +100,7 @@ class AccessRequest < ActiveRecord::Base
 
 
   def associated_users
-    (access_request.collaborators + access_request. approvals).to_a
+    (collaborators + approvals).to_a
   end
 
   def create_access_request_status
