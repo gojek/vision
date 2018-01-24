@@ -21,12 +21,13 @@ before_script:
   - ruby --version
   - bundle install --retry 10 --quiet --deployment --path=$BUNDLE_PATH
   - mkdir -p /cache/bower_components
-  - ln -sf /cache/bower_components vendor/assets/bower_components
+  - rm -rf vendor/assets/bower_components
+  - cp -r /cache/bower_components vendor/assets/bower_components
+  - rm -rf vendor/assets/bower_components/bower_components
   - npm install -g bower
   - bower install --allow-root
-
-after_script:
-  - rm vendor/assets/bower_components
+  - rm -rf /cache/bower_components
+  - cp -r vendor/assets/bower_components /cache/bower_components
 
 rspec:
   stage: test
