@@ -12,7 +12,7 @@ FactoryGirl.define do
     token '123456'
     refresh_token '123456'
     position 'Software Engineer 1'
-    expired_at Time.now+1.hour
+    expired_at Time.now + 14.days
 
     factory :admin do
         is_admin true

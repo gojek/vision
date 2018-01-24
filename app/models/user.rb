@@ -78,6 +78,7 @@ class User < ActiveRecord::Base
       expired_at: Time.now + (data['expires_in'].to_i).seconds)
   end
 
+  # this will make user logout when google credentials are expired (always 1 hour)
   def expired?
     expired_at < Time.now
   end
