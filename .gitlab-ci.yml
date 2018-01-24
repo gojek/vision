@@ -25,6 +25,9 @@ before_script:
   - npm install -g bower
   - bower install --allow-root
 
+after_script:
+  - rm vendor/assets/bower_components
+
 rspec:
   stage: test
   script:
