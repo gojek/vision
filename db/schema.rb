@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180820063549) do
+ActiveRecord::Schema.define(version: 20171123200703) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -200,6 +200,8 @@ ActiveRecord::Schema.define(version: 20180820063549) do
     t.datetime "closed_date"
     t.integer  "reference_cr_id"
     t.string   "google_event_id"
+    t.boolean  "downtime_expected"
+    t.integer  "expected_downtime_in_minutes"
   end
 
   add_index "change_requests", ["cab_id"], name: "index_change_requests_on_cab_id", using: :btree
