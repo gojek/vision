@@ -1,0 +1,32 @@
+image: node:stretch
+
+services:
+  - postgres:alpine
+
+variables:
+  POSTGRES_DB: vision_test
+  POSTGRES_USER: root
+  POSTGRES_PASSWORD: ""
+  DATABASE_URL: postgresql://root@postgres/vision_test
+  BUNDLE_PATH: /cache/vision/gems
+
+stages:
+  - test
+
+before_script:
+  - mkdir -p /cache/debs
+  - ln -sf /cache/debs /var/cache/apt
+  - apt-get update
+  - apt-get install ruby bundler -y
+  - ruby --version
+  - bundle install --retry 10 --quiet --deployment --path=$BUNDLE_PATH
+  - mkdir -p /cache/bower_components
+  - ln -sf /cache/bower_components vendor/assets/bower_components
+  - npm install -g bower
+  - bower install --allow-root
+
+rspec:
+  stage: test
+  script:
+    - bundle exec rake db:migrate > /dev/null
+    - bundle exec rspec --tty
