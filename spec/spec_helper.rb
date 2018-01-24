@@ -134,7 +134,7 @@ def login_as(user)
     credentials: {
       token: "token",
       refresh_token: "refresh_token",
-      expires_at: (Time.now + 14.days).to_i
+      expires_at: Time.now + 14.days
     }
   })
   visit("/users/auth/google_oauth2")
