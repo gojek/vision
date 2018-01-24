@@ -1,22 +1,23 @@
 require 'spec_helper'
 
 describe ChangeRequestStatusesController, type: :controller do
-	let(:user) {FactoryGirl.create(:user)}
-	before :each do
-		controller.request.env['devise.mapping'] = Devise.mappings[:user]
-		release_manager = FactoryGirl.create(:release_manager)
-		sign_in release_manager
-	end
+  let(:user) { FactoryGirl.create(:user) }
+  before :each do
+    controller.request.env['devise.mapping'] = Devise.mappings[:user]
+    
+    release_manager = FactoryGirl.create(:release_manager)
+    sign_in release_manager
+  end
 
   describe 'POST #schedule' do
-		let(:cr){FactoryGirl.create(:submitted_change_request, user: user)}
+    let(:cr){FactoryGirl.create(:submitted_change_request, user: user)}
     it 'will able to change the state to scheduled if current state is submitted and has reached approval limit' do
-			count_approvals = cr.approvals.count
+      count_approvals = cr.approvals.count
       @approvals =  cr.approvals
       @approvals.each do |approval|
         approval.update(approve: true)
       end
-			cr.reload
+      cr.reload
       expect(cr.approvers_count).to eq count_approvals
       post :schedule, id: cr, change_request_status: {:status => 'scheduled'}
       cr.reload
@@ -40,9 +41,9 @@ describe ChangeRequestStatusesController, type: :controller do
   end
 
   describe 'POST #rollback' do
-      it 'will able to change the state to rollback if current state is scheduled and reason is filled' do
+    it 'will able to change the state to rollback if current state is scheduled and reason is filled' do
       cr = FactoryGirl.create(:scheduled_change_request, user: user)
-      post :rollback , id: cr, change_request_status:{:status => 'rollbacked',:reason =>'reason'}
+      post :rollback , id: cr, change_request_status: {:status => 'rollbacked', :reason =>'reason'}
       cr.reload
       expect(cr.aasm_state).to eq 'rollbacked'
     end
@@ -68,7 +69,7 @@ describe ChangeRequestStatusesController, type: :controller do
   end
 
   describe 'POST #cancel' do
-		let(:cr){FactoryGirl.create(:scheduled_change_request, user: user)}
+    let(:cr){FactoryGirl.create(:scheduled_change_request, user: user)}
     it 'will able to change the state to cancelled if current state is scheduled' do
       post :cancel , id: cr, change_request_status:{:status => 'cancelled', :reason =>'reason'}
       cr.reload
@@ -82,17 +83,17 @@ describe ChangeRequestStatusesController, type: :controller do
   end
 
   describe 'POST #close' do
-		let(:cr){FactoryGirl.create(:submitted_change_request, user: user)}
+    let(:cr){FactoryGirl.create(:submitted_change_request, user: user)}
     it 'will able to change the state to close if current state is scheduled' do
       post :close , id: cr, change_request_status:{:status => 'closed'}
       cr.reload
       expect(cr.aasm_state).to eq 'closed'
     end
-		it 'will able to change the state to close if current state is submitted' do
-			cr.update(aasm_state: 'submitted')
-			post :close , id: cr, change_request_status:{:status => 'closed'}
-			cr.reload
-			expect(cr.aasm_state).to eq 'closed'
+    it 'will able to change the state to close if current state is submitted' do
+      cr.update(aasm_state: 'submitted')
+      post :close , id: cr, change_request_status:{:status => 'closed'}
+      cr.reload
+      expect(cr.aasm_state).to eq 'closed'
     end
     it 'will able to change the state to close if current state is rejected' do
       post :close , id: cr, change_request_status:{:status => 'closed'}
@@ -117,7 +118,7 @@ describe ChangeRequestStatusesController, type: :controller do
   end
 
   describe 'POST #final_reject' do
-		let(:cr){FactoryGirl.create(:submitted_change_request, aasm_state: 'submitted',user: user)}
+    let(:cr){FactoryGirl.create(:submitted_change_request, aasm_state: 'submitted',user: user)}
     it 'will able to change the state to rejected if current state is submitted' do
       post :final_reject , id: cr, change_request_status:{:status => 'rejected', :reason =>'reason'}
       cr.reload
