@@ -6,7 +6,7 @@ module AuthHelper
       credentials: {
         token: "token",
         refresh_token: "refresh_token",
-        expires_at: Time.now + 1.hour
+        expires_at: Time.now + 14.days
       }
     })
     visit("/users/auth/google_oauth2")
