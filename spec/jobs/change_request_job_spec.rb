@@ -3,7 +3,7 @@ require 'sucker_punch/testing/inline'
 
 describe ChangeRequestJob, :type => :job do
   let(:user) {FactoryGirl.create(:user)}
-  let(:crs) {FactoryGirl.create_list(:change_request,10, user: user)}
+  let(:crs) {FactoryGirl.create_list(:change_request, 10, user: user)}
 
   describe "#perform" do
     it "delivers an email to a vaild sender with valid attributes" do
