@@ -102,6 +102,7 @@ group :development do
   # Instead, simply run gem install mailcatcher then mailcatcher to get started.
 
 end
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'faker'
