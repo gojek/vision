@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   before_action :check_user
-  require 'notifier.rb'
+  require 'notifier.rb' # Omg
 
   def check_user
     token_required! unless current_user.nil?
