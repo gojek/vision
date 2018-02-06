@@ -158,11 +158,16 @@ describe User, type: :model do
 
   it "fresh_token method will refresh token and return new token if token expired" do
     user = FactoryGirl.create(:user, :expired_at => Time.now - 1.hour)
-    stub_request(:post, 'https://accounts.google.com/o/oauth2/token').with(headers: {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).to_return(status:200, body: '{"access_token":
-                        "45678",
-                       "token_type":"Bearer",
-                       "expires_in":3600,
-                       "id_token":"id"}', headers: {})
+    stub_request(:post, 'https://accounts.google.com/o/oauth2/token').with(headers: {'Accept' => '*/*', 'User-Agent' => 'Ruby'}).to_return(
+      status: 200,
+      body: {
+        "access_token": "45678",
+        "token_type": "Bearer",
+        "expires_in": 3600,
+        "id_token": "id"
+      }.to_json,
+      headers: {}
+    )
     expect(user.fresh_token).to eq '45678'
   end
 
