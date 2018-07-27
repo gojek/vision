@@ -183,17 +183,22 @@
                   <td><%= app.user.position %></td>
                   <td>
                     <%if app.approved %>
-                      <% if app.created_at %>
-                        <a id="popoverOption" class="btn" href="#" data-content="<%= app.notes %>" rel="popover" data-placement="bottom" data-original-title="Accept Note" style='padding:0px'>Approved on <%= app.created_at.to_s(:long) %></a>
+                      <% if app.updated_at %>
+                        <a id="popoverOption<%= app.id %>" class="btn" href="#" data-content="<%= app.notes %>" rel="popover" data-placement="bottom" data-original-title="Accept Note" style='padding:0px'>Approved on <%= app.updated_at.to_s(:long) %></a>
                       <% else %>
-                        <a id="popoverOption" class="btn" href="#" data-content="<%= app.notes %>" rel="popover" data-placement="bottom" data-original-title="Accept Note" style='padding:0px'>Approved</a>
+                        <a id="popoverOption<%= app.id %>" class="btn" href="#" data-content="<%= app.notes %>" rel="popover" data-placement="bottom" data-original-title="Accept Note" style='padding:0px'>Approved</a>
                       <% end %>
                     <% elsif app.approved.nil? %>
                       Waiting for approval
                     <%elsif app.approved == false %>
-                       <a id="popoverOption" class="btn" href="#" data-content="<%= app.notes %>" rel="popover" data-placement="bottom" data-original-title="Reject Reason" style='padding:0px'>Rejected</a>
+                       <a id="popoverOption<%= app.id %>" class="btn" href="#" data-content="<%= app.notes %>" rel="popover" data-placement="bottom" data-original-title="Reject Reason" style='padding:0px'>Rejected</a>
                     <%end %>
                   </td>
+                  <script type="text/javascript">
+                    var pop = "#popoverOption" + <%= app.id %>;
+                  $('#popoverData').popover();
+                  $(pop).popover({ trigger: "hover" });
+                  </script>
                 </tr>
                 <%end %>
               </tbody>
@@ -468,14 +473,3 @@
   </div>
   <!-- /.modal-dialog -->
 </div>
-
-<script type="text/javascript">
-$('#popoverData').popover();
-$('#popoverOption').popover({ trigger: "hover" });
-</script>
-
-<script>
-  var users = <%= raw @usernames %> ;
-  $('#access_request_comment').atwho({at:"@", 'data':users})
-
-</script>
