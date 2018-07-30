@@ -16,8 +16,6 @@ class AccessRequestsController < ApplicationController
       case params[:type]
       when 'approval'
         @access_requests = AccessRequest.where(id: AccessRequestApproval.where(user_id: current_user.id, approved: nil).collect(&:access_request_id))
-      when 'relevant'
-        @access_requests = AccessRequest.where(id: current_user.associated_change_requests.collect(&:id))
       end
       @access_requests = @access_requests.where.not(aasm_state: 'draft').order(id: :desc)
     else
@@ -39,9 +37,7 @@ class AccessRequestsController < ApplicationController
         if @access_request.draft?
           @access_request.submit!
         end
-        flash[:success] = 'Change request was successfully created.'
-        Notifier.ar_notify(current_user, @access_request, 'new_ar')
-        SlackNotif.new.notify_new_ar @access_request
+        flash[:success] = 'Access request was successfully created.'
       else
         @access_request.save(validate: false)
         flash[:notice] = 'Access request was created as a draft.'
@@ -79,7 +75,7 @@ class AccessRequestsController < ApplicationController
       if @access_request.draft?
         @access_request.submit! 
       end
-      flash[:success] = 'Change request was successfully edited.'
+      flash[:success] = 'Access request was successfully edited.'
     else
       @access_request.save(:validate=> false)
       flash[:notice] = 'Access request was edited as a draft.'

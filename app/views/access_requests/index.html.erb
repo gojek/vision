@@ -65,10 +65,8 @@
             <% case params[:type] %>
             <% when 'approval' %>
               Showing access requests that needs your approval
-            <% when 'relevant' %>
-              Showing access requests that is relevant to you
             <% else %>
-              Showing all change requests
+              Showing all access requests
             <% end %>
           </h3>
           <hr>
@@ -78,7 +76,6 @@
             <% if current_user.is_approver? %>
               <%= link_to "Need my approvals", access_requests_path(type: 'approval'), class: 'btn-sm btn-primary' %>
             <% end %>
-            <%= link_to "Relevant to me", access_requests_path(type: 'relevant'), class: 'btn-sm btn-primary' %>
           </div>
         </div>
         <div class="box-body table-responsive" style="overflow-x: auto;">
