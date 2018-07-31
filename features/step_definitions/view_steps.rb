@@ -2,6 +2,10 @@ Then(/^I should be able to see "([^"]*)"$/) do |string|
   page.should have_content(string)
 end
 
+Then(/^the page should have "([^"]*)" on some tag$/) do |string|
+  expect(page).to have_xpath("//a[contains(., string)]")
+end
+
 Then(/^I should not be able to see "([^"]*)"$/) do |string|
   page.should_not have_content(string)
 end
