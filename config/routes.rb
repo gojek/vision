@@ -81,10 +81,6 @@ Rails.application.routes.draw do
   resources :users
 
   resources :incident_reports do
-      collection do
-          get :deleted # <= this
-          get :search
-      end
       resources :versions, only: [:destroy] do
         member do
           get :diff, to: 'versions#diff'
@@ -115,6 +111,10 @@ Rails.application.routes.draw do
       post :close
       post :approve
       post :reject
+    end
+
+    collection do
+      get :search
     end
   end
   

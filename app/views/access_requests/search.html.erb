@@ -1,0 +1,66 @@
+<% require "html_truncator" %>
+<script type="text/javascript">
+  function noenter() {
+    var x = document.forms["search-form"]["search-box"].value;
+    if (window.event.keyCode == 13){
+      if (x == null || x == ""){
+        return false;
+      } else {
+        return true;
+      }
+    }
+  }
+</script>
+<section class="content-header">
+  <h1>
+    Search Access Requests
+    <%= link_to(access_requests_path(request.GET.merge({format: :csv})) , class: 'btn btn-flat btn-primary pull-right') do %>
+         <i class="fa  fa-file-text"></i> <strong>Export to csv</strong>
+    <% end %>
+    <%= link_to new_access_request_path, class: 'btn btn-flat btn-primary pull-right'  do %>
+         <i class="fa fa-plus"></i> <strong>New Access Request</strong>
+    <% end %>
+    </h1>
+</section>
+<section class="content">
+ <div class="row">
+    <div class="col-xs-12">
+      <div class="box box-default">
+        <div class="box-header with-border">
+          <%= form_tag search_access_requests_path, method: :get, id: 'search-form'  do%>
+              <div class="input-group">
+                <span class="input-group-btn">
+                  <button id="search-button" type="submit" class="btn btn-default" aria-label="Left Align">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                  </button>
+                </span>
+                <%= text_field_tag :search, params[:search], class: 'form-control', autofocus: :autofocus, id: 'search-box', onkeypress: 'return noenter()'%>
+              </div><!-- /input-group -->
+          <% end %>
+        </div><!--/box-header-->
+        <div class="box-body">
+          <span><%= "Page #{params[:page]} of " if params[:page] %><%= @search.total %> results found</span>
+          <ul class="products-list product-list-in-box">
+            <% @search.hits.each do |hit| %>
+            <li class="item">
+                <%= link_to({controller: 'access_requests', action: 'show', id: hit.primary_key}) do %>
+                  <h4>
+                    <b><%=raw hit.stored(:employee_name).first %></b>
+                    <span class="pull-right"><%=raw hit.stored(:created_at).to_s(:long) %></span>
+                  </h4>
+                <% end %>
+                <span>
+                  <%= sanitize(hit.highlight(nil).format{|match_words| content_tag(:b, match_words, class: "keywords-search")}, attributes: ['class']) %>
+                </span>
+            </li>
+            <% end %>
+            <!-- /.item -->
+          </ul>
+        </div><!-- /.box-body -->
+        <div class="box-footer clearfix">
+             <%= paginate @search.hits, :theme => 'twitter-bootstrap-3' %>
+        </div>
+      </div>
+    </div>
+</div>
+</section>
