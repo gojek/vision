@@ -8,7 +8,7 @@ class AccessRequest < ActiveRecord::Base
   has_and_belongs_to_many :collaborators, join_table: :access_request_collaborators, class_name: 'User'
   has_many :approvals, join_table: :access_request_approvals, dependent: :destroy, class_name: 'AccessRequestApproval'
   has_many :statuses, join_table: :access_request_statuses, dependent: :destroy, class_name: 'AccessRequestStatus'
-
+  has_many :access_request_comments
   TEMPORARY = 'Temporary'.freeze
   PERMANENT = 'Permanent'.freeze
 
@@ -17,6 +17,7 @@ class AccessRequest < ActiveRecord::Base
 
 
   validates :approvals, presence: true
+  validates :business_justification, presence: true
   validates :request_type, inclusion: { in: REQUEST_TYPES, message: '%{value} is not a valid scope' }
   validates :access_type, inclusion: { in: ACCESS_TYPES, message: '%{value} is not a valid scope' }
   validates :start_date, :end_date, presence: true, if: :temporary?

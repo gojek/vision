@@ -34,7 +34,13 @@ Then(/^I should be redirected to a new change request page$/) do
   page.should have_content("Testing")
   page.should have_content("Implementation")
 end
+
 When /^I visit change request with change summary "(.*?)"$/ do |change_summary|
   cr = ChangeRequest.where(change_summary: change_summary).first
   visit "/change_requests/#{cr.id}"
+end
+
+When /^I visit access request with employee name "([^"]*)"$/ do |employee_name|
+  ar = AccessRequest.where(employee_name: employee_name).first
+  visit "/access_requests/#{ar.id}"
 end
