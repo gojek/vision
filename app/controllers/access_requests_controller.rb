@@ -1,6 +1,6 @@
 class AccessRequestsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_access_request, except: [:index, :new, :create]
+  before_action :set_access_request, except: [:index, :new, :create, :search]
   before_action :authorized_to_change_status, only: [:cancel, :close]
   before_action :set_access_request_reason, only: [:cancel, :close]
   before_action :set_access_request_approval, only: [:approve, :reject]
@@ -42,6 +42,17 @@ class AccessRequestsController < ApplicationController
   end
 
   def edit
+  end
+
+  def search
+    if params[:search].blank?
+      redirect_to access_requests_path
+    end
+    @search = AccessRequest.solr_search do
+      fulltext params[:search], highlight: true
+      order_by(:created_at, :desc)
+      paginate page: params[:page] || 1, per_page: 20
+    end
   end
 
   def update
