@@ -58,12 +58,20 @@ z-index: 200000;
 	visibility: hidden;
 }
 
+.hide-unhide-access-request-comment {
+	visibility: hidden;
+}
+
 .show-comment:hover {
 	cursor: pointer;
 	color: grey;
 }
 
 .clearfix:hover .hide-unhide-comment {
+	visibility: visible;
+}
+
+.clearfix:hover .hide-unhide-access-request-comment {
 	visibility: visible;
 }
 

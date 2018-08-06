@@ -1,0 +1,2 @@
+module AccessRequestCommentsHelper
+end

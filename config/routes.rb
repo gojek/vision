@@ -112,6 +112,11 @@ Rails.application.routes.draw do
   get 'create_hotfix/:id' => 'change_requests#create_hotfix', :as => 'create_hotfix'
 
   resources :access_requests do
+
+    resources :access_request_comments do
+      post :hide, to: 'access_request_comments#hide_unhide'
+    end
+
     member do
       post :cancel
       post :close

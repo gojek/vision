@@ -11,7 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20170904081349) do
+=======
+ActiveRecord::Schema.define(version: 20180802055710) do
+>>>>>>> 8c8305e1 (add business justification and comment for access request)
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +39,18 @@ ActiveRecord::Schema.define(version: 20170904081349) do
 
   add_index "access_request_collaborators", ["access_request_id"], name: "index_access_request_collaborators_on_access_request_id", using: :btree
   add_index "access_request_collaborators", ["user_id"], name: "index_access_request_collaborators_on_user_id", using: :btree
+
+  create_table "access_request_comments", force: :cascade do |t|
+    t.text     "body"
+    t.integer  "access_request_id"
+    t.integer  "user_id"
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.boolean  "hide",              default: false
+  end
+
+  add_index "comments", ["access_request_id"], name: "index_access_request_comments_on_access_request_id", using: :btree
+  add_index "comments", ["user_id"], name: "index_access_request_comments_on_user_id", using: :btree
 
   create_table "access_request_statuses", force: :cascade do |t|
     t.integer  "access_request_id"
@@ -84,6 +100,7 @@ ActiveRecord::Schema.define(version: 20170904081349) do
     t.datetime "request_date"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
+    t.string   "business_justification"
   end
 
   add_index "access_requests", ["user_id"], name: "index_access_requests_on_user_id", using: :btree
