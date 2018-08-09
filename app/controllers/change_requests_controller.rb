@@ -41,7 +41,7 @@ class ChangeRequestsController < ApplicationController
         else
           enumerator = Enumerator.new do |lines|
             lines << ChangeRequest.to_comma_headers.to_csv
-            ChangeRequest.find_each do |record|
+            ChangeRequest.order('id DESC').each do |record|
               lines << record.to_comma.to_csv
             end
           end
