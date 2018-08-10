@@ -284,7 +284,7 @@
     });
 
     $('#rank-modal').on('shown.bs.modal',function(){
-      $(this).find('iframe#guideline').attr('src','https://drive.google.com/file/d/1i3SuJ85OmvIrzqzpYTzIPQzu3gAgS2no/preview')
+      $(this).find('iframe#guideline').attr('src', '<%= ENV['INCIDENT_LEVEL_GUIDELINE'] %>')
     });
 
     function onHasFurtherActionChange(){
