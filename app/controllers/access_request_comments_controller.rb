@@ -9,6 +9,8 @@ class AccessRequestCommentsController < ApplicationController
 
 	  respond_to do |format|
       if @access_request_comment.save
+      	Notifier.ar_notify(current_user, @ar, 'comment_ar')
+        SlackNotif.new.notify_new_ar_comment @access_request_comment
         format.html { redirect_to @ar}
         format.json { render :show, status: :created, location: @comment }
       else

@@ -74,6 +74,19 @@ class SlackAttachmentBuilder
     }
   end
 
+  def generate_ar_comment_attachment(ar_comment)
+    access_request = ar_comment.access_request
+    attachment = {
+      fallback: ar_comment.body,
+      text: ar_comment.body,
+      color: "#439FE0",
+      title: access_request.employee_name,
+      title_link: access_request_url(access_request),
+      footer: "VT-Vision",
+      ts: ar_comment.created_at.to_datetime.to_f.round
+    }
+  end
+
   def generate_incident_report_attachment(incident_report)
     incident_duration = distance_of_time_in_words(incident_report.recovery_duration * 60)
     attachment = {
