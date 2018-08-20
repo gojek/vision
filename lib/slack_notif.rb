@@ -39,10 +39,25 @@ class SlackNotif
       mentioned_message = "You are mentioned in #{comment.user.name} comment's on a <#{link}|change request>"
       message_users(mentionees, mentioned_message, attachment)
     end
-    associated_users = comment.change_request.associated_users.to_a
+    associated_users = comment.change_request.collaborators.to_a
     associated_users.delete(comment.user)
     mentionees.each {|mentionee| associated_users.delete(mentionee)}
     general_message = "A new comment from #{comment.user.name} on a <#{link}|change request>"
+    message_users(associated_users, general_message, attachment)
+  end
+
+  def notify_new_ar_comment(ar_comment)
+    attachment = @attachment_builder.generate_ar_comment_attachment(ar_comment)
+    link = access_request_url(ar_comment.access_request)
+    mentionees = Mentioner.process_mentions(ar_comment)
+    if !mentionees.empty?
+      mentioned_message = "You are mentioned in #{ar_comment.user.name} comment's on an <#{link}|access request>"
+      message_users(mentionees, mentioned_message, attachment)
+    end
+    associated_users = ar_comment.access_request.collaborators.to_a
+    associated_users.delete(ar_comment.user)
+    mentionees.each {|mentionee| associated_users.delete(mentionee)}
+    general_message = "A new comment from ${comment.user.name} on a <#{link}|access request>"
     message_users(associated_users, general_message, attachment)
   end
 

@@ -8,7 +8,8 @@ class AccessRequest < ActiveRecord::Base
   has_and_belongs_to_many :collaborators, join_table: :access_request_collaborators, class_name: 'User'
   has_many :approvals, join_table: :access_request_approvals, dependent: :destroy, class_name: 'AccessRequestApproval'
   has_many :statuses, join_table: :access_request_statuses, dependent: :destroy, class_name: 'AccessRequestStatus'
-  has_many :access_request_comments
+  has_many :access_request_comments, dependent: :destroy
+  has_many :notifications, dependent: :destroy
   TEMPORARY = 'Temporary'.freeze
   PERMANENT = 'Permanent'.freeze
 
