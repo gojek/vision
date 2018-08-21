@@ -36,7 +36,6 @@ class Notifier
     notification_receiver = notification_receiver + access_request.approvals.collect(&:user)
     notification_receiver = notification_receiver + access_request.collaborators
     notification_receiver << access_request.user
-    notification_receiver = notification_receiver + User.where(role: 'release_manager')
     notification_receiver = notification_receiver.uniq
     notification_receiver = notification_receiver - [whodunnit]
 
