@@ -18,6 +18,7 @@ class Notification < ActiveRecord::Base
 
   scope :ar, -> { where(:change_request_id => nil, :incident_report_id => nil) }
   scope :ar_comment, ->{ where(:message => 'comment_ar')}
+  scope :new_ar, -> { where(:message => 'new_ar') }
 
   scope :ir, -> { where(:incident_report_id => nil, :access_request_id => nil) }
   scope :new_incident, ->{where(:message => 'new_ir')}

@@ -30,6 +30,8 @@ class AccessRequestsController < ApplicationController
           @access_request.submit!
         end
         flash[:success] = 'Change request was successfully created.'
+        Notifier.ar_notify(current_user, @access_request, 'new_ar')
+        SlackNotif.new.notify_new_ar @access_request
       else
         @access_request.save(validate: false)
         flash[:notice] = 'Access request was created as a draft.'
