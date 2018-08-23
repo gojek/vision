@@ -59,6 +59,7 @@ describe ChangeRequestsController, type: :controller do
           #  @controller.render nothing: true # to prevent a 'missing template' error
           #}
           expect(response.header['Content-Type']).to eq('text/csv')
+          expect(response.body).to include('Request id', 'Change summary', 'Category', 'Type', 'Priority', 'Scope', 'Change requirement', 'Business justification', 'CR Status', 'Approval Status', 'Request date', 'Schedule change', 'Planned completion', 'Requestor', 'Tags', 'Approver', 'Testers', 'Implementers')
         end
       end
 
