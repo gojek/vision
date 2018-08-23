@@ -31,6 +31,22 @@ class SlackNotif
     message_channel('cab', general_message, attachment)
   end
 
+  def notify_approved_cr(change_request)
+    attachment = @attachment_builder.generate_approved_cr_attachment(change_request)
+    link = change_request_url(change_request)
+    associated_users = change_request.associated_users.to_a
+    general_message = "New update on <#{link}|change request>"
+    message_users(associated_users, general_message, attachment)
+  end
+
+  def notify_rejected_cr(change_request)
+    attachment = @attachment_builder.generate_rejected_cr_attachment(change_request)
+    link = change_request_url(change_request)
+    associated_users = change_request.associated_users.to_a
+    general_message = "New update on <#{link}|change request>"
+    message_users(associated_users, general_message, attachment)
+  end
+
   def notify_new_comment(comment)
     attachment = @attachment_builder.generate_comment_attachment(comment)
     link = change_request_url(comment.change_request)
@@ -45,6 +61,7 @@ class SlackNotif
     general_message = "A new comment from #{comment.user.name} on a <#{link}|change request>"
     message_users(associated_users, general_message, attachment)
   end
+
 
   def notify_new_ir(incident_report)
     notify_change_ir(incident_report, 'created')
