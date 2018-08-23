@@ -35,14 +35,6 @@ class SlackNotif
     message_channel('cab', general_message, attachment)
   end
 
-  def notify_change_ar(access_request, type)
-    attachment = @attachment_builder.generate_access_request_attachment(access_request)
-    link = access_request_url(access_request)
-    approvers = access_request.approvals.collect{|approval| approval.user}
-    approver_message = "#{type.humanize} <#{link}|access_request> needs your approvals"
-    notify_users(approvers, approver_message, attachment)
-  end
-
   def notify_approved_cr(change_request)
     attachment = @attachment_builder.generate_approved_cr_attachment(change_request)
     link = change_request_url(change_request)
@@ -74,20 +66,6 @@ class SlackNotif
     message_users(associated_users, general_message, attachment)
   end
 
-  def notify_new_ar_comment(ar_comment)
-    attachment = @attachment_builder.generate_ar_comment_attachment(ar_comment)
-    link = access_request_url(ar_comment.access_request)
-    mentionees = Mentioner.process_mentions(ar_comment)
-    if !mentionees.empty?
-      mentioned_message = "You are mentioned in #{ar_comment.user.name} comment's on an <#{link}|access request>"
-      message_users(mentionees, mentioned_message, attachment)
-    end
-    associated_users = ar_comment.access_request.collaborators.to_a
-    associated_users.delete(ar_comment.user)
-    mentionees.each {|mentionee| associated_users.delete(mentionee)}
-    general_message = "A new comment from ${comment.user.name} on a <#{link}|access request>"
-    message_users(associated_users, general_message, attachment)
-  end
 
   def notify_new_ir(incident_report)
     notify_change_ir(incident_report, 'created')
