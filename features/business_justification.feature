@@ -4,6 +4,6 @@ Feature: Business Justification
 
 	Scenario: Seeing business justification
 	Given I am logged in
-	And an access request with employee name "Debora" with "Describing Engineering" as business justification
-	When I visit access request with employee name "Tarareng Kyu"
-	Then I should be able to see "Kyu"
+	And an access request with employee name "Rani" with "Describing Engineering" as business justification
+	When I visit access request with employee name "Rani"
+	Then I should be able to see "Describing Engineering"
