@@ -62,6 +62,7 @@ class User < ActiveRecord::Base
 
   def token_to_params
     {'refresh_token' => refresh_token,
+      # "http://#{ENV['ROOT_DOMAIN']}/this/is/#{ENV['SECONDARY_DOMAIN']}/a/path"
     'client_id' => '697614417708-o2cl7lbhvp5jeejvli54lt780uk9dmbd.apps.googleusercontent.com',
     'client_secret' => 'mXIFtnM7gYtHPAVqgDLfJQBN',
     'grant_type' => 'refresh_token'}
