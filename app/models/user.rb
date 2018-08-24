@@ -62,8 +62,8 @@ class User < ActiveRecord::Base
 
   def token_to_params
     {'refresh_token' => refresh_token,
-    'client_id' => ENV['GOOGLE_API_KEY'],
-    'client_secret' => ENV['GOOGLE_API_SECRET'],
+    'client_id' => '697614417708-o2cl7lbhvp5jeejvli54lt780uk9dmbd.apps.googleusercontent.com',
+    'client_secret' => 'mXIFtnM7gYtHPAVqgDLfJQBN',
     'grant_type' => 'refresh_token'}
   end
 
@@ -77,7 +77,8 @@ class User < ActiveRecord::Base
     data = JSON.parse(response.body)
     update_attributes(
       token: data['access_token'],
-      expired_at: Time.now + (data['expires_in'].to_i).seconds)
+      expired_at: Time.now + (data['expires_in'].to_i).seconds
+    )
   end
 
   def expired?
@@ -85,7 +86,7 @@ class User < ActiveRecord::Base
   end
 
   def expired_session?
-    expired_at + 7.days < Time.now
+    (expired_at + 7.days) < Time.now
   end
 
   def fresh_token
