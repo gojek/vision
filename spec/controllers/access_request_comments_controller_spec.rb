@@ -3,7 +3,7 @@ require 'slack_notif'
 require 'mentioner.rb'
 
 describe CommentsController, type:  :controller do
-  let(:access_request) {FactoryGirl.create(:change_request)}
+  let(:access_request) {FactoryGirl.create(:access_request)}
   let(:ar_comment) {FactoryGirl.build(:access_request_comment, body: 'comment')}
   before :each do
     controller.request.env['devise.mapping'] = Devise.mappings[:user]
@@ -14,20 +14,20 @@ describe CommentsController, type:  :controller do
     context "with valid attributes" do
       it 'saves the new comment in the databse' do
         expect{
-          post :create, access_request_id: change_request.id, access_request_comment: {body: 'comment'}
+          post :create, access_request_id: access_request.id, access_request_comment: {body: 'comment'}
         }.to change(Comment, :count).by(1)
       end
 
       it 'call slack notification library to notify to the mentionees that they have been mentioned' do
         comment = FactoryGirl.build(:access_request_comment, body: 'comment @metionee')
         expect_any_instance_of(SlackNotif).to receive(:notify_new_ar_comment).with(an_instance_of(AccessRequestComment))
-        post :create, access_request_id: change_request.id, access_request_comment: {body: comment.body}
+        post :create, access_request_id: access_request.id, access_request_comment: {body: comment.body}
       end
     end
     context 'with invalid attributes' do
       it 'doesnt save the new comment in the databse' do
         expect{
-          post :create, access_request_id: change_request.id, access_request_comment: {body: ''}
+          post :create, access_request_id: access_request.id, access_request_comment: {body: ''}
         }.to_not change(AccessRequestComment, :count)
       end
     end
