@@ -39,6 +39,42 @@ class SlackAttachmentBuilder
     }
   end
 
+  def generate_access_request_attachment(access_request)
+    approvers_name = access_request.approvals.includes(:user).pluck(:name)
+    attachment = {
+      fallback: access_request.employee_name,
+      color: "#439FE0",
+      title: "#{access_request.id}. #{access_request.employee_name}",
+      title_link: access_request_url(access_request),
+      callback_id: access_request.id,
+      fields: [
+        {
+          title: "Request Type",
+          value: access_request.request_type,
+          short: true
+        },{
+          title: "Access Type",
+          value: access_request.access_type,
+          short: true
+        },{
+          title: "Requested Date",
+          value: access_request.request_date,
+          short: true
+        },{
+          title: "Requestor",
+          value: User.find(access_request.user_id).name,
+          short: true
+        },{
+          title: "Approvers",
+          value: (approvers_name.join ', '),
+          short: false
+        }
+      ],
+      footer: "VT-Vision",
+      ts: access_request.created_at.to_datetime.to_f.round
+    }
+  end
+
   def wrap_approver_actions(attachment, user)
     actionable_attachment = attachment.dup
     actionable_attachment[:actions] = [
@@ -71,6 +107,19 @@ class SlackAttachmentBuilder
       title_link: change_request_url(change_request),
       footer: "VT-Vision",
       ts: comment.created_at.to_datetime.to_f.round
+    }
+  end
+
+  def generate_ar_comment_attachment(ar_comment)
+    access_request = ar_comment.access_request
+    attachment = {
+      fallback: ar_comment.body,
+      text: ar_comment.body,
+      color: "#439FE0",
+      title: access_request.employee_name,
+      title_link: access_request_url(access_request),
+      footer: "VT-Vision",
+      ts: ar_comment.created_at.to_datetime.to_f.round
     }
   end
 
