@@ -473,3 +473,14 @@
   </div>
   <!-- /.modal-dialog -->
 </div>
+
+<script type="text/javascript">
+$('#popoverData').popover();
+$('#popoverOption').popover({ trigger: "hover" });
+</script>
+
+<script>
+  var users = <%= raw @usernames %> ;
+  $('#access_request_comment').atwho({at:"@", 'data':users})
+
+</script>
