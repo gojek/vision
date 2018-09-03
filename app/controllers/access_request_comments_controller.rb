@@ -1,6 +1,6 @@
 class AccessRequestCommentsController < ApplicationController
 	before_action :authenticate_user!
-	require 'slack_notif.rb'
+	require 'slack_notif.rb' 
 
 	def create
 	  @ar = AccessRequest.find(params[:access_request_id])
