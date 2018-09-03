@@ -6,6 +6,9 @@ class AccessRequestsController < ApplicationController
   before_action :set_access_request_approval, only: [:approve, :reject]
   before_action :set_users_and_approvers, only: [:new, :edit]
   before_action :set_paper_trail_whodunnit
+  require 'notifier.rb'
+  require 'slack_notif.rb'
+  require 'calendar.rb'
 
   def index
     if params[:type]
@@ -35,6 +38,8 @@ class AccessRequestsController < ApplicationController
           @access_request.submit!
         end
         flash[:success] = 'Access request was successfully created.'
+        Notifier.ar_notify(current_user, @access_request, 'new_ar')
+        SlackNotif.new.notify_new_ar @access_request
       else
         @access_request.save(validate: false)
         flash[:notice] = 'Access request was created as a draft.'
@@ -47,6 +52,10 @@ class AccessRequestsController < ApplicationController
 
   def show
     @access_request_status = AccessRequestStatus.new
+    @usernames = []
+    User.all.each do |user|
+      @usernames <<  user.email.split("@").first
+    end
   end
 
   def edit
@@ -164,7 +173,8 @@ class AccessRequestsController < ApplicationController
           :asset_name,
           :production_access,
           :production_user_id,
-          :production_asset
+          :production_asset,
+          :business_justification
       )
     end
 

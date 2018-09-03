@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170904092416) do
+ActiveRecord::Schema.define(version: 20180820063549) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,15 @@ ActiveRecord::Schema.define(version: 20170904092416) do
 
   add_index "access_request_collaborators", ["access_request_id"], name: "index_access_request_collaborators_on_access_request_id", using: :btree
   add_index "access_request_collaborators", ["user_id"], name: "index_access_request_collaborators_on_user_id", using: :btree
+
+  create_table "access_request_comments", force: :cascade do |t|
+    t.text     "body"
+    t.integer  "access_request_id"
+    t.integer  "user_id"
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.boolean  "hide",              default: false
+  end
 
   create_table "access_request_statuses", force: :cascade do |t|
     t.integer  "access_request_id"
@@ -87,6 +96,7 @@ ActiveRecord::Schema.define(version: 20170904092416) do
     t.datetime "request_date"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
+    t.string   "business_justification"
   end
 
   add_index "access_requests", ["user_id"], name: "index_access_requests_on_user_id", using: :btree
@@ -312,6 +322,7 @@ ActiveRecord::Schema.define(version: 20170904092416) do
     t.string   "message"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
+    t.integer  "access_request_id"
   end
 
   add_index "notifications", ["change_request_id"], name: "index_notifications_on_change_request_id", using: :btree
