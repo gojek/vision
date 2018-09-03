@@ -69,6 +69,24 @@ $(function(){
     }
   });
 
+  $('.hide-unhide-access-request-comment').on('ajax:success', function(data, response){
+    var comment_id = response.id;
+    var ar_id = response.access_request_id;
+    var new_link = '/access_requests/'+ ar_id +'/access_request_comments/'+ comment_id +'/hide?type=';
+    if(response.hide){
+      $('#p-access-request-comment-'+comment_id).addClass('hidden');
+      $('#p-show-access-request-comment-'+comment_id).removeClass('hidden');
+      $('#hide-unhide-access-request-comment-'+comment_id).attr('href', new_link + 'unhide');
+      $('#hide-unhide-access-request-comment-'+comment_id).html('Unhide');
+    }
+    else{
+      $('#p-access-request-comment-'+comment_id).removeClass('hidden');
+      $('#p-show-access-request-comment-'+comment_id).addClass('hidden');
+      $('#hide-unhide-access-request-comment-'+comment_id).attr('href', new_link + 'hide');
+      $('#hide-unhide-access-request-comment-'+comment_id).html('Hide');
+    }
+  });
+
 });
 $(document).on('page:fetch',   function() { NProgress.set(0.3); });
 
