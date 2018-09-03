@@ -15,13 +15,15 @@ class NotificationsController < ApplicationController
       @closed = @notifications.closed
       @rollbacked = @notifications.rollbacked
       @comment = @notifications.comment
+      @ar_comment = @notifications.ar_comment
       @new_ir = @notifications.new_incident
       @resolved_ir = @notifications.resolved
       @have_cr_notif = !@notifications.cr.empty?
       @have_ir_notif = !@notifications.ir.empty?
       @array_cr_scope = [@new_cr, @update_cr, @approved, @rejected, @final_rejected, @cancelled, @scheduled, @deployed, @closed, @rollbacked, @comment]
+      @array_ar_scope = [@ar_comment]
       @array_ir_scope = [@new_ir, @resolved_ir]
-      @title = Hash[@new_cr, 'New', @update_cr, 'Updated', @approved, 'Approved', @rejected, 'Rejected', @final_rejected, 'Final Rejected', @cancelled, 'Cancelled', @scheduled, 'Scheduled', @deployed, 'Deployed', @closed, 'Closed', @rollbacked, 'Rollbacked', @comment, 'Comment', @new_ir, 'New', @resolved_ir, 'Resolved']
+      @title = Hash[@new_cr, 'New', @update_cr, 'Updated', @approved, 'Approved', @rejected, 'Rejected', @final_rejected, 'Final Rejected', @cancelled, 'Cancelled', @scheduled, 'Scheduled', @deployed, 'Deployed', @closed, 'Closed', @rollbacked, 'Rollbacked', @comment, 'Comment', @new_ir, 'New', @resolved_ir, 'Resolved', @ar_comment, 'Comment']
   end
 
   def clear_notifications
