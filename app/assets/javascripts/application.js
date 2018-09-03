@@ -52,7 +52,6 @@ $(function(){
   });
 
   $('.hide-unhide-comment').on('ajax:success', function(data, response){
-    console.log('CR');
     var comment_id = response.id;
     var cr_id = response.change_request_id;
     var new_link = '/change_requests/'+ cr_id +'/comments/'+ comment_id +'/hide?type=';
@@ -71,7 +70,6 @@ $(function(){
   });
 
   $('.hide-unhide-access-request-comment').on('ajax:success', function(data, response){
-    console.log('AR');
     var comment_id = response.id;
     var ar_id = response.access_request_id;
     var new_link = '/access_requests/'+ ar_id +'/access_request_comments/'+ comment_id +'/hide?type=';
