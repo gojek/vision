@@ -24,3 +24,10 @@ Given(/^that access request has been approved on "([^"]*)"$/) do |time_approved|
   approver = FactoryGirl.create(:approver_ar)
   approval = AccessRequestApproval.create(user: approver, access_request: @ar, approved: true, notes: "Ok", updated_at: time_approved)
 end
+Given /^an access request with employee name "([^"]*)" with "([^"]*)" as business justification$/ do |employee_name, business_justification|
+  user = FactoryGirl.create(:user)
+  @ar = FactoryGirl.create(:access_request, user: user, employee_name: employee_name, business_justification: business_justification)
+  version = @ar.versions.first
+  version.whodunnit = user.id
+  version.save!
+end
