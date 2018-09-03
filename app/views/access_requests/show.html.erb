@@ -177,25 +177,25 @@
                 </tr>
               </thead>
               <tbody>
-                <% @access_request.approvals.each do |app| %>
+                <% @access_request.approvals.each do |ar_approval| %>
                 <tr>
-                  <td><%= app.user.name %></td>
-                  <td><%= app.user.position %></td>
+                  <td><%= ar_approval.user.name %></td>
+                  <td><%= ar_approval.user.position %></td>
                   <td>
-                    <%if app.approved %>
-                      <% if app.updated_at %>
-                        <a id="popoverOption<%= app.id %>" class="btn" href="#" data-content="<%= app.notes %>" rel="popover" data-placement="bottom" data-original-title="Accept Note" style='padding:0px'>Approved on <%= app.updated_at.to_s(:long) %></a>
+                    <%if ar_approval.approved %>
+                      <% if ar_approval.updated_at %>
+                        <a id="popoverOption<%= ar_approval.id %>" class="btn" href="#" data-content="<%= ar_approval.notes %>" rel="popover" data-placement="bottom" data-original-title="Accept Note" style='padding:0px'>Approved on <%= ar_approval.updated_at.to_s(:long) %></a>
                       <% else %>
-                        <a id="popoverOption<%= app.id %>" class="btn" href="#" data-content="<%= app.notes %>" rel="popover" data-placement="bottom" data-original-title="Accept Note" style='padding:0px'>Approved</a>
+                        <a id="popoverOption<%= ar_approval.id %>" class="btn" href="#" data-content="<%= ar_approval.notes %>" rel="popover" data-placement="bottom" data-original-title="Accept Note" style='padding:0px'>Approved</a>
                       <% end %>
-                    <% elsif app.approved.nil? %>
+                    <% elsif ar_approval.approved.nil? %>
                       Waiting for approval
-                    <%elsif app.approved == false %>
-                       <a id="popoverOption<%= app.id %>" class="btn" href="#" data-content="<%= app.notes %>" rel="popover" data-placement="bottom" data-original-title="Reject Reason" style='padding:0px'>Rejected</a>
+                    <%elsif ar_approval.approved == false %>
+                       <a id="popoverOption<%= ar_approval.id %>" class="btn" href="#" data-content="<%= ar_approval.notes %>" rel="popover" data-placement="bottom" data-original-title="Reject Reason" style='padding:0px'>Rejected</a>
                     <%end %>
                   </td>
                   <script type="text/javascript">
-                    var pop = "#popoverOption" + <%= app.id %>;
+                    var pop = "#popoverOption" + <%= ar_approval.id %>;
                   $('#popoverData').popover();
                   $(pop).popover({ trigger: "hover" });
                   </script>
