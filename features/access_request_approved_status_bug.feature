@@ -22,7 +22,7 @@ Feature: Access Request Approved Status Bug Fix
 	Then I should be able to see "Approved on July 31, 2018 07:32"
 	And I should be able to see "Approved on July 31, 2018 10:35"
 
-	Scenario: Approvel won't be reset once we edit the AR
+	Scenario: Approval won't be reset once we edit the AR
 	Given I am logged in
 	And an access request with employee name "Zulfahmi Ibnu Habibi"
 	And that access request has been approved on "2018-07-31 07:32"
