@@ -13,14 +13,14 @@ Feature: Access Request Approved Status Bug Fix
 
 	Scenario: Approval Time is Shown Correctly
 	Given I am logged in
-	And an access request with employee name "Saeful Ramadhan" that has been approved on "2018-07-31 07:32:06.350205" and "2018-07-31 10:35:01.350205"
+	And an access request with employee name "Saeful Ramadhan" that has been approved on "2018-07-31 07:32" and "2018-07-31 10:35"
 	When I visit access request with employee name "Saeful Ramadhan"
 	Then I should be able to see "Approved on July 31, 2018 07:32"
 	And I should be able to see "Approved on July 31, 2018 10:35"
 
 	Scenario: Approvel won't be reset once we edit the AR
 	Given I am logged in
-	And an access request with employee name "Zulfahmi Ibnu Habibi" that has been approved on "2018-07-31 07:32:06.350205" and "2018-07-31 10:35:01.350205"
+	And an access request with employee name "Zulfahmi Ibnu Habibi" that has been approved on "2018-07-31 07:32" and "2018-07-31 10:35"
 	When I update access request with employee name "Zulfahmi Ibnu Habibi"
 	Then I should be able to see "Approved on July 31, 2018 07:32"
 	And I should be able to see "Approved on July 31, 2018 10:35"
