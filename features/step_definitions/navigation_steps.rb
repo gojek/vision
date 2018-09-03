@@ -6,6 +6,11 @@ When /^I visit page "(.*?)"$/ do |page|
   visit page
 end
 
+When /^I update the access request$/ do
+  visit "/access_requests/#{@ar.id}/edit"
+  click_button("Update Access request")
+end
+
 When /^I press button "(.*?)"$/ do |button|
   click_button(button)
 end
@@ -38,4 +43,8 @@ end
 When /^I visit change request with change summary "(.*?)"$/ do |change_summary|
   cr = ChangeRequest.where(change_summary: change_summary).first
   visit "/change_requests/#{cr.id}"
+end
+
+When /^I visit the access request$/ do
+  visit "/access_requests/#{@ar.id}"
 end
