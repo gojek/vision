@@ -27,6 +27,11 @@ class AccessRequest < ActiveRecord::Base
 
   attr_accessor :reason
 
+  searchable do
+    text :employee_name, stored: true
+    time :created_at, stored: true
+  end
+
   aasm do
     state :draft, :initial => true
     state :submitted
