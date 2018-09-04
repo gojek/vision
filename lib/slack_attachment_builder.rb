@@ -110,6 +110,19 @@ class SlackAttachmentBuilder
     }
   end
 
+  def generate_ar_comment_attachment(ar_comment)
+    access_request = ar_comment.access_request
+    attachment = {
+      fallback: ar_comment.body,
+      text: ar_comment.body,
+      color: "#439FE0",
+      title: access_request.employee_name,
+      title_link: access_request_url(access_request),
+      footer: "VT-Vision",
+      ts: ar_comment.created_at.to_datetime.to_f.round
+    }
+  end
+
   def generate_approved_cr_attachment(change_request)
     approvers_name = User.find(ChangeRequest.last.approvals.order("updated_at DESC").where(:approve => true).first.user_id).name
     notes = ChangeRequest.last.approvals.order("updated_at DESC").where(:approve => true).first.notes
