@@ -120,6 +120,7 @@ class SlackAttachmentBuilder
       title_link: access_request_url(access_request),
       footer: "VT-Vision",
       ts: ar_comment.created_at.to_datetime.to_f.round
+    }
   end
 
   def generate_approved_cr_attachment(change_request)
