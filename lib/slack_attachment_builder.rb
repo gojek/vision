@@ -120,6 +120,55 @@ class SlackAttachmentBuilder
       title_link: access_request_url(access_request),
       footer: "VT-Vision",
       ts: ar_comment.created_at.to_datetime.to_f.round
+  end
+
+  def generate_approved_cr_attachment(change_request)
+    approvers_name = User.find(ChangeRequest.last.approvals.order("updated_at DESC").where(:approve => true).first.user_id).name
+    notes = ChangeRequest.last.approvals.order("updated_at DESC").where(:approve => true).first.notes
+    attachment = {
+      fallback: change_request.change_summary,
+      color: "#439FE0",
+      title: "#{change_request.id}. #{change_request.change_summary}",
+      title_link: change_request_url(change_request),
+      callback_id: change_request.id,
+      fields: [
+        {
+          title: "Approval Status",
+          value: "Approved by #{approvers_name}",
+          short: false
+        }, {
+          title: "Note",
+          value: "#{notes}",
+          short: false
+        }
+      ],
+      footer: "VT-Vision",
+      ts: change_request.created_at.to_datetime.to_f.round
+    }
+  end
+
+  def generate_rejected_cr_attachment(change_request)
+    approvers_name = User.find(ChangeRequest.last.approvals.order("updated_at DESC").where(:approve => false).first.user_id).name
+    notes = ChangeRequest.last.approvals.order("updated_at DESC").where(:approve => false).first.notes
+    attachment = {
+      fallback: change_request.change_summary,
+      color: "#439FE0",
+      title: "#{change_request.id}. #{change_request.change_summary}",
+      title_link: change_request_url(change_request),
+      callback_id: change_request.id,
+      fields: [
+        {
+          title: "Approval Status",
+          value: "Rejected by #{approvers_name}",
+          short: false
+        }, {
+          title: "Note",
+          value: "#{notes}",
+          short: false
+        }
+      ],
+      footer: "VT-Vision",
+      ts: change_request.created_at.to_datetime.to_f.round
     }
   end
 
