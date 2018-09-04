@@ -43,7 +43,7 @@ class User < ActiveRecord::Base
   end
 
   def timeout_in
-    14.days
+    7.days
   end
 
   def self.from_omniauth(auth)
