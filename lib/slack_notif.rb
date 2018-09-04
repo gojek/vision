@@ -42,7 +42,7 @@ class SlackNotif
     approver_message = "#{type.humanize} <#{link}|access_request> needs your approvals"
     notify_users(approvers, approver_message, attachment)
   end
-  
+
   def notify_approved_cr(change_request)
     attachment = @attachment_builder.generate_approved_cr_attachment(change_request)
     link = change_request_url(change_request)
@@ -74,7 +74,6 @@ class SlackNotif
     message_users(associated_users, general_message, attachment)
   end
 
-<<<<<<< HEAD
   def notify_new_ar_comment(ar_comment)
     attachment = @attachment_builder.generate_ar_comment_attachment(ar_comment)
     link = access_request_url(ar_comment.access_request)
@@ -89,8 +88,6 @@ class SlackNotif
     general_message = "A new comment from ${comment.user.name} on a <#{link}|access request>"
     message_users(associated_users, general_message, attachment)
   end
-=======
->>>>>>> add slack notif for every approved or rejected cr
 
   def notify_new_ir(incident_report)
     notify_change_ir(incident_report, 'created')
