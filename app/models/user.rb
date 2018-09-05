@@ -42,10 +42,6 @@ class User < ActiveRecord::Base
     super && account_active?
   end
 
-  def timeout_in
-    7.days
-  end
-
   def self.from_omniauth(auth)
     where(provider: auth[:provider], uid: auth[:uid]).first_or_create do |user|
       user.email = auth[:info][:email]
