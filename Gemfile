@@ -1,8 +1,9 @@
 source 'https://rubygems.org'
-ruby "2.3.0"
+
+ruby "~> 2.3.0"
 
 # Bundle edge Rails insteadhttps://developers.google.com/oauthplayground: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.1'
+gem 'rails', '4.2.10'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'unicorn'
 gem 'rake', '10.0.0'
@@ -101,10 +102,11 @@ group :development do
   # Instead, simply run gem install mailcatcher then mailcatcher to get started.
 
 end
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'faker'
-	gem 'cucumber-rails', require: false
+  gem 'cucumber-rails', require: false
   gem 'byebug'
   gem 'rspec-rails', '~> 3.5.2'
   gem 'factory_girl_rails', '~> 4.2.1'

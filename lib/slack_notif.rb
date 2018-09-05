@@ -73,6 +73,13 @@ class SlackNotif
     message_users(associated_users, general_message, attachment)
   end
 
+  def notify_terminate_cr(change_request, status)
+    attachment = @attachment_builder.generate_simple_change_request_attachment(change_request)
+    link = change_request_url(change_request)
+    general_message = "<#{link}|Change request> has been #{status}"
+    message_channel('cab', general_message, attachment)
+  end
+
   def notify_new_ir(incident_report)
     notify_change_ir(incident_report, 'created')
   end
@@ -83,6 +90,15 @@ class SlackNotif
     general_message = "<#{link}|Incident report> has been #{type}"
     message_channel('incidents', general_message, attachment)
   end
+
+
+  def notify_new_access_request(access_request)
+    attachment = @attachment_builder.generate_access_request_attachment(access_request)
+    link = access_request_url(access_request)
+    general_message = "<#{link}|Access request> has been created for #{access_request.employee_name}(#{access_request.employee_department})"
+    message_users(access_request.associated_users, general_message, attachment)
+  end
+
 
   private
   def get_slack_username(user)
