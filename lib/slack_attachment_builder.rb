@@ -123,8 +123,8 @@ class SlackAttachmentBuilder
     }
   end
 
-  def generate_approved_cr_attachment(change_request, approver)
-    notes = change_request.approvals.where(:user_id => approver.id).first.notes
+  def generate_approved_cr_attachment(change_request, approval)
+    notes = approval.notes
     attachment = {
       fallback: change_request.change_summary,
       color: "#439FE0",
@@ -134,7 +134,7 @@ class SlackAttachmentBuilder
       fields: [
         {
           title: "Approval Status",
-          value: "Approved by #{approvers.name}",
+          value: "Approved by #{approval.user.name}",
           short: false
         }, {
           title: "Note",
@@ -147,8 +147,8 @@ class SlackAttachmentBuilder
     }
   end
 
-  def generate_rejected_cr_attachment(change_request, approver)
-    notes = change_request.approvals.where(:user_id => approver.id).first.notes
+  def generate_rejected_cr_attachment(change_request, approval)
+    notes = approval.notes
     attachment = {
       fallback: change_request.change_summary,
       color: "#439FE0",
@@ -158,7 +158,7 @@ class SlackAttachmentBuilder
       fields: [
         {
           title: "Approval Status",
-          value: "Rejected by #{approvers_name}",
+          value: "Rejected by #{approval.user.name}",
           short: false
         }, {
           title: "Note",
