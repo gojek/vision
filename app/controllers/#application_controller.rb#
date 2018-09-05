@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   before_action :check_user
-  require 'notifier.rb' # Omg
+  require 'notifier.rb'
 
   def check_user
     token_required! unless current_user.nil?
@@ -16,9 +16,8 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     session[:first_time] = true
-    return_url = stored_location_for(resource) || change_requests_path
-    logger.info "Returning User to.......... #{return_url}"
-    return_url
+    request.env['omniauth.origin'] || stored_location_for(resource) || change_requests_path
+    change_requests_path
   end
 
   def stream(filename, content_type, enumerator)
