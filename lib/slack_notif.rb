@@ -35,16 +35,24 @@ class SlackNotif
     message_channel('cab', general_message, attachment)
   end
 
-  def notify_approved_cr(change_request)
-    attachment = @attachment_builder.generate_approved_cr_attachment(change_request)
+  def notify_change_ar(access_request, type)
+    attachment = @attachment_builder.generate_access_request_attachment(access_request)
+    link = access_request_url(access_request)
+    approvers = access_request.approvals.collect{|approval| approval.user}
+    approver_message = "#{type.humanize} <#{link}|access_request> needs your approvals"
+    notify_users(approvers, approver_message, attachment)
+  end
+
+  def notify_approved_cr(change_request, approver)
+    attachment = @attachment_builder.generate_approved_cr_attachment(change_request, approver)
     link = change_request_url(change_request)
     associated_users = change_request.associated_users.to_a
     general_message = "New update on <#{link}|change request>"
     message_users(associated_users, general_message, attachment)
   end
 
-  def notify_rejected_cr(change_request)
-    attachment = @attachment_builder.generate_rejected_cr_attachment(change_request)
+  def notify_rejected_cr(change_request, approver)
+    attachment = @attachment_builder.generate_rejected_cr_attachment(change_request, approver)
     link = change_request_url(change_request)
     associated_users = change_request.associated_users.to_a
     general_message = "New update on <#{link}|change request>"

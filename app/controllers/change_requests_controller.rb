@@ -241,7 +241,7 @@ class ChangeRequestsController < ApplicationController
       approver.notes = accept_note
       approver.save!
       Notifier.cr_notify(current_user, @change_request, 'cr_approved')
-      SlackNotif.new.notify_approved_cr @change_request
+      SlackNotif.new.notify_approved_cr(@change_request, approver)
       flash[:success] = 'Change Request Approved'
     end
     redirect_to @change_request
@@ -259,7 +259,7 @@ class ChangeRequestsController < ApplicationController
       Notifier.cr_notify(current_user, @change_request, 'cr_rejected')
       approver.update_all(:approve => false, :notes => reject_reason)
       flash[:notice] = 'Change Request Rejected'
-      SlackNotif.new.notify_rejected_cr @change_request
+      SlackNotif.new.notify_rejected_cr(@change_request, approver)
     end
     redirect_to @change_request
   end
