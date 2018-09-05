@@ -105,10 +105,10 @@ GEM
       railties (>= 3.0)
     database_cleaner (1.5.3)
     debug_inspector (0.0.2)
-    devise (4.4.1)
+    devise (4.2.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
-      railties (>= 4.1.0, < 5.2)
+      railties (>= 4.1.0, < 5.1)
       responders
       warden (~> 1.2.3)
     diff-lcs (1.3)
@@ -450,7 +450,7 @@ DEPENDENCIES
   cucumber-rails
   data-confirm-modal
   database_cleaner
-  devise
+  devise (~> 4.2.0)
   diffy
   exception_notification
   factory_girl_rails (~> 4.2.1)
@@ -512,4 +512,4 @@ RUBY VERSION
    ruby 2.3.0p0
 
 BUNDLED WITH
-   1.16.0
+   1.16.2

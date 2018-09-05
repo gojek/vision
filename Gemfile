@@ -28,7 +28,7 @@ gem 'bootstrap-toggle-rails'
 gem 'jbuilder', '~> 2.0'
 
 # user-related
-gem 'devise'
+gem 'devise', '~> 4.2.0'
 
 # file managment
 gem 'paper_trail', '~> 4.1'
