@@ -62,8 +62,8 @@ class User < ActiveRecord::Base
 
   def token_to_params
     {'refresh_token' => refresh_token,
-    'client_id' => '697614417708-o2cl7lbhvp5jeejvli54lt780uk9dmbd.apps.googleusercontent.com',
-    'client_secret' => 'mXIFtnM7gYtHPAVqgDLfJQBN',
+    'client_id' => ENV['GOOGLE_API_KEY'],
+    'client_secret' => ENV['GOOGLE_API_SECRET'],
     'grant_type' => 'refresh_token'}
   end
 
