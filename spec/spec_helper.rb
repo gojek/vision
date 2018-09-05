@@ -50,6 +50,12 @@ RSpec.configure do |config|
         'Content-type' => 'application/json'
     })
 
+    stub_request(:post, "https://www.googleapis.com/calendar/v3/calendars//events?sendNotifications=true")
+      .to_return(status: 200, body: cal_add_response_json, headers: {
+        'Server' => 'GSE',
+        'Content-type' => 'application/json'
+      })
+
     # get contacts
     stub_request(:get, "https://www.google.com/m8/feeds/contacts/default/full/").
       with(:headers => {'Accept'=>'*/*', 'Authorization'=>'Bearer 123456',
@@ -77,6 +83,9 @@ RSpec.configure do |config|
 
     # slack notification
     stub_request(:post, "https://slack.com/api/chat.postMessage")
+      .to_return(status: 200, body: '{"ok": true}', headers: {})
+
+    stub_request(:post, "https://slack.com/api/users.list")
       .to_return(status: 200, body: '{"ok": true}', headers: {})
 
     # clear action mailer
@@ -134,7 +143,7 @@ def login_as(user)
     credentials: {
       token: "token",
       refresh_token: "refresh_token",
-      expires_at: Time.now + 1.hour
+      expires_at: Time.now + 14.days
     }
   })
   visit("/users/auth/google_oauth2")

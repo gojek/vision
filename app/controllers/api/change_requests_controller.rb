@@ -3,6 +3,7 @@ class Api::ChangeRequestsController < Api::ApiController
 
   def action
     payload = JSON.parse params[:payload]
+    logger.info "Payload for the cr is #{payload}"
     attachment = payload['original_message']['attachments'][0]
     attachment['actions'] = []
 
@@ -10,15 +11,15 @@ class Api::ChangeRequestsController < Api::ApiController
 
     username     = payload['user']['name']
     cr_id        = payload['callback_id']
-  	approved     = payload['actions'][0]['value'] == 'approve'
+        approved     = payload['actions'][0]['value'] == 'approve'
     action_taken = if approved then 'approved' else 'rejected' end
 
     user = User.find_by(slack_username: username)
     change_request = ChangeRequest.find_by(id: cr_id)
-    
+
     if change_request.nil?
       attachment['color'] = 'warning'
-      return render json: { text: 'Change request not found.', attachments: [attachment] } 
+      return render json: { text: 'Change request not found.', attachments: [attachment] }
     end
 
     approval = Approval.find_by(change_request_id: change_request.id, user_id: user.id)
