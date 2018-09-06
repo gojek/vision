@@ -89,17 +89,17 @@ describe SlackAttachmentBuilder do
     let(:approval) {FactoryGirl.create(:approval, change_request_id: approved_change_request.id, approve: true, notes: 'Ok')}
 
     it 'put change summary in fallback' do
-      attachment_generated = attachment_builder.generate_approved_cr_attachment(approved_change_request, approval)
+      attachment_generated = attachment_builder.generate_approval_status_cr_attachment(approved_change_request, approval)
       expect(attachment_generated).to include(fallback: approved_change_request.change_summary)
     end
 
     it 'put id and change summary in title' do
-      attachment_generated = attachment_builder.generate_approved_cr_attachment(approved_change_request, approval)
+      attachment_generated = attachment_builder.generate_approval_status_cr_attachment(approved_change_request, approval)
       expect(attachment_generated).to include(title: "#{approved_change_request.id}. #{approved_change_request.change_summary}")
     end
 
     it 'put approval status as field in attachment' do
-      attachment_generated = attachment_builder.generate_approved_cr_attachment(approved_change_request, approval)
+      attachment_generated = attachment_builder.generate_approval_status_cr_attachment(approved_change_request, approval)
       expect(attachment_generated[:fields]).to include({
         title: "Approval Status",
         value: "Approved by #{approval.user.name}",
@@ -108,7 +108,7 @@ describe SlackAttachmentBuilder do
     end
 
     it 'put note as field in attachment' do
-      attachment_generated = attachment_builder.generate_approved_cr_attachment(approved_change_request, approval)
+      attachment_generated = attachment_builder.generate_approval_status_cr_attachment(approved_change_request, approval)
       expect(attachment_generated[:fields]).to include({
         title: "Note",
         value: "#{approval.notes}",
@@ -117,12 +117,12 @@ describe SlackAttachmentBuilder do
     end
 
     it 'put vt-vision as footer in attachment' do
-      attachment_generated = attachment_builder.generate_approved_cr_attachment(approved_change_request, approval)
+      attachment_generated = attachment_builder.generate_approval_status_cr_attachment(approved_change_request, approval)
       expect(attachment_generated).to include(footer: "VT-Vision")
     end
 
     it 'put cr created date in timestamp' do
-      attachment_generated = attachment_builder.generate_approved_cr_attachment(approved_change_request, approval)
+      attachment_generated = attachment_builder.generate_approval_status_cr_attachment(approved_change_request, approval)
       expect(attachment_generated).to include(ts: approved_change_request.created_at.to_datetime.to_f.round)
     end
   end

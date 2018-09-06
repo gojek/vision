@@ -43,8 +43,8 @@ class SlackNotif
     notify_users(approvers, approver_message, attachment)
   end
 
-  def notify_approved_cr(change_request, approval)
-    attachment = @attachment_builder.generate_approved_cr_attachment(change_request, approval)
+  def notify_approval_status_cr(change_request, approval)
+    attachment = @attachment_builder.generate_approval_status_cr_attachment(change_request, approval)
     link = change_request_url(change_request)
     associated_users = change_request.associated_users.to_a
     general_message = "New update on <#{link}|change request>"

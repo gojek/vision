@@ -123,7 +123,7 @@ class SlackAttachmentBuilder
     }
   end
 
-  def generate_approved_cr_attachment(change_request, approval)
+  def generate_approval_status_cr_attachment(change_request, approval)
     notes = approval.notes
     attachment = {
       fallback: change_request.change_summary,
