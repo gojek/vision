@@ -25,8 +25,47 @@
       </div>
       <% end %>
     </div>
+
+    <div class="col-xs-12">
+      <div class="box box-default">
+        <div class="box-header">
+          <h3 class="box-title">Search Access Request</h3>
+        </div><!--/box-header-->
+        <div class="box-body">
+          <%= form_tag search_access_requests_path, method: :get, id: 'search-form' do%>
+              <div class="input-group">
+                <span class="input-group-btn">
+                  <button id="search-button" type="submit" class="btn btn-default" aria-label="Left Align">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                  </button>
+                </span>
+                <%= text_field_tag :search, params[:search], class: 'form-control', autofocus: :autofocus, id: 'search-box', onkeypress: 'return noenter()'%>
+              </div><!-- /input-group -->
+          <% end %>
+        </div><!-- /.box-body -->
+      </div>
+    </div>
+
     <div class="col-xs-12">
       <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">
+            <% case params[:type] %>
+            <% when 'approval' %>
+              Showing access requests that needs your approval
+            <% else %>
+              Showing all access requests
+            <% end %>
+          </h3>
+          <hr>
+          <div>
+            <b>Quick filters:</b>
+            <%= link_to "All", access_requests_path, class: 'btn-sm btn-primary' %>
+            <% if current_user.is_approver? %>
+              <%= link_to "Need my approvals", access_requests_path(type: 'approval'), class: 'btn-sm btn-primary' %>
+            <% end %>
+          </div>
+        </div>
         <div class="box-body table-responsive" style="overflow-x: auto;">
           <table class="table table-hover">
             <tr>
@@ -78,7 +117,9 @@
           </table>
         </div><!-- /.box-body -->
         <div class="box-footer clearfix">
+          <% if @access_requests.nil? %>
             <%= paginate @access_requests, :theme => 'twitter-bootstrap-3'%>
+          <% end %>
         </div>
       </div><!-- /.box -->
     </div>
