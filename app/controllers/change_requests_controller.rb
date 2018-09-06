@@ -256,7 +256,7 @@ class ChangeRequestsController < ApplicationController
   def reject
     approval = Approval.where(change_request_id: @change_request.id, user_id: current_user.id).first
     reject_reason = params["notes"]
-    if approval.empty?
+    if approval.nil?
       flash[:alert] = 'You are not eligible to reject this Change Request'
     elsif reject_reason.blank?
       flash[:notice] = 'You must fill reject reason'
