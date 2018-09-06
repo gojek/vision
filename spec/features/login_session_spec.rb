@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe "Login session timeout testing", :type=>:feature do
+RSpec.describe "Login session timeout testing", type: :feature do
   it "User login session should be in one week" do
     user = FactoryGirl.create(:user)
     login_as(user)
