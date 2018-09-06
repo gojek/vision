@@ -254,15 +254,15 @@ class ChangeRequestsController < ApplicationController
   end
 
   def reject
-    approval = Approval.where(change_request_id: @change_request.id, user_id: current_user.id)
+    approval = Approval.where(change_request_id: @change_request.id, user_id: current_user.id).first
     reject_reason = params["notes"]
-    if approval.empty?
+    if approval.nil?
       flash[:alert] = 'You are not eligible to reject this Change Request'
     elsif reject_reason.blank?
       flash[:notice] = 'You must fill reject reason'
     else
       Notifier.cr_notify(current_user, @change_request, 'cr_rejected')
-      approval.update_all(:approve => false, :notes => reject_reason)
+      approval.update(:approve => false, :notes => reject_reason)
       flash[:notice] = 'Change Request Rejected'
       SlackNotif.new.notify_approval_status_cr(@change_request, approval)
     end
