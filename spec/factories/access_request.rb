@@ -42,6 +42,7 @@ FactoryGirl.define do
     name_card false
     insurance_card false
     cash_advance true
+    metabase true
 
     password_reset true
     user_identification 'user_identification'
