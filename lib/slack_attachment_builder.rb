@@ -134,31 +134,7 @@ class SlackAttachmentBuilder
       fields: [
         {
           title: "Approval Status",
-          value: "Approved by #{approval.user.name}",
-          short: false
-        }, {
-          title: "Note",
-          value: "#{notes}",
-          short: false
-        }
-      ],
-      footer: "VT-Vision",
-      ts: change_request.created_at.to_datetime.to_f.round
-    }
-  end
-
-  def generate_rejected_cr_attachment(change_request, approval)
-    notes = approval.notes
-    attachment = {
-      fallback: change_request.change_summary,
-      color: "#439FE0",
-      title: "#{change_request.id}. #{change_request.change_summary}",
-      title_link: change_request_url(change_request),
-      callback_id: change_request.id,
-      fields: [
-        {
-          title: "Approval Status",
-          value: "Rejected by #{approval.user.name}",
+          value: (approval.approve ? "Approved by" : "Rejected by") + " #{approval.user.name}",
           short: false
         }, {
           title: "Note",
