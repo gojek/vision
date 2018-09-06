@@ -42,7 +42,6 @@ class User < ActiveRecord::Base
     super && account_active?
   end
 
-
   def self.from_omniauth(auth)
     where(provider: auth[:provider], uid: auth[:uid]).first_or_create do |user|
       user.email = auth[:info][:email]
@@ -75,12 +74,17 @@ class User < ActiveRecord::Base
     logger.info("Got This from Response: #{data.inspect}" )
     update_attributes(
       token: data['access_token'],
-      expired_at: Time.now + (data['expires_in'].to_i).seconds)
+      expired_at: Time.now + (data['expires_in'].to_i).seconds
+    )
   end
 
   # this will make user logout when google credentials are expired (always 1 hour)
   def expired?
     expired_at < Time.now
+  end
+
+  def expired_session?
+    (expired_at + 7.days) < Time.now
   end
 
   def fresh_token
