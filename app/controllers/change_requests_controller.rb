@@ -113,6 +113,9 @@ class ChangeRequestsController < ApplicationController
     @current_implementers = Array.wrap(params[:implementers_list])
     @current_testers = Array.wrap(params[:testers_list])
     @current_collaborators = Array.wrap(params[:collaborators_list])
+    @change_request.downtime_expected = params[:downtime_expected]
+    @change_request.expected_downtime_in_minutes = params[:expected_downtime_in_minutes]
+
     @change_request.set_approvers(@current_approvers)
     @change_request.set_implementers(@current_implementers)
     @change_request.set_testers(@current_testers)
@@ -169,6 +172,8 @@ class ChangeRequestsController < ApplicationController
     @current_implementers = Array.wrap(params[:implementers_list])
     @current_testers = Array.wrap(params[:testers_list])
     @current_collaborators = Array.wrap(params[:collaborators_list])
+    @change_request.downtime_expected = params[:downtime_expected]
+    @change_request.expected_downtime_in_minutes = params[:expected_downtime_in_minutes]
     @change_request.update_approvers(@current_approvers)
     @change_request.set_implementers(@current_implementers)
     @change_request.set_testers(@current_testers)
@@ -301,7 +306,7 @@ class ChangeRequestsController < ApplicationController
     @change_request.planned_completion = nil
     @change_request.grace_period_starts = nil
     @change_request.grace_period_end = nil
-    
+
     @change_request.reference_cr_id = @reference_cr.id
     render 'new'
   end
@@ -314,9 +319,9 @@ class ChangeRequestsController < ApplicationController
     status = params[:status] ? params[:status] : 'weekly'
     tag = params[:tag]
 
-    if status = 'weekly'
+    if status == 'weekly'
       change_requests = ChangeRequest.group_by_week(:closed_date, range: start_time..end_time)
-    else 
+    else
       change_requests = ChangeRequest.group_by_month(:closed_date, format: "%b %Y", range: start_time..end_time)
     end
 
@@ -328,13 +333,13 @@ class ChangeRequestsController < ApplicationController
     failed = change_requests.where(aasm_state: 'failed').count
     rollbacked = change_requests.where(aasm_state: 'rollbacked').count
 
-    results = succeeded.map do |k,x| 
-      { 
-        label: "#{(k - 1.week).strftime("%d/%m")} - #{k.strftime("%d/%m")}", 
-        succeeded: x, 
-        failed: failed[k], 
-        rollbacked: rollbacked[k] 
-      } 
+    results = succeeded.map do |k,x|
+      {
+        label: "#{(k - 1.week).strftime("%d/%m")} - #{k.strftime("%d/%m")}",
+        succeeded: x,
+        failed: failed[k],
+        rollbacked: rollbacked[k]
+      }
     end
 
     final_result = [{title: status.humanize}, results]
@@ -361,6 +366,7 @@ class ChangeRequestsController < ApplicationController
             :business_justification, :note, :analysis,
             :solution, :impact, :scope, :design, :backup,
             :testing_environment_available, :testing_procedure, :testing_notes,
+            :downtime_expected, :expected_downtime_in_minutes,
             :schedule_change_date, :planned_completion, :grace_period_starts,
             :grace_period_end, :implementation_notes, :grace_period_notes,
             :requestor_name, :definition_of_success, :definition_of_failed,
