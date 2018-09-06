@@ -147,6 +147,30 @@ class SlackAttachmentBuilder
     }
   end
 
+  def generate_approval_status_cr_attachment(change_request, approval)
+    notes = approval.notes
+    attachment = {
+      fallback: change_request.change_summary,
+      color: "#439FE0",
+      title: "#{change_request.id}. #{change_request.change_summary}",
+      title_link: change_request_url(change_request),
+      callback_id: change_request.id,
+      fields: [
+        {
+          title: "Approval Status",
+          value: (approval.approve ? "Approved by" : "Rejected by") + " #{approval.user.name}",
+          short: false
+        }, {
+          title: "Note",
+          value: "#{notes}",
+          short: false
+        }
+      ],
+      footer: "VT-Vision",
+      ts: change_request.created_at.to_datetime.to_f.round
+    }
+  end
+
   def generate_incident_report_attachment(incident_report)
     incident_duration = distance_of_time_in_words(incident_report.recovery_duration * 60)
     attachment = {
