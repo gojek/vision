@@ -48,6 +48,11 @@
               <%= text_field_tag 'duration', nil, class: 'form-control', disabled: true %>
             </div><!--/field-->
 
+            <div class="field form-group required">
+              <%= f.label :business_justification, class: 'control-label' %><br>
+              <%= f.text_area :business_justification, class: "form-control tinymce" %>
+            </div><!--/field-->
+
             <script>
             function onDateChange(){
               var a = moment($('#access_request_start_date').val(), 'YYYY-MM-DD HH:mm A');
@@ -192,6 +197,9 @@
 
                 <%= f.check_box :cash_advance  %>
                 <%= f.label :cash_advance, class: 'inherit-font-weight' %><br>
+
+                <%= f.check_box :metabase %>
+                <%= f.label :metabase, class: 'inherit-font-weight' %><br>
               </div><!--/field-->
             </div><!--/field-->
 

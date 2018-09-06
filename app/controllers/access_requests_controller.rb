@@ -1,17 +1,28 @@
 class AccessRequestsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_access_request, except: [:index, :new, :create]
+  before_action :set_access_request, except: [:index, :new, :create, :search]
   before_action :authorized_to_change_status, only: [:cancel, :close]
   before_action :set_access_request_reason, only: [:cancel, :close]
   before_action :set_access_request_approval, only: [:approve, :reject]
   before_action :set_users_and_approvers, only: [:new, :edit]
   before_action :set_paper_trail_whodunnit
+  require 'notifier.rb'
+  require 'slack_notif.rb'
+  require 'calendar.rb'
 
   def index
-    @q = AccessRequest.ransack(params[:q])
-    @access_requests = @q.result(distinct: true).order(id: :desc)
-
-    @access_requests = @access_requests.page(params[:page]).per(params[:per_page])
+    if params[:type]
+      @q = AccessRequest.ransack(params[:q])
+      case params[:type]
+      when 'approval'
+        @access_requests = AccessRequest.where(id: AccessRequestApproval.where(user_id: current_user.id, approved: nil).collect(&:access_request_id))
+      end
+      @access_requests = @access_requests.where.not(aasm_state: 'draft').order(id: :desc)
+    else
+      @q = AccessRequest.ransack(params[:q])
+      @access_requests = @q.result(distinct: true).order(id: :desc)
+      @access_requests = @access_requests.page(params[:page]).per(params[:per_page])
+    end
   end
 
   def new
@@ -26,7 +37,6 @@ class AccessRequestsController < ApplicationController
         if @access_request.draft?
           @access_request.submit!
         end
-
         SlackNotif.new.notify_new_access_request(@access_request)
         flash[:success] = 'Access request was successfully created.'
       else
@@ -41,26 +51,37 @@ class AccessRequestsController < ApplicationController
 
   def show
     @access_request_status = AccessRequestStatus.new
+    @usernames = []
+    User.all.each do |user|
+      @usernames <<  user.email.split("@").first
+    end
   end
 
   def edit
   end
 
-  def update
-    AccessRequest.transaction do
-      assign_collaborators_and_approvers
+  def search
+    if params[:search].blank?
+      redirect_to access_requests_path
+    end
+    @search = AccessRequest.solr_search do
+      fulltext params[:search], highlight: true
+      order_by(:created_at, :desc)
+      paginate page: params[:page] || 1, per_page: 20
+    end
+  end
 
-      if @access_request.update(access_request_params)
-        if @access_request.draft?
-          @access_request.submit!
-          SlackNotif.new.notify_new_access_request(@access_request)
-        end
-        flash[:success] = 'Access request was successfully edited.'
-      else
-        @access_request.save(:validate=> false)
-        flash[:notice] = 'Access request was edited as a draft.'
-        flash[:invalid] = @access_request.errors.full_messages
+  def update
+    if @access_request.update(access_request_params)
+      if @access_request.draft?
+        @access_request.submit!
+        SlackNotif.new.notify_new_access_request(@access_request)
       end
+      flash[:success] = 'Access request was successfully edited.'
+    else
+      @access_request.save(:validate=> false)
+      flash[:notice] = 'Access request was edited as a draft.'
+      flash[:invalid] = @access_request.errors.full_messages
     end
 
     redirect_to @access_request
@@ -163,7 +184,9 @@ class AccessRequestsController < ApplicationController
           :asset_name,
           :production_access,
           :production_user_id,
-          :production_asset
+          :production_asset,
+          :business_justification,
+          :metabase
       )
     end
 
