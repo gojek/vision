@@ -27,3 +27,7 @@ Then(/^the "([^"]*)" field should be empty$/) do |field|
   field_name = field.downcase.split(" ").join("_")
   page.should have_field("change_request_#{field_name}", with: nil)
 end
+
+Then(/^the page should have checked input "([^"]*)"$/) do |id|
+	page.find_by_id(id)[:checked] == 'checked'
+end

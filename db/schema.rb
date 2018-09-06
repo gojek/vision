@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171123200703) do
+ActiveRecord::Schema.define(version: 20180906063522) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -94,6 +94,7 @@ ActiveRecord::Schema.define(version: 20171123200703) do
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
     t.string   "business_justification"
+    t.boolean  "metabase"
   end
 
   add_index "access_requests", ["user_id"], name: "index_access_requests_on_user_id", using: :btree

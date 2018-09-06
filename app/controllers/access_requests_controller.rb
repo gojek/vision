@@ -193,7 +193,8 @@ class AccessRequestsController < ApplicationController
           :production_access,
           :production_user_id,
           :production_asset,
-          :business_justification
+          :business_justification,
+          :metabase
       )
     end
 
