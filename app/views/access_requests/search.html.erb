@@ -1,12 +1,12 @@
 <% require "html_truncator" %>
 <section class="content-header">
   <h1>
-    Search Change Requests
-    <%= link_to(change_requests_path(request.GET.merge({format: :csv})) , class: 'btn btn-flat btn-primary pull-right') do %>
+    Search Access Requests
+    <%= link_to(access_requests_path(request.GET.merge({format: :csv})) , class: 'btn btn-flat btn-primary pull-right') do %>
          <i class="fa  fa-file-text"></i> <strong>Export to csv</strong>
     <% end %>
-    <%= link_to  new_change_request_path, class: 'btn btn-flat btn-primary pull-right'  do %>
-         <i class="fa fa-plus"></i> <strong>New Change Request</strong>
+    <%= link_to new_access_request_path, class: 'btn btn-flat btn-primary pull-right'  do %>
+         <i class="fa fa-plus"></i> <strong>New Access Request</strong>
     <% end %>
     </h1>
 </section>
@@ -15,7 +15,7 @@
     <div class="col-xs-12">
       <div class="box box-default">
         <div class="box-header with-border">
-          <%= form_tag search_change_requests_path, method: :get, id: 'search-form'  do%>
+          <%= form_tag search_access_requests_path, method: :get, id: 'search-form'  do%>
               <div class="input-group">
                 <span class="input-group-btn">
                   <button id="search-button" type="submit" class="btn btn-default" aria-label="Left Align">
@@ -31,9 +31,9 @@
           <ul class="products-list product-list-in-box">
             <% @search.hits.each do |hit| %>
             <li class="item">
-                <%= link_to({controller: 'change_requests', action: 'show', id: hit.primary_key}) do %>
+                <%= link_to({controller: 'access_requests', action: 'show', id: hit.primary_key}) do %>
                   <h4>
-                    <b><%=raw hit.stored(:change_summary).first %></b>
+                    <b><%=raw hit.stored(:employee_name).first %></b>
                     <span class="pull-right"><%=raw hit.stored(:created_at).to_s(:long) %></span>
                   </h4>
                 <% end %>

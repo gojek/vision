@@ -54,11 +54,13 @@ describe ChangeRequestsController, type: :controller do
         let(:params) { {format: "csv", page: 1, per_page: 20}  }
 
         it "should return current page when downloading an attachment" do
+          cr = FactoryGirl.create(:change_request)
           get :index, params
           #expect(@controller).to receive(:send_data).with(csv_string, csv_options) {
           #  @controller.render nothing: true # to prevent a 'missing template' error
           #}
           expect(response.header['Content-Type']).to eq('text/csv')
+          expect(response.body).to include('Request id', 'Change summary', 'Category', 'Type', 'Priority', 'Scope', 'Change requirement', 'Business justification', 'CR Status', 'Approval Status', 'Request date', 'Schedule change', 'Planned completion', 'Requestor', 'Tags', 'Approver', 'Testers', 'Implementers')
         end
       end
 
