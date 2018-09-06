@@ -19,10 +19,6 @@ describe ChangeRequest, type: :model do
 		expect(change_request.aasm_state).to eq "draft"
 	end
 
-	it "wont be approvable when first created" do
-		expect(change_request.approvable?).to eq false
-	end
-
 	it "approvers_count will return the count of approvers" do
 		expect(change_request.approvers_count).to eq 0
 	end
