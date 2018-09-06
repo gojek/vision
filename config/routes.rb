@@ -81,16 +81,18 @@ Rails.application.routes.draw do
   resources :users
 
   resources :incident_reports do
-      collection do
-          get :deleted # <= this
-          get :search
+
+    collection do
+      get :deleted
+      get :search
+    end
+
+    resources :versions, only: [:destroy] do
+      member do
+        get :diff, to: 'versions#diff'
+        patch :rollback, to: 'versions#rollback'
       end
-      resources :versions, only: [:destroy] do
-        member do
-          get :diff, to: 'versions#diff'
-          patch :rollback, to: 'versions#rollback'
-        end
-      end
+    end
   end
   resources :versions, only: [] do
     member do
@@ -108,11 +110,20 @@ Rails.application.routes.draw do
   get 'create_hotfix/:id' => 'change_requests#create_hotfix', :as => 'create_hotfix'
 
   resources :access_requests do
+
+    resources :access_request_comments do
+      post :hide, to: 'access_request_comments#hide_unhide'
+    end
+
     member do
       post :cancel
       post :close
       post :approve
       post :reject
+    end
+
+    collection do
+      get :search
     end
   end
 

@@ -14,6 +14,7 @@ FactoryGirl.define do
     end_date nil
 
     employee_name 'Employee Name'
+    business_justification 'Business Justification'
     employee_position 'Employee Position'
     employee_email_address 'employee@email.address'
     employee_department 'Employee Department'
@@ -41,6 +42,7 @@ FactoryGirl.define do
     name_card false
     insurance_card false
     cash_advance true
+    metabase true
 
     password_reset true
     user_identification 'user_identification'
