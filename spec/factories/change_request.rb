@@ -38,7 +38,7 @@ FactoryGirl.define do
     end
 
     factory :scheduled_change_request do
-      aasm_state 'scheduled'
+      aasm_state 'succeeded'
     end
 
     factory :rejected_change_request do

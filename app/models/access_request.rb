@@ -22,7 +22,7 @@ class AccessRequest < ActiveRecord::Base
   validates :request_type, inclusion: { in: REQUEST_TYPES, message: '%{value} is not a valid scope' }
   validates :access_type, inclusion: { in: ACCESS_TYPES, message: '%{value} is not a valid scope' }
   validates :start_date, :end_date, presence: true, if: :temporary?
-  validates :employee_name, :employee_position, :employee_email_address, :employee_department, :employee_phone, 
+  validates :employee_name, :employee_position, :employee_email_address, :employee_department, :employee_phone,
             presence: true
 
   attr_accessor :reason
@@ -105,6 +105,11 @@ class AccessRequest < ActiveRecord::Base
     AccessRequest.where(["id < ?", id]).last
   end
 
+
+  def associated_users
+    (collaborators + approvals.collect(&:user)).to_a
+  end
+
   def create_access_request_status
     return unless state_changed?
     status = statuses.new(:status => aasm_state, :reason => reason)
@@ -148,7 +153,7 @@ class AccessRequest < ActiveRecord::Base
   def has_approver?(user)
     AccessRequestApproval.where(access_request_id: id, user_id: user.id).any?
   end
-  
+
   def is_associate?(user)
     stakeholders = [self.user] + collaborators + (approvals.map { |approval| approval.user })
     stakeholders.include? user
