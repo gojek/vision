@@ -117,9 +117,7 @@
           </table>
         </div><!-- /.box-body -->
         <div class="box-footer clearfix">
-          <% if @access_requests.nil? %>
-            <%= paginate @access_requests, :theme => 'twitter-bootstrap-3'%>
-          <% end %>
+          <%= paginate @access_requests, :theme => 'twitter-bootstrap-3'%>
         </div>
       </div><!-- /.box -->
     </div>
