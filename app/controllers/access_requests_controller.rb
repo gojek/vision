@@ -23,12 +23,7 @@ class AccessRequestsController < ApplicationController
       @access_requests = @q.result(distinct: true).order(id: :desc)
       @access_requests = @access_requests.page(params[:page]).per(params[:per_page])
     end
-    respond_to do |format|
-      format.html do
-        @access_requests = @access_requests.page(params[:page]).per(params[:per_page])
-        @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
-      end
-    end
+    @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
   end
 
   def new
