@@ -2,6 +2,10 @@ Then(/^I should be able to see "([^"]*)"$/) do |string|
   page.should have_content(string)
 end
 
+Then(/^I should have one approver on the access request$/) do
+  page.should have_content("Waiting for approval")
+end
+
 Then(/^the page should have "([^"]*)" on some tag$/) do |string|
   expect(page).to have_xpath("//a[contains(., string)]")
 end
