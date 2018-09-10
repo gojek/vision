@@ -71,6 +71,7 @@ class AccessRequestsController < ApplicationController
   end
 
   def update
+    assign_collaborators_and_approvers
     if @access_request.update(access_request_params)
       if @access_request.draft?
         @access_request.submit! 
