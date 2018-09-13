@@ -154,7 +154,7 @@ class AccessRequest < ActiveRecord::Base
     AccessRequestApproval.where(access_request_id: id, user_id: user.id).any?
   end
 
-  def update_approver(approver_id_list)
+  def update_approvers(approver_id_list)
     current_approver_ids = AccessRequestApproval.where(access_request_id: self.id).pluck(:user_id)
     approver_id_list.map! { |id| id.to_i }
     deleted_approver_ids = current_approver_ids - approver_id_list
