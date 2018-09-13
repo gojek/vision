@@ -6,6 +6,18 @@ Given /^an access request with employee name "([^"]*)"$/ do |employee_name|
   version.save!
 end
 
+Given /^I made an access request with employee name "([^"]*)"$/ do |employee_name|
+  @ar = FactoryGirl.create(:access_request, user: @current_user, employee_name: employee_name)
+  version = @ar.versions.first
+  version.whodunnit = @current_user.id
+  version.save!
+end
+
+Given /^I add approver on the access request with approver name "([^"]*)"$/ do |approver_name|
+  approver = FactoryGirl.create(:user, name: approver_name)
+  AccessRequestApproval.create(user: approver, access_request: @ar, approved: nil, notes: nil)
+end
+
 Given(/^an access request with employee name "([^"]*)" that needs my approval$/) do |employee_name|
   user = FactoryGirl.create(:user)
   ar = FactoryGirl.create(:access_request, user: user, employee_name: employee_name, aasm_state: "submitted")
