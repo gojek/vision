@@ -6,6 +6,14 @@ Given /^an access request with employee name "([^"]*)"$/ do |employee_name|
   version.save!
 end
 
+Given /^there are (\d+) access request$/ do |number|
+  number = number.to_f
+  user = FactoryGirl.create(:user)
+  for i in 0..number
+    ar = FactoryGirl.create(:access_request, user: user, employee_name: "Patrick Squarepants")
+  end
+end
+
 Given /^I made an access request with employee name "([^"]*)"$/ do |employee_name|
   @ar = FactoryGirl.create(:access_request, user: @current_user, employee_name: employee_name)
   version = @ar.versions.first
