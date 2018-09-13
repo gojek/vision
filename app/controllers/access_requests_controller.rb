@@ -21,9 +21,9 @@ class AccessRequestsController < ApplicationController
     else
       @q = AccessRequest.ransack(params[:q])
       @access_requests = @q.result(distinct: true).order(id: :desc)
-      @access_requests = @access_requests.page(params[:page]).per(params[:per_page])
     end
     @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
+    @access_requests = @access_requests.page(params[:page]).per(params[:per_page])
   end
 
   def new
