@@ -72,6 +72,10 @@ class AccessRequestsController < ApplicationController
   end
 
   def update
+    @current_approvers = Array.wrap(params[:approvers_list])
+    @current_collaborators = Array.wrap(params[:collaborators_list])
+    @access_request.update_approvers(@current_approvers)
+    @access_request.set_collaborators(@current_collaborators)
     if @access_request.update(access_request_params)
       if @access_request.draft?
         @access_request.submit! 
