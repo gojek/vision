@@ -23,28 +23,28 @@ I wish it clear. Feel free to reach out for further questions.
 2. Install bower through NPM. Our assets are managed by bower.
 
 3. Install project dependencies
-
 ```
 bundle install
 ```
-
 Then install bower dependencies:
-
 ```
 bower install
 ```
+4. Copy example config
+```
+cp config/database.example.yml config/database.yml
+cp solr/solr.xml solr/solr.xml
+```
 
-4. Run rails
-
+5. Run rails
 ```
 foreman start
 ```
 
-5. Visit vision in `localhost:3000`
+6. Visit vision in `localhost:3000`
 
 
-6. For mail interaction in Development environment, install and run Mailcatcher by running
-
+7. For mail interaction in Development environment, install and run Mailcatcher by running
 ```
 gem install mailcatcher
 
