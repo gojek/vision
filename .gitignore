@@ -45,11 +45,11 @@ coverage/*
 
 # Ignore solr data
 solr/*
-!solr/configsets
-solr/configsets/*
-!solr/configsets/sunspot
-solr/configsets/sunspot/*
-!solr/configsets/sunspot/conf
-solr/configsets/sunspot/conf/*
-!solr/configsets/sunspot/conf/schema.xml
-!solr/solr.example.xml
+!solr/configsets/
+!solr/solr.xml
+!solr/development
+solr/development/*
+!solr/development/core.properties
+!solr/test
+solr/test/*
+!solr/test/core.properties
