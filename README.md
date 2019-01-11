@@ -30,10 +30,10 @@ Then install bower dependencies:
 ```
 bower install
 ```
+
 4. Copy example config
 ```
 cp config/database.example.yml config/database.yml
-cp solr/solr.xml solr/solr.xml
 ```
 
 5. Run rails
