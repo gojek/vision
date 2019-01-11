@@ -7,10 +7,11 @@ class IncidentReport < ActiveRecord::Base
   has_many :logs, join_table: :access_request_logs, dependent: :destroy, class_name: 'IncidentReportLog'
 
   before_save :create_incident_report_log, :unless => :new_record?
-  before_save :set_recovery_duration, :if => :recovery_time?
-  before_save :set_resolution_duration, :if => :resolved_time?
+  before_save :set_recovery_duration, :if => :resolved_time?
+
   before_save :set_current_status
   before_save :set_action_item_done_time, if: :action_item_status_done?
+  before_save :set_time_to_acknowledge_duration, :if => :acknowledge_time?
 
   acts_as_readable :on => :updated_at
   has_paper_trail class_name: 'IncidentReportVersion',
@@ -41,8 +42,8 @@ class IncidentReport < ActiveRecord::Base
 
   # recovery and resolve may be the same, but it does not necessarily to be like that
   # recovery is temporary solution, resolved is life-time solution
-  validate  :validate_recovery_time
-  validate  :validate_resolution_time, if: :resolved_time?
+  validate  :validate_acknowledge_time
+  validate  :validate_resolve_time
   validate  :validate_detection_time
 
   attr_accessor :editor
@@ -70,7 +71,7 @@ class IncidentReport < ActiveRecord::Base
     recurrence_concern 'recurrence concern'     
     occurrence_time to_s: 'occurrence time'     
     detection_time to_s: 'detection time'     
-    recovery_time to_s: 'recovery time'     
+    acknowledge_time to_s: 'acknowledge time'     
     recovery_duration to_s: 'recovery duration'     
     resolved_time 'resolved time'     
     how_detected 'how was problem detected'     
@@ -103,23 +104,24 @@ class IncidentReport < ActiveRecord::Base
   end
 
   def set_recovery_duration
-    self.recovery_duration = (self.recovery_time-self.occurrence_time)/60
+    self.recovery_duration = (self.resolved_time-self.detection_time)/60
   end
 
-  def set_resolution_duration
-    self.resolution_duration = (self.resolved_time - self.occurrence_time)/60
+  def set_time_to_acknowledge_duration
+    self.time_to_acknowledge_duration = (self.acknowledge_time - self.detection_time)/60
   end
 
-  def validate_recovery_time
+
+  def validate_acknowledge_time
     if occurrence_time.nil? ||
-        recovery_time.nil? ||
+        acknowledge_time.nil? ||
         detection_time.nil? ||
-        !(recovery_time > occurrence_time && recovery_time > detection_time)
-      errors.add(:recovery_time, "is invalid")
+        !(acknowledge_time > occurrence_time && acknowledge_time > detection_time)
+      errors.add(:acknowledge_time, "is invalid")
     end
   end
 
-  def validate_resolution_time
+  def validate_resolve_time
     if resolved_time.nil? || occurrence_time.nil? || detection_time.nil? ||
         !(resolved_time > occurrence_time && resolved_time > detection_time)
       errors.add(:resolved_time, "is invalid")
@@ -135,7 +137,7 @@ class IncidentReport < ActiveRecord::Base
   def set_current_status
     if !self.resolved_time.blank?
       self.current_status = "Resolved"
-    elsif !self.recovery_time.blank?
+    elsif !self.acknowledge_time.blank?
       self.current_status = "Recovered"
     else
       self.current_status = "Ongoing"
