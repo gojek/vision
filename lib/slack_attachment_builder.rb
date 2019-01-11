@@ -161,8 +161,8 @@ class SlackAttachmentBuilder
           value: incident_report.occurrence_time,
           short: false
         },{
-          title: "Recovery Time",
-          value: "#{incident_report.recovery_time} (#{incident_duration})",
+          title: "Acknowledge Time",
+          value: "#{incident_report.acknowledge_time} (#{incident_duration})",
           short: false
         },{
           title: "Reporter",

@@ -74,13 +74,14 @@
                     <th>Service impacted</th>
                     <th>Problem details</th>
                     <th><%= sort_link(@q, :occurrence_time) %></th>
-                    <th><%= sort_link(@q, :recovery_time) %></th>
+                    <th><%= sort_link(@q, :acknowledge_time) %></th>
+                    <th>Time to acknowledge duration (min)</th>
                     <th>Recovery duration (min)</th>
                     <th>Source</th>
                     <th><%= sort_link(@q, :rank) %></th>
                     <th>Final Status</th>
                     <th colspan="3">Actions</th>
-
+                    
               </tr>
               <% @incident_reports.each do |incident_report| %>
                   <tr>
@@ -90,8 +91,11 @@
                       <td><%= incident_report.how_detected %></td>
                       <td><%= incident_report.current_status %></td>
                       <td><%= incident_report.occurrence_time.to_s(:long) %></td>
-                      <td><%= incident_report.recovery_time.blank? ? "-" : incident_report.recovery_time.to_s(:long)  %></td>
-                      <td><%= incident_report.recovery_duration.blank? ? "-" : incident_report.recovery_duration %> </td>
+                      <td><%= incident_report.acknowledge_time.blank? ? "-" : incident_report.acknowledge_time.to_s(:long)  %></td>
+                      <td><%= incident_report.time_to_acknowledge_duration.blank? ? "-" : 
+                        pluralize(incident_report.time_to_acknowledge_duration, "minute") %></td>
+                      <td><%= incident_report.recovery_duration.blank? ? "-" : 
+                        pluralize(incident_report.recovery_duration.to_i, "minute") %> </td>
                       <td><%= incident_report.source %></td>
                       <td><%= incident_report.rank %></td>
                       <td>
@@ -165,9 +169,9 @@
               until: <%= f.datetime_select :occurrence_time_lteq,:include_blank => true, class: 'form-control' %>
               </div>
               <div class="form-group">
-              <%= f.label :recovery_time_between %><br>
-              from: <%= f.datetime_select :recovery_time_gteq, :include_blank => true, class: 'form-control' %><br>
-              until: <%= f.datetime_select :recovery_time_lteq, :include_blank => true,class: 'form-control' %>
+              <%= f.label :acknowledge_time_between %><br>
+              from: <%= f.datetime_select :acknowledge_time_gteq, :include_blank => true, class: 'form-control' %><br>
+              until: <%= f.datetime_select :acknowledge_time_lteq, :include_blank => true,class: 'form-control' %>
               </div>
               <div class="form-group">
             <%= f.label :rank %><br>
