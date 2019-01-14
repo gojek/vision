@@ -10,13 +10,20 @@
 </section>
 <section class="content">
  <div class="row">
-    <div class='col-lg-6'>
+    <div class='col-lg-12'>
       <%if flash[:alert] != nil %>
         <div class="alert alert-danger alert-dismissable ">
           <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
           <h4>  <i class="icon fa fa-check"></i> Warning</h4>
           <p id="notice"><%= flash[:alert]  %></p>
         </div>
+      <% end %>
+      <%if flash[:invalid] != nil %>
+       <div class="alert alert-warning alert-dismissable ">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4>  <i class="icon fa fa-times"></i> Warning</h4>
+          <p id="notice"><%= flash[:invalid]  %></p>
+      </div>
       <% end %>
       <%if flash[:notice] != nil %>
        <div class="alert alert-success alert-dismissable ">
