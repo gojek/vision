@@ -114,36 +114,35 @@ class AccessRequestsController < ApplicationController
   end
 
   def import_from_csv
-    uploaded_io = params[:csv]
+    file = params[:csv]
     rowarray = Array.new
     @data_error = []
-    CSV.foreach(uploaded_io.path,headers: true, col_sep: ",") do |row|
+    total_data = 0
+    CSV.foreach(file.path,headers: true, col_sep: ",") do |row|
       @data=row.to_h
-      @row_is_not_error = true
+      @data_failed = false
       process_csv
+      total_data += 1
 
-      if @row_is_not_error
-        puts "success"
+      AccessRequest.transaction do
+        @access_request = current_user.AccessRequests.build(@data)
+        assign_collaborators_and_approvers_from_csv
+        if @access_request.save
+          if @access_request.draft? && !@data_failed
+            @access_request.submit!
+          end
+          SlackNotif.new.notify_new_access_request(@access_request)
+          flash[:success] = 'Access request was successfully created.'
+        else
+          @access_request.save(validate: false)
+          flash[:notice] = 'Access request was created as a draft.'
+          flash[:invalid] = @access_request.errors.full_messages
+        end
       end
-      # AccessRequest.transaction do
-      #   @access_request = current_user.AccessRequests.build(@data)
-      #   assign_collaborators_and_approvers_from_csv
-      #   if @access_request.save
-      #     if @access_request.draft?
-      #       @access_request.submit!
-      #     end
-      #     SlackNotif.new.notify_new_access_request(@access_request)
-      #     flash[:success] = 'Access request was successfully created.'
-      #   else
-      #     @access_request.save(validate: false)
-      #     flash[:notice] = 'Access request was created as a draft.'
-      #     flash[:invalid] = @access_request.errors.full_messages
-      #   end
-      # end
     end
+    flash[:notice] = (total_data-@data_error.length).to_s + ' Access request(s) was successfully created.'
     if @data_error.any?
-      puts @data_error
-      flash[:alert] = @data_error.length.to_s + " data failed to input because of an error"
+      flash[:invalid] = @data_error.length.to_s + " data(s) is not filled correctly, the data was saved as a draft"
     end
     redirect_to access_requests_path
   end
@@ -304,22 +303,22 @@ class AccessRequestsController < ApplicationController
     @data['approvers'] = @data['approvers'].split(',')
     @data['approvers'].each do |s|
       if User.where("name": s.strip)[0].nil?
+        @data_failed = true
         @data_error << @data
-        @row_is_not_error = false
       else
         @approvers << User.where("name": s.strip)[0]
       end
     end
 
-    # @collaborators = []
-    # @data['collaborators'] = @data['collaborators'].split(',')
-    # @data['collaborators'].each do |s|
-    #   if User.where("name": s.strip)[0].nil?
-    #     @data_error << @data
-    #   else
-    #     @collaborators << User.where("name": s.strip)[0]
-    #   end
-    # end
+    @collaborators = []
+    if @data['collaborators'] != []
+      @data['collaborators'] = @data['collaborators'].split(',')
+      @data['collaborators'].each do |s|
+        unless User.where("name": s.strip)[0].nil?
+          @collaborators << User.where("name": s.strip)[0]
+        end
+      end
+    end
 
     @data.delete('approvers')
     @data.delete('collaborators')
