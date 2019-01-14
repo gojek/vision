@@ -15,7 +15,7 @@ FactoryGirl.define do
     recovery_action "recovery_action"
     prevent_action "prevent_action"
     recurrence_concern "Low"
-    current_status "Recovered"
+    current_status "Acknowledged"
     measurer_status "Implemented"
 
 
