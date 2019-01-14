@@ -29,10 +29,26 @@ class AccessRequestsController < ApplicationController
     end
     @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
     @access_requests = @access_requests.page(params[:page]).per(params[:per_page])
+
     respond_to do |format|
       format.html
+      format.xls { 
+        send_data(@access_requests.to_xls, :type => "application/excel; charset=utf-8; header=present", 
+          :filename => "Access Requests-#{Time.now.to_formatted_s(:long)}.xls")
+      }
       format.csv do
-        self.stream("Access Requests.csv", 'text/csv', CSVExporter.export_from_active_records(@access_requests))
+        if params[:page].present?
+          # download current page only
+          render csv: @access_requests, filename: "Access Requests-#{Time.now.to_formatted_s(:long)}.xls", force_quotes: true
+        else
+          enumerator = Enumerator.new do |lines|
+            lines << AccessRequest.to_comma_headers.to_csv
+            AccessRequest.all.each do |record|
+              lines << record.to_comma.to_csv
+            end
+          end
+          self.stream("Access Requests-all.csv", 'text/csv', enumerator)
+        end
       end
     end
   end
