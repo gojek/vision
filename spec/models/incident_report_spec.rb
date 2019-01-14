@@ -17,8 +17,8 @@ describe IncidentReport, type: :model do
       expect(ir).to be_valid
     end
   end
-  it "is valid with current status either recovered or on going" do
-    allowed_status = %w(Ongoing Recovered Resolved)
+  it "is valid with current status either acknowlegded or on going" do
+    allowed_status = %w(Ongoing Acknowlegded Resolved)
     allowed_status.each do |status|
       ir = FactoryGirl.build(:incident_report, current_status: status)
       expect(ir).to be_valid

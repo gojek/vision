@@ -17,7 +17,7 @@ class IncidentReport < ActiveRecord::Base
   has_paper_trail class_name: 'IncidentReportVersion',
                   meta: { author_username: :user_name }
   acts_as_taggable
-  CURRENT_STATUS = %w(Ongoing Recovered Resolved)
+  CURRENT_STATUS = %w(Ongoing Acknowledged Resolved)
   MEASURER_STATUS = %w(Implemented Development)
   SOURCE = %w(Internal External)
   RECURRENCE_CONCERN = %w(Low Medium High)
@@ -84,7 +84,7 @@ class IncidentReport < ActiveRecord::Base
   end
 
   def check_status
-    self.current_status_changed?(from: nil, to: "Resolved") || self.current_status_changed?(from: "Recovered", to: "Resolved") || self.current_status_changed?(from: "Ongoing", to: "Resolved")
+    self.current_status_changed?(from: nil, to: "Resolved") || self.current_status_changed?(from: "Acknowledged", to: "Resolved") || self.current_status_changed?(from: "Ongoing", to: "Resolved")
   end
 
   def final_status
@@ -138,7 +138,7 @@ class IncidentReport < ActiveRecord::Base
     if !self.resolved_time.blank?
       self.current_status = "Resolved"
     elsif !self.acknowledge_time.blank?
-      self.current_status = "Recovered"
+      self.current_status = "Acknowledged"
     else
       self.current_status = "Ongoing"
     end
