@@ -175,3 +175,7 @@ div.field > div.field {
 .inherit-font-weight {
   font-weight: inherit;
 }
+
+section.content-header .btn.btn-flat:first-child {
+	margin-left: 1rem;
+}
