@@ -16,10 +16,10 @@ describe ChangeRequestsController, type: :controller do
       controller.request.env['devise.mapping'] = Devise.mappings[:user]
       sign_in user2
     end
-    describe 'GET #edit' do
+    describe 'GET #edit-implementation-notes' do
       it 'will redirect to Change Request List if current user is the owner of the requested ChangeRequest' do
         cr = FactoryGirl.create(:change_request)
-        get :edit, id: cr
+        get :edit_implementation_notes, id: cr
         expect(response).to redirect_to(change_requests_url)
       end
     end
@@ -27,7 +27,7 @@ describe ChangeRequestsController, type: :controller do
     describe 'GET #edit-graceperiod-notes' do
       it 'will redirect to Change Request List if current user is the owner of the requested ChangeRequest' do
         cr = FactoryGirl.create(:change_request)
-        get :edit, id: cr
+        get :edit_grace_period_notes, id: cr
         expect(response).to redirect_to(change_requests_url)
       end
     end
@@ -149,22 +149,17 @@ describe ChangeRequestsController, type: :controller do
 
     describe 'GET #edit-graceperiod-notes' do
       it 'assigns the requested ChangeRequest to @change_request if current user is the owner of the requested ChangeRequest' do
-        get :edit, id: change_request
+        get :edit_grace_period_notes, id: change_request
         expect(assigns(:change_request)).to eq change_request
       end
     end
 
     describe 'GET #edit-implementation-notes' do
       it 'assigns the requested ChangeRequest to @change_request if current user is the owner of the requested ChangeRequest' do
-        get :edit, id: change_request
+        get :edit_implementation_notes, id: change_request
         expect(assigns(:change_request)).to eq change_request
       end
 
-      it 'will redirect to Change Request List if current user is the owner of the requested ChangeRequest' do
-        cr = FactoryGirl.create(:change_request)
-        get :edit, id: cr
-        expect(response).to redirect_to(change_requests_url)
-      end
     end
 
         describe 'GET #duplicate' do
