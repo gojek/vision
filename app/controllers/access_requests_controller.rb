@@ -132,11 +132,8 @@ class AccessRequestsController < ApplicationController
             @access_request.submit!
           end
           SlackNotif.new.notify_new_access_request(@access_request)
-          flash[:success] = 'Access request was successfully created.'
         else
           @access_request.save(validate: false)
-          flash[:notice] = 'Access request was created as a draft.'
-          flash[:invalid] = @access_request.errors.full_messages
         end
       end
     end
@@ -274,9 +271,9 @@ class AccessRequestsController < ApplicationController
 
   def assign_collaborators_and_approvers_from_csv
     @current_approvers = Array.wrap(@approvers)
-    # @current_collaborators = Array.wrap(@data['collaborators'])
+    @current_collaborators = Array.wrap(@collaborators)
     @access_request.set_approvers(@current_approvers)
-    # @access_request.set_collaborators(@current_collaborators)
+    @access_request.set_collaborators(@current_collaborators)
   end
 
   def process_csv
@@ -302,6 +299,8 @@ class AccessRequestsController < ApplicationController
     @approvers = []
     @data['approvers'] = @data['approvers'].split(',')
     @data['approvers'].each do |s|
+      puts User.all
+      puts 'WOYYYY '+ User.where('name': s.strip)[0].to_s
       if User.where("name": s.strip)[0].nil?
         @data_failed = true
         @data_error << @data
