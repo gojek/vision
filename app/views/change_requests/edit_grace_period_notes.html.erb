@@ -3,7 +3,7 @@
     <div class='col-lg-6'>
       <div class='box box-default'>
         <div class='box-body'>
-          <%= form_for(@change_request) do |f| %>
+          <%= form_for(@change_request, url: after_deploy_update_path) do |f| %>
             <% if @change_request.errors.any? %>
               <div id="error_explanation">
                 <h3><%= pluralize(@change_request.errors.count, "error") %> prohibited this change_request from being saved:</h3>

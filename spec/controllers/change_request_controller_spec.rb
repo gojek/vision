@@ -6,6 +6,33 @@ describe ChangeRequestsController, type: :controller do
     SolrResultStub = Struct.new("SolrResultStub", :results)
   end
 
+  describe 'non requestor access' do
+    let(:user1) {FactoryGirl.create(:user)}
+    let(:user2) {FactoryGirl.create(:user)}
+    let(:approver) {FactoryGirl.create(:approver)}
+    let(:change_request) {FactoryGirl.create(:submitted_change_request, user: user1)}
+
+    before :each do
+      controller.request.env['devise.mapping'] = Devise.mappings[:user]
+      sign_in user2
+    end
+    describe 'GET #edit' do
+      it 'will redirect to Change Request List if current user is the owner of the requested ChangeRequest' do
+        cr = FactoryGirl.create(:change_request)
+        get :edit, id: cr
+        expect(response).to redirect_to(change_requests_url)
+      end
+    end
+
+    describe 'GET #edit-graceperiod-notes' do
+      it 'will redirect to Change Request List if current user is the owner of the requested ChangeRequest' do
+        cr = FactoryGirl.create(:change_request)
+        get :edit, id: cr
+        expect(response).to redirect_to(change_requests_url)
+      end
+    end
+  end
+
   describe 'requestor access' do
     let(:user) {FactoryGirl.create(:user)}
     let(:approver) {FactoryGirl.create(:approver)}
@@ -118,6 +145,21 @@ describe ChangeRequestsController, type: :controller do
         expect(assigns(:change_request)).to eq change_request
       end
 
+    end
+
+    describe 'GET #edit-graceperiod-notes' do
+      it 'assigns the requested ChangeRequest to @change_request if current user is the owner of the requested ChangeRequest' do
+        get :edit, id: change_request
+        expect(assigns(:change_request)).to eq change_request
+      end
+    end
+
+    describe 'GET #edit-implementation-notes' do
+      it 'assigns the requested ChangeRequest to @change_request if current user is the owner of the requested ChangeRequest' do
+        get :edit, id: change_request
+        expect(assigns(:change_request)).to eq change_request
+      end
+
       it 'will redirect to Change Request List if current user is the owner of the requested ChangeRequest' do
         cr = FactoryGirl.create(:change_request)
         get :edit, id: cr
@@ -214,6 +256,31 @@ describe ChangeRequestsController, type: :controller do
         end
       end
 
+    end
+
+    describe "PATCH #after-deploy-update" do
+      it "successfully updated with presence of grace_period_notes attributes" do
+        grace_period_notes = 'grace period notes'
+        patch :after_deploy_update, id: change_request, change_request: FactoryGirl.attributes_for(:change_request, grace_period_notes: grace_period_notes)
+        change_request.reload
+        expect(change_request.grace_period_notes).to eq(grace_period_notes)
+      end
+
+      it "successfully updated with presence of implementation_notes attributes" do
+        implementation_notes = 'implementation notes'
+        patch :after_deploy_update, id: change_request, change_request: FactoryGirl.attributes_for(:change_request, implementation_notes: implementation_notes)
+        change_request.reload
+        expect(change_request.implementation_notes).to eq(implementation_notes)
+      end
+
+      it "successfully updated with presence of grace_period_notes and implementation notes attributes" do
+        grace_period_notes = 'grace period notes'
+        implementation_notes = 'implementation notes'
+        patch :after_deploy_update, id: change_request, change_request: FactoryGirl.attributes_for(:change_request, grace_period_notes: grace_period_notes, implementation_notes: implementation_notes)
+        change_request.reload
+        expect(change_request.grace_period_notes).to eq(grace_period_notes)
+        expect(change_request.implementation_notes).to eq(implementation_notes)
+      end
     end
 
     describe 'PATCH #update' do
