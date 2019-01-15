@@ -6,7 +6,7 @@ class ChangeRequestsController < ApplicationController
   before_action :submitted_required, only: [:edit]
   before_action :reference_required, only: [:create_hotfix]
   after_action :unset_session_first_time, only: [:new], if: -> { session['first_time'] }
-  before_action :role_not_approver_required, only: :edit
+  before_action :role_not_approver_required, only: [:edit]
   require 'notifier.rb'
   require 'slack_notif.rb'
   require 'calendar.rb'
@@ -216,6 +216,22 @@ class ChangeRequestsController < ApplicationController
           format.json { render json: @change_request.errors, status: :unprocessable_entity }
         end
       end
+    end
+  end
+  
+  private def after_deploy_update_params
+    params.require(:change_request).permit(:implementation_notes, :grace_period_notes)
+  end
+
+  def after_deploy_update
+    change_request = ChangeRequest.find(params[:id])
+    change_request.update(after_deploy_update_params)
+    if change_request.save(:validate => false)
+      flash[:success] = "Change request was successfully updated."
+      redirect_to change_request
+    else
+      flash[:error] = "Error occured. "
+      redirect_to change_request
     end
   end
 
