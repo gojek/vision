@@ -158,3 +158,15 @@ span.jira-button span.jira-yellow {
 	border-color: #ffe9a8;
 	color: #594300
 }
+
+div.field > div.field {
+  margin-left: 15px;
+}
+
+.inherit-font-weight {
+  font-weight: inherit;
+}
+
+.access-request-title > .btn.btn-flat.pull-right {
+	margin-left: 1rem;
+}
