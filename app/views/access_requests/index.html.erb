@@ -11,6 +11,13 @@
 <section class="content">
  <div class="row">
     <div class='col-lg-12'>
+      <%if flash[:notice] != nil %>
+       <div class="alert alert-success alert-dismissable ">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4>  <i class="icon fa fa-check"></i> Success!</h4>
+          <p id="notice"><%= flash[:notice]  %></p>
+      </div>
+      <% end %>
       <%if flash[:alert] != nil %>
         <div class="alert alert-danger alert-dismissable ">
           <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -23,13 +30,6 @@
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
         <h4>  <i class="icon fa fa-times"></i> Warning</h4>
           <p id="notice"><%= flash[:invalid]  %></p>
-      </div>
-      <% end %>
-      <%if flash[:notice] != nil %>
-       <div class="alert alert-success alert-dismissable ">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-        <h4>  <i class="icon fa fa-check"></i> Success!</h4>
-          <p id="notice"><%= flash[:notice]  %></p>
       </div>
       <% end %>
     </div>
@@ -141,8 +141,23 @@
         <h4 class="modal-title">Import from CSV</h4>
       </div>
       <div class="modal-body">
+        <h4>Attention!</h4>
+        <div>
+          <ul>
+            <li>Please make sure you follow the example csv below!</li>
+            <li>Please make sure approvers and collaborators name are exists!</li>
+            <li>For employee access, please write exactly like on the webpage, but without the word "Fingerprint"</li>
+            <li>For other access, please write exactly like on the webpage</li>
+            <li>For column employee access, password reset and production access, please fill with "1" or "0" without quotation marks</li>
+          </ul>
+          <%= link_to 'example.csv', download: '' do %>
+            <i class="fa fa-file"></i> <strong>example.csv</strong>
+          <% end %>
+        </div>
+        <br>
         <%= form_tag import_from_csv_access_requests_path, multipart:true, method: "post", :onsubmit => "return Validate(this);" do %>
             <%= file_field_tag :csv %>
+            <br>
             <%= submit_tag("Submit") %>
         <% end %>
       </div>
