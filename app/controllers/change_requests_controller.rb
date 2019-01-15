@@ -1,12 +1,12 @@
 class ChangeRequestsController < ApplicationController
   before_action :set_change_request, only: [:show, :edit, :update, :destroy, :approve, :reject, :edit_grace_period_notes, :edit_implementation_notes, :print]
   before_action :authenticate_user!
-  before_action :owner_required, only: [:edit, :update, :destroy]
+  before_action :owner_required, only: [:edit, :update, :destroy, :edit_grace_period_notes, :edit_implementation_notes]
   before_action :not_closed_required, only: [:destroy]
   before_action :submitted_required, only: [:edit]
   before_action :reference_required, only: [:create_hotfix]
   after_action :unset_session_first_time, only: [:new], if: -> { session['first_time'] }
-  before_action :role_not_approver_required, only: [:edit]
+  before_action :role_not_approver_required, only: [:edit, :edit_grace_period_notes, :edit_implementation_notes]
   require 'notifier.rb'
   require 'slack_notif.rb'
   require 'calendar.rb'
@@ -218,7 +218,7 @@ class ChangeRequestsController < ApplicationController
       end
     end
   end
-  
+
   private def after_deploy_update_params
     params.require(:change_request).permit(:implementation_notes, :grace_period_notes)
   end
