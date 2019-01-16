@@ -9,6 +9,7 @@ class AccessRequestsController < ApplicationController
   require 'notifier.rb'
   require 'slack_notif.rb'
   require 'calendar.rb'
+  require 'csv_parser.rb'
 
   def index
     if params[:type]
@@ -115,21 +116,20 @@ class AccessRequestsController < ApplicationController
 
   def import_from_csv
     file = params[:csv]
-    rowarray = Array.new
-    @data_error = []
+    data_error = 0
     total_data = 0
-    CSV.foreach(file.path,headers: true, col_sep: ",") do |row|
-      @data=row.to_h
-      @data_failed = false
-      process_csv
-      total_data += 1
+    AccessRequest.transaction do
+      CSV.foreach(file.path,headers: true, col_sep: ",") do |row|
+        @data = CsvParser.process_csv(row.to_h)
+        total_data += 1
 
-      AccessRequest.transaction do
-        @access_request = current_user.AccessRequests.build(@data)
+        @access_request = current_user.AccessRequests.build(@data[:data])
         assign_collaborators_and_approvers_from_csv
         if @access_request.save
-          if @access_request.draft? && !@data_failed
+          if @access_request.draft? && !@data[:error]
             @access_request.submit!
+          else
+            data_error += 1
           end
           SlackNotif.new.notify_new_access_request(@access_request)
         else
@@ -137,9 +137,9 @@ class AccessRequestsController < ApplicationController
         end
       end
     end
-    flash[:notice] = (total_data-@data_error.length).to_s + ' Access request(s) was successfully created.'
-    if @data_error.any?
-      flash[:invalid] = @data_error.length.to_s + " data(s) is not filled correctly, the data was saved as a draft"
+    flash[:notice] = (total_data-data_error).to_s + ' Access request(s) was successfully created.'
+    if data_error > 0
+      flash[:invalid] = data_error.to_s + " data(s) is not filled correctly, the data was saved as a draft"
     end
     redirect_to access_requests_path
   end
@@ -270,64 +270,9 @@ class AccessRequestsController < ApplicationController
   end
 
   def assign_collaborators_and_approvers_from_csv
-    @current_approvers = Array.wrap(@approvers)
-    @current_collaborators = Array.wrap(@collaborators)
+    @current_approvers = Array.wrap(@data[:approvers])
+    @current_collaborators = Array.wrap(@data[:collaborators])
     @access_request.set_approvers(@current_approvers)
     @access_request.set_collaborators(@current_collaborators)
-  end
-
-  def process_csv
-    if @data["fingerprint"] != ""
-      @data["fingerprint"] = convert(@data['fingerprint'])
-      @data["fingerprint"].each do |i|
-        @data["fingerprint_"+i] = "1"
-      end
-    end
-    @data.delete("fingerprint")
-
-    if @data["other_access"] != ""
-      @data['other_access'] = convert(@data['other_access'])
-      @data["other_access"].each do |i|
-        @data[i] = "1"
-      end
-    end
-    @data.delete("other_access")
-
-    @data["start_date"] = ""
-    @data["end_date"] = ""
-
-    @approvers = []
-    @data['approvers'] = @data['approvers'].split(',')
-    @data['approvers'].each do |s|
-      puts User.all
-      puts 'WOYYYY '+ User.where('name': s.strip)[0].to_s
-      if User.where("name": s.strip)[0].nil?
-        @data_failed = true
-        @data_error << @data
-      else
-        @approvers << User.where("name": s.strip)[0]
-      end
-    end
-
-    @collaborators = []
-    if @data['collaborators'] != []
-      @data['collaborators'] = @data['collaborators'].split(',')
-      @data['collaborators'].each do |s|
-        unless User.where("name": s.strip)[0].nil?
-          @collaborators << User.where("name": s.strip)[0]
-        end
-      end
-    end
-
-    @data.delete('approvers')
-    @data.delete('collaborators')
-  end
-
-  def convert(str)
-    str = str.split(',')
-    str.each do |s|
-      s.strip!
-      s.sub! " ","_"
-    end
   end
 end
