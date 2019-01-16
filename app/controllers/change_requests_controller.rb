@@ -65,10 +65,8 @@ class ChangeRequestsController < ApplicationController
     @hotfixes = ChangeRequest.where(reference_cr_id: @change_request.id)
     #Notifier.mark_as_read(notifica)
     @usernames = []
-    User.all.each do |user|
-      if user.account_active?
-        @usernames <<  user.email.split("@").first
-      end
+    User.active.each do |user|
+      @usernames <<  user.email.split("@").first
     end
     @cr_statuses = @change_request.change_request_statuses
   end

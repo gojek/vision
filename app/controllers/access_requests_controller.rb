@@ -52,10 +52,8 @@ class AccessRequestsController < ApplicationController
   def show
     @access_request_status = AccessRequestStatus.new
     @usernames = []
-    User.all.each do |user|
-      if user.account_active? 
-        @usernames <<  user.email.split("@").first
-      end
+    User.active.each do |user|
+      @usernames <<  user.email.split("@").first
     end
   end
 
