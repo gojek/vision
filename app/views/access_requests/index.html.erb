@@ -129,93 +129,45 @@
   <!-- Tab panes -->
   <div class="tab-content">
     <!-- Home tab content -->
-    <a href='#' data-toggle='control-sidebar'> <i class='glyphicon glyphicon-remove pull-right'></i> </a>
+    <a href='#' data-toggle='control-sidebar'> <i class='glyphicon glyphicon-remove pull-right'></i></a>
     <div class="tab-pane active" id="control-sidebar-home-tab">
       <h2 class="control-sidebar-heading">Filter</h2>
-        <%= search_form_for @q do |f| %>
+
+      <%= search_form_for @q do |f| %>
         <div id="overflow" style="display: block; height: 80vh; overflow-y: auto">
-          <label>Change Request Category</label>
-            <div class="form-group">
-              Network Equipment
-              <%= select :q, :category_network_equipment_true, [['Yes', 1], ['No', 0]], { include_blank: 'All', selected: params[:q] ? params[:q][:category_network_equipment_true] : '' } %>
-
-            </div>
-            <div class="form-group">
-              Application
-              <%= select :q, :category_application_true, [['Yes', 1], ['No', 0]], { include_blank: 'All', selected: params[:q] ? params[:q][:category_application_true] : '' } %>
-
-            </div>
-            <div class="form-group">
-              Server
-              <%= select :q, :category_server_true, [['Yes', 1], ['No', 0]], { include_blank: 'All', selected: params[:q] ? params[:q][:category_server_true] : '' } %>
-
-            </div>
-            <div class="form-group">
-              User Access
-              <%= select :q, :category_user_access_true, [['Yes', 1], ['No', 0]], { include_blank: 'All', selected: params[:q] ? params[:q][:category_user_access_true] : '' } %>
-            </div>
-            <div class="form-group">
-              Other Category
-              <%= f.search_field :category_other_cont, class: 'form-control'%>
-            </div>
-            <label>Change Request Type</label>
-            <div class="form-group">
-              Security Update
-              <%= select :q, :type_security_update_true, [['Yes', 1], ['No', 0]], { include_blank: 'All', selected: params[:q] ? params[:q][:type_security_update_true] : '' } %>
-
-            </div>
-            <div class="form-group">
-              Application
-              <%= select :q, :type_emergency_change_true, [['Yes', 1], ['No', 0]], { include_blank: 'All', selected: params[:q] ? params[:q][:type_emergency_change_true] : '' } %>
-
-            </div>
-            <div class="form-group">
-              Server
-              <%= select :q, :type_configuration_change_true, [['Yes', 1], ['No', 0]], { include_blank: 'All', selected: params[:q] ? params[:q][:type_configuration_change_true] : '' } %>
-
-            </div>
-            <div class="form-group">
-              User Access
-              <%= select :q, :type_install_uninstall_true, [['Yes', 1], ['No', 0]], { include_blank: 'All', selected: params[:q] ? params[:q][:type_install_uninstall_true] : '' } %>
-            </div>
-            <div class="form-group">
-              Other Type
-              <%= f.search_field :type_other_cont, class: 'form-control'%>
-            </div>
-
-            <div class="form-group">
-                <%= f.label :status %>
-                <%= f.select :aasm_state_eq, options_for_select([['Any','']] + ChangeRequest::STATUS, params[:q]? params[:q][:aasm_state_eq] : 'Any' ), {}, {class: 'form-control select2'} %>
-            </div>
-            <div class="form-group">
-              <%= f.label :priority %>
-              <%= f.select :priority_eq, options_for_select([['Any','']] + ChangeRequest::PRIORITY, params[:q]? params[:q][:priority_eq] : 'Any' ), {}, {class: 'form-control select2'} %>
-            </div>
-             <div class="form-group">
-              <%= f.label :scope %>
-              <%= f.select :scope_eq, options_for_select([['Any','']] + ChangeRequest::SCOPE, params[:q]? params[:q][:scope_eq] : 'Any' ), {}, {class: 'form-control select2'} %>
-            </div>
-             <div class="form-group">
-              <%= f.label :created_at_between %><br>
-              from: <%= f.datetime_select :created_at_gteq, :include_blank => true, class: 'form-control' %><br>
-              until: <%= f.datetime_select :created_at_lteq,:include_blank => true, class: 'form-control' %>
-            </div>
-             <div class="form-group">
-              <%= f.label :schedule_change_date_between %><br>
-              from: <%= f.datetime_select :schedule_change_date_gteq, :include_blank => true, class: 'form-control' %><br>
-              until: <%= f.datetime_select :schedule_change_date_lteq,:include_blank => true, class: 'form-control' %>
-            </div>
-            <div class="form-group">
-              <%= f.label :planned_completion_between %><br>
-              from: <%= f.datetime_select :planned_completion_gteq, :include_blank => true, class: 'form-control' %><br>
-              until: <%= f.datetime_select :planned_completion_lteq,:include_blank => true, class: 'form-control' %>
-            </div>
-            <div class="form-group">
-              <%= f.label :tagged_with %>
-              <%= select_tag "tag_list" ,options_for_select(@tags), class: 'select2-tag form-control', multiple:true %>
-            </div>
+          <div class="form-group">
+            <%= f.label :request_type %>
+            <%= f.select :request_type_eq, options_for_select([['Any','']] + AccessRequest::REQUEST_TYPES, params[:q]? params[:q][:request_type_eq] : 'Any' ), {}, {class: 'form-control select2'} %>
+          </div>
+          <div class="form-group">
+            <%= f.label :access_type %>
+            <%= f.select :access_type_eq, options_for_select([['Any','']] + AccessRequest::ACCESS_TYPES, params[:q]? params[:q][:access_type_eq] : 'Any' ), {}, {class: 'form-control select2'} %>
+          </div>
+          <h4>Employee Details</h4>
+          <div class="form-group">
+            <%= f.label :employee_name %>
+            <%= f.search_field :employee_name_cont, class: 'form-control' %>
+          </div>
+          <div class="form-group">
+            <%= f.label :employee_position %>
+            <%= f.search_field :employee_position_cont, class: 'form-control' %>
+          </div>
+          <div class="form-group">
+            <%= f.label :employee_email_address %>
+            <%= f.search_field :employee_email_address_cont, class: 'form-control' %>
+          </div>
+          <div>
+            <%= f.label :employee_department %>
+            <%= f.search_field :employee_department_cont, class: 'form-control' %>
+          </div>
           <br>
-      </div><!-- /.overflow -->
+          <div class="form-group">
+            <%= f.label :created_at_between %><br>
+            from: <%= f.datetime_select :created_at_gteq, :include_blank => true, class: 'form-control' %><br>
+            until: <%= f.datetime_select :created_at_lteq,:include_blank => true, class: 'form-control' %>
+          </div>
+        </div>
+
         <%= f.submit class: 'btn btn-primary pull-left' %>
       <%end%>
       <%= search_form_for @q do |f| %>
@@ -228,16 +180,9 @@
 <!-- Add the sidebar's background. This div must be placed
      immediately after the control sidebar -->
 <div class='control-sidebar-bg'></div>
-
 <script>
   var o = $.AdminLTE.options.controlSidebarOptions;
   var sidebar = $(o.selector);
-  $(function() {
-    $(".select2-tag").select2({
-      tags: true,
-      tokenSeparators: [',', ' ']
-    });
-  })
   jQuery(function($){
     $('body').click(function(e){
       if (sidebar.hasClass('control-sidebar-open')){
@@ -248,13 +193,7 @@
       }
     });
   });
-  $(document).ready (function(){
-    $("#draft-alert").fadeTo(10000, 500).slideUp(500, function(){
-      $("#draft-alert").slideUp(500);
-    });
-  });
 
-  tableAutoHeight('.table-autoheight', 200);
 
 </script>
 

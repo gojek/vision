@@ -43,7 +43,7 @@ class AccessRequestsController < ApplicationController
         end
         current_approvers = Array.wrap(params[:approvers_list])
         current_collaborators = Array.wrap(params[:collaborators_list])
-        associated_user_ids = ["#{@change_request.user.id}"]
+        associated_user_ids = ["#{@access_request.user.id}"]
         associated_user_ids.concat(current_approvers)
         associated_user_ids.concat(current_collaborators)
         @access_request.associated_user_ids = associated_user_ids
