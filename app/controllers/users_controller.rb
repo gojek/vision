@@ -45,6 +45,7 @@ class UsersController < ApplicationController
     @user = User.find params[:id]
     @user.update_attribute(:is_approved, 2)
     flash[:success] = 'User approved succesfully'
+    UserRequestMailer.approve_email(@user).deliver_now
     redirect_to users_path
   end
 
@@ -52,6 +53,7 @@ class UsersController < ApplicationController
     @user = User.find params[:id]
     @user.update_attribute(:is_approved, 0)
     flash[:success] = 'User rejected succesfully'
+    UserRequestMailer.reject_email(@user).deliver_now
     redirect_to users_path
   end
 
