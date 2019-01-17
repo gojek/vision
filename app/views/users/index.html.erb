@@ -28,11 +28,15 @@
        
       <div class="box">
         <div class="box-header with-border ">
-            <div class='col-lg-8 col-md-2 col-xs-12'>
+            <div class='col-lg-4'>
           <h3 class="box-title">User List</h3>
         </div>
-        <div class='col-lg-4  col-md-10 col-xs-12 pull-right' >
-            <%= search_form_for @q, html: {class: "form-inline"} do |f| %>
+        <div class='col-lg-8 pull-right' >
+            <%= search_form_for @q, html: {class: "form-inline pull-right"} do |f| %>
+                <div class="input-group" style='min-width:130px'>
+                    <span class="input-group-addon">Status </span>
+                    <%= f.select :is_approved_eq, options_for_select({"Any" => "", "Approved" => 2, "Waiting for approval" => 1, "Rejected" => 0}, ""), {}, {class: 'form-control select2', style: 'display:none'}%>
+                </div>
                 <div class="input-group" style='min-width:130px'>
                     <span class="input-group-addon">Role </span>
                     <%= f.select :role_cont, options_for_select([['Any','']] + User::ROLES), {}, {class: 'form-control select2', style: 'display:none'}%>
@@ -53,26 +57,54 @@
                 <th><%= sort_link(@q, :name) %></th>
                 <th>Role</th>
                 <th>Action</th>
+                <th>Account Status</th>
             </tr>
             <% @users.each do |user| %> 
             <tr>
                 <td><%= user.name %></td>
                 <td><%= user.role%></td>
                 <td>
-                <% if user != current_user && current_user.is_admin %>
-                    <% if user.account_active? %>
-                        <%= link_to  lock_user_path(user.id), data: { method: :put, confirm: 'Are you sure you want to lock this user?' }, class: 'btn btn-warning'  do %>
-                             <i class="fa fa-lock fa-fw"></i>Lock 
-                        <%end %> 
-                    <% else %>
-                        <%= link_to unlock_user_path(user.id), data: { method: :put, confirm: 'Are you sure you want to unlock this user?' }, class: 'btn btn-success'  do %> 
-                            <i class="fa fa-unlock fa-fw"></i>Unlock
+                    <% if user.is_approved == 2 %>
+                        <% if user != current_user && current_user.is_admin %>
+                            <% if user.account_active? %>
+                                <%= link_to  lock_user_path(user.id), data: { method: :put, confirm: 'Are you sure you want to lock this user?' }, class: 'btn btn-warning'  do %>
+                                     <i class="fa fa-lock fa-fw"></i>Lock 
+                                <%end %> 
+                            <% else %>
+                                <%= link_to unlock_user_path(user.id), data: { method: :put, confirm: 'Are you sure you want to unlock this user?' }, class: 'btn btn-success'  do %> 
+                                    <i class="fa fa-unlock fa-fw"></i>Unlock
+                                <%end%>
+                            <% end %>
                         <%end%>
+                        <%= link_to edit_path(user), class: 'btn btn-primary' do %>
+                            <i class="fa fa-pencil-square-o fa-fw"></i> Edit
+                        <%end%>
+                    <% elsif user.is_approved == 1 %>
+                        <%= link_to  approve_user_path(user.id), data: { method: :put, confirm: 'Are you sure you want to approve this user?' }, class: 'btn btn-primary'  do %>
+                                 <i class="fa fa-check"></i>Approve 
+                            <%end %> 
+                        <%= link_to  reject_user_path(user.id), data: { method: :put, confirm: 'Are you sure you want to reject this user?' }, class: 'btn btn-danger'  do %>
+                                 <i class="fa fa-check"></i>Reject 
+                            <%end %> 
+                    <% else %>
+                        <%= link_to  approve_user_path(user.id), class: 'btn btn-primary', data: { method: :put, confirm: 'This user is previously rejected, are you sure you want to approve this user?' }  do %>
+                                 <i class="fa fa-check"></i>Approve
+                            <%end %> 
+                        <%= link_to  reject_user_path(user.id), class: 'btn btn-danger', disabled: true  do %>
+                                 <i class="fa fa-check"></i>Reject 
+                            <%end %> 
                     <% end %>
-                <%end%>
-                <%= link_to edit_path(user), class: 'btn btn-primary' do %>
-                    <i class="fa fa-pencil-square-o fa-fw"></i> Edit
-                <%end%>
+               </td>
+               <td>
+                   <% if user != current_user && current_user.is_admin %>
+                        <% if user.is_approved == 0 %>
+                            Rejected
+                        <% elsif user.is_approved == 1 %>
+                            Waiting for approval
+                        <% else %>
+                            Approved
+                        <% end %>
+                    <%end%>
                </td>
             <% end %>
             </tr>
