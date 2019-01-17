@@ -15,7 +15,7 @@ class AccessRequestsController < ApplicationController
       @q = AccessRequest.ransack(params[:q])
       case params[:type]
       when 'relevant'
-        @access_requests = AccessRequest.where(id: current_user.associated_access_requests.collect(&:id))
+        @access_requests = current_user.relevant_access_requests
       when 'approval'
         @access_requests = AccessRequest.where(id: AccessRequestApproval.where(user_id: current_user.id, approved: nil).collect(&:access_request_id))
       end
@@ -41,12 +41,6 @@ class AccessRequestsController < ApplicationController
         if @access_request.draft?
           @access_request.submit!
         end
-        current_approvers = Array.wrap(params[:approvers_list])
-        current_collaborators = Array.wrap(params[:collaborators_list])
-        associated_user_ids = ["#{@access_request.user.id}"]
-        associated_user_ids.concat(current_approvers)
-        associated_user_ids.concat(current_collaborators)
-        @access_request.associated_user_ids = associated_user_ids
         SlackNotif.new.notify_new_access_request(@access_request)
         flash[:success] = 'Access request was successfully created.'
       else
