@@ -37,11 +37,14 @@ class ApplicationController < ActionController::Base
   private
 
   def approved_account
+    puts 'ASNDKSND'
     if current_user.is_approved == 1
+      puts 'OWYYY'
       sign_out current_user
       flash[:alert] = 'Your account is not yet approved to open Vision'
       redirect_to signin_path
     elsif current_user.is_approved == 0
+      puts 'AJSDJAK'
       sign_out current_user
       flash[:alert] = 'Sorry, your access request to Vision is rejected.'
       redirect_to signin_path
