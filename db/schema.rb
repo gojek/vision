@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190115065552) do
+ActiveRecord::Schema.define(version: 20190115065210) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -99,14 +99,6 @@ ActiveRecord::Schema.define(version: 20190115065552) do
   end
 
   add_index "access_requests", ["user_id"], name: "index_access_requests_on_user_id", using: :btree
-
-  create_table "access_requests_associated_users", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "access_request_id"
-  end
-
-  add_index "access_requests_associated_users", ["access_request_id"], name: "index_access_requests_associated_users_on_access_request_id", using: :btree
-  add_index "access_requests_associated_users", ["user_id"], name: "index_access_requests_associated_users_on_user_id", using: :btree
 
   create_table "approvals", force: :cascade do |t|
     t.integer  "change_request_id"
@@ -433,8 +425,6 @@ ActiveRecord::Schema.define(version: 20190115065552) do
   add_foreign_key "access_request_collaborators", "users"
   add_foreign_key "access_request_statuses", "access_requests"
   add_foreign_key "access_requests", "users"
-  add_foreign_key "access_requests_associated_users", "access_requests"
-  add_foreign_key "access_requests_associated_users", "users"
   add_foreign_key "approvals", "change_requests"
   add_foreign_key "approvals", "users"
   add_foreign_key "change_request_statuses", "change_requests"
