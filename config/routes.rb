@@ -102,6 +102,8 @@ Rails.application.routes.draw do
   root to: 'pages#index'
   put 'lock_user/:id' => 'users#lock_user', :as => 'lock_user'
   put 'unlock_user/:id' => 'users#unlock_user', :as => 'unlock_user'
+  put 'approve_user/:id' => 'users#approve_user', :as => 'approve_user'
+  put 'reject_user/:id' => 'users#reject_user', :as => 'reject_user'
   post 'approve/:id' => 'change_requests#approve', :as =>'approve'
   post 'reject/:id' => 'change_requests#reject', :as =>'reject'
   get 'notifications/clear_notifications' => 'notifications#clear_notifications'
