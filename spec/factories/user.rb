@@ -29,5 +29,9 @@ FactoryGirl.define do
     factory :approver_ar do
         role 'approver_ar'
     end
+
+    factory :gojek_email do
+        sequence(:email) { |n| "patrick#{n}@gojek.com" }
+    end
   end
 end
