@@ -38,6 +38,11 @@ describe User, type: :model do
     expect(user).to be_valid
   end
 
+  it "is valid with a gojek email" do
+    gojek = FactoryGirl.create(:gojek_email)
+    expect(gojek).to be_valid
+  end
+
   it "is invalid without an email address" do
     user.email = nil
     user.valid?
