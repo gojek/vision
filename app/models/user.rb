@@ -1,5 +1,6 @@
 require 'net/http'
 require 'json'
+require 'set'
 
 # a model representing user
 class User < ActiveRecord::Base
@@ -17,8 +18,8 @@ class User < ActiveRecord::Base
   has_many :ChangeRequests
   has_many :AccessRequests
   has_and_belongs_to_many :associated_change_requests, join_table: :change_requests_associated_users, class_name: 'ChangeRequest'
-  has_and_belongs_to_many :associated_access_requests, join_table: :access_requests_associated_users, class_name: 'AccessRequest'
   has_and_belongs_to_many :collaborate_change_requests, join_table: :collaborators, class_name: 'ChangeRequest'
+  has_and_belongs_to_many :collaborate_access_requests, join_table: :access_request_collaborators, class_name: 'AccessRequest'
   has_and_belongs_to_many :implement_change_requests, join_table: :implementers, class_name: :ChangeRequest
   has_and_belongs_to_many :test_change_requests, join_table: :testers, class_name: :ChangeRequest
   has_many :Comments
@@ -127,5 +128,12 @@ class User < ActiveRecord::Base
 
   def is_associated?(change_request)
     associated_change_requests.include? change_request
+  end
+
+  def relevant_access_requests
+    AccessRequest.where("user_id = ? OR id IN (?)", 
+      id, 
+      AccessRequestApproval.where(user_id: id).collect(&:access_request_id).to_a + collaborate_access_requests.collect(&:id).to_a
+    ).distinct;
   end
 end

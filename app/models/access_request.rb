@@ -6,7 +6,6 @@ class AccessRequest < ActiveRecord::Base
   include AASM
   belongs_to :user
   has_and_belongs_to_many :collaborators, join_table: :access_request_collaborators, class_name: 'User'
-  has_and_belongs_to_many :associated_users, join_table: :access_requests_associated_users, class_name: 'User'
   has_many :approvals, join_table: :access_request_approvals, dependent: :destroy, class_name: 'AccessRequestApproval'
   has_many :statuses, join_table: :access_request_statuses, dependent: :destroy, class_name: 'AccessRequestStatus'
   has_many :access_request_comments, dependent: :destroy
@@ -188,4 +187,5 @@ class AccessRequest < ActiveRecord::Base
   def actionable?(user)
     (user.is_admin || is_associate?(user)) && !draft?
   end
+
 end
