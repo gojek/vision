@@ -37,9 +37,13 @@ class ApplicationController < ActionController::Base
   private
 
   def approved_account
-    if current_user.is_approved == 1
+    if current_user.is_approved == 2
       sign_out current_user
       flash[:alert] = 'Your account is not yet approved to open Vision'
+      redirect_to signin_path
+    elsif current_user.is_approved == 1
+      sign_out current_user
+      flash[:alert] = 'Fill the form'
       redirect_to signin_path
     elsif current_user.is_approved == 0
       sign_out current_user
