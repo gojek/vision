@@ -65,7 +65,7 @@ describe UsersController, type: :controller do
         sign_in admin
         get :index, q: {is_approved_eq: 2}
 
-        # expect(response.body).to include 'Approved'
+        expect(response.body).to include 'Approved'
       end
     end
 
