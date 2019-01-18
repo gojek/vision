@@ -6,6 +6,7 @@ describe UsersController, type: :controller do
     let(:waiting) {FactoryGirl.create(:waiting_user)}
     let(:reject) {FactoryGirl.create(:rejected_user)}
     let(:admin) {FactoryGirl.create(:admin)}
+    let(:pending_user) {FactoryGirl.create(:pending_user)}
     before :each do
       controller.request.env['devise.mapping'] = Devise.mappings[:user]
     end
@@ -13,19 +14,22 @@ describe UsersController, type: :controller do
     describe 'user try to sign in' do
       it 'is sign_in rejected user' do
         sign_in reject
-
         expect(response.status).to eq 200
+      end
+
+      it 'is sign_in pending user' do
+        sign_in pending_user
+        expect(response).to redirect_to signin_path
       end
 
       it 'is sign_in waiting approval user' do
         sign_in user
-
         expect(response.status).to eq 200
       end
 
       it 'is sign_in approved user' do
         sign_in waiting
-        expect(response.status).to eq 200
+        expect(response).to redirect_to signin_path
       end
     end
 
