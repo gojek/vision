@@ -3,70 +3,84 @@ require 'spec_helper'
 describe UsersController, type: :controller do
   context 'user access' do
     let(:user) {FactoryGirl.create(:user)}
+    let(:waiting) {FactoryGirl.create(:waiting_user)}
+    let(:reject) {FactoryGirl.create(:rejected_user)}
+    let(:admin) {FactoryGirl.create(:admin)}
     before :each do
       controller.request.env['devise.mapping'] = Devise.mappings[:user]
-      sign_in user
     end
 
-    it 'is sign_in rejected user' do
-      reject = FactoryGirl.create(:rejected_user)
+    describe 'user try to sign in' do
+      it 'is sign_in rejected user' do
+        sign_in reject
+
+        expect(response.status).to eq 200
+      end
+
+      it 'is sign_in waiting approval user' do
+        sign_in user
+
+        expect(response.status).to eq 200
+      end
+
+      it 'is sign_in approved user' do
+        sign_in waiting
+        expect(response.status).to eq 200
+      end
+    end
+
+    describe 'put #approving and #rejecting user' do
+      it 'approving user' do
+        sign_in admin
+
+        put :approve_user, :id => waiting.id
+        expect(response).to redirect_to(users_path)
+      end
+
+      it 'rejecting user' do
+        admin = FactoryGirl.create(:admin)
+        sign_in admin
+
+        put :reject_user, :id => waiting.id
+        expect(response).to redirect_to(users_path)
+      end
+    end
+
+    describe 'get #index' do
+      it 'is admin accessing default index page' do
+        sign_in admin
+        get :index
+
+        expect(response.status).to eq 200
+      end
+
+      it 'is non admin accessing default index page' do
+        sign_in user
+        get :index
+
+        expect(response).to redirect_to(root_path)
+      end
+
+      it 'is admin accessing filter index page' do
+        sign_in admin
+        get :index, q: {is_approved_eq: 2}
+
+        # expect(response.body).to include 'Approved'
+      end
+    end
+
+    it 'rejected user is trying to access users page' do
       sign_in reject
+      get :index
 
-      expect(response.status).to eq 200
+      expect(response).to redirect_to(signin_path)
     end
 
-    it 'is sign_in waiting approval user' do
-      sign_in user
-
-      expect(response.status).to eq 200
-    end
-
-    it 'is sign_in approved user' do
-      waiting = FactoryGirl.create(:waiting_user)
+    it 'waiting user is trying to access users page' do
       sign_in waiting
-      expect(response.status).to eq 200
-      # expect(flash[:alert]).to match 'Your account is not yet approved to open Vision'
+      get :index
+
+      expect(response).to redirect_to(signin_path)
     end
-
-    it 'approving user' do
-      admin = FactoryGirl.create(:admin)
-      sign_in admin
-      waiting = FactoryGirl.create(:waiting_user)
-
-      put :approve_user, :id => waiting.id
-      expect(response).to redirect_to(users_path)
-    end
-
-    it 'rejecting user' do
-      admin = FactoryGirl.create(:admin)
-      sign_in admin
-      waiting = FactoryGirl.create(:waiting_user)
-
-      put :reject_user, :id => waiting.id
-      expect(response).to redirect_to(users_path)
-    end
-
-    # it 'assigns a new Access Request to @access_request' do
-    #   get :new
-    #   expect(assigns(:access_request)).to be_a_new(AccessRequest)
-    # end
-
-    # it 'renders the :new template' do
-    #   get :new
-    #   expect(response).to render_template :new
-    # end
-
-    # describe 'GET #show' do
-    #   it 'assigns the requested access request to @access_request' do
-    #     get :show, id: access_request
-    #     expect(assigns(:access_request)).to eq access_request
-    #   end
-
-    #   it 'renders the :show template' do
-    #     get :show, id: access_request
-    #     expect(response).to render_template :show
-    #   end
-    # end
-
   end
 end
