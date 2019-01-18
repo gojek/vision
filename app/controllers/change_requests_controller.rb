@@ -82,7 +82,7 @@ class ChangeRequestsController < ApplicationController
     @current_approvers = []
     @current_implementers = []
     @current_testers = []
-    @users = User.all.collect{|u| [u.name, u.id] if u.account_active? }
+    @users = User.active.collect{|u| [u.name, u.id] }
     @approvers = User.approvers.collect{|u| [u.name, u.id] if u.id != current_user.id && u.account_active? }
   end
 
@@ -92,7 +92,7 @@ class ChangeRequestsController < ApplicationController
     @current_collaborators = @change_request.collaborators.collect{|u| u.id}
     @current_implementers = @change_request.implementers.collect{|u| u.id}
     @current_testers = @change_request.testers.collect{|u| u.id}
-    @users = User.all.collect{|u| [u.name, u.id] if u.account_active? }
+    @users = User.active.collect{|u| [u.name, u.id] }
     @approvers = User.approvers.collect{|u| [u.name, u.id] if u.id != current_user.id && u.account_active? }
     @current_approvers = @change_request.approvals.collect(&:user_id)
   end
@@ -210,7 +210,7 @@ class ChangeRequestsController < ApplicationController
         else
           @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
           @current_tags = @change_request.tag_list
-          @users = User.all.collect{|u| [u.name, u.id] if u.account_active? }
+          @users = User.active.collect{|u| [u.name, u.id] }
           @approvers = User.approvers.collect{|u| [u.name, u.id] if u.id != current_user.id && u.account_active? }
           format.html { render :edit }
           format.json { render json: @change_request.errors, status: :unprocessable_entity }
@@ -276,7 +276,7 @@ class ChangeRequestsController < ApplicationController
     @current_collaborators = @old_change_request.collaborators.collect{|u| u.id}
     @current_implementers = @old_change_request.implementers.collect{|u| u.id}
     @current_testers = @old_change_request.testers.collect{|u| u.id}
-    @users = User.all.collect{|u| [u.name, u.id] if u.account_active? }
+    @users = User.active.collect{|u| [u.name, u.id] }
     @current_approvers = @old_change_request.approvals.collect(&:user_id)
     @change_request = @old_change_request.dup
     @approvers = User.approvers.collect{|u| [u.name, u.id] if u.id != current_user.id && u.account_active? }
@@ -296,7 +296,7 @@ class ChangeRequestsController < ApplicationController
     @current_collaborators = @old_change_request.collaborators.collect{|u| u.id}
     @current_implementers = @old_change_request.implementers.collect{|u| u.id}
     @current_testers = @old_change_request.testers.collect{|u| u.id}
-    @users = User.all.collect{|u| [u.name, u.id] if u.account_active? }
+    @users = User.active.collect{|u| [u.name, u.id] }
     @current_approvers = @old_change_request.approvals.collect(&:user_id)
     @change_request = @old_change_request.dup
     @approvers = User.approvers.collect{|u| [u.name, u.id] if u.id != current_user.id && u.account_active? }
