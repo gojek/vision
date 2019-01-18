@@ -209,7 +209,7 @@ class AccessRequestsController < ApplicationController
 
     def set_users_and_approvers
       @users = User.active.collect{|u| [u.name, u.id] }
-      @approvers = User.approvers_ar.collect{|u| [u.name, u.id] if u.id != current_user.id && u.account_active? }
+      @approvers = User.approvers_ar.active.collect{|u| [u.name, u.id] if u.id != current_user.id }
     end
 
     def set_access_request_approval
