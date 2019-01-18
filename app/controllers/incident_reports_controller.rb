@@ -359,7 +359,7 @@ require 'notifier.rb'
   end
 
   def set_users_and_tags
-    @users = User.all.collect{|u| [u.name, u.id] if u.account_active? }
+    @users = User.active.collect{|u| [u.name, u.id] }
     @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
   end
 

@@ -208,7 +208,7 @@ class AccessRequestsController < ApplicationController
     end
 
     def set_users_and_approvers
-      @users = User.all.collect{|u| [u.name, u.id] if u.account_active? }
+      @users = User.active.collect{|u| [u.name, u.id] }
       @approvers = User.approvers_ar.collect{|u| [u.name, u.id] if u.id != current_user.id && u.account_active? }
     end
 
