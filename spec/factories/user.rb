@@ -31,7 +31,7 @@ FactoryGirl.define do
     end
 
     factory :gojek_email do
-        sequence(:email) { |n| "patrick#{n}@gojek.com" }
+        sequence(:email) { |n| "patrick#{n}@go-jek.com" }
     end
   end
 end
