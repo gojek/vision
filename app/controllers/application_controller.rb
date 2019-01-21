@@ -43,7 +43,6 @@ class ApplicationController < ActionController::Base
       redirect_to signin_path
     elsif current_user.is_approved == 1
       sign_out current_user
-      flash[:alert] = 'Fill the form'
       redirect_to signin_path
     elsif current_user.is_approved == 0
       sign_out current_user

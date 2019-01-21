@@ -16,13 +16,23 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       if !@user.use_company_email?
         err_message = 'Please use company email'
       else
-        err_message = 'Authentication failed!'
+        if !@user.use_company_email?
+          err_message = 'Please use company email'
+        else
+          err_message = 'Authentication failed!'
+        end
+        redirect_to root_path, flash: { alert: err_message }
       end
-      redirect_to root_path, flash: { alert: err_message }
+    rescue ActiveRecord::ActiveRecordError
+      flash[:error] = 'An error occured. Please try again.'
+      redirect_to root_path
     end
+    
   end
 
   def failure
     redirect_to root_path
   end
+
+
 end

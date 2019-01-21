@@ -5,6 +5,8 @@ Rails.application.routes.draw do
 
   resources :comments
 
+  patch 'change_requests/:id/after_deploy_update', to: 'change_requests#after_deploy_update', as: :after_deploy_update
+
   get 'change_requests/tags/:tag', to: 'change_requests#index', as: :tag
   get 'incident_reports/tags/:tag', to: 'incident_reports#index', as: :incident_report_tag
   get 'change_requests/:id/graceperiod' => 'change_requests#edit_grace_period_notes', :as => :graceperiod
@@ -67,8 +69,8 @@ Rails.application.routes.draw do
   get 'users/show'
 
   get 'users/index'
-  get 'register' => 'users#new'
-  post 'users' => 'users#create'
+  get 'register' => 'users#new', as: 'register'
+  post 'register' => 'users#create', as: 'post_register'
   get 'users/edit/:id' => 'users#edit', :as => 'edit'
   get 'change_requests/:id/print' => 'change_requests#print', :as => 'print'
 
