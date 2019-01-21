@@ -24,18 +24,7 @@ class IncidentReportsController < ApplicationController
     respond_to do |format|
       format.html
       format.csv do
-        if params[:page].present?
-          # download current page only
-          render csv: @incident_reports, filename: 'incident_reports', force_quotes: true
-        else
-          enumerator = Enumerator.new do |lines|
-            lines << IncidentReport.to_comma_headers.to_csv
-            IncidentReport.find_each do |record|
-              lines << record.to_comma.to_csv
-            end
-          end
-          self.stream('incident_reports_all.csv', 'text/csv', enumerator)
-        end
+        self.stream('Incident Reports.csv', 'text/csv', CSVExporter.export_from_active_records(@incident_reports))
       end
       format.xls { send_data(@incident_reports.to_xls) }
     end
