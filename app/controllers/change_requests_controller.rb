@@ -33,12 +33,7 @@ class ChangeRequestsController < ApplicationController
         @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
       end
       format.csv do
-        if params[:page].present?
-          @change_requests = @change_requests.page(params[:page] || 1).per(params[:per_page] || 20)
-          render csv: @change_requests, filename: 'change_requests', force_quotes: true
-        else
-          self.stream('change_requests_all.csv', 'text/csv', CSVExporter.export_from_active_records(@change_requests))
-        end
+        self.stream('Change Requests.csv', 'text/csv', CSVExporter.export_from_active_records(@change_requests))
       end
     end
   end

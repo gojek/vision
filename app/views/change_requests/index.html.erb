@@ -2,25 +2,11 @@
 <section class="content-header">
   <h1>
     Change Requests
-    <div class="btn-group pull-right">
-      <button type="button" class="btn btn-primary btn-flat pull-right dropdown-toggle dropdown-toggle-split dropdown-export-csv" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <span class="glyphicon glyphicon-collapse-down"> </span>
-      </button>
-      <div class="dropdown-menu">
-        <%= link_to(change_requests_path(request.GET.merge({format: :csv}).except("page", "per_page")) , class: 'dropdown-item pull-left left-export-csv') do %>
-           <i class="fa  fa-file-text"></i> <strong> Export all to csv </strong>
-        <% end %>
-        <% second_params = {format: :csv, page: params[:page].present? ? params[:page] : 1} %>
-        <%= link_to(change_requests_path(request.GET.merge(second_params)) , class: 'dropdown-item pull-left left-export-csv') do %>
-            <i class="fa  fa-file-text"></i> <strong> Export to csv </strong>
-        <% end %>
-      </div>
-      <%= link_to(change_requests_path(request.GET.merge(second_params)) , class: 'btn btn-flat btn-primary pull-center') do %>
-           <i class="fa  fa-file-text"></i> <strong>Export this page to csv</strong>
-      <% end %>
-    </div>
     <%= link_to  new_change_request_path, class: 'btn btn-flat btn-primary pull-right'  do %>
-         <i class="fa fa-plus"></i> <strong>New Change Request</strong>
+      <i class="fa fa-plus"></i> <strong>New Change Request</strong>
+    <% end %>
+    <%= link_to change_requests_path(request.GET.merge({format: :csv})), class: 'btn btn-flat btn-primary pull-right' do %>
+      <i class="fa fa-download"></i><strong> Download as CSV</strong>
     <% end %>
     <a href="#" data-toggle="control-sidebar" class="btn btn-flat btn-primary pull-right" id='filter-button'><i class="fa fa-filter"></i><span><strong> Filter</strong></span></a>
   </h1>

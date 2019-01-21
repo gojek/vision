@@ -25,12 +25,7 @@ class IncidentReportsController < ApplicationController
     respond_to do |format|
       format.html
       format.csv do
-        if params[:page].present?
-          # download current page only
-          render csv: @incident_reports, filename: 'incident_reports', force_quotes: true
-        else
-          self.stream('incident_reports_all.csv', 'text/csv', CSVExporter.export_from_active_records(@incident_reports))
-        end
+        self.stream('Incident Reports.csv', 'text/csv', CSVExporter.export_from_active_records(@incident_reports))
       end
       format.xls { send_data(@incident_reports.to_xls) }
     end
