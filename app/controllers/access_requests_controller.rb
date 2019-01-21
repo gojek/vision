@@ -9,6 +9,7 @@ class AccessRequestsController < ApplicationController
   require 'notifier.rb'
   require 'slack_notif.rb'
   require 'calendar.rb'
+  require 'csv_exporter.rb'
 
   def index
     if params[:type]
@@ -32,18 +33,7 @@ class AccessRequestsController < ApplicationController
           :filename => "Access Requests-#{Time.now.to_formatted_s(:long)}.xls")
       }
       format.csv do
-        if params[:page].present?
-          # download current page only
-          render csv: @access_requests, filename: "Access Requests-#{Time.now.to_formatted_s(:long)}.xls", force_quotes: true
-        else
-          enumerator = Enumerator.new do |lines|
-            lines << AccessRequest.to_comma_headers.to_csv
-            AccessRequest.all.each do |record|
-              lines << record.to_comma.to_csv
-            end
-          end
-          self.stream("Access Requests-all.csv", 'text/csv', enumerator)
-        end
+        self.stream("Access Requests.csv", 'text/csv', CSVExporter.export_from_active_records(@access_requests))
       end
     end
   end
