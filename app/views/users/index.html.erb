@@ -35,7 +35,7 @@
             <%= search_form_for @q, html: {class: "form-inline pull-right"} do |f| %>
                 <div class="input-group" style='min-width:130px'>
                     <span class="input-group-addon">Status </span>
-                    <%= f.select :is_approved_eq, options_for_select({"Any" => "", "Approved" => 3, "Waiting for approval" => 2, "Pending" => 1, "Rejected" => 0}, ""), {}, {class: 'form-control select2', style: 'display:none'}%>
+                    <%= f.select :is_approved_eq, options_for_select({"Any" => "", "Approved" => 3, "Waiting for approval" => 2, "Rejected" => 0}, ""), {}, {class: 'form-control select2', style: 'display:none'}%>
                 </div>
                 <div class="input-group" style='min-width:130px'>
                     <span class="input-group-addon">Role </span>
