@@ -32,21 +32,7 @@ class ChangeRequestsController < ApplicationController
         @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
       end
       format.csv do
-        #offset = params[:page] || 1
-        #@change_requests.order("created_at desc").limit(13).offset(offset)
-        if params[:page].present?
-          # download crs current page
-          @change_requests = @change_requests.page(params[:page] || 1).per(params[:per_page] || 20)
-          render csv: @change_requests, filename: 'change_requests', force_quotes: true
-        else
-          enumerator = Enumerator.new do |lines|
-            lines << ChangeRequest.to_comma_headers.to_csv
-            ChangeRequest.order('id DESC').each do |record|
-              lines << record.to_comma.to_csv
-            end
-          end
-          self.stream('change_requests_all.csv', 'text/csv', enumerator)
-        end
+        self.stream('Change Requests.csv', 'text/csv', CSVExporter.export_from_active_records(@change_requests))
       end
     end
   end
