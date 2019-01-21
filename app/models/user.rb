@@ -8,8 +8,20 @@ class User < ActiveRecord::Base
   devise :trackable, :lockable, :timeoutable,
          :omniauthable, omniauth_providers: [:google_oauth2]
   acts_as_reader
+
   ROLES = %w(requestor approver release_manager approver_ar approver_all)
   ADMIN = %w(Admin User)
+
+  APPROVER_EMAIL = ENV['APPROVER_EMAIL'] || 'kianutama.hudha@midtrans.com'
+  DEFAULT_APPROVED_STATUS = 1
+  DEFAULT_ROLE = 'requestor'
+
+  # is_approved status
+  REJECTED = 0
+  NOT_YET_FILL_THE_FORM = 1
+  WAITING_FOR_APPROVAL = 2
+  APPROVED = 3
+
   validates :role, inclusion: { in: ROLES,
                               message: '%{value} is not a valid role' }
   validates :email, presence: true
@@ -43,12 +55,30 @@ class User < ActiveRecord::Base
   end
 
   def self.from_omniauth(auth)
-    where(provider: auth[:provider], uid: auth[:uid]).first_or_create do |user|
-      user.email = auth[:info][:email]
-      user.name = auth[:info][:name]
-      user.role = 'requestor'
-      user.is_admin = false
-      user.slack_username = user.get_slack_username
+    user = where(provider: auth[:provider], uid: auth[:uid]).first
+    if user.nil?
+      is_new_user = true
+      begin
+        User.transaction do 
+          new_user = User.create(
+            :email => auth[:info][:email],
+            :name => auth[:info][:name],
+            :role => DEFAULT_ROLE,
+            :is_admin => false,
+            :is_approved => DEFAULT_APPROVED_STATUS,
+            :uid => auth[:uid],
+            :provider => auth[:provider],
+          )
+          new_user.slack_username = new_user.get_slack_username,
+          new_user.save
+          return is_new_user, new_user
+        end
+      rescue ActiveRecord::ActiveRecordError
+        return false, nil
+      end 
+    else
+      is_new_user = false
+      return is_new_user, user
     end
   end
 

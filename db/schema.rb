@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190117024524) do
+ActiveRecord::Schema.define(version: 20190117074722) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -315,7 +315,6 @@ ActiveRecord::Schema.define(version: 20190117024524) do
     t.datetime "created_at",                                   null: false
     t.datetime "updated_at",                                   null: false
     t.datetime "resolved_time"
-    t.decimal  "resolution_duration"
     t.decimal  "recovery_duration"
     t.boolean  "expected",                     default: false
     t.boolean  "has_further_action",           default: false
@@ -323,10 +322,17 @@ ActiveRecord::Schema.define(version: 20190117024524) do
     t.string   "action_item_status"
     t.datetime "action_item_done_time"
     t.string   "visibility_type"
+    t.integer  "resolution_duration"
     t.integer  "time_to_acknowledge_duration"
   end
 
   add_index "incident_reports", ["user_id"], name: "index_incident_reports_on_user_id", using: :btree
+
+  create_table "midtrans_email_migrations", force: :cascade do |t|
+    t.string  "old_email",                 null: false
+    t.string  "new_email",                 null: false
+    t.boolean "migrated",  default: false
+  end
 
   create_table "notifications", force: :cascade do |t|
     t.integer  "user_id"
