@@ -37,9 +37,5 @@ FactoryGirl.define do
     factory :old_email do
         email 'dummy@midtrans.com'
     end
-
-    factory :new_email do
-        email 'dummy@go-jek.com'
-    end
   end
 end
