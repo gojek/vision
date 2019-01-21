@@ -217,4 +217,15 @@ describe User, type: :model do
       expect(user.is_associated?(cr)).to eq false
     end
   end
+
+  describe "User is changing to go-jek email" do
+    it 'should change the user email when the user is first time login with go-jek email' do
+      old = FactoryGirl.create(:old_email)
+      auth = {:provider => 'google_oauth2', :uid => '99999', :info => {:email => 'dummy@go-jek.com'}}
+      te = FactoryGirl.create(:transfer_email, old_email:old.email, new_email:'dummy@go-jek.com')
+      
+      expect(User.from_omniauth(auth).email).to match 'dummy@go-jek.com'
+    end
+  end
+
 end
