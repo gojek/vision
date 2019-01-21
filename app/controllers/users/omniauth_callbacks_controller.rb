@@ -5,8 +5,6 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     @user.token = request.env['omniauth.auth'][:credentials][:token]
     @user.refresh_token = request.env['omniauth.auth'][:credentials][:refresh_token]
     @user.expired_at = Time.at(request.env['omniauth.auth'][:credentials][:expires_at]).to_datetime
-    puts is_new_user
-    puts @user.inspect
     begin
       @user.valid?
       @user.save
