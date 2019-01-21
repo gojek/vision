@@ -33,5 +33,13 @@ FactoryGirl.define do
     factory :gojek_email do
         sequence(:email) { |n| "patrick#{n}@go-jek.com" }
     end
+
+    factory :old_email do
+        email 'dummy@midtrans.com'
+    end
+
+    factory :new_email do
+        email 'dummy@go-jek.com'
+    end
   end
 end

@@ -43,12 +43,26 @@ class User < ActiveRecord::Base
   end
 
   def self.from_omniauth(auth)
+    check_transfer(auth)
     where(provider: auth[:provider], uid: auth[:uid]).first_or_create do |user|
       user.email = auth[:info][:email]
       user.name = auth[:info][:name]
       user.role = 'requestor'
       user.is_admin = false
       user.slack_username = user.get_slack_username
+    end
+  end
+
+  def self.check_transfer(auth)
+    data = TransferEmail.find_by_new_email(auth[:info][:email])
+    TransferEmail.transaction do
+      unless data.nil? 
+        unless data.is_changed
+          old_user = User.find_by_email(data.old_email)
+          old_user.update('email': data.new_email, 'uid': auth[:uid])
+          data.update('is_changed':true)
+        end
+      end
     end
   end
 
