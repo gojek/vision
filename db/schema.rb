@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190213120419) do
+ActiveRecord::Schema.define(version: 20190121041026) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -305,8 +305,13 @@ ActiveRecord::Schema.define(version: 20190213120419) do
     t.string   "current_status"
     t.string   "measurer_status"
     t.integer  "user_id"
+<<<<<<< HEAD
     t.datetime "created_at",                                        null: false
     t.datetime "updated_at",                                        null: false
+=======
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
+>>>>>>> a6b1a0b8 (create database for email migrations)
     t.datetime "resolved_time"
     t.decimal  "resolution_duration"
     t.decimal  "recovery_duration"
@@ -318,7 +323,10 @@ ActiveRecord::Schema.define(version: 20190213120419) do
     t.integer  "time_to_acknowledge_duration"
     t.string   "entity_source",                default: "Midtrans", null: false
     t.string   "visibility_type"
+<<<<<<< HEAD
     t.integer  "resolution_duration"
+=======
+>>>>>>> a6b1a0b8 (create database for email migrations)
     t.integer  "time_to_acknowledge_duration"
   end
 
@@ -387,6 +395,14 @@ ActiveRecord::Schema.define(version: 20190213120419) do
 
   add_index "testers", ["change_request_id"], name: "index_testers_on_change_request_id", using: :btree
   add_index "testers", ["user_id"], name: "index_testers_on_user_id", using: :btree
+
+  create_table "transfer_emails", force: :cascade do |t|
+    t.string   "old_email"
+    t.string   "new_email"
+    t.boolean  "is_changed", default: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "email",              default: "", null: false
