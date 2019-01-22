@@ -11,7 +11,7 @@ describe UsersController, type: :controller do
 
     before :each do
       controller.request.env['devise.mapping'] = Devise.mappings[:user]
-      FactoryGirl.create(:user, email: 'kianutama.hudha@midtrans.com')
+      FactoryGirl.create(:user, email: 'ika.​muiz@midtrans.​com')
       sign_in user
     end
 
