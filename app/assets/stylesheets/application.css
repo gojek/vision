@@ -80,8 +80,6 @@ z-index: 200000;
   margin: 0;
 }
 
-<<<<<<< HEAD
-=======
 
 .left-export-csv {
   padding-left: 1em;
@@ -91,7 +89,6 @@ z-index: 200000;
   height: 35px;
 }
 
->>>>>>> 1b7cfbe0 (update spec and remove unused code)
 .cr-title-link {
   text-decoration: none;
   color: #333;
@@ -180,6 +177,6 @@ div.field > div.field {
   font-weight: inherit;
 }
 
-.access-request-title > .btn.btn-flat.pull-right {
+section.content-header .btn.btn-flat:first-child {
   margin-left: 1rem;
 }

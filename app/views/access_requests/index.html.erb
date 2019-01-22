@@ -2,6 +2,9 @@
 <section class="content-header">
   <h1 class="access-request-title">
     Access Requests
+    <%= link_to access_requests_path(request.GET.merge({ format: :csv })), class: 'btn btn-flat btn-primary pull-right' do %>
+        <i class="fa fa-download"></i> <strong>Download Access Request</strong>
+    <%end %>
     <%= link_to  new_access_request_path, class: 'btn btn-flat btn-primary pull-right'  do %>
          <i class="fa fa-plus"></i> <strong>New Access Request</strong>
     <% end %>
