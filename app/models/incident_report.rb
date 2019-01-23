@@ -43,8 +43,8 @@ class IncidentReport < ActiveRecord::Base
   # recovery and resolve may be the same, but it does not necessarily to be like that
   # recovery is temporary solution, resolved is life-time solution
   validate  :validate_detection_time
-  validate  :validate_acknowledge_time, if: :acknowledge_time
-  validate  :validate_resolve_time, if: :resolved_time
+  validate  :validate_acknowledge_time, if: :acknowledge_time?
+  validate  :validate_resolve_time, if: :resolved_time?
 
   attr_accessor :editor
   attr_accessor :reason
