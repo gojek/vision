@@ -61,11 +61,11 @@
       <b>Acknowledge Time:</b>  <%= @incident_report.acknowledge_time.to_s(:long) %><br>
       <b>Time to Acknowledge Duration:</b>  <%= distance_of_time_in_words(@incident_report.time_to_acknowledge_duration.minutes) %> <br>
         <% end %>
-      <% if !@incident_report.recovery_duration.blank? %>
-      <b>Time to recovery Duration:</b>  <%= distance_of_time_in_words(@incident_report.recovery_duration.minutes) %>
+      <% if @incident_report.recovery_duration.present? %>
+      <b>Time to Recovery Duration:</b>  <%= distance_of_time_in_words(@incident_report.recovery_duration.minutes) %>
       <% end %>
       <br>
-      <%if !@incident_report.resolved_time.blank? %>
+      <%if @incident_report.resolved_time.present? %>
       <b>Resolve Time:</b>  <%= @incident_report.resolved_time.to_s(:long) %><br>
       <% end %>
       
