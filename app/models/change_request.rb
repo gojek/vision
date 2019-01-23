@@ -35,7 +35,7 @@ class ChangeRequest < ActiveRecord::Base
   validate :deploy_date, :if => :schedule_change_date? && :planned_completion?
   validate :grace_period_date, :if => :grace_period_date_starts? && :grace_period_end
 
-  searchable auto_index: false do
+  searchable do
     text :change_summary, stored: true
     text :change_requirement, stored: true
     text :business_justification, stored: true
