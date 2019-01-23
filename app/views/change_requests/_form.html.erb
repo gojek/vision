@@ -26,6 +26,7 @@
           <li role="presentation"><a href="#design" data-toggle="tab" >Design and Backup Plan</a></li>
           <li role="presentation"><a href="#testing" data-toggle="tab">Testing</a></li>
           <li role="presentation"><a href="#implementation" data-toggle="tab">Implementation</a></li>
+          <li role="presentation"><a href="#action" data-toggle="tab">Action</a></li>
           <li class="pull-right">   <%= f.submit class:"btn btn-primary", :id => "save" %></li>
         </ul>
 
@@ -304,6 +305,21 @@
                 </div><!--/nested form for testers-->
               </div><!--/col-->
             </div><!--box-body-->
+          </div><!--/box-->
+        </div><!--/tab-pane-->
+        <div class="tab-pane fade" id="action">
+          <div class="box box-default">
+            <div class="box-header with border"></div>
+            <div class="box-body">
+              <div class="col-md-6">
+                    <%= f.label :action_item, class: 'control-label' %><br>
+                    <%= f.text_area :action_item, class: "form-control tinymce"  %>
+              </div><!--/col-->
+              <div class="col-md-6"
+                <%= f.label :action_item_status, class: 'control-label' %><br>
+                     <%=f.select :action_item_status, options_for_select(ChangeRequest::ACTION_ITEM_STATUS, @change_request.action_item_status), {:include_blank => true}, {class: 'form-control select2', style: 'width: 100%' } %>
+              </div><!--/col-->
+            </div><!--/box-body-->
           </div><!--/box-->
         </div><!--/tab-pane-->
         <div class="tab-pane fade" id="implementation">

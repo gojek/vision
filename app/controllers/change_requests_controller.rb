@@ -59,6 +59,9 @@ class ChangeRequestsController < ApplicationController
       @usernames <<  user.email.split("@").first
     end
     @cr_statuses = @change_request.change_request_statuses
+    unless @change_request.action_item.nil?
+      @action_item = Jira.new.jiraize(@change_request.action_item)
+    end
   end
 
   def new
@@ -329,6 +332,7 @@ class ChangeRequestsController < ApplicationController
             :category_other,:other_dependency,:solving_duration,
             :type_security_update,:type_install_uninstall,
             :type_configuration_change, :type_emergency_change, :type_other,
+            :action_item, :action_item_status,
             implementers_attributes: [:id, :name, :position, :_destroy],
             testers_attributes: [:id, :name, :position, :_destroy],
             :tag_list => [], :implementer_ids => [], :tester_ids => [], 
