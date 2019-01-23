@@ -219,14 +219,10 @@ class ChangeRequestsController < ApplicationController
     end
   end
 
-  private def after_deploy_update_params
-    params.require(:change_request).permit(:implementation_notes, :grace_period_notes)
-  end
-
   def after_deploy_update
     change_request = ChangeRequest.find(params[:id])
     change_request.update(after_deploy_update_params)
-    if change_request.save(:validate => false)
+    if change_request.save
       flash[:success] = "Change request was successfully updated."
       redirect_to change_request
     else
@@ -363,6 +359,10 @@ class ChangeRequestsController < ApplicationController
   end
 
   private
+
+    def after_deploy_update_params
+      params.require(:change_request).permit(:implementation_notes, :grace_period_notes)
+    end
 
     def set_change_request
       if params[:change_request_id]
