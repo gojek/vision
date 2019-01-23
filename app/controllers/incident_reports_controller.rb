@@ -365,7 +365,7 @@ class IncidentReportsController < ApplicationController
   end
 
   def set_users_and_tags
-    @users = User.all.collect{|u| [u.name, u.id]}
+    @users = User.active.collect{|u| [u.name, u.id] }
     @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
   end
 
