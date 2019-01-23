@@ -224,11 +224,10 @@ class ChangeRequestsController < ApplicationController
     change_request.update(after_deploy_update_params)
     if change_request.save
       flash[:success] = "Change request was successfully updated."
-      redirect_to change_request
     else
       flash[:error] = "Error occured. "
-      redirect_to change_request
     end
+    redirect_to change_request
   end
 
   def destroy
