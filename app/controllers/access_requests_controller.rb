@@ -121,6 +121,7 @@ class AccessRequestsController < ApplicationController
           end
           SlackNotif.new.notify_new_access_request(@access_request)
         else
+          data_error += 1
           @access_request.save(validate: false)
         end
       end
