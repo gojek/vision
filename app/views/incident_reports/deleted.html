@@ -24,7 +24,7 @@
                   <th>Current Status</th>
                    <th>Occurence time</th>
                   <th>Detecton time</th>
-                  <th>Recovery time</th>
+                  <th>Acknowledge time</th>
                   <th>Source</th>
                   <th></th>
                   <th>Reported by</th>
@@ -43,7 +43,7 @@
                     <td><%= incident_report.current_status %></td>
                     <td><%= incident_report.occurrence_time.to_s(:long) %></td>
                     <td><%= incident_report.detection_time.to_s(:long) %></td>
-                    <td><%= incident_report.recovery_time.to_s(:long) %></td>
+                    <td><%= incident_report.acknowledge_time.to_s(:long) %></td>
                     <td><%= incident_report.source %></td>
                     <td><%= incident_report.rank %></td>
                    
