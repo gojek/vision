@@ -43,8 +43,8 @@ class IncidentReport < ActiveRecord::Base
   # recovery and resolve may be the same, but it does not necessarily to be like that
   # recovery is temporary solution, resolved is life-time solution
   validate  :validate_detection_time
-  validate  :validate_acknowledge_time
-  validate  :validate_resolve_time
+  validate  :validate_acknowledge_time, if: :acknowledge_time?
+  validate  :validate_resolve_time, if: :resolved_time?
 
   attr_accessor :editor
   attr_accessor :reason
@@ -114,7 +114,6 @@ class IncidentReport < ActiveRecord::Base
 
   def validate_acknowledge_time
     if occurrence_time.nil? ||
-        acknowledge_time.nil? ||
         detection_time.nil? ||
         !(acknowledge_time >= occurrence_time && acknowledge_time >= detection_time)
       errors.add(:acknowledge_time, "is invalid")
@@ -122,7 +121,7 @@ class IncidentReport < ActiveRecord::Base
   end
 
   def validate_resolve_time
-    if resolved_time.nil? || occurrence_time.nil? || detection_time.nil? || acknowledge_time.nil? ||
+    if occurrence_time.nil? || detection_time.nil? || acknowledge_time.nil? ||
         !(resolved_time > occurrence_time && resolved_time > detection_time && resolved_time > acknowledge_time)
       errors.add(:resolved_time, "is invalid")
     end
