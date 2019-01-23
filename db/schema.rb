@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190111103300) do
+ActiveRecord::Schema.define(version: 20190122042905) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -98,6 +98,7 @@ ActiveRecord::Schema.define(version: 20190111103300) do
     t.datetime "updated_at",                                      null: false
     t.string   "business_justification"
     t.boolean  "metabase",                        default: false
+    t.boolean  "solutions_dashboard",             default: false
   end
 
   add_index "access_requests", ["user_id"], name: "index_access_requests_on_user_id", using: :btree
@@ -206,6 +207,8 @@ ActiveRecord::Schema.define(version: 20190111103300) do
     t.string   "google_event_id"
     t.boolean  "downtime_expected"
     t.integer  "expected_downtime_in_minutes"
+    t.text     "action_item"
+    t.string   "action_item_status"
   end
 
   add_index "change_requests", ["cab_id"], name: "index_change_requests_on_cab_id", using: :btree
@@ -314,6 +317,7 @@ ActiveRecord::Schema.define(version: 20190111103300) do
     t.datetime "created_at",                                   null: false
     t.datetime "updated_at",                                   null: false
     t.datetime "resolved_time"
+    t.decimal  "resolution_duration"
     t.decimal  "recovery_duration"
     t.boolean  "expected",                     default: false
     t.boolean  "has_further_action",           default: false
@@ -321,7 +325,6 @@ ActiveRecord::Schema.define(version: 20190111103300) do
     t.string   "action_item_status"
     t.datetime "action_item_done_time"
     t.string   "visibility_type"
-    t.integer  "resolution_duration"
     t.integer  "time_to_acknowledge_duration"
   end
 
@@ -391,6 +394,14 @@ ActiveRecord::Schema.define(version: 20190111103300) do
   add_index "testers", ["change_request_id"], name: "index_testers_on_change_request_id", using: :btree
   add_index "testers", ["user_id"], name: "index_testers_on_user_id", using: :btree
 
+  create_table "transfer_emails", force: :cascade do |t|
+    t.string   "old_email"
+    t.string   "new_email"
+    t.boolean  "is_changed", default: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string   "email",              default: "", null: false
     t.integer  "sign_in_count",      default: 0,  null: false
@@ -413,6 +424,7 @@ ActiveRecord::Schema.define(version: 20190111103300) do
     t.string   "refresh_token"
     t.datetime "expired_at"
     t.string   "slack_username"
+    t.integer  "is_approved",        default: 1
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
