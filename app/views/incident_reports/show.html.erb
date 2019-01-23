@@ -65,7 +65,7 @@
       <b>Time to Recovery Duration:</b>  <%= distance_of_time_in_words(@incident_report.recovery_duration.minutes) %>
       <% end %>
       <br>
-      <%if @incident_report.resolved_time.present? %>
+      <% if @incident_report.resolved_time.present? %>
       <b>Resolve Time:</b>  <%= @incident_report.resolved_time.to_s(:long) %><br>
       <% end %>
       
