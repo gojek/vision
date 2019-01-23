@@ -28,6 +28,7 @@ class User < ActiveRecord::Base
   validates :email, uniqueness: true
   scope :approvers, -> {where('role = ? OR role = ?', 'approver', 'approver_all')}
   scope :approvers_ar, -> {where('role = ? OR role = ?', 'approver_ar', 'approver_all')}
+  scope :active, -> {where(:locked_at => nil)}
 
 
   def account_active?
