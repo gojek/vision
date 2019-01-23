@@ -1,4 +1,6 @@
 # 'app/controllers/users/omniauth_callbacks_controller.rb'
+require 'register_service'
+
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def google_oauth2
     refresh_token = request.env['omniauth.auth'][:credentials][:refresh_token]
@@ -16,18 +18,10 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       if !@user.use_company_email?
         err_message = 'Please use company email'
       else
-        if !@user.use_company_email?
-          err_message = 'Please use company email'
-        else
-          err_message = 'Authentication failed!'
-        end
-        redirect_to root_path, flash: { alert: err_message }
+        sign_in @user
       end
-    rescue ActiveRecord::ActiveRecordError
-      flash[:error] = 'An error occured. Please try again.'
-      redirect_to root_path
     end
-    
+    redirect_to redirect_path, flash: flash_messages    
   end
 
   def failure
