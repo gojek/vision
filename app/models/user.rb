@@ -43,7 +43,7 @@ class User < ActiveRecord::Base
 
 
   def account_active?
-    locked_at.nil?
+    locked_at.nil? && (is_approved == APPROVED || is_approved == NOT_YET_FILL_THE_FORM)
   end
 
   def use_company_email?
@@ -54,31 +54,30 @@ class User < ActiveRecord::Base
     super && account_active?
   end
 
+  def inactive_message
+    account_active? ? super : (is_approved == REJECTED ? "Sorry, your access request to Vision is rejected." : 
+                                                         "Your account is not yet approved to open Vision")
+  end
+
   def self.from_omniauth(auth)
     user = where(provider: auth[:provider], uid: auth[:uid]).first
     if user.nil?
-      is_new_user = true
-      begin
-        User.transaction do 
-          new_user = User.create(
-            :email => auth[:info][:email],
-            :name => auth[:info][:name],
-            :role => DEFAULT_ROLE,
-            :is_admin => false,
-            :is_approved => DEFAULT_APPROVED_STATUS,
-            :uid => auth[:uid],
-            :provider => auth[:provider],
-          )
-          new_user.slack_username = new_user.get_slack_username,
-          new_user.save
-          return is_new_user, new_user
-        end
-      rescue ActiveRecord::ActiveRecordError
-        return false, nil
-      end 
+      User.transaction do 
+        new_user = User.create(
+          :email => auth[:info][:email],
+          :name => auth[:info][:name],
+          :role => DEFAULT_ROLE,
+          :is_admin => false,
+          :is_approved => DEFAULT_APPROVED_STATUS,
+          :uid => auth[:uid],
+          :provider => auth[:provider],
+        )
+        new_user.slack_username = new_user.get_slack_username,
+        new_user.save
+        return new_user
+      end
     else
-      is_new_user = false
-      return is_new_user, user
+      return user
     end
   end
 
