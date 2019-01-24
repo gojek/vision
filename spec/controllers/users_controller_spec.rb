@@ -2,18 +2,30 @@ require 'spec_helper'
 
 describe UsersController, type: :controller do
 
+  describe 'un-registered user access vision' do
+
+    it 'should be redirected to register path' do
+
+    end
+
+    it 'should be created new user with is_approved = NOT_YET_FILL_THE_FORM' do
+
+    end
+
+  end
 
   describe 'pending user access vision' do
     let(:user) { FactoryGirl.create(:pending_user)}
     let(:attributes) {FactoryGirl.attributes_for(:access_request)}
     let(:approver) {FactoryGirl.create(:approver)}
 
-
     before :each do
       controller.request.env['devise.mapping'] = Devise.mappings[:user]
       FactoryGirl.create(:user, email: 'ika.​muiz@midtrans.​com')
       sign_in user
     end
+
+
 
     describe 'GET #/register' do
 
@@ -55,54 +67,7 @@ describe UsersController, type: :controller do
       end
       
 
-      describe 'if error, should contains error messages' do
-        render_views
-
-        it 'should be contains message that employee name can\'t be blank -> if employee_name is empty' do
-
-          post :create, 
-            access_request: FactoryGirl.attributes_for(:access_request, employee_name: ''),
-            approvers_list: [approver], collaborators_list: []
-
-          expect(response.body).to include('Employee name can&#39;t be blank')
-        end
-
-        it 'should be contains message that employee position can\'t be blank -> if employee_position is empty' do
-
-          post :create, 
-            access_request: FactoryGirl.attributes_for(:access_request, employee_position: ''),
-            approvers_list: [approver], collaborators_list: []
-
-          expect(response.body).to include('Employee position can&#39;t be blank')
-        end
-
-        it 'should be contains message that employee department can\'t be blank -> if employee_department is empty' do
-
-          post :create, 
-            access_request: FactoryGirl.attributes_for(:access_request, employee_department: ''),
-            approvers_list: [approver], collaborators_list: []
-
-          expect(response.body).to include('Employee department can&#39;t be blank')
-        end
-
-        it 'should be contains message that employee phone can\'t be blank -> if employee_phone is empty' do
-
-          post :create, 
-            access_request: FactoryGirl.attributes_for(:access_request, employee_phone: ''),
-            approvers_list: [approver], collaborators_list: []
-
-          expect(response.body).to include('Employee phone can&#39;t be blank')
-        end
-
-        it 'should be contains message that business justification can\'t be blank -> if business justification is empty' do
-
-          post :create, 
-            access_request: FactoryGirl.attributes_for(:access_request, business_justification: ''),
-            approvers_list: [approver], collaborators_list: []
-
-          expect(response.body).to include('Business justification can&#39;t be blank')
-        end
-      end
+      
     end
 
 
