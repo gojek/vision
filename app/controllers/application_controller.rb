@@ -21,8 +21,12 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     return_url = stored_location_for(resource) || change_requests_path
+    if current_user.is_approved == User::NOT_YET_FILL_THE_FORM
+      return_url = register_path
+      flash[:alert] = "Please fill the form correctly to propose your access request to approver."
+    end
     logger.info "Returning User to.......... #{return_url}"
-    return_url
+    return return_url
   end
 
   def stream(filename, content_type, enumerator)
