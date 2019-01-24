@@ -6,7 +6,7 @@ describe IncidentReportsController, type: :controller do
     let(:incident_report) {incident_report = FactoryGirl.create(:incident_report, user: user)}
     before :each do
       controller.request.env['devise.mapping'] = Devise.mappings[:user]
-      sign_in user
+      sign_in incident_report.user
     end
     describe 'GET #show' do
       it 'assigns the requested incident report to @incident_report' do
@@ -55,9 +55,6 @@ describe IncidentReportsController, type: :controller do
     end
 
     describe 'GET #edit' do
-
-      subject { get :edit, id: incident_report }
-
       it 'assigns the requested incident report to @incident report' do
         get :edit, id: incident_report
         expect(assigns(:incident_report)).to eq incident_report
@@ -65,7 +62,7 @@ describe IncidentReportsController, type: :controller do
 
       it 'renders the :edit template' do
         get :edit, id: incident_report
-        expect(subject).to render_template :edit
+        expect(response).to render_template :edit
       end
     end
 
@@ -75,6 +72,10 @@ describe IncidentReportsController, type: :controller do
           expect{
             post :create, incident_report: FactoryGirl.attributes_for(:incident_report)
           }.to change(IncidentReport, :count).by(1)
+        end
+
+        it 'send notify to slack #incidents channel' do
+
         end
       end
 
@@ -192,7 +193,6 @@ describe IncidentReportsController, type: :controller do
           source = 'source'
           patch :update, id: incident_report,
             incident_report: FactoryGirl.attributes_for(:incident_report, source: source)
-          incident_report.reload
           expect(incident_report.source).to_not eq(source)
         end
       end
