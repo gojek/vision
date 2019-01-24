@@ -71,11 +71,6 @@ describe IncidentReport, type: :model do
     incident_report.valid?
     expect(incident_report.errors[:detection_time].size).to eq(2)
   end
-  it "is invalid without a acknowlegde time" do
-    incident_report = FactoryGirl.build(:incident_report, acknowledge_time: nil)
-    incident_report.valid?
-    expect(incident_report.errors[:acknowledge_time].size).to eq(1)
-  end
   it "is invalid without a loss related issue" do
     incident_report = FactoryGirl.build(:incident_report, loss_related: nil)
     incident_report.valid?
@@ -152,9 +147,34 @@ describe IncidentReport, type: :model do
     incident_report.valid?
     expect(incident_report.errors[:detection_time].size).not_to eq(0)
   end
-  it "is invalid with acknowlegde time other than date time " do 
-    incident_report = FactoryGirl.build(:incident_report, acknowledge_time: 1)
+
+  it "is invalid with a acknowlegde time less than detection time" do
+    incident_report = FactoryGirl.build(:incident_report, acknowledge_time: 4.days.ago, detection_time: 3.days.ago)
     incident_report.valid?
     expect(incident_report.errors[:acknowledge_time].size).to eq(1)
+  end
+
+  it "is invalid with a acknowlegde time less than occurence time" do
+    incident_report = FactoryGirl.build(:incident_report, acknowledge_time: 4.days.ago, occurrence_time: 3.days.ago)
+    incident_report.valid?
+    expect(incident_report.errors[:acknowledge_time].size).to eq(1)
+  end
+
+  it "is invalid with a resolved time less than occurrence time" do
+    incident_report = FactoryGirl.build(:incident_report, resolved_time: 4.days.ago, occurrence_time: 3.days.ago)
+    incident_report.valid?
+    expect(incident_report.errors[:resolved_time].size).to eq(1)
+  end
+
+  it "is invalid with a resolved time less than detection time" do
+    incident_report = FactoryGirl.build(:incident_report, resolved_time: 4.days.ago, detection_time: 3.days.ago)
+    incident_report.valid?
+    expect(incident_report.errors[:resolved_time].size).to eq(1)
+  end
+
+  it "is invalid with a resolved time less than acknowledge time" do
+    incident_report = FactoryGirl.build(:incident_report, resolved_time: 4.days.ago, acknowledge_time: 3.days.ago)
+    incident_report.valid?
+    expect(incident_report.errors[:resolved_time].size).to eq(1)
   end
 end
