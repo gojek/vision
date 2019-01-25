@@ -59,8 +59,14 @@ class ChangeRequestsController < ApplicationController
       @usernames <<  user.email.split("@").first
     end
     @cr_statuses = @change_request.change_request_statuses
-    @change_request = Jira.new.jiraize_cr(@change_request)
+    # @change_request = Jira.new.jiraize_cr(@change_request)
   end
+
+  def jiraize
+    @result = params[:text]
+    puts Jira.new.jiraize(@result)
+  end
+
 
   def new
     @change_request = ChangeRequest.new
