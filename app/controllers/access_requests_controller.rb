@@ -115,32 +115,26 @@ class AccessRequestsController < ApplicationController
   end
 
   def import_from_csv
-    file = params[:csv]
-    data_error = 0
-    total_data = 0
-    AccessRequest.transaction do
-      CSV.foreach(file.path,headers: true, col_sep: ",") do |row|
-        @data = CsvParser.process_csv(row.to_h)
-        total_data += 1
+    valid, invalid = CsvParser.process_csv(params[:csv], current_user)
 
-        @access_request = current_user.AccessRequests.build(@data[:data])
-        assign_collaborators_and_approvers_from_csv
-        if @access_request.save
-          if @access_request.draft? && !@data[:error]
-            @access_request.submit!
-          else
-            data_error += 1
-          end
-          SlackNotif.new.notify_new_access_request(@access_request)
-        else
-          data_error += 1
-          @access_request.save(validate: false)
+    valid.each do |access_request|
+      if access_request.save
+        if access_request.draft?
+          access_request.submit!
         end
+        SlackNotif.new.notify_new_access_request(access_request)
+      else
+        access_request.save(validate: false)
       end
     end
-    flash[:notice] = (total_data-data_error).to_s + ' Access request(s) was successfully created.'
-    if data_error > 0
-      flash[:invalid] = data_error.to_s + " data(s) is not filled correctly, the data was saved as a draft"
+
+    invalid.each do |access_request|
+      access_request.save(validate: false)
+    end
+
+    flash[:notice] = valid.length.to_s + ' Access request(s) was successfully created.'
+    if invalid.length > 0
+      flash[:invalid] = invalid.length.to_s + " data(s) is not filled correctly, the data was saved as a draft"
     end
     redirect_to access_requests_path
   end
@@ -266,13 +260,6 @@ class AccessRequestsController < ApplicationController
   def assign_collaborators_and_approvers
     @current_approvers = Array.wrap(params[:approvers_list])
     @current_collaborators = Array.wrap(params[:collaborators_list])
-    @access_request.set_approvers(@current_approvers)
-    @access_request.set_collaborators(@current_collaborators)
-  end
-
-  def assign_collaborators_and_approvers_from_csv
-    @current_approvers = Array.wrap(@data[:approvers])
-    @current_collaborators = Array.wrap(@data[:collaborators])
     @access_request.set_approvers(@current_approvers)
     @access_request.set_collaborators(@current_collaborators)
   end
