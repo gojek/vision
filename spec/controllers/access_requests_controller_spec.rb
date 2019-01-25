@@ -78,6 +78,46 @@ describe AccessRequestsController, type: :controller do
           post :import_from_csv, :csv => @file
           expect(flash[:invalid]).to match "1 data(s) is not filled correctly, the data was saved as a draft"
         end
+
+        it "can upload an invalid csv (access type error)" do
+          CSV.open(file_path, "w") do |c|
+            c << ["request_type","access_type","business_justification","collaborators","approvers","employee_name","employee_position","employee_department","employee_email_address","employee_phone","employee_access","fingerprint","corporate_email","other_access","password_reset","user_identification","asset_name","production_access","production_user_id","production_asset"] #hash keys
+            c << ["Create","confuse","Lorem ipsum","Siapa ya","patrick star","Budi","SE","Engineer","Budi@midtrans.com","14045","1","business area","-","bathroom access","1","gatau ini apa","apa lagi ini","1","Ini apa pula","apa ini yaampun"]
+          end
+          @file = fixture_file_upload('files/wa.csv', 'text/csv')
+          post :import_from_csv, :csv => @file
+          expect(flash[:invalid]).to match "1 data(s) is not filled correctly, the data was saved as a draft"
+        end
+
+        it "can upload an invalid csv (access type missing)" do
+          CSV.open(file_path, "w") do |c|
+            c << ["request_type","access_type","business_justification","collaborators","approvers","employee_name","employee_position","employee_department","employee_email_address","employee_phone","employee_access","fingerprint","corporate_email","other_access","password_reset","user_identification","asset_name","production_access","production_user_id","production_asset"] #hash keys
+            c << ["Create","","Lorem ipsum","Siapa ya","patrick star","Budi","SE","Engineer","Budi@midtrans.com","14045","1","business area","-","bathroom access","1","gatau ini apa","apa lagi ini","1","Ini apa pula","apa ini yaampun"]
+          end
+          @file = fixture_file_upload('files/wa.csv', 'text/csv')
+          post :import_from_csv, :csv => @file
+          expect(flash[:invalid]).to match "1 data(s) is not filled correctly, the data was saved as a draft"
+        end
+
+        it "can upload an invalid csv (request type error)" do
+          CSV.open(file_path, "w") do |c|
+            c << ["request_type","access_type","business_justification","collaborators","approvers","employee_name","employee_position","employee_department","employee_email_address","employee_phone","employee_access","fingerprint","corporate_email","other_access","password_reset","user_identification","asset_name","production_access","production_user_id","production_asset"] #hash keys
+            c << ["confuse","Permanent","Lorem ipsum","Siapa ya","patrick star","Budi","SE","Engineer","Budi@midtrans.com","14045","1","business area","-","bathroom access","1","gatau ini apa","apa lagi ini","1","Ini apa pula","apa ini yaampun"]
+          end
+          @file = fixture_file_upload('files/wa.csv', 'text/csv')
+          post :import_from_csv, :csv => @file
+          expect(flash[:invalid]).to match "1 data(s) is not filled correctly, the data was saved as a draft"
+        end
+
+        it "can upload an invalid csv (request type missing)" do
+          CSV.open(file_path, "w") do |c|
+            c << ["request_type","access_type","business_justification","collaborators","approvers","employee_name","employee_position","employee_department","employee_email_address","employee_phone","employee_access","fingerprint","corporate_email","other_access","password_reset","user_identification","asset_name","production_access","production_user_id","production_asset"] #hash keys
+            c << ["","Permanent","Lorem ipsum","Siapa ya","patrick star","Budi","SE","Engineer","Budi@midtrans.com","14045","1","business area","-","bathroom access","1","gatau ini apa","apa lagi ini","1","Ini apa pula","apa ini yaampun"]
+          end
+          @file = fixture_file_upload('files/wa.csv', 'text/csv')
+          post :import_from_csv, :csv => @file
+          expect(flash[:invalid]).to match "1 data(s) is not filled correctly, the data was saved as a draft"
+        end
       end
 
       context 'successfuly and unsuccessfuly upload a csv' do
