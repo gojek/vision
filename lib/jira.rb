@@ -44,4 +44,16 @@ class Jira
     end
     text
   end
+
+  def jiraize_cr(change_request)
+    change_request.business_justification = jiraize(change_request.business_justification)
+    change_request.os = jiraize(change_request.os)
+    change_request.db = jiraize(change_request.db)
+    change_request.net = jiraize(change_request.net)
+    change_request.other_dependency = jiraize(change_request.other_dependency)
+    change_request.analysis = jiraize(change_request.analysis)
+    change_request.impact = jiraize(change_request.impact)
+    change_request.solution = jiraize(change_request.solution)
+    return change_request
+  end
 end

@@ -59,14 +59,7 @@ class ChangeRequestsController < ApplicationController
       @usernames <<  user.email.split("@").first
     end
     @cr_statuses = @change_request.change_request_statuses
-    @change_request.business_justification = Jira.new.jiraize(@change_request.business_justification)
-    @change_request.os = Jira.new.jiraize(@change_request.os)
-    @change_request.db = Jira.new.jiraize(@change_request.db)
-    @change_request.net = Jira.new.jiraize(@change_request.net)
-    @change_request.other_dependency = Jira.new.jiraize(@change_request.other_dependency)
-    @change_request.analysis = Jira.new.jiraize(@change_request.analysis)
-    @change_request.impact = Jira.new.jiraize(@change_request.impact)
-    @change_request.solution = Jira.new.jiraize(@change_request.solution)
+    @change_request = Jira.new.jiraize_cr(@change_request)
   end
 
   def new
