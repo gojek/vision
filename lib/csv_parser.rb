@@ -1,6 +1,26 @@
 class CsvParser
-	def self.process_csv(data)
-		error = false
+  def self.process_csv(file, current_user)
+    valid = []
+    invalid = []
+    CSV.foreach(file.path,headers: true, col_sep: ",") do |row|
+      @data = CsvParser.extract(row.to_h)
+      @access_request = current_user.AccessRequests.build(@data[:data])
+      assign_collaborators_and_approvers_from_csv
+      if (@data[:error])
+        invalid << @access_request
+      else
+        valid << @access_request
+      end
+    end
+    return valid, invalid
+  end
+
+  def self.extract(data)
+	error = false
+    if data["business_justification"] == ""
+      error = true
+    end
+
     if data["fingerprint"] != ""
       data["fingerprint"] = convert(data['fingerprint'])
       data["fingerprint"].each do |i|
@@ -25,6 +45,22 @@ class CsvParser
       end
     end
     data.delete("other_access")
+
+    if data["request_type"] != ""
+      unless ['create', 'delete', 'modify'].include?(data["request_type"].downcase)
+        error = true
+      end
+    else
+      error = true
+    end
+
+    if data["access_type"] != ""
+      unless ['temporary', 'permanent'].include?(data["access_type"].downcase)
+        error = true
+      end
+    else
+      error = true
+    end
 
     data["start_date"] = ""
     data["end_date"] = ""
@@ -61,5 +97,12 @@ class CsvParser
       s.strip!
       s.sub! " ","_"
     end
+  end
+
+  def self.assign_collaborators_and_approvers_from_csv
+    current_approvers = Array.wrap(@data[:approvers])
+    current_collaborators = Array.wrap(@data[:collaborators])
+    @access_request.set_approvers(current_approvers)
+    @access_request.set_collaborators(current_collaborators)
   end
 end
