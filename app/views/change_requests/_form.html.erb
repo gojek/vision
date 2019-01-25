@@ -95,7 +95,7 @@
                 </div><!--/field-->
                 <div class="field form-group">
                   <label>Collaborators</label><br>
-                    <%= select_tag "collaborators_list" ,options_for_select(@users), class: 'select2-collaborate form-control', multiple:true %>
+                    <%= f.select :collaborator_ids ,options_for_select(@users), { include_blank: false }, { class: 'select2-collaborate form-control', multiple:true } %>
                 </div><!--/field-->
                 <% if @change_request.errors.messages[:approvals] %>
                   <div class="field form-group has-error">
@@ -103,7 +103,7 @@
                   <div class="field form-group required">
                 <% end %>
                   <label class="control-label">Approvers</label><br>
-                    <%= select_tag "approvers_list" ,options_for_select(@approvers), class: 'select2-approve form-control', multiple:true %>
+                    <%= select_tag :approvers_list, options_for_select(@approvers), class: 'select2-approve form-control', multiple:true %>
                 </div><!--/field-->
 
 
@@ -305,7 +305,7 @@
                   <% end %>
                   <!-- <div class="field form-group"> -->
                     <label class= "control-label">Testers</label><br>
-                      <%= select_tag "testers_list" ,options_for_select(@users), class: 'select2-tester form-control', style: 'width: 100%' , multiple:true %>
+                      <%= f.select :tester_ids, options_for_select(@users), { include_blank: false }, { class: 'select2-tester form-control', style: 'width: 100%' , multiple:true } %>
                   </div><!--/field-->
                 </div><!--/nested form for testers-->
               </div><!--/col-->
@@ -374,7 +374,7 @@
                   <div class="field form-group required">
                 <% end %>
                   <label class="control-label">Implementers</label><br>
-                    <%= select_tag "implementers_list" ,options_for_select(@users), class: 'select2-implementer form-control', style: 'width: 100%;', multiple:true %>
+                    <%= f.select :implementer_ids, options_for_select(@users), { include_blank: false }, { class: 'select2-implementer form-control', style: 'width: 100%;', multiple:true } %>
                 </div><!--/field-->
               </div><!--implementers-->
             </div><!--/box-body-->

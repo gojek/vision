@@ -108,18 +108,13 @@ class ChangeRequestsController < ApplicationController
   end
 
   def create
+    puts change_request_params[:collaborator_ids]
     @change_request = current_user.ChangeRequests.build(change_request_params)
     @current_approvers = Array.wrap(params[:approvers_list])
-    @current_implementers = Array.wrap(params[:implementers_list])
-    @current_testers = Array.wrap(params[:testers_list])
-    @current_collaborators = Array.wrap(params[:collaborators_list])
-    @change_request.downtime_expected = params[:downtime_expected]
-    @change_request.expected_downtime_in_minutes = params[:expected_downtime_in_minutes]
-
+    @current_implementers = Array.wrap(change_request_params[:implementer_ids])
+    @current_testers = Array.wrap(change_request_params[:tester_ids])
+    @current_collaborators = Array.wrap(change_request_params[:collaborator_ids])
     @change_request.set_approvers(@current_approvers)
-    @change_request.set_implementers(@current_implementers)
-    @change_request.set_testers(@current_testers)
-    @change_request.set_collaborators(@current_collaborators)
     @change_request.requestor_position = current_user.position
     respond_to do |format|
       unless @change_request.save
@@ -169,20 +164,14 @@ class ChangeRequestsController < ApplicationController
 
   def update
     @current_approvers = Array.wrap(params[:approvers_list])
-    @current_implementers = Array.wrap(params[:implementers_list])
-    @current_testers = Array.wrap(params[:testers_list])
-    @current_collaborators = Array.wrap(params[:collaborators_list])
-    @change_request.downtime_expected = params[:downtime_expected]
-    @change_request.expected_downtime_in_minutes = params[:expected_downtime_in_minutes]
-    @change_request.update_approvers(@current_approvers)
-    @change_request.set_implementers(@current_implementers)
-    @change_request.set_testers(@current_testers)
-    @change_request.set_collaborators(@current_collaborators)
+    @current_implementers = Array.wrap(change_request_params[:implementer_ids])
+    @current_testers = Array.wrap(change_request_params[:tester_ids])
+    @current_collaborators = Array.wrap(change_request_params[:collaborator_ids])
+    @change_request.update_approvers(@current_approvers) if @current_approvers.length > 0
     respond_to do |format|
       if @change_request.update(change_request_params)
         event = Calendar.new.set_cr(current_user, @change_request)
         @change_request.update(google_event_id: event.data.id) unless event.error?
-
         if @change_request.draft?
           @change_request.submit!
           @change_request.save
@@ -190,13 +179,13 @@ class ChangeRequestsController < ApplicationController
           @status.save
         end
         associated_user_ids = ["#{@change_request.user.id}"]
-        associated_user_ids.concat(@current_approvers)
-        associated_user_ids.concat(@current_implementers)
-        associated_user_ids.concat(@current_testers)
+        associated_user_ids.concat(@current_approvers) if @current_approvers.length > 0
+        associated_user_ids.concat(@current_implementers) if @current_approvers.length > 0
+        associated_user_ids.concat(@current_testers) if @current_testers.length > 0
         associated_user_ids.concat(@current_collaborators)
-        @change_request.associated_user_ids = associated_user_ids.uniq
+        @change_request.associated_user_ids = associated_user_ids.uniq if associated_user_ids.length > 1
         Notifier.cr_notify(current_user, @change_request, 'update_cr')
-        SlackNotif.new.notify_update_cr @change_request
+        SlackNotif.new.notify_update_cr @change_request if change_request_params[:collaborator_ids].present?
         flash[:success] = 'Change request was successfully updated.'
         flash[:success] += " Calendar event creation failed: #{event.error_message}." if event.error?
         format.html { redirect_to @change_request }
@@ -217,17 +206,6 @@ class ChangeRequestsController < ApplicationController
         end
       end
     end
-  end
-
-  def after_deploy_update
-    change_request = ChangeRequest.find(params[:id])
-    change_request.update(after_deploy_update_params)
-    if change_request.save
-      flash[:success] = "Change request was successfully updated."
-    else
-      flash[:error] = "Error occured. "
-    end
-    redirect_to change_request
   end
 
   def destroy
@@ -359,10 +337,6 @@ class ChangeRequestsController < ApplicationController
 
   private
 
-    def after_deploy_update_params
-      params.require(:change_request).permit(:implementation_notes, :grace_period_notes)
-    end
-
     def set_change_request
       if params[:change_request_id]
         @change_request = ChangeRequest.find(params[:change_request_id])
@@ -391,7 +365,8 @@ class ChangeRequestsController < ApplicationController
             :type_configuration_change, :type_emergency_change, :type_other,
             implementers_attributes: [:id, :name, :position, :_destroy],
             testers_attributes: [:id, :name, :position, :_destroy],
-            :tag_list => [], :collaborators_list => [])
+            :tag_list => [], :collaborators_list => [], 
+            :implementer_ids => [], :tester_ids => [], :collaborator_ids => [])
     end
 
     def owner_required
