@@ -38,6 +38,16 @@ describe AccessRequestsController, type: :controller do
         expect(flash[:notice]).to match "1 Access request(s) was successfully created."
       end
 
+      it "can upload a csv with only required data and successfuly create an access_request" do
+        CSV.open(file_path, "w") do |c|
+          c << ["request_type","access_type","business_justification","collaborators","approvers","employee_name","employee_position","employee_department","employee_email_address","employee_phone","employee_access","fingerprint","corporate_email","other_access","password_reset","user_identification","asset_name","production_access","production_user_id","production_asset"] #hash keys
+          c << ["Create","Permanent","Lorem ipsum","Siapa ya","patrick star","Budi","SE","Engineer","Budi@midtrans.com","14045","","","","","","","","","",""]
+        end
+        @file = fixture_file_upload('files/wa.csv', 'text/csv')
+        post :import_from_csv, :csv => @file
+        expect(flash[:notice]).to match "1 Access request(s) was successfully created."
+      end
+
       context 'unsuccessfuly submit csv' do
         it "can upload an invalid csv (user error)" do
           CSV.open(file_path, "w") do |c|
@@ -66,6 +76,20 @@ describe AccessRequestsController, type: :controller do
           end
           @file = fixture_file_upload('files/wa.csv', 'text/csv')
           post :import_from_csv, :csv => @file
+          expect(flash[:invalid]).to match "1 data(s) is not filled correctly, the data was saved as a draft"
+        end
+      end
+
+      context 'successfuly and unsuccessfuly upload a csv' do
+        it "can upload one valid csv and one invalid csv (user error)" do
+          CSV.open(file_path, "w") do |c|
+            c << ["request_type","access_type","business_justification","collaborators","approvers","employee_name","employee_position","employee_department","employee_email_address","employee_phone","employee_access","fingerprint","corporate_email","other_access","password_reset","user_identification","asset_name","production_access","production_user_id","production_asset"] #hash keys
+            c << ["Create","Permanent","Lorem ipsum","Siapa ya","patrick star","Budi","SE","Engineer","Budi@midtrans.com","14045","1","business area,business operations,it operations,server room,archive room,engineering area","-","internet access, slack access, vpn access","1","gatau ini apa","apa lagi ini","1","Ini apa pula","apa ini yaampun"]
+            c << ["Create","Permanent","Lorem ipsum","Siapa ya","squidward","Budi","SE","Engineer","Budi@midtrans.com","14045","1","business area,business operations,it operations,server room,archive room,engineering area","-","internet access, slack access, vpn access","1","gatau ini apa","apa lagi ini","1","Ini apa pula","apa ini yaampun"]
+          end
+          @file = fixture_file_upload('files/wa.csv', 'text/csv')
+          post :import_from_csv, :csv => @file
+          expect(flash[:notice]).to match "1 Access request(s) was successfully created."
           expect(flash[:invalid]).to match "1 data(s) is not filled correctly, the data was saved as a draft"
         end
       end
