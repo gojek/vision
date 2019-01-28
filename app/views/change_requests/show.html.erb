@@ -140,7 +140,7 @@
             <%=raw @change_request.change_requirement%>
           </div><!--/well-->
           <h5>Business Justification</h5>
-          <div class="well well-sm jira">
+          <div class="well well-sm">
             <%=raw @change_request.business_justification %>
           </div><!--/well-->
           <h5>Requestor</h5>
@@ -173,19 +173,19 @@
         </div>
         <div class='box-body'>
           <h5>Database</h5>
-          <div class="well well-sm jira">
+          <div class="well well-sm">
             <%=raw @change_request.db %>
           </div><!--/well-->
           <h5>Network</h5>
-          <div class="well well-sm jira">
+          <div class="well well-sm">
             <%=raw @change_request.net %>
           </div><!--/well-->
           <h5>Operating System</h5>
-          <div class="well well-sm jira">
+          <div class="well well-sm">
             <%=raw @change_request.os %>
           </div><!--/well-->
           <h5>Other</h5>
-          <div class="well well-sm jira">
+          <div class="well well-sm">
             <%=raw @change_request.other_dependency %>
           </div><!--/well-->
         </div>
@@ -618,21 +618,4 @@ $('#popoverOption').popover({ trigger: "hover" });
 <script>
   var users = <%= raw @usernames %> ;
   $('#comment').atwho({at:"@", 'data':users})
-</script>
-
-<script>
-  var jira = document.getElementsByClassName('jira');
-  for (i=0; i<jira.length; i++){
-    console.log(jira[i].innerHTML)
-    $.ajax({
-      type:'GET',
-      url:'/change_requests/jiraize',
-      data: { text : jira[i].innerHTML },
-      success:function(result){
-        //I assume you want to do something on controller action execution success?
-        // $(this).addClass('done');
-        alert(result);
-      }
-    });
-  }
 </script>
