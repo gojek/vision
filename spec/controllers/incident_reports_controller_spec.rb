@@ -52,9 +52,20 @@ describe IncidentReportsController, type: :controller do
         get :new
         expect(response).to render_template :new
       end
+
+      it 'returns total of active user' do
+        user_locked = FactoryGirl.create(:user)
+        user_locked.update_attribute(:locked_at, Time.current)
+        get :new
+
+        expect(assigns(:users).count).to match 1
+      end
     end
 
     describe 'GET #edit' do
+
+      subject { get :edit, id: incident_report }
+
       it 'assigns the requested incident report to @incident report' do
         get :edit, id: incident_report
         expect(assigns(:incident_report)).to eq incident_report
@@ -62,7 +73,15 @@ describe IncidentReportsController, type: :controller do
 
       it 'renders the :edit template' do
         get :edit, id: incident_report
-        expect(response).to render_template :edit
+        expect(subject).to render_template :edit
+      end
+
+      it 'returns total of active user' do
+        user_locked = FactoryGirl.create(:user)
+        user_locked.update_attribute(:locked_at, Time.current)
+        get :edit, id: incident_report
+
+        expect(assigns(:users).count).to match 1
       end
     end
 
@@ -78,7 +97,7 @@ describe IncidentReportsController, type: :controller do
       context "with invalid attributes" do
         it 'doesnt save the new incident report in the database' do
           expect{
-            post :create, incident_report: FactoryGirl.attributes_for(:invalid_incident_report)
+            post :create, incident_report: FactoryGirl.attributes_for(:invalid_incident_report, source: 'source')
           }.to_not change(IncidentReport, :count)
         end
       end
