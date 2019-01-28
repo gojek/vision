@@ -1,6 +1,5 @@
 require 'net/http'
 require 'json'
-require 'set'
 
 # a model representing user
 class User < ActiveRecord::Base
@@ -133,7 +132,8 @@ class User < ActiveRecord::Base
   def relevant_access_requests
     AccessRequest.where("user_id = ? OR id IN (?)", 
       id, 
-      AccessRequestApproval.where(user_id: id).collect(&:access_request_id).to_a + collaborate_access_requests.collect(&:id).to_a
+      Array.wrap(AccessRequestApproval.where(user_id: id).collect(&:access_request_id).to_a + 
+                  collaborate_access_requests.collect(&:id).to_a).uniq
     ).distinct;
   end
 end
