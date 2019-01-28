@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180906063522) do
+ActiveRecord::Schema.define(version: 20190125115041) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -209,14 +209,6 @@ ActiveRecord::Schema.define(version: 20180906063522) do
   add_index "change_requests", ["reference_cr_id"], name: "index_change_requests_on_reference_cr_id", using: :btree
   add_index "change_requests", ["user_id"], name: "index_change_requests_on_user_id", using: :btree
 
-  create_table "change_requests_associated_users", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "change_request_id"
-  end
-
-  add_index "change_requests_associated_users", ["change_request_id"], name: "index_change_requests_associated_users_on_change_request_id", using: :btree
-  add_index "change_requests_associated_users", ["user_id"], name: "index_change_requests_associated_users_on_user_id", using: :btree
-
   create_table "collaborators", id: false, force: :cascade do |t|
     t.integer "user_id"
     t.integer "change_request_id"
@@ -288,7 +280,7 @@ ActiveRecord::Schema.define(version: 20180906063522) do
     t.string   "how_detected"
     t.datetime "occurrence_time"
     t.datetime "detection_time"
-    t.datetime "recovery_time"
+    t.datetime "acknowledge_time"
     t.string   "source"
     t.integer  "rank"
     t.string   "loss_related"
@@ -300,16 +292,17 @@ ActiveRecord::Schema.define(version: 20180906063522) do
     t.string   "current_status"
     t.string   "measurer_status"
     t.integer  "user_id"
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
     t.datetime "resolved_time"
     t.decimal  "resolution_duration"
     t.decimal  "recovery_duration"
-    t.boolean  "expected",              default: false
-    t.boolean  "has_further_action",    default: false
+    t.boolean  "expected",                     default: false
+    t.boolean  "has_further_action",           default: false
     t.text     "action_item"
     t.string   "action_item_status"
     t.datetime "action_item_done_time"
+    t.integer  "time_to_acknowledge_duration"
   end
 
   add_index "incident_reports", ["user_id"], name: "index_incident_reports_on_user_id", using: :btree
@@ -400,6 +393,7 @@ ActiveRecord::Schema.define(version: 20180906063522) do
     t.string   "refresh_token"
     t.datetime "expired_at"
     t.string   "slack_username"
+    t.integer  "is_approved",        default: 1
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
@@ -428,8 +422,6 @@ ActiveRecord::Schema.define(version: 20180906063522) do
   add_foreign_key "change_requests", "cabs"
   add_foreign_key "change_requests", "change_requests", column: "reference_cr_id"
   add_foreign_key "change_requests", "users"
-  add_foreign_key "change_requests_associated_users", "change_requests"
-  add_foreign_key "change_requests_associated_users", "users"
   add_foreign_key "comments", "change_requests"
   add_foreign_key "comments", "users"
   add_foreign_key "implementers", "change_requests"
