@@ -132,7 +132,10 @@ class AccessRequestsController < ApplicationController
       access_request.save(validate: false)
     end
 
-    flash[:notice] = valid.length.to_s + ' Access request(s) was successfully created.'
+    if valid.length > 0
+      flash[:notice] = valid.length.to_s + ' Access request(s) was successfully created.'
+    end
+    
     if invalid.length > 0
       flash[:invalid] = invalid.length.to_s + " data(s) is not filled correctly, the data was saved as a draft"
     end
