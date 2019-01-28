@@ -34,7 +34,7 @@ class SlackNotif
     approvers.each { |approver| associated_users.delete(approver) }
     general_message = "<#{link}|Change request> has been #{type}"
     message_users(associated_users, general_message, attachment)
-    message_channel('cab', general_message, attachment)
+    message_channel(ENV['SLACK_CR_CHANNEL'], general_message, attachment)
   end
 
   def notify_change_ar(access_request, type)
@@ -87,7 +87,7 @@ class SlackNotif
     attachment = @attachment_builder.generate_simple_change_request_attachment(change_request)
     link = change_request_url(change_request)
     general_message = "<#{link}|Change request> has been #{status}"
-    message_channel('cab', general_message, attachment)
+    message_channel(ENV['SLACK_CR_CHANNEL'], general_message, attachment)
   end
 
 
@@ -99,7 +99,7 @@ class SlackNotif
     attachment = @attachment_builder.generate_incident_report_attachment(incident_report)
     link = incident_report_url(incident_report)
     general_message = "<#{link}|Incident report> has been #{type}"
-    message_channel('incidents', general_message, attachment)
+    message_channel(ENV['SLACK_IR_CHANNEL'], general_message, attachment)
   end
 
   def notify_new_access_request(access_request)
