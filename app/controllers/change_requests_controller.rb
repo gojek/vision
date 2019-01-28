@@ -18,7 +18,7 @@ class ChangeRequestsController < ApplicationController
       when 'approval'
         @change_requests = ChangeRequest.where(id: Approval.where(user_id: current_user.id, approve: nil).collect(&:change_request_id))
       when 'relevant'
-        @change_requests = ChangeRequest.where(id: current_user.associated_change_requests.collect(&:id))
+        @change_requests = current_user.relevant_change_requests
       end
       @change_requests = @change_requests.where.not(aasm_state: 'draft').order(id: :desc)
     else
@@ -108,13 +108,7 @@ class ChangeRequestsController < ApplicationController
   end
 
   def create
-    puts change_request_params[:collaborator_ids]
     @change_request = current_user.ChangeRequests.build(change_request_params)
-    @current_approvers = Array.wrap(params[:approvers_list])
-    @current_implementers = Array.wrap(change_request_params[:implementer_ids])
-    @current_testers = Array.wrap(change_request_params[:tester_ids])
-    @current_collaborators = Array.wrap(change_request_params[:collaborator_ids])
-    @change_request.set_approvers(@current_approvers)
     @change_request.requestor_position = current_user.position
     respond_to do |format|
       unless @change_request.save
@@ -126,17 +120,10 @@ class ChangeRequestsController < ApplicationController
       else
         event = Calendar.new.set_cr(current_user, @change_request)
         @change_request.update(google_event_id: event.data.id) unless event.error?
-
         @change_request.submit!
         @change_request.save
         @status = @change_request.change_request_statuses.new(:status => 'submitted')
         @status.save
-        associated_user_ids = ["#{@change_request.user.id}"]
-        associated_user_ids.concat(@current_approvers)
-        associated_user_ids.concat(@current_implementers)
-        associated_user_ids.concat(@current_testers)
-        associated_user_ids.concat(@current_collaborators)
-        @change_request.associated_user_ids = associated_user_ids.uniq
         Notifier.cr_notify(current_user, @change_request, 'new_cr')
         SlackNotif.new.notify_new_cr @change_request
         Thread.new do
@@ -164,10 +151,6 @@ class ChangeRequestsController < ApplicationController
 
   def update
     @current_approvers = Array.wrap(params[:approvers_list])
-    @current_implementers = Array.wrap(change_request_params[:implementer_ids])
-    @current_testers = Array.wrap(change_request_params[:tester_ids])
-    @current_collaborators = Array.wrap(change_request_params[:collaborator_ids])
-    @change_request.update_approvers(@current_approvers) if @current_approvers.length > 0
     respond_to do |format|
       if @change_request.update(change_request_params)
         event = Calendar.new.set_cr(current_user, @change_request)
@@ -177,13 +160,7 @@ class ChangeRequestsController < ApplicationController
           @change_request.save
           @status = @change_request.change_request_statuses.new(:status => 'submitted')
           @status.save
-        end
-        associated_user_ids = ["#{@change_request.user.id}"]
-        associated_user_ids.concat(@current_approvers) if @current_approvers.length > 0
-        associated_user_ids.concat(@current_implementers) if @current_approvers.length > 0
-        associated_user_ids.concat(@current_testers) if @current_testers.length > 0
-        associated_user_ids.concat(@current_collaborators)
-        @change_request.associated_user_ids = associated_user_ids.uniq if associated_user_ids.length > 1
+        end 
         Notifier.cr_notify(current_user, @change_request, 'update_cr')
         SlackNotif.new.notify_update_cr @change_request if change_request_params[:collaborator_ids].present?
         flash[:success] = 'Change request was successfully updated.'
@@ -366,7 +343,7 @@ class ChangeRequestsController < ApplicationController
             implementers_attributes: [:id, :name, :position, :_destroy],
             testers_attributes: [:id, :name, :position, :_destroy],
             :tag_list => [], :collaborators_list => [], 
-            :implementer_ids => [], :tester_ids => [], :collaborator_ids => [])
+            :implementer_ids => [], :tester_ids => [], :collaborator_ids => [], :approvers_list => [])
     end
 
     def owner_required
