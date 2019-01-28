@@ -51,3 +51,11 @@ gem install mailcatcher
 mailcatcher
 
 ```
+
+7. Slack notification configuration. Set environment variable to:
+```
+SLACK_IR_CHANNEL=<incident_report_slack_channel>
+SLACK_CR_CHANNEL=<change_request_slack_channel>
+```
+
+If variable value of slack channel's name is not found in current registered API key, rails raise error before server is started.
