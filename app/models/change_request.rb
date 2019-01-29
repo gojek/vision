@@ -253,14 +253,14 @@ class ChangeRequest < ActiveRecord::Base
   end
 
   def associated_users
-    User.where("id = ? OR id IN (?)", 
-      self.user_id, 
+    User.where("id IN (?)",  
       Array.wrap(
+        [self.user_id] +
         self.collaborator_ids +
         self.tester_ids +
         self.implementer_ids +
         self.approvals.collect(&:user_id).to_a
       ).uniq
-    ).distinct
+    )
   end
 end
