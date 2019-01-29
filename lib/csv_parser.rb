@@ -9,18 +9,18 @@ class CsvParser
       if (@data[:error])
         invalid << @access_request
       else
-        valid << @access_request
+        if @access_request.valid?
+          valid << @access_request
+        else
+          invalid << @access_request
+        end
       end
     end
     return valid, invalid
   end
 
   def self.extract(data)
-	error = false
-    if data["business_justification"] == ""
-      error = true
-    end
-
+    error = false
     if data["fingerprint"] != ""
       data["fingerprint"] = convert(data['fingerprint'])
       data["fingerprint"].each do |i|
@@ -45,22 +45,6 @@ class CsvParser
       end
     end
     data.delete("other_access")
-
-    if data["request_type"] != ""
-      unless ['create', 'delete', 'modify'].include?(data["request_type"].downcase)
-        error = true
-      end
-    else
-      error = true
-    end
-
-    if data["access_type"] != ""
-      unless ['temporary', 'permanent'].include?(data["access_type"].downcase)
-        error = true
-      end
-    else
-      error = true
-    end
 
     data["start_date"] = ""
     data["end_date"] = ""
