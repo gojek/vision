@@ -75,9 +75,9 @@ gem 'pg', '~> 0.19'
 # coloring std out
 gem 'colorize'
 
-# slack notification
-gem 'slack-notifier'
-gem 'slack-ruby-client'
+#slack notification
+gem 'slack-ruby-client', '~> 0.13.1'
+gem "slack-notifier"
 
 # jira
 gem 'jira-ruby', require: 'jira-ruby'
