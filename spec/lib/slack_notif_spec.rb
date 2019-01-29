@@ -19,13 +19,12 @@ describe SlackNotif do
     let(:change_request_attachment){attachment_builder.generate_change_request_attachment(change_request)}
 
     describe 'Sending notification about new CR' do
-      let(:new_cr_message) {"New <#{change_request_link}|change request> has been created"}
-      let(:approver_message) {"New <#{change_request_link}|change request> needs your approvals"}
+      let(:new_cr_message) {"<#{change_request_link}|Change request> has been created"}
+      let(:approver_message) {"Created <#{change_request_link}|change request> needs your approvals"}
 
-      it 'Send message to all appropriate approvers of the CR' do
+      it 'Send notify to all appropriate approvers of the CR' do
         approvers = change_request.approvals.collect{|approval| approval.user}
-        expect(slack_notifier).to receive(:message_users).with(approvers, approver_message, anything())
-        expect(slack_notifier).to receive(:message_users)
+        expect(slack_notifier).to receive(:notify_users).with(approvers, approver_message, change_request_attachment)
         slack_notifier.notify_new_cr(change_request)
       end
 
@@ -35,8 +34,7 @@ describe SlackNotif do
         change_request.reload
         associated_users = change_request.associated_users.to_a
         approvers.each {|approver| associated_users.delete(approver)}
-        expect(slack_notifier).to receive(:message_users).with(associated_users, new_cr_message, anything())
-        expect(slack_notifier).to receive(:message_users)
+        expect(slack_notifier).to receive(:message_users).with(associated_users, new_cr_message, change_request_attachment)
         slack_notifier.notify_new_cr(change_request)
       end
 
@@ -46,7 +44,7 @@ describe SlackNotif do
       end
 
       it 'Send attachment from attachment builder' do
-        expect(slack_notifier).to receive(:message_users).with(anything(), anything(), change_request_attachment).twice
+        expect(slack_notifier).to receive(:message_users).with(anything(), anything(), change_request_attachment)
         expect(slack_notifier).to receive(:message_channel).with(anything(), anything(), change_request_attachment)
         slack_notifier.notify_new_cr(change_request)
       end
@@ -58,8 +56,7 @@ describe SlackNotif do
 
       it 'Send message to all appropriate approvers of the CR' do
         approvers = change_request.approvals.collect{|approval| approval.user}
-        expect(slack_notifier).to receive(:message_users).with(approvers, approver_message, anything())
-        expect(slack_notifier).to receive(:message_users)
+        expect(slack_notifier).to receive(:notify_users).with(approvers, approver_message, anything)
         slack_notifier.notify_update_cr(change_request)
       end
 
@@ -69,8 +66,7 @@ describe SlackNotif do
         change_request.reload
         associated_users = change_request.associated_users.to_a
         approvers.each {|approver| associated_users.delete(approver)}
-        expect(slack_notifier).to receive(:message_users).with(associated_users, modified_cr_message, anything())
-        expect(slack_notifier).to receive(:message_users)
+        expect(slack_notifier).to receive(:message_users).with(associated_users, modified_cr_message, anything)
         slack_notifier.notify_update_cr(change_request)
       end
 
@@ -81,7 +77,7 @@ describe SlackNotif do
       end
 
       it 'Send attachment from attachment builder' do
-        expect(slack_notifier).to receive(:message_users).with(anything(), anything(), change_request_attachment).twice
+        expect(slack_notifier).to receive(:message_users).with(anything(), anything(), change_request_attachment)
         expect(slack_notifier).to receive(:message_channel).with(anything(), anything(), change_request_attachment)
         slack_notifier.notify_update_cr(change_request)
       end
@@ -127,7 +123,7 @@ describe SlackNotif do
   end
 
   describe 'Sending notification about new Incident Report to sepesified incident report slack channel' do
-    it 'Send message to incidents channel' do
+    it 'Send message to incident report slack channel' do
       general_message = "<#{incident_report_link}|Incident report> has been created"
       expect(slack_notifier).to receive(:message_channel).with(incident_report_channel, general_message, anything())
       slack_notifier.notify_new_ir(incident_report)
