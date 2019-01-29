@@ -89,10 +89,6 @@ describe IncidentReportsController, type: :controller do
             post :create, incident_report: FactoryGirl.attributes_for(:incident_report)
           }.to change(IncidentReport, :count).by(1)
         end
-
-        it 'send notify to slack #incidents channel' do
-
-        end
       end
 
       context "with invalid attributes" do
