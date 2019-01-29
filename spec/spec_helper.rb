@@ -88,6 +88,9 @@ RSpec.configure do |config|
     stub_request(:post, "https://slack.com/api/users.list")
       .to_return(status: 200, body: '{"ok": true}', headers: {})
 
+    stub_request(:post, "https://slack.com/api/users.lookupByEmail")
+    .to_return(status: 200, body: '{"ok": true, "user": {"name":"patrick.star", "profile":{"email":"patrick@veritrans.co.id"}} }', headers: {})
+
     # clear action mailer
     ActionMailer::Base.deliveries = []
 
