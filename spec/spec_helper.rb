@@ -3,6 +3,7 @@ require 'capybara-screenshot/rspec'
 require 'simplecov'
 SimpleCov.start 'rails'
 ENV["RAILS_ENV"] ||= 'test'
+ENV["JIRA_URL"] = "https://veritrans.atlassian.net/"
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'webmock/rspec'
@@ -87,6 +88,28 @@ RSpec.configure do |config|
 
     stub_request(:post, "https://slack.com/api/users.list")
       .to_return(status: 200, body: '{"ok": true}', headers: {})
+
+    stub_request(:get, "https://veritrans.atlassian.net/rest/api/2/issue/TEST-123")
+      .to_return(
+        status: 200, 
+        body: '{
+          "fields":{
+            "id": "1234", 
+            "self": "https://veritrans.atlassian.net/rest/api/2/issue/1234",
+            "key":"TEST-123", 
+            "summary":"summary", 
+            "issuetype":{
+              "iconUrl":"https://veritrans.atlassian.net/images/icons/statuses/generic.png"
+            }, 
+            "status":{
+              "statusCategory":{
+                "colorName":"Yellow",
+                "name":"In Progress"
+              }
+            }
+          }
+        }', 
+        headers: {})
 
     # clear action mailer
     ActionMailer::Base.deliveries = []
