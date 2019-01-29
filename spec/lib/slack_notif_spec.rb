@@ -12,6 +12,8 @@ describe SlackNotif do
   let(:routes) {Rails.application.routes.url_helpers}
   let(:change_request_link){routes.change_request_url(change_request)}
   let(:incident_report_link){routes.incident_report_url(incident_report)}
+  let(:change_request_channel) { ENV['SLACK_CR_CHANNEL'] }
+  let(:incident_report_channel) { ENV['SLACK_IR_CHANNEL'] }
 
   describe 'Notify about change request' do
     let(:change_request_attachment){attachment_builder.generate_change_request_attachment(change_request)}
@@ -38,8 +40,8 @@ describe SlackNotif do
         slack_notifier.notify_new_cr(change_request)
       end
 
-      it 'Send general message to cab channel' do
-        expect(slack_notifier).to receive(:message_channel).with('cab', new_cr_message, anything())
+      it 'Send general message to spesified change request channel' do
+        expect(slack_notifier).to receive(:message_channel).with(change_request_channel, new_cr_message, anything())
         slack_notifier.notify_new_cr(change_request)
       end
 
@@ -72,9 +74,9 @@ describe SlackNotif do
         slack_notifier.notify_update_cr(change_request)
       end
 
-      it 'Send message to cab channel' do
+      it 'Send message to spesified change request channel' do
         general_message = "<#{change_request_link}|Change request> has been modified"
-        expect(slack_notifier).to receive(:message_channel).with('cab', modified_cr_message, anything())
+        expect(slack_notifier).to receive(:message_channel).with(change_request_channel, modified_cr_message, anything())
         slack_notifier.notify_update_cr(change_request)
       end
 
@@ -124,10 +126,10 @@ describe SlackNotif do
 
   end
 
-  describe 'Sending notification about new Incident Report' do
+  describe 'Sending notification about new Incident Report to sepesified incident report slack channel' do
     it 'Send message to incidents channel' do
       general_message = "<#{incident_report_link}|Incident report> has been created"
-      expect(slack_notifier).to receive(:message_channel).with('incidents', general_message, anything())
+      expect(slack_notifier).to receive(:message_channel).with(incident_report_channel, general_message, anything())
       slack_notifier.notify_new_ir(incident_report)
     end
   end
