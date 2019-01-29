@@ -52,6 +52,14 @@ describe IncidentReportsController, type: :controller do
         get :new
         expect(response).to render_template :new
       end
+
+      it 'returns total of active user' do
+        user_locked = FactoryGirl.create(:user)
+        user_locked.update_attribute(:locked_at, Time.current)
+        get :new
+
+        expect(assigns(:users).count).to match 1
+      end
     end
 
     describe 'GET #edit' do
@@ -63,6 +71,14 @@ describe IncidentReportsController, type: :controller do
       it 'renders the :edit template' do
         get :edit, id: incident_report
         expect(response).to render_template :edit
+      end
+
+      it 'returns total of active user' do
+        user_locked = FactoryGirl.create(:user)
+        user_locked.update_attribute(:locked_at, Time.current)
+        get :edit, id: incident_report
+
+        expect(assigns(:users).count).to match 1
       end
     end
 
