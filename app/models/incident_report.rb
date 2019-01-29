@@ -8,10 +8,14 @@ class IncidentReport < ActiveRecord::Base
 
   before_save :create_incident_report_log, :unless => :new_record?
   before_save :set_recovery_duration, :if => :resolved_time?
+  before_update :set_recovery_duration
 
   before_save :set_current_status
+  before_update :set_current_status
+
   before_save :set_action_item_done_time, if: :action_item_status_done?
   before_save :set_time_to_acknowledge_duration, :if => :acknowledge_time?
+  before_update :set_time_to_acknowledge_duration
 
   acts_as_readable :on => :updated_at
   has_paper_trail class_name: 'IncidentReportVersion',
@@ -43,8 +47,8 @@ class IncidentReport < ActiveRecord::Base
   # recovery and resolve may be the same, but it does not necessarily to be like that
   # recovery is temporary solution, resolved is life-time solution
   validate  :validate_detection_time
-  validate  :validate_acknowledge_time
-  validate  :validate_resolve_time
+  validate  :validate_acknowledge_time, if: :acknowledge_time?
+  validate  :validate_resolve_time, if: :resolved_time?
 
   attr_accessor :editor
   attr_accessor :reason
@@ -104,17 +108,24 @@ class IncidentReport < ActiveRecord::Base
   end
 
   def set_recovery_duration
-    self.recovery_duration = (self.resolved_time-self.detection_time)/60
+    if resolved_time.nil?
+      self.recovery_duration = nil
+    else
+      self.recovery_duration = (self.resolved_time-self.detection_time)/60
+    end
   end
 
   def set_time_to_acknowledge_duration
-    self.time_to_acknowledge_duration = (self.acknowledge_time - self.detection_time)/60
+    if acknowledge_time.nil?
+      self.time_to_acknowledge_duration = nil
+    else
+      self.time_to_acknowledge_duration = (self.acknowledge_time - self.detection_time)/60
+    end
   end
 
 
   def validate_acknowledge_time
     if occurrence_time.nil? ||
-        acknowledge_time.nil? ||
         detection_time.nil? ||
         !(acknowledge_time >= occurrence_time && acknowledge_time >= detection_time)
       errors.add(:acknowledge_time, "is invalid")
@@ -122,7 +133,7 @@ class IncidentReport < ActiveRecord::Base
   end
 
   def validate_resolve_time
-    if resolved_time.nil? || occurrence_time.nil? || detection_time.nil? || acknowledge_time.nil? ||
+    if occurrence_time.nil? || detection_time.nil? || acknowledge_time.nil? ||
         !(resolved_time > occurrence_time && resolved_time > detection_time && resolved_time > acknowledge_time)
       errors.add(:resolved_time, "is invalid")
     end
