@@ -1,7 +1,7 @@
 class ChangeRequestStatusesController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_change_request, only:[:deploy, :rollback, :cancel, :close, :fail, :submit]
   before_action :authorized_user_required, only:[:deploy, :rollback, :cancel, :close, :fail, :submit]
-  before_action :authenticate_user!
 
   private def alert_users(status:)
     if @change_request && @status

@@ -1,7 +1,7 @@
 class ChangeRequestsController < ApplicationController
-  before_action :set_change_request, only: [:show, :edit, :update, :destroy, :approve, :reject, :edit_grace_period_notes, :edit_implementation_notes, :print]
   before_action :authenticate_user!
-  before_action :owner_required, only: [:edit, :update, :destroy, :edit_grace_period_notes, :edit_implementation_notes]
+  before_action :set_change_request, only: [:show, :edit, :update, :destroy, :approve, :reject, :edit_grace_period_notes, :edit_implementation_notes, :print]
+  before_action :owner_required, only: [:edit, :update, :destroy]
   before_action :not_closed_required, only: [:destroy]
   before_action :submitted_required, only: [:edit]
   before_action :reference_required, only: [:create_hotfix]
