@@ -209,26 +209,7 @@ class ChangeRequest < ActiveRecord::Base
 
 
   def approvers_list=(approver_ids)
-    approver_ids = approver_ids.select { |approver_id| !approver_id.empty? }.map {|id| id.to_i}
-    if(self.new_record?)
-      save_approvals approver_ids
-    else
-      current_approver_ids = Approval.where(change_request_id: self.id).pluck(:user_id)
-      deleted_approver_ids = current_approver_ids - approver_ids
-      saved_approver_ids = approver_ids - current_approver_ids
-      if deleted_approver_ids.present?
-        Approval.where(change_request_id: self.id).where(user_id: deleted_approver_ids).destroy_all
-      end
-      save_approvals saved_approver_ids
-    end
-  end
-
-  def save_approvals(approver_ids)
-    approver_ids.each do |approver_id|
-      approver = User.find(approver_id)
-      new_approval = Approval.create(user: approver)
-      self.approvals << new_approval
-    end
+    self.approvals << Approval.setup_for_change_request(self, approver_ids)
   end
 
   def has_approver?(user)
