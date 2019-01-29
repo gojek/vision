@@ -128,11 +128,14 @@ class User < ActiveRecord::Base
   end
 
   def relevant_change_requests
-    ChangeRequest.where("user_id = ? OR id IN (?)", id,
-      Array.wrap(Approval.where("user_id = ?", id).collect(&:change_request_id).to_a +
-      collaborate_change_requests.collect(&:id).to_a +
-      implement_change_requests.collect(&:id).to_a +
-      test_change_requests.collect(&:id).to_a).uniq
+    ChangeRequest.where("user_id = ? OR id IN (?)",
+      id,
+      Array.wrap(
+        Approval.where("user_id = ?", id).collect(&:change_request_id).to_a +
+        self.collaborate_change_request_ids +
+        self.implement_change_request_ids +
+        self.test_change_request_ids
+      ).uniq
     ).distinct
   end
 end
