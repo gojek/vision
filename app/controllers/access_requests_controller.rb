@@ -180,113 +180,50 @@ class AccessRequestsController < ApplicationController
     end
   end
 
-<<<<<<< HEAD
   def access_request_params
     params
-    .require(:access_request)
-    .permit(
-      :request_type,
-      :access_type,
-      :start_date,
-      :end_date,
-      :employee_name,
-      :employee_position,
-      :employee_email_address,
-      :employee_department,
-      :employee_phone,
-      :employee_access,
-      :fingerprint_business_area,
-      :fingerprint_business_operations,
-      :fingerprint_it_operations,
-      :fingerprint_server_room,
-      :fingerprint_archive_room,
-      :fingerprint_engineering_area,
-      :corporate_email,
-      :internet_access,
-      :slack_access,
-      :admin_tools,
-      :vpn_access,
-      :github_gitlab,
-      :exit_interview,
-      :access_card,
-      :parking_cards,
-      :id_card,
-      :name_card,
-      :insurance_card,
-      :cash_advance,
-      :password_reset,
-      :user_identification,
-      :asset_name,
-      :production_access,
-      :production_user_id,
-      :production_asset,
-      :business_justification,
-      :metabase
+      .require(:access_request)
+      .permit(
+        :request_type,
+        :access_type,
+        :start_date,
+        :end_date,
+        :employee_name,
+        :employee_position,
+        :employee_email_address,
+        :employee_department,
+        :employee_phone,
+        :employee_access,
+        :fingerprint_business_area,
+        :fingerprint_business_operations,
+        :fingerprint_it_operations,
+        :fingerprint_server_room,
+        :fingerprint_archive_room,
+        :fingerprint_engineering_area,
+        :corporate_email,
+        :internet_access,
+        :slack_access,
+        :admin_tools,
+        :vpn_access,
+        :github_gitlab,
+        :exit_interview,
+        :access_card,
+        :parking_cards,
+        :id_card,
+        :name_card,
+        :insurance_card,
+        :cash_advance,
+        :password_reset,
+        :user_identification,
+        :asset_name,
+        :production_access,
+        :production_user_id,
+        :production_asset,
+        :business_justification,
+        :metabase,
+        :solutions_dashboard
     )
   end
-=======
-    def access_request_params
-      params
-        .require(:access_request)
-        .permit(
-          :request_type,
-          :access_type,
-          :start_date,
-          :end_date,
-          :employee_name,
-          :employee_position,
-          :employee_email_address,
-          :employee_department,
-          :employee_phone,
-          :employee_access,
-          :fingerprint_business_area,
-          :fingerprint_business_operations,
-          :fingerprint_it_operations,
-          :fingerprint_server_room,
-          :fingerprint_archive_room,
-          :fingerprint_engineering_area,
-          :corporate_email,
-          :internet_access,
-          :slack_access,
-          :admin_tools,
-          :vpn_access,
-          :github_gitlab,
-          :exit_interview,
-          :access_card,
-          :parking_cards,
-          :id_card,
-          :name_card,
-          :insurance_card,
-          :cash_advance,
-          :password_reset,
-          :user_identification,
-          :asset_name,
-          :production_access,
-          :production_user_id,
-          :production_asset,
-          :business_justification,
-          :metabase,
-          :solutions_dashboard
-      )
-    end
-
-    def set_access_request_reason
-      @access_request.reason = params[:access_request_status][:reason]
-    end
-
-    def set_users_and_approvers
-      @users = User.active.collect{|u| [u.name, u.id] }
-      @approvers = User.approvers_ar.active.collect{|u| [u.name, u.id] if u.id != current_user.id }
-    end
-
-    def set_access_request_approval
-      @approval = AccessRequestApproval.find_by(access_request_id: @access_request.id, user_id: current_user.id)
-      unless @approval
-        flash[:alert] = 'You are not eligible to approve this Access Request'
-        redirect_to @access_request
-      end
-    end
->>>>>>> a75837693f781af9b3b5243beeacbae1fa69a7ba
 
   def set_access_request_reason
     @access_request.reason = params[:access_request_status][:reason]
