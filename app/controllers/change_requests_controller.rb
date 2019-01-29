@@ -32,10 +32,7 @@ class ChangeRequestsController < ApplicationController
         @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
       end
       format.csv do
-        #offset = params[:page] || 1
-        #@change_requests.order("created_at desc").limit(13).offset(offset)
         if params[:page].present?
-          # download crs current page
           @change_requests = @change_requests.page(params[:page] || 1).per(params[:per_page] || 20)
           render csv: @change_requests, filename: 'change_requests', force_quotes: true
         else
@@ -150,7 +147,6 @@ class ChangeRequestsController < ApplicationController
   end
 
   def update
-    @current_approvers = Array.wrap(params[:approvers_list])
     respond_to do |format|
       if @change_request.update(change_request_params)
         event = Calendar.new.set_cr(current_user, @change_request)
@@ -178,6 +174,10 @@ class ChangeRequestsController < ApplicationController
           @current_tags = @change_request.tag_list
           @users = User.all.collect{|u| [u.name, u.id]}
           @approvers = User.approvers.collect{|u| [u.name, u.id] if u.id != current_user.id}
+          @current_approvers = Array.wrap(change_request_params[:approvers_list])
+          @current_implementers = Array.wrap(change_request_params[:implementer_ids])
+          @current_testers = Array.wrap(change_request_params[:tester_ids])
+          @current_collaborators = Array.wrap(change_request_params[:collaborator_ids])
           format.html { render :edit }
           format.json { render json: @change_request.errors, status: :unprocessable_entity }
         end
@@ -342,8 +342,13 @@ class ChangeRequestsController < ApplicationController
             :type_configuration_change, :type_emergency_change, :type_other,
             implementers_attributes: [:id, :name, :position, :_destroy],
             testers_attributes: [:id, :name, :position, :_destroy],
-            :tag_list => [], :collaborators_list => [], 
-            :implementer_ids => [], :tester_ids => [], :collaborator_ids => [], :approvers_list => [])
+            :tag_list => [], :implementer_ids => [], :tester_ids => [], 
+            :collaborator_ids => [], :approvers_list => []).tap do |params|
+              params[:approvers_list].reject!(&:blank?) if params[:approvers_list].present?
+              params[:implementer_ids].reject!(&:blank?) if params[:implementer_ids].present?
+              params[:tester_ids].reject!(&:blank?) if params[:tester_ids].present?
+              params[:collaborator_ids].reject!(&:blank?) if params[:collaborator_ids].present?
+            end
     end
 
     def owner_required
