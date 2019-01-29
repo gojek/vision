@@ -74,7 +74,7 @@ gem 'pg'
 gem 'colorize'
 
 #slack notification
-gem 'slack-ruby-client'
+gem 'slack-ruby-client', '~> 0.13.1'
 gem "slack-notifier"
 
 #jira
