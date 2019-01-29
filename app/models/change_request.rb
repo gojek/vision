@@ -209,7 +209,9 @@ class ChangeRequest < ActiveRecord::Base
 
 
   def approvers_list=(approver_ids)
-    self.approvals << Approval.setup_for_change_request(self, approver_ids)
+    approvals = Approval.setup_for_change_request(self, approver_ids)
+    puts approvals
+    self.approvals << approvals
   end
 
   def has_approver?(user)
