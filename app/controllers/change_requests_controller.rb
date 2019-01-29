@@ -5,6 +5,7 @@ class ChangeRequestsController < ApplicationController
   before_action :not_closed_required, only: [:destroy]
   before_action :submitted_required, only: [:edit]
   before_action :reference_required, only: [:create_hotfix]
+  before_filter :sanitaze_params  
   after_action :unset_session_first_time, only: [:new], if: -> { session['first_time'] }
   before_action :role_not_approver_required, only: [:edit, :edit_grace_period_notes, :edit_implementation_notes]
   require 'notifier.rb'
@@ -313,6 +314,8 @@ class ChangeRequestsController < ApplicationController
   end
 
   private
+    def sanitaze_params
+          end
 
     def set_change_request
       if params[:change_request_id]
@@ -343,11 +346,11 @@ class ChangeRequestsController < ApplicationController
             implementers_attributes: [:id, :name, :position, :_destroy],
             testers_attributes: [:id, :name, :position, :_destroy],
             :tag_list => [], :implementer_ids => [], :tester_ids => [], 
-            :collaborator_ids => [], :approvers_list => []).tap do |params|
-              params[:approvers_list].reject!(&:blank?) if params[:approvers_list].present?
-              params[:implementer_ids].reject!(&:blank?) if params[:implementer_ids].present?
-              params[:tester_ids].reject!(&:blank?) if params[:tester_ids].present?
-              params[:collaborator_ids].reject!(&:blank?) if params[:collaborator_ids].present?
+            :collaborator_ids => [], :approvers_list => []).tap do |params| 
+              params[:approvers_list].reject!(&:blank?).map!{ |approver_id| approver_id.to_i} if params[:approvers_list].present?
+              params[:implementer_ids].reject!(&:blank?).map!{ |impl_id| impl_id.to_i} if params[:implementer_ids].present?
+              params[:tester_ids].reject!(&:blank?).map!{ |tester_id| tester_id.to_i } if params[:tester_ids].present?
+              params[:collaborator_ids].reject!(&:blank?).map!{ |collaborator_id| collaborator_id.to_i } if params[:collaborator_ids].present?
             end
     end
 
