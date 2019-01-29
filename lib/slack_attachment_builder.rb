@@ -2,6 +2,7 @@ class SlackAttachmentBuilder
   include Rails.application.routes.url_helpers
   include ActionView::Helpers::SanitizeHelper
   include ActionView::Helpers::DateHelper
+  include ActionView::Helpers::TextHelper
 
   def generate_change_request_attachment(change_request)
     approvers_name = change_request.approvals.includes(:user).pluck(:name)
@@ -172,7 +173,7 @@ class SlackAttachmentBuilder
   end
 
   def generate_incident_report_attachment(incident_report)
-    incident_duration = distance_of_time_in_words(incident_report.recovery_duration * 60)
+    acknowledge_time = "#{incident_report.acknowledge_time} (#{pluralize(incident_report.time_to_acknowledge_duration.to_i, 'minute')})" if incident_report.acknowledge_time.present? else "-"
     attachment = {
       fallback: incident_report.service_impact,
       color: "#439FE0",
@@ -198,7 +199,7 @@ class SlackAttachmentBuilder
           short: false
         },{
           title: "Acknowledge Time",
-          value: "#{incident_report.acknowledge_time} (#{incident_duration})",
+          value: acknowledge_time,
           short: false
         },{
           title: "Reporter",
