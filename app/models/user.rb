@@ -1,5 +1,6 @@
 require 'net/http'
 require 'json'
+require 'slack_wrapper.rb'
 
 # a model representing user
 class User < ActiveRecord::Base
@@ -49,7 +50,7 @@ class User < ActiveRecord::Base
       user.name = auth[:info][:name]
       user.role = 'requestor'
       user.is_admin = false
-      user.slack_username = user.get_slack_username
+      user.slack_username = SlackWrapper.new.get_slack_username(user.email)
     end
   end
 
@@ -108,15 +109,23 @@ class User < ActiveRecord::Base
     all_contact
   end
 
-  def get_slack_username
-    client = Slack::Web::Client.new
-    client.users_list.members.each do |u|
-      if email == u.profile.email
-        return u.name
-      end
-    end
-    nil
-  end
+  # def get_slack_username
+  #   client = Slack::Web::Client.new
+  #   user = client.users_lookupByEmail('email': email)
+  #   return user.user.name unless user.nil?
+  # end
+
+  # def get_slack_username
+  #   client = Slack::Web::Client.new
+  #   client.users_list.members.each do |u|
+  #     if email == u.profile.email
+  #       return u.name
+  #     end
+  #   end
+  #   nil
+  # end
+
+
   def have_notifications?
     (notifications.cr.count != 0 || notifications.ir.count != 0)
   end
