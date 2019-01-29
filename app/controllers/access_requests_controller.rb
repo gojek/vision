@@ -117,19 +117,18 @@ class AccessRequestsController < ApplicationController
   def import_from_csv
     valid, invalid = CsvParser.process_csv(params[:csv], current_user)
 
-    valid.each do |access_request|
-      if access_request.save
+    AccessRequest.transaction do
+      valid.each do |access_request|
+        access_request.save
         if access_request.draft?
           access_request.submit!
         end
         SlackNotif.new.notify_new_access_request(access_request)
-      else
+      end
+
+      invalid.each do |access_request|
         access_request.save(validate: false)
       end
-    end
-
-    invalid.each do |access_request|
-      access_request.save(validate: false)
     end
 
     if valid.length > 0
