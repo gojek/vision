@@ -96,7 +96,6 @@ describe User, type: :model do
       expect(User.from_omniauth(auth)).to eq user
     end
 
-    #SALAH
     it "will register new user based on the auth from omniauth if user not registered" do
       auth = {:provider => 'google_oauth2', :uid => '123456', :info => {:email => 'patrick@veritrans.co.id', :name => 'patrick star'}}
       user = User.from_omniauth(auth)
@@ -107,6 +106,13 @@ describe User, type: :model do
       expect(user.role).to eq 'requestor'
       expect(user.slack_username).to eq @slack_username
       expect(user.is_admin).to eq false
+    end
+
+    it "will register the user but slack username is nil because not found" do
+      auth = {:provider => 'google_oauth2', :uid => '123456', :info => {:email => 'dummy@dummy.com', :name => 'dummy baby'}}
+      user = User.from_omniauth(auth)
+
+      expect(user.slack_username).to be_nil
     end
   end
 
