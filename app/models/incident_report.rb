@@ -8,10 +8,14 @@ class IncidentReport < ActiveRecord::Base
 
   before_save :create_incident_report_log, :unless => :new_record?
   before_save :set_recovery_duration, :if => :resolved_time?
+  before_update :set_recovery_duration
 
   before_save :set_current_status
+  before_update :set_current_status
+
   before_save :set_action_item_done_time, if: :action_item_status_done?
   before_save :set_time_to_acknowledge_duration, :if => :acknowledge_time?
+  before_update :set_time_to_acknowledge_duration
 
   acts_as_readable :on => :updated_at
   has_paper_trail class_name: 'IncidentReportVersion',
@@ -104,11 +108,19 @@ class IncidentReport < ActiveRecord::Base
   end
 
   def set_recovery_duration
-    self.recovery_duration = (self.resolved_time-self.detection_time)/60
+    if resolved_time.nil?
+      self.recovery_duration = nil
+    else
+      self.recovery_duration = (self.resolved_time-self.detection_time)/60
+    end
   end
 
   def set_time_to_acknowledge_duration
-    self.time_to_acknowledge_duration = (self.acknowledge_time - self.detection_time)/60
+    if acknowledge_time.nil?
+      self.time_to_acknowledge_duration = nil
+    else
+      self.time_to_acknowledge_duration = (self.acknowledge_time - self.detection_time)/60
+    end
   end
 
 

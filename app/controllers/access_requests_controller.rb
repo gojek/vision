@@ -191,7 +191,8 @@ class AccessRequestsController < ApplicationController
           :production_user_id,
           :production_asset,
           :business_justification,
-          :metabase
+          :metabase,
+          :solutions_dashboard
       )
     end
 
