@@ -186,7 +186,7 @@ require 'notifier.rb'
 
 
   respond_to :json
-  def incident_reports_by_recovered_resolved_duration
+  def incident_reports_by_acknowledged_resolved_duration
     start_month = (Time.now).beginning_of_month
     end_month = (Time.now).end_of_month
     if params[:start_time]
@@ -194,8 +194,6 @@ require 'notifier.rb'
       end_month = start_month.end_of_month
     end
     i = 1
-    avg_recovery_data = []
-    avg_resolved_data = []
     result = []
     title = start_month.strftime('%Y/%m')
     while start_month <= end_month do
@@ -205,14 +203,14 @@ require 'notifier.rb'
       else
         end_time = start_month.end_of_week
       end
-      recovery = IncidentReport.where('recovery_duration > 0 AND acknowledge_time <= ? AND acknowledge_time >= ?', end_time, start_time)
-      resolved = IncidentReport.where('resolution_duration > 0 AND resolved_time <= ? AND resolved_time >= ?', end_time, start_time)
+      acknowledge = IncidentReport.where('time_to_acknowledge_duration > 0 AND acknowledge_time <= ? AND acknowledge_time >= ?', end_time, start_time)
+      resolved = IncidentReport.where('recovery_duration > 0 AND resolved_time <= ? AND resolved_time >= ?', end_time, start_time)
 
-      avg_recovery = recovery.blank? ? 0 : recovery.average(:recovery_duration)
-      avg_resolved = resolved.blank? ? 0 : resolved.average(:resolution_duration)
+      avg_acknowledge = recovery.blank? ? 0 : acknowledge.average(:time_to_acknowledge_duration)
+      avg_resolved = resolved.blank? ? 0 : resolved.average(:recovery_duration)
       result << {
         label: start_time.strftime("%d/%m")+' - '+end_time.strftime("%d/%m"),
-        recovery_duration: avg_recovery,
+        recovery_duration: avg_acknowledge,
         resolution_duration: avg_resolved
       }
       i = i+1
