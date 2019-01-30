@@ -13,8 +13,6 @@
   </div>
   <div class='tab-content'>
     <div id='incident_report' class='tab-pane fade in active'>
-
-
       <div class='row'>
         <div class='col-lg-6'>
           <div class='box '>
@@ -85,13 +83,13 @@
         <div class='col-lg-6'>
           <div class='box '>
             <div class='box-header with-border'>
-              <h3 class='box-title'>Weekly Internal Average Recovery Time</h3>
+              <h3 class='box-title'>Weekly Internal Average Acknowledge Time</h3>
             </div>
             <div class='box-body'>
               <div class='row'>
                 <div class='col-lg-12'>
                   <div class="btn-group pull-right">
-                    <button id="incident-avg-recovery-internal-daterange" class="selectbox pull-right btn btn-default">
+                    <button id="incident-avg-acknowledge-internal-daterange" class="selectbox pull-right btn btn-default">
                       <i class="fa fa-calendar"></i>
                       <span>Custom Range</span> <b class="caret"></b>
                     </button>
@@ -100,24 +98,22 @@
               </div>
               <div class='row'>
                 <div class='col-lg-12'>
-                  <div id="incident-avg-recovery-internal-chart" class="general-chart" width="300" height="300"></div>
+                  <div id="incident-avg-acknowledge-internal-chart" class="general-chart" width="300" height="300"></div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
-
         <div class='col-lg-6'>
           <div class='box '>
             <div class='box-header with-border'>
-              <h3 class='box-title'>Weekly External Average Recovery Time</h3>
+              <h3 class='box-title'>Weekly External Average Acknowledge Time</h3>
             </div>
             <div class='box-body'>
               <div class='row'>
                 <div class='col-lg-12'>
                   <div class="btn-group pull-right">
-                    <button id="incident-avg-recovery-external-daterange" class="selectbox pull-right btn btn-default">
+                    <button id="incident-avg-acknowledge-external-daterange" class="selectbox pull-right btn btn-default">
                       <i class="fa fa-calendar"></i>
                       <span>Custom Range</span> <b class="caret"></b>
                     </button>
@@ -126,7 +122,7 @@
               </div>
               <div class='row'>
                 <div class='col-lg-12'>
-                  <div id="incident-avg-recovery-external-chart" class="general-chart" width="300" height="300"></div>
+                  <div id="incident-avg-acknowledge-external-chart" class="general-chart" width="300" height="300"></div>
                 </div>
               </div>
             </div>
@@ -134,12 +130,7 @@
         </div>
         
       </div>
-
-
-
-
       <div class='row'>
-
         <div class='col-lg-6'>
           <div class='box '>
             <div class='box-header with-border'>
@@ -190,14 +181,7 @@
             </div>
           </div>
         </div>
-        
       </div>
-
-
-
-
-
-
     </div>
     <div id='change_request' class='tab-pane fade'>
       <div class='row'>
@@ -545,51 +529,51 @@
   }, onIncidentLevelExternalControlChange);
   onIncidentLevelExternalControlChange();
 
-  // INTERNAL INCIDENT AVG RECOVERY
-  function onIncidentAvgRecoveryInternalControlChange(){
+  // INTERNAL INCIDENT AVG ACKNOWLEDGE
+  function onIncidentAvgAcknowledgeInternalControlChange(){
     var colors = {
       'detection': '#fdd400',
       'fixing': '#67b7dc',
     }
-    var datePicker = $('#incident-avg-recovery-internal-daterange').data('daterangepicker');
+    var datePicker = $('#incident-avg-acknowledge-internal-daterange').data('daterangepicker');
     var start = datePicker.startDate.format('YYYY-MM-DD');
     var end = datePicker.endDate.format('YYYY-MM-DD');
-    $('#incident-avg-recovery-internal-daterange span').html(start + ' - ' + end);
+    $('#incident-avg-acknowledge-internal-daterange span').html(start + ' - ' + end);
 
-    var url = '<%= average_recovery_time_incident_path %>';
+    var url = '<%= average_acknowledge_time_incident_path %>';
     url += '?source=Internal';
     url += '&start_time='+ start
     url += '&end_time=' + end
-    loadAndSetupChart(stackedChart, 'incident-avg-recovery-internal-chart', url, colors);
+    loadAndSetupChart(stackedChart, 'incident-avg-acknowledge-internal-chart', url, colors);
   }
-  $('#incident-avg-recovery-internal-daterange').daterangepicker({
+  $('#incident-avg-acknowledge-internal-daterange').daterangepicker({
     startDate: moment().startOf('month'),
     endDate: moment().endOf('month')
-  }, onIncidentAvgRecoveryInternalControlChange);
-  onIncidentAvgRecoveryInternalControlChange();
+  }, onIncidentAvgAcknowledgeInternalControlChange);
+  onIncidentAvgAcknowledgeInternalControlChange();
 
   // EXTERNAL INCIDENT AVG RECOVERY
-  function onIncidentAvgRecoveryExternalControlChange(){
+  function onIncidentAvgAcknowledgeExternalControlChange(){
     var colors = {
       'detection': '#fdd400',
       'fixing': '#67b7dc',
     }
-    var datePicker = $('#incident-avg-recovery-external-daterange').data('daterangepicker');
+    var datePicker = $('#incident-avg-acknowledge-external-daterange').data('daterangepicker');
     var start = datePicker.startDate.format('YYYY-MM-DD');
     var end = datePicker.endDate.format('YYYY-MM-DD');
-    $('#incident-avg-recovery-external-daterange span').html(start + ' - ' + end);
+    $('#incident-avg-acknowledge-external-daterange span').html(start + ' - ' + end);
 
-    var url = '<%= average_recovery_time_incident_path %>';
+    var url = '<%= average_acknowledge_time_incident_path %>';
     url += '?source=External';
     url += '&start_time='+ start
     url += '&end_time=' + end
-    loadAndSetupChart(stackedChart, 'incident-avg-recovery-external-chart', url, colors);
+    loadAndSetupChart(stackedChart, 'incident-avg-acknowledge-external-chart', url, colors);
   }
-  $('#incident-avg-recovery-external-daterange').daterangepicker({
+  $('#incident-avg-acknowledge-external-daterange').daterangepicker({
     startDate: moment().startOf('month'),
     endDate: moment().endOf('month')
-  }, onIncidentAvgRecoveryExternalControlChange);
-  onIncidentAvgRecoveryExternalControlChange();
+  }, onIncidentAvgAcknowledgeExternalControlChange);
+  onIncidentAvgAcknowledgeExternalControlChange();
 
 	window.onload = function(){
     loadSourceChart("<%=incident_reports_by_source_path %>");
