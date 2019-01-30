@@ -5,7 +5,7 @@ FactoryGirl.define do
     how_detected "How detected"
     occurrence_time {3.days.ago}
     detection_time {2.days.ago}
-    acknowledge_time  {Time.now}
+    acknowledge_time  {1.day.ago}
     resolved_time {Time.now}
     source "Internal"
     rank 1
