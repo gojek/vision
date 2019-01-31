@@ -1,6 +1,6 @@
 require 'net/http'
 require 'json'
-require 'slack_wrapper.rb'
+require 'slack_client.rb'
 
 # a model representing user
 class User < ActiveRecord::Base
@@ -50,7 +50,7 @@ class User < ActiveRecord::Base
       user.name = auth[:info][:name]
       user.role = 'requestor'
       user.is_admin = false
-      user.slack_username = SlackWrapper.new.get_slack_username(user.email)
+      user.slack_username = SlackClient.new.get_slack_username(user.email)
     end
   end
 
