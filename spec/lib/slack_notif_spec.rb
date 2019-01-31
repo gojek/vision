@@ -36,7 +36,6 @@ describe SlackNotif do
       it 'Send message to all appropriate approvers of the CR' do
         approvers = change_request.approvals.collect{|approval| approval.user}
         expect(slack_notifier).to receive(:notify_users).with(approvers, approver_message, change_request_attachment)
-        # expect(slack_client).to receive(:message_users)
         slack_notifier.notify_new_cr(change_request)
       end
 
@@ -47,7 +46,6 @@ describe SlackNotif do
         associated_users = change_request.associated_users.to_a
         approvers.each {|approver| associated_users.delete(approver)}
         expect(slack_client).to receive(:message_users).with(associated_users, new_cr_message, anything())
-        # expect(slack_client).to receive(:message_users)
         slack_notifier.notify_new_cr(change_request)
       end
 
@@ -61,6 +59,17 @@ describe SlackNotif do
         expect(slack_client).to receive(:message_channel).with(anything(), anything(), change_request_attachment)
         slack_notifier.notify_new_cr(change_request)
       end
+
+      it 'Failed send general message to cab channel' do
+        stub_request(:post, "https://slack.com/api/chat.postMessage")
+          .to_return(status: 200, body: '{"ok": false, "error":"channel_not_found"}', headers: {})
+        stub_request(:post, "https://slack.com/api/users.lookupByEmail").
+          to_return(status: 200, body: '{"ok": false, "error":"users_not_found"}', headers: {})
+          
+        expect do
+          slack_notifier.notify_new_cr(change_request)
+        end.to raise_error(Slack::Web::Api::Error)
+      end
     end
 
     describe 'Sending notification about modified CR' do
@@ -70,7 +79,6 @@ describe SlackNotif do
       it 'Send message to all appropriate approvers of the CR' do
         approvers = change_request.approvals.collect{|approval| approval.user}
         expect(slack_notifier).to receive(:notify_users).with(approvers, approver_message, anything())
-        # expect(slack_client).to receive(:message_users)
         slack_notifier.notify_update_cr(change_request)
       end
 
@@ -81,7 +89,6 @@ describe SlackNotif do
         associated_users = change_request.associated_users.to_a
         approvers.each {|approver| associated_users.delete(approver)}
         expect(slack_client).to receive(:message_users).with(associated_users, modified_cr_message, anything())
-        # expect(slack_client).to receive(:message_users)
         slack_notifier.notify_update_cr(change_request)
       end
 
@@ -119,7 +126,6 @@ describe SlackNotif do
       associated_users = change_request.associated_users.to_a
       associated_users.delete(comment.user)
       mentionees.each {|mentionee| associated_users.delete(mentionee)}
-      # binding.pry
       expect(slack_client).to receive(:message_users).with(associated_users, general_message, anything())
       expect(slack_client).to receive(:message_users)
       slack_notifier.notify_new_comment(comment)
@@ -129,12 +135,6 @@ describe SlackNotif do
       expect(slack_client).to receive(:message_users).with(anything(), anything(), comment_attachment).twice
       slack_notifier.notify_new_comment(comment)
     end
-
-    # context 'slack username is not found' do
-    #   it 'should skip the notifications' do
-    #     allow(slack_notifier).to receive(:foo).and_raise("Slack::Web::Api::Error")
-    #   end
-    # end
 
   end
 
@@ -173,7 +173,6 @@ describe SlackNotif do
     it 'Send message to all appropriate approvers of the AR' do
       approvers = access_request.approvals.collect{|approval| approval.user}
       expect(slack_notifier).to receive(:notify_users).with(approvers, approver_message, access_request_attachment)
-      # expect(slack_client).to receive(:message_users)
       slack_notifier.notify_new_ar(access_request)
     end
   end
