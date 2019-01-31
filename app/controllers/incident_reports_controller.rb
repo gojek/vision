@@ -4,7 +4,7 @@ class IncidentReportsController < ApplicationController
   before_action :set_incident_report, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
   before_action :owner_required, only: [:edit, :update, :destroy]
-  before_action :set_source_start_end_time, only: [:total_incident_per_level, :average_recovery_time_incident]
+  before_action :set_source_start_end_time, only: [:total_incident_per_level, :average_acknowledge_time_incident]
   before_action :set_users_and_tags, only: [:new, :create, :edit, :update]
   before_action :set_incident_report_log, only: [:update]
 
@@ -205,7 +205,7 @@ class IncidentReportsController < ApplicationController
       else
         end_time = start_month.end_of_week
       end
-      recovery = IncidentReport.where('recovery_duration > 0 AND recovery_time <= ? AND recovery_time >= ?', end_time, start_time)
+      recovery = IncidentReport.where('recovery_duration > 0 AND acknowledge_time <= ? AND acknowledge_time >= ?', end_time, start_time)
       resolved = IncidentReport.where('resolution_duration > 0 AND resolved_time <= ? AND resolved_time >= ?', end_time, start_time)
 
       avg_recovery = recovery.blank? ? 0 : recovery.average(:recovery_duration)
@@ -268,7 +268,7 @@ class IncidentReportsController < ApplicationController
         end_time = start_month.end_of_week
       end
       occured = IncidentReport.where("occurrence_time <= ? AND occurrence_time >= ?", end_time, start_time)
-      recovered = IncidentReport.where("recovery_time <= ? AND recovery_time >= ?", end_time, start_time)
+      recovered = IncidentReport.where("acknowledge_time <= ? AND acknowledge_time >= ?", end_time, start_time)
       resolved = IncidentReport.where("resolved_time <= ? AND resolved_time >= ?", end_time, start_time)
 
       total_occured = occured.blank? ? 0 : occured.count
@@ -312,12 +312,12 @@ class IncidentReportsController < ApplicationController
     render :text => final_result.to_json
   end
 
-  def average_recovery_time_incident
+  def average_acknowledge_time_incident
     irs = IncidentReport.group_by_week(:occurrence_time, range: @start_time..@end_time).where(source: @source)
 
     count = irs.count
     detection_duration_sum = irs.sum('extract(epoch from detection_time - occurrence_time)')
-    fixing_duration_sum = irs.sum('extract(epoch from recovery_time - detection_time)')
+    fixing_duration_sum = irs.sum('extract(epoch from acknowledge_time - detection_time)')
 
     results = fixing_duration_sum.map do |k, v|
       n = [count[k], 1].max
@@ -328,7 +328,7 @@ class IncidentReportsController < ApplicationController
       }
     end
 
-    final_result = [{title: "Average Recovery Time for #{@source} Incident"}, results]
+    final_result = [{title: "Average Acknowledge Time for #{@source} Incident"}, results]
     render :text => final_result.to_json
   end
 
@@ -353,7 +353,7 @@ class IncidentReportsController < ApplicationController
   def incident_report_params
     params.require(:incident_report)
       .permit(:service_impact, :expected, :problem_details, :how_detected,
-              :occurrence_time, :detection_time, :recovery_time,:resolved_time,
+              :occurrence_time, :detection_time, :acknowledge_time,:resolved_time,
               :source, :rank, :loss_related, :occurred_reason,
               :overlooked_reason, :solving_duration, :recovery_action, :prevent_action,
               :recurrence_concern, :current_status, :measurer_status, :has_further_action,
@@ -365,7 +365,7 @@ class IncidentReportsController < ApplicationController
   end
 
   def set_users_and_tags
-    @users = User.all.collect{|u| [u.name, u.id]}
+    @users = User.active.collect{|u| [u.name, u.id] }
     @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
   end
 
