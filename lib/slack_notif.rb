@@ -27,7 +27,7 @@ class SlackNotif
     link = change_request_url(change_request)
     approvers = change_request.approvals.collect{|approval| approval.user}
     approver_message = "#{type.humanize} <#{link}|Change request> needs your approvals"
-    @slack_client.notify_users(approvers, approver_message, attachment)
+    notify_users(approvers, approver_message, attachment)
     associated_users = change_request.associated_users.to_a
     approvers.each {|approver| associated_users.delete(approver)}
     general_message = "<#{link}|Change request> has been #{type}"
@@ -40,7 +40,7 @@ class SlackNotif
     link = access_request_url(access_request)
     approvers = access_request.approvals.collect{|approval| approval.user}
     approver_message = "#{type.humanize} <#{link}|access_request> needs your approvals"
-    @slack_client.notify_users(approvers, approver_message, attachment)
+    notify_users(approvers, approver_message, attachment)
   end
 
   def notify_approval_status_cr(change_request, approval)
@@ -105,5 +105,13 @@ class SlackNotif
     link = access_request_url(access_request)
     general_message = "<#{link}|Access request> has been created for #{access_request.employee_name}(#{access_request.employee_department})"
     @slack_client.message_users(access_request.associated_users, general_message, attachment)
+  end
+
+  private
+  def notify_users(users, message, attachment)
+    users.each do |user|
+      actionable_attachment = @attachment_builder.wrap_approver_actions(attachment, user)
+      @slack_client.try_send(user, message, [actionable_attachment])
+    end
   end
 end
