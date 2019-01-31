@@ -124,18 +124,19 @@ class User < ActiveRecord::Base
   end
 
   def is_associated?(change_request)
-    relevant_change_requests.include? change_request
+    User.associated_users(change_request).include? self
   end
 
-  def relevant_change_requests
-    ChangeRequest.where("user_id = ? OR id IN (?)",
-      id,
+  def self.associated_users(change_request)
+    User.where("id IN (?)",  
       Array.wrap(
-        Approval.where("user_id = ?", id).collect(&:change_request_id).to_a +
-        self.collaborate_change_request_ids +
-        self.implement_change_request_ids +
-        self.test_change_request_ids
+        [change_request.user_id] +
+        change_request.collaborator_ids +
+        change_request.tester_ids +
+        change_request.implementer_ids +
+        change_request.approvals.collect(&:user_id).to_a
       ).uniq
-    ).distinct
+    )
   end
+
 end
