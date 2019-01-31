@@ -10,10 +10,10 @@ class Approval < ActiveRecord::Base
       Approval.where(change_request_id: change_request.id, user_id: deleted_approver_ids).destroy_all
     end
     Approval.create(approver_ids.map { |approver_id| 
-    	{ 
-    		user_id: approver_id, 
-    	  change_request_id: change_request.id
-    	}
+      { 
+        user_id: approver_id, 
+    	change_request_id: change_request.id
+      }
    	})
   end
 end
