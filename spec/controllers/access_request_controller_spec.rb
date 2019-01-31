@@ -1,16 +1,16 @@
 require 'spec_helper'
 
 describe AccessRequestsController, type: :controller do
-	context 'user access' do
-		let(:user) { FactoryGirl.create(:user)}
-		let(:access_request) { FactoryGirl.create(:access_request, user: user)}
+  context 'user access' do
+    let(:user) { FactoryGirl.create(:user)}
+    let(:access_request) { FactoryGirl.create(:access_request, user: user)}
 
-		before :each do
-			controller.request.env['devise.mapping'] = Devise.mappings[:user]
-			sign_in user
-		end	
+    before :each do
+      controller.request.env['devise.mapping'] = Devise.mappings[:user]
+      sign_in user
+    end	
 
-		describe 'GET #index' do
+    describe 'GET #index' do
 
       it 'populates an array of all access requests' do
         get :index
@@ -44,7 +44,6 @@ describe AccessRequestsController, type: :controller do
           expect(response.body).to eq(csv_headers+ar.to_comma.to_csv)
         end
       end
-
     end
-	end
+  end
 end
