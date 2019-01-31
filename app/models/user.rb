@@ -23,6 +23,7 @@ class User < ActiveRecord::Base
   has_many :Comments
   has_many :notifications, dependent: :destroy
   has_many :Approvals, :dependent => :destroy
+  #TODO remove veritrans and midtrans regex when migrating to gojek
   validates :email, format: { with: /\b[A-Z0-9._%a-z\-]+@(veritrans\.co\.id|midtrans\.com|associate\.midtrans\.com|go-jek\.com)\z/,
                   message: "must be a GOJEK account" }
   validates :email, uniqueness: true
@@ -35,6 +36,7 @@ class User < ActiveRecord::Base
   end
 
   def use_company_email?
+    #TODO remove veritrans and midtrans regex when migrating to gojek
     (email =~ /\b[A-Z0-9._%a-z\-]+@(veritrans\.co\.id|midtrans\.com|associate\.midtrans\.com|go-jek\.com)\z/).present?
   end
 
