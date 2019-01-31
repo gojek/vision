@@ -35,7 +35,7 @@ describe SlackNotif do
 
       it 'Send message to all appropriate approvers of the CR' do
         approvers = change_request.approvals.collect{|approval| approval.user}
-        expect(slack_client).to receive(:notify_users).with(approvers, approver_message, change_request_attachment)
+        expect(slack_notifier).to receive(:notify_users).with(approvers, approver_message, change_request_attachment)
         # expect(slack_client).to receive(:message_users)
         slack_notifier.notify_new_cr(change_request)
       end
@@ -69,7 +69,7 @@ describe SlackNotif do
 
       it 'Send message to all appropriate approvers of the CR' do
         approvers = change_request.approvals.collect{|approval| approval.user}
-        expect(slack_client).to receive(:notify_users).with(approvers, approver_message, anything())
+        expect(slack_notifier).to receive(:notify_users).with(approvers, approver_message, anything())
         # expect(slack_client).to receive(:message_users)
         slack_notifier.notify_update_cr(change_request)
       end
@@ -172,7 +172,7 @@ describe SlackNotif do
 
     it 'Send message to all appropriate approvers of the AR' do
       approvers = access_request.approvals.collect{|approval| approval.user}
-      expect(slack_client).to receive(:notify_users).with(approvers, approver_message, access_request_attachment)
+      expect(slack_notifier).to receive(:notify_users).with(approvers, approver_message, access_request_attachment)
       # expect(slack_client).to receive(:message_users)
       slack_notifier.notify_new_ar(access_request)
     end

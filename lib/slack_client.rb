@@ -27,13 +27,6 @@ class SlackClient
     retry unless (tries -= 1).zero?
   end
 
-  def notify_users(users, message, attachment)
-    users.each do |user|
-      actionable_attachment = wrap_approver_actions(attachment, user)
-      try_send(user, message, [actionable_attachment])
-    end
-  end
-
   def message_users(users, message, attachment)
     users.each do |user|
       try_send(user, message, [attachment])
@@ -42,27 +35,5 @@ class SlackClient
 
   def message_channel(channel, message, attachment)
     @client.chat_postMessage(channel: "##{channel}", text: message, attachments: [attachment])
-  end
-
-  def wrap_approver_actions(attachment, user)
-    actionable_attachment = attachment.dup
-    actionable_attachment[:actions] = [
-      {
-        name: "act",
-        text: "Approve",
-        type: "button",
-        style: "success",
-        value: "approve"
-      },
-       {
-        name: "act",
-        text: "Reject",
-        type: "button",
-        style: "danger",
-        value: "reject"
-      }
-    ]
-
-    actionable_attachment
   end
 end
