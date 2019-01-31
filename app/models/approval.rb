@@ -16,5 +16,4 @@ class Approval < ActiveRecord::Base
     	}
    	})
   end
-
 end

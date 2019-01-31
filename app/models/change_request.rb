@@ -210,7 +210,6 @@ class ChangeRequest < ActiveRecord::Base
 
   def approvers_list=(approver_ids)
     approvals = Approval.setup_for_change_request(self, approver_ids)
-    puts approvals
     self.approvals << approvals
   end
 
@@ -254,15 +253,15 @@ class ChangeRequest < ActiveRecord::Base
     closed_date.present?
   end
 
-  def associated_users
-    User.where("id IN (?)",  
+  def self.relevant_change_requests(user)
+    ChangeRequest.where("user_id = ? OR id IN (?)",
+      user.id,
       Array.wrap(
-        [self.user_id] +
-        self.collaborator_ids +
-        self.tester_ids +
-        self.implementer_ids +
-        self.approvals.collect(&:user_id).to_a
+        Approval.where("user_id = ?", user.id).collect(&:change_request_id).to_a +
+        user.collaborate_change_request_ids +
+        user.implement_change_request_ids +
+        user.test_change_request_ids
       ).uniq
-    )
+    ).distinct
   end
 end
