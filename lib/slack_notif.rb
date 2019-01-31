@@ -28,7 +28,7 @@ class SlackNotif
     approvers = change_request.approvals.collect{|approval| approval.user}
     approver_message = "#{type.humanize} <#{link}|change request> needs your approvals"
     notify_users(approvers, approver_message, attachment)
-    associated_users = change_request.associated_users.to_a
+    associated_users = User.associated_users(change_request).to_a
     approvers.each {|approver| associated_users.delete(approver)}
     general_message = "<#{link}|Change request> has been #{type}"
     message_users(associated_users, general_message, attachment)
@@ -46,7 +46,7 @@ class SlackNotif
   def notify_approval_status_cr(change_request, approval)
     attachment = @attachment_builder.generate_approval_status_cr_attachment(change_request, approval)
     link = change_request_url(change_request)
-    associated_users = change_request.associated_users.to_a
+    associated_users = User.associated_users(change_request).to_a
     general_message = "New update on <#{link}|change request>"
     message_users(associated_users, general_message, attachment)
   end
@@ -59,7 +59,7 @@ class SlackNotif
       mentioned_message = "You are mentioned in #{comment.user.name} comment's on a <#{link}|change request>"
       message_users(mentionees, mentioned_message, attachment)
     end
-    associated_users = comment.change_request.associated_users.to_a
+    associated_users = User.associated_users(change_request).to_a
     associated_users.delete(comment.user)
     mentionees.each {|mentionee| associated_users.delete(mentionee)}
     general_message = "A new comment from #{comment.user.name} on a <#{link}|change request>"
