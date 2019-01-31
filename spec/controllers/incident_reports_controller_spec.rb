@@ -6,7 +6,7 @@ describe IncidentReportsController, type: :controller do
     let(:incident_report) {incident_report = FactoryGirl.create(:incident_report, user: user)}
     before :each do
       controller.request.env['devise.mapping'] = Devise.mappings[:user]
-      sign_in user
+      sign_in incident_report.user
     end
     describe 'GET #show' do
       it 'assigns the requested incident report to @incident_report' do
@@ -52,6 +52,14 @@ describe IncidentReportsController, type: :controller do
         get :new
         expect(response).to render_template :new
       end
+
+      it 'returns total of active user' do
+        user_locked = FactoryGirl.create(:user)
+        user_locked.update_attribute(:locked_at, Time.current)
+        get :new
+
+        expect(assigns(:users).count).to match 1
+      end
     end
 
     describe 'GET #edit' do
@@ -63,6 +71,14 @@ describe IncidentReportsController, type: :controller do
       it 'renders the :edit template' do
         get :edit, id: incident_report
         expect(response).to render_template :edit
+      end
+
+      it 'returns total of active user' do
+        user_locked = FactoryGirl.create(:user)
+        user_locked.update_attribute(:locked_at, Time.current)
+        get :edit, id: incident_report
+
+        expect(assigns(:users).count).to match 1
       end
     end
 
@@ -78,7 +94,7 @@ describe IncidentReportsController, type: :controller do
       context "with invalid attributes" do
         it 'doesnt save the new incident report in the database' do
           expect{
-            post :create, incident_report: FactoryGirl.attributes_for(:invalid_incident_report)
+            post :create, incident_report: FactoryGirl.attributes_for(:invalid_incident_report, source: 'source')
           }.to_not change(IncidentReport, :count)
         end
       end
@@ -189,7 +205,6 @@ describe IncidentReportsController, type: :controller do
           source = 'source'
           patch :update, id: incident_report,
             incident_report: FactoryGirl.attributes_for(:incident_report, source: source)
-          incident_report.reload
           expect(incident_report.source).to_not eq(source)
         end
       end
