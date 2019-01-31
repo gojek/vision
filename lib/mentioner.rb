@@ -13,7 +13,7 @@ class Mentioner
   def self.find_mentionees_from_username(usernames)
     usernames_vt = usernames.map{|mention| mention + '@veritrans.co.id'}
     usernames_mt = usernames.map{|mention| mention + '@midtrans.com'}
-    User.where(email: [usernames_vt, usernames_mt])
+    User.where(email: [usernames_vt, usernames_mt][0])
   end
 
   def self.username_extract_regex
