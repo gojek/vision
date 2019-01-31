@@ -183,13 +183,25 @@ class SlackAttachmentBuilder
     }
   end
 
-  private
+  def wrap_approver_actions(attachment, user)
+    actionable_attachment = attachment.dup
+    actionable_attachment[:actions] = [
+      {
+        name: "act",
+        text: "Approve",
+        type: "button",
+        style: "success",
+        value: "approve"
+      },
+       {
+        name: "act",
+        text: "Reject",
+        type: "button",
+        style: "danger",
+        value: "reject"
+      }
+    ]
 
-  def change_request_downtime(change_request)
-    if change_request.downtime_expected?
-      "#{change_request.expected_downtime_in_minutes} minute(s)"
-    else
-      'No expected Downtime'
-    end
+    actionable_attachment
   end
 end
