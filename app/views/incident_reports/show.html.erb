@@ -57,16 +57,18 @@
       <br/>
       <b>Occurance Time:</b> <%= @incident_report.occurrence_time.to_s(:long) %><br/>
       <b>Detection Time:</b>  <%= @incident_report.detection_time.to_s(:long) %><br/>
-      <% unless @incident_report.recovery_time.blank? %>
-      <b>Recovery Time:</b>  <%= @incident_report.recovery_time.to_s(:long) %><br>
-      <b>Recovery Duration:</b>  <%= distance_of_time_in_words(@incident_report.recovery_duration.minutes) %> <br>
+      <% if @incident_report.acknowledge_time.present? %>
+        <b>Acknowledge Time:</b>  <%= @incident_report.acknowledge_time.to_s(:long) %><br>
+        <b>Time to Acknowledge Duration:</b>  <%= pluralize(@incident_report.time_to_acknowledge_duration.to_i, "minute") %> <br>
         <% end %>
-      <%if @incident_report.resolved_time != nil %>
-      <b>Resolve Time:</b>  <%= @incident_report.resolved_time.to_s(:long) %><br>
+      <% if @incident_report.recovery_duration.present? %>
+        <b>Recovery Time Duration:</b>  <%= pluralize(@incident_report.recovery_duration.to_i, "minute") %>
       <% end %>
-      <% if @incident_report.recovery_duration.blank? %>
-      <b>Resolution Duration:</b>  <%= @incident_report.resolution_duration %> minutes
+      <br>
+      <% if @incident_report.resolved_time.present? %>
+        <b>Resolve Time:</b>  <%= @incident_report.resolved_time.to_s(:long) %><br>
       <% end %>
+      
 
     </div><!-- /.col -->
   </div><!-- /.row -->
