@@ -55,7 +55,7 @@ class CsvParser
       if User.where("name": s.strip)[0].nil?
         error = true
       else
-        @approvers << User.where("name": s.strip)[0]
+        @approvers << User.where("name": s.strip)[0].id
       end
     end
 
@@ -64,7 +64,7 @@ class CsvParser
       data['collaborators'] = data['collaborators'].split(',')
       data['collaborators'].each do |s|
         unless User.where("name": s.strip)[0].nil?
-          @collaborators << User.where("name": s.strip)[0]
+          @collaborators << User.where("name": s.strip)[0].id
         end
       end
     end
