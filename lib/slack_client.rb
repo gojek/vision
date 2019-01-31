@@ -8,7 +8,6 @@ class SlackClient
 	    	user = @client.users_lookupByEmail('email': email)
 	    	return user.user.name
 	    rescue Exception => e
-	    	puts e
 	    	return nil
 	    end
 	end
