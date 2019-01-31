@@ -84,7 +84,7 @@ class AccessRequest < ActiveRecord::Base
   def set_approvers(approver_id_list)
     self.approvals.delete_all
     approver_id_list.each do |approver_id|
-      approver = User.find(approver_id.id)
+      approver = User.find(approver_id)
       approval = AccessRequestApproval.create(user: approver)
       self.approvals << approval
     end
@@ -93,7 +93,7 @@ class AccessRequest < ActiveRecord::Base
   def set_collaborators(collaborator_id_list)
     self.collaborators = []
     collaborator_id_list.each do |collaborator_id|
-      self.collaborators << User.find(collaborator_id.id)
+      self.collaborators << User.find(collaborator_id)
     end
   end
 
