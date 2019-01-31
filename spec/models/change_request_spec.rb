@@ -42,44 +42,12 @@ describe ChangeRequest, type: :model do
 	 	expect(change_request.at_least_one_type).to match_array(["Please choose at least one type."])
 	 end
 
-	 describe 'set_approvers' do
-	 	it 'set change request approvers' do
-			change_request.set_approvers([user.id])
-			expect(change_request.approvals.first.user).to eq user
-	 	end
-	 end
-
-	 describe 'update_approvers' do
+	 describe 'approvers_list=' do
 	 	it 'update change request approvers' do
-	 		change_request.set_approvers([user.id])
-	 		appr = change_request.approvals.first
-	 		appr.approve = true
-	 		appr.save
-	 		change_request.update_approvers([user.id, user_2.id])
-	 		expect(change_request.approvals.first).to eq appr
+      change_request.approvers_list=([user.id, user_2.id])
+      change_request.reload
+	 		expect(change_request.approvals.first.user).to eq user
 	 		expect(change_request.approvals.second.user).to eq user_2
 	 	end
 	 end
-
-	 describe 'set_implementers' do
-	 	it 'set change request implementers' do
-			change_request.set_implementers([user.id])
-			expect(change_request.implementers.first).to eq user
-	 	end
-	 end
-
-	 describe 'set_testers' do
-	 	it 'set change request testers' do
-			change_request.set_testers([user.id])
-			expect(change_request.testers.first).to eq user
-	 	end
-	 end
-
-	 describe 'set_collaborators' do
-	 	it 'set change request collaborators' do
-			change_request.set_collaborators([user.id])
-			expect(change_request.collaborators.first).to eq user
-	 	end
-	 end
-
 end
