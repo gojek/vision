@@ -305,13 +305,8 @@ ActiveRecord::Schema.define(version: 20190121041026) do
     t.string   "current_status"
     t.string   "measurer_status"
     t.integer  "user_id"
-<<<<<<< HEAD
-    t.datetime "created_at",                                        null: false
-    t.datetime "updated_at",                                        null: false
-=======
     t.datetime "created_at",                                   null: false
     t.datetime "updated_at",                                   null: false
->>>>>>> a6b1a0b8 (create database for email migrations)
     t.datetime "resolved_time"
     t.decimal  "resolution_duration"
     t.decimal  "recovery_duration"
@@ -323,11 +318,6 @@ ActiveRecord::Schema.define(version: 20190121041026) do
     t.integer  "time_to_acknowledge_duration"
     t.string   "entity_source",                default: "Midtrans", null: false
     t.string   "visibility_type"
-<<<<<<< HEAD
-    t.integer  "resolution_duration"
-=======
->>>>>>> a6b1a0b8 (create database for email migrations)
-    t.integer  "time_to_acknowledge_duration"
   end
 
   add_index "incident_reports", ["user_id"], name: "index_incident_reports_on_user_id", using: :btree
