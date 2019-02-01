@@ -65,7 +65,7 @@ class ChangeRequestsController < ApplicationController
     @hotfixes = ChangeRequest.where(reference_cr_id: @change_request.id)
     #Notifier.mark_as_read(notifica)
     @usernames = []
-    User.all.each do |user|
+    User.active.each do |user|
       @usernames <<  user.email.split("@").first
     end
     @cr_statuses = @change_request.change_request_statuses
@@ -79,8 +79,8 @@ class ChangeRequestsController < ApplicationController
     @current_approvers = []
     @current_implementers = []
     @current_testers = []
-    @users = User.all.collect{|u| [u.name, u.id]}
-    @approvers = User.approvers.collect{|u| [u.name, u.id] if u.id != current_user.id }
+    @users = User.active.collect{|u| [u.name, u.id] }
+    @approvers = User.approvers.active.collect{|u| [u.name, u.id] if u.id != current_user.id }
   end
 
   def edit
@@ -89,8 +89,8 @@ class ChangeRequestsController < ApplicationController
     @current_collaborators = @change_request.collaborators.collect{|u| u.id}
     @current_implementers = @change_request.implementers.collect{|u| u.id}
     @current_testers = @change_request.testers.collect{|u| u.id}
-    @users = User.all.collect{|u| [u.name, u.id]}
-    @approvers = User.approvers.collect{|u| [u.name, u.id] if u.id != current_user.id}
+    @users = User.active.collect{|u| [u.name, u.id] }
+    @approvers = User.approvers.active.collect{|u| [u.name, u.id] if u.id != current_user.id }
     @current_approvers = @change_request.approvals.collect(&:user_id)
   end
 
@@ -242,10 +242,10 @@ class ChangeRequestsController < ApplicationController
     @current_collaborators = @old_change_request.collaborators.collect{|u| u.id}
     @current_implementers = @old_change_request.implementers.collect{|u| u.id}
     @current_testers = @old_change_request.testers.collect{|u| u.id}
-    @users = User.all.collect{|u| [u.name, u.id]}
+    @users = User.active.collect{|u| [u.name, u.id] }
     @current_approvers = @old_change_request.approvals.collect(&:user_id)
     @change_request = @old_change_request.dup
-    @approvers = User.approvers.collect{|u| [u.name, u.id] if u.id != current_user.id}
+    @approvers = User.approvers.active.collect{|u| [u.name, u.id] if u.id != current_user.id }
     # Clear certain fields
     @change_request.user = current_user
     @change_request.schedule_change_date = nil
@@ -262,10 +262,10 @@ class ChangeRequestsController < ApplicationController
     @current_collaborators = @old_change_request.collaborators.collect{|u| u.id}
     @current_implementers = @old_change_request.implementers.collect{|u| u.id}
     @current_testers = @old_change_request.testers.collect{|u| u.id}
-    @users = User.all.collect{|u| [u.name, u.id]}
+    @users = User.active.collect{|u| [u.name, u.id] }
     @current_approvers = @old_change_request.approvals.collect(&:user_id)
     @change_request = @old_change_request.dup
-    @approvers = User.approvers.collect{|u| [u.name, u.id] if u.id != current_user.id}
+    @approvers = User.approvers.active.collect{|u| [u.name, u.id] if u.id != current_user.id }
     # Clear certain fields
     @change_request.user = current_user
     @change_request.schedule_change_date = nil
