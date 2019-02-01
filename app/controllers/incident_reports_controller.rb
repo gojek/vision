@@ -322,7 +322,7 @@ class IncidentReportsController < ApplicationController
       }
     end
 
-    final_result = [{title: "Average Resolved Time for #{@source} Incident"}, results]
+    final_result = [{title: "Average Recovery Time Duration for #{@source} Incident"}, results]
     render :text => final_result.to_json
   end
 
