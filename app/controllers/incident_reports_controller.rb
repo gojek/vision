@@ -4,7 +4,7 @@ class IncidentReportsController < ApplicationController
   before_action :set_incident_report, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
   before_action :owner_required, only: [:edit, :update, :destroy]
-  before_action :set_source_start_end_time, only: [:total_incident_per_level, :average_acknowledge_time_incident]
+  before_action :set_source_start_end_time, only: [:total_incident_per_level, :average_resolved_time_incident]
   before_action :set_users_and_tags, only: [:new, :create, :edit, :update]
   before_action :set_incident_report_log, only: [:update]
 
@@ -310,13 +310,12 @@ class IncidentReportsController < ApplicationController
     render :text => final_result.to_json
   end
 
-  def average_acknowledge_time_incident
+  def average_resolved_time_incident
     irs = IncidentReport.group_by_week(:occurrence_time, range: @start_time..@end_time).where(source: @source)
 
     count = irs.count
     detection_duration_sum = irs.sum('extract(epoch from detection_time - occurrence_time)')
-    fixing_duration_sum = irs.sum('extract(epoch from acknowledge_time - detection_time)')
-
+    fixing_duration_sum = irs.sum('extract(epoch from resolved_time - detection_time)')
     results = fixing_duration_sum.map do |k, v|
       n = [count[k], 1].max
       {
@@ -326,7 +325,7 @@ class IncidentReportsController < ApplicationController
       }
     end
 
-    final_result = [{title: "Average Acknowledge Time for #{@source} Incident"}, results]
+    final_result = [{title: "Average Resolved Time for #{@source} Incident"}, results]
     render :text => final_result.to_json
   end
 
