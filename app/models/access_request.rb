@@ -81,7 +81,7 @@ class AccessRequest < ActiveRecord::Base
       !terminal_state? && !has_approver?(user)
   end
 
-  def set_approvers(approver_id_list)
+  def set_approvers=(approver_id_list)
     self.approvals.delete_all
     approver_id_list.each do |approver_id|
       approver = User.find(approver_id)

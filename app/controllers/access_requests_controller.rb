@@ -251,7 +251,7 @@ class AccessRequestsController < ApplicationController
   def assign_collaborators_and_approvers
     @current_approvers = Array.wrap(params[:approvers_list])
     @current_collaborators = Array.wrap(params[:collaborators_list])
-    @access_request.set_approvers(@current_approvers)
+    @access_request.set_approvers = @current_approvers
     @access_request.set_collaborators(@current_collaborators)
   end
 end
