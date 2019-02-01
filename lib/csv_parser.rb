@@ -72,6 +72,25 @@ class CsvParser
     data.delete('approvers')
     data.delete('collaborators')
 
+    if data["request_type"] != ""
+      unless ['create', 'delete', 'modify'].include?(data["request_type"].downcase)
+        data["request_type"] = ""
+        error = true
+      end
+    else
+      error = true
+    end
+
+    if data["access_type"] != ""
+      unless ['temporary', 'permanent'].include?(data["access_type"].downcase)
+        data["access_type"] = ""
+        error = true
+      end
+    else
+      error = true
+    end
+
+
     return {'data': data, 'approvers': @approvers, 'collaborators': @collaborators, 'error': error}
   end
 
