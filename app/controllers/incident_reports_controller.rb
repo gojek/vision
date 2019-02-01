@@ -4,7 +4,7 @@ class IncidentReportsController < ApplicationController
   before_action :set_incident_report, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
   before_action :owner_required, only: [:edit, :update, :destroy]
-  before_action :set_source_start_end_time, only: [:total_incident_per_level, :average_resolved_time_incident]
+  before_action :set_source_start_end_time, only: [:total_incident_per_level, :average_recovery_time_incident]
   before_action :set_users_and_tags, only: [:new, :create, :edit, :update]
   before_action :set_incident_report_log, only: [:update]
 require 'notifier.rb'
@@ -186,7 +186,7 @@ require 'notifier.rb'
 
 
   respond_to :json
-  def incident_reports_by_acknowledged_resolved_duration
+  def incident_reports_by_recovery_resolved_duration
     start_month = (Time.now).beginning_of_month
     end_month = (Time.now).end_of_month
     if params[:start_time]
@@ -214,7 +214,6 @@ require 'notifier.rb'
         resolution_duration: avg_resolved
       }
       i = i+1
-      #result << {:start => start_time, :end => end_time}
       start_month = (start_month.end_of_week + 1.day).beginning_of_day
     end
 
@@ -254,8 +253,6 @@ require 'notifier.rb'
       end_month = start_month.end_of_month
     end
     i = 1
-    #avg_recovery_data = []
-    #avg_resolved_data = []
     result = []
     title = start_month.strftime('%Y/%m')
     while start_month <= end_month do
@@ -310,7 +307,7 @@ require 'notifier.rb'
     render :text => final_result.to_json
   end
 
-  def average_resolved_time_incident
+  def average_recovery_time_incident
     irs = IncidentReport.group_by_week(:occurrence_time, range: @start_time..@end_time).where(source: @source)
 
     count = irs.count
