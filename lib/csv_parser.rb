@@ -5,7 +5,6 @@ class CsvParser
     CSV.foreach(file.path,headers: true, col_sep: ",") do |row|
       @data = CsvParser.extract(row.to_h)
       @access_request = current_user.AccessRequests.build(@data[:data])
-      assign_collaborators_and_approvers_from_csv
       if (@data[:error])
         invalid << @access_request
       else
@@ -49,24 +48,22 @@ class CsvParser
     data["start_date"] = ""
     data["end_date"] = ""
 
-    @approvers = []
+    data['set_approvers'] = []
     data['approvers'] = data['approvers'].split(',')
-    data['approvers'].each do |s|
-      if User.where("name": s.strip)[0].nil?
-        error = true
-      else
-        @approvers << User.where("name": s.strip)[0].id
-      end
+    list_approver = User.where(email: data['approvers'])
+    list_approver.each do |s|
+      data['set_approvers'] << s.id
     end
-
-    @collaborators = []
+    error = true if data['approvers'].size != data['set_approvers'].size
+      
+    data['collaborator_ids'] = []
     if data['collaborators'] != []
       data['collaborators'] = data['collaborators'].split(',')
-      data['collaborators'].each do |s|
-        unless User.where("name": s.strip)[0].nil?
-          @collaborators << User.where("name": s.strip)[0].id
-        end
+      list_collaborators = User.where(email: data['collaborators'])
+      list_collaborators.each do |s|
+        data['collaborator_ids'] << s.id
       end
+      error = true if data['collaborators'].size != data['collaborator_ids'].size
     end
 
     data.delete('approvers')
@@ -91,7 +88,7 @@ class CsvParser
     end
 
 
-    return {'data': data, 'approvers': @approvers, 'collaborators': @collaborators, 'error': error}
+    return {'data': data, 'error': error}
   end
 
   def self.convert(str)
@@ -100,12 +97,5 @@ class CsvParser
       s.strip!
       s.sub! " ","_"
     end
-  end
-
-  def self.assign_collaborators_and_approvers_from_csv
-    current_approvers = Array.wrap(@data[:approvers])
-    current_collaborators = Array.wrap(@data[:collaborators])
-    @access_request.set_approvers(current_approvers)
-    @access_request.set_collaborators(current_collaborators)
   end
 end
