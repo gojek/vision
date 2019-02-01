@@ -89,9 +89,6 @@ gem 'sunspot_solr'
 # sanitizer
 gem 'sanitize'
 
-
-
-
 group :production do
   gem 'rails_12factor'
 end
