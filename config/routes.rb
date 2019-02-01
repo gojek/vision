@@ -50,7 +50,7 @@ Rails.application.routes.draw do
   get 'incident_reports_number' => 'incident_reports#incident_reports_number'
   get 'incident_reports_internal_external' => 'incident_reports#incident_reports_internal_external'
   get 'total_incident_per_level' => 'incident_reports#total_incident_per_level'
-  get 'average_acknowledge_time_incident' => 'incident_reports#average_acknowledge_time_incident'
+  get 'average_resolved_time_incident' => 'incident_reports#average_resolved_time_incident'
   get 'signin' => 'pages#signin'
   get 'blank' => 'pages#blank'
 
