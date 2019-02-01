@@ -98,6 +98,7 @@ ActiveRecord::Schema.define(version: 20190125115041) do
     t.datetime "updated_at",                                      null: false
     t.string   "business_justification"
     t.boolean  "metabase",                        default: false
+    t.boolean  "solutions_dashboard",             default: false
   end
 
   add_index "access_requests", ["user_id"], name: "index_access_requests_on_user_id", using: :btree
