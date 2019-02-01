@@ -93,21 +93,6 @@ class User < ActiveRecord::Base
     token
   end
 
-  #refer to https://developers.google.com/oauthplayground and https://github.com/nahi/httpclient/blob/master/sample/howto.rb
-  def get_contacts
-    client = HTTPClient.new()
-    target = 'https://www.google.com/m8/feeds/contacts/default/full/'
-    token = 'Bearer ' + self.fresh_token
-    response = client.get(target, nil, {'Gdata-version' => '3.0', 'Authorization' => token}).body
-    response
-    xml = Nokogiri.XML(response)
-    all_contact = []
-    xml.xpath('//gd:email').each do |entry|
-      all_contact.push(entry['address'])
-    end
-    all_contact
-  end
-
   def get_slack_username
     client = Slack::Web::Client.new
     client.users_list.members.each do |u|
