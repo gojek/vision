@@ -46,7 +46,7 @@ Rails.application.routes.draw do
 
   get 'incident_reports_by_source' => 'incident_reports#incident_reports_by_source'
   get 'change_requests_by_success_rate' => 'change_requests#change_requests_by_success_rate'
-  get 'incident_reports_by_recovery_resolved_duration' => 'incident_reports#incident_reports_by_recovery_resolved_duration'
+  get 'incident_reports_by_recovered_resolved_duration' => 'incident_reports#incident_reports_by_recovered_resolved_duration'
   get 'incident_reports_number' => 'incident_reports#incident_reports_number'
   get 'incident_reports_internal_external' => 'incident_reports#incident_reports_internal_external'
   get 'total_incident_per_level' => 'incident_reports#total_incident_per_level'
