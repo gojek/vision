@@ -3,7 +3,7 @@ require 'spec_helper'
 describe AccessRequestsController, type: :controller do
   context 'user access' do
     let(:user) {FactoryGirl.create(:user)}
-    let(:approver_ar) {FactoryGirl.create(:approver_ar)}
+    let(:approver_ar) {FactoryGirl.create(:approver_ar, email:'patrick.star@midtrans.com')}
     let(:access_request) {access_request = FactoryGirl.create(:access_request, user: user)}
 
     before :each do
@@ -12,6 +12,10 @@ describe AccessRequestsController, type: :controller do
     end
 
     describe 'POST #import_from_csv' do
+      before :each do
+        controller.request.env['devise.mapping'] = Devise.mappings[:approver_ar]
+        sign_in approver_ar
+      end
       it "can upload validated data csv file" do
         @file = fixture_file_upload('files/valid.csv', 'text/csv')
         post :import_from_csv, :csv => @file
