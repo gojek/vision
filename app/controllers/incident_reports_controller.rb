@@ -186,7 +186,7 @@ class IncidentReportsController < ApplicationController
 
 
   respond_to :json
-  def incident_reports_by_recovery_resolved_duration
+  def incident_reports_by_recovered_resolved_duration
     start_month = (Time.now).beginning_of_month
     end_month = (Time.now).end_of_month
     if params[:start_time]
