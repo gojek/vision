@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby "~> 2.3.0"
+ruby "2.3.0"
 
 # Bundle edge Rails insteadhttps://developers.google.com/oauthplayground: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.10'
@@ -97,7 +97,7 @@ group :development do
 
   # mail catcher is being used for email in development
   # based on the https://mailcatcher.me/
-  # it is stated that "Please don't put mailcatcher into your Gemfile. 
+  # it is stated that "Please don't put mailcatcher into your Gemfile.
   # It will conflict with your applications gems at some point."
   # Instead, simply run gem install mailcatcher then mailcatcher to get started.
 
@@ -116,6 +116,7 @@ group :development, :test do
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+  gem 'rubocop', '~> 0.63.1', require: false
 end
 
 group :test do
