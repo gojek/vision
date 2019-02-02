@@ -137,7 +137,11 @@ class SlackAttachmentBuilder
   end
 
   def generate_incident_report_attachment(incident_report)
-    acknowledge_time = "#{incident_report.acknowledge_time} (#{pluralize(incident_report.time_to_acknowledge_duration.to_i, 'minute')})" if incident_report.acknowledge_time.present? else "-"
+    acknowledge_time = if incident_report.acknowledge_time.present?
+      "#{incident_report.acknowledge_time} (#{pluralize(incident_report.time_to_acknowledge_duration.to_i, 'minute')})"
+    else
+      "-"
+    end
     attachment = {
       fallback: incident_report.service_impact,
       color: "#439FE0",
