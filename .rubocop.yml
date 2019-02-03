@@ -1,0 +1,49 @@
+AllCops:
+  Exclude:
+    - 'Guardfile'
+    - 'db/schema.rb'
+    - 'features/**/*'
+    - 'bin/**/*'
+    - 'script/**/*'
+    - 'config/**/*'
+    # baby step
+    - 'db/**/*'
+    - 'lib/tasks/**/*'
+    - 'spec/**/*'
+    - 'app/**/*'
+
+# we are not ready for its power
+Style/MethodCallWithArgsParentheses:
+  Enabled: false
+Metrics/BlockLength:
+  Enabled: false
+Metrics/CyclomaticComplexity:
+  Enabled: false
+Metrics/PerceivedComplexity:
+  Enabled: false
+Metrics/ClassLength:
+  Enabled: false
+Metrics/AbcSize:
+  Enabled: false
+Metrics/MethodLength:
+  Enabled: false
+Style/Documentation:
+  Enabled: false
+Metrics/LineLength:
+  Max: 120
+
+# special configuration for vision
+Naming/UncommunicativeMethodParamName:
+  AllowedNames:
+    - ir
+    - cr
+
+Naming/PredicateName:
+  NamePrefix:
+    - is_
+  NamePrefixBlacklist:
+    - is_
+
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false
+
