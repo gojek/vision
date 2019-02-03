@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'slack_attachment_builder.rb'
 require 'mentioner.rb'
 
@@ -25,11 +27,11 @@ class SlackNotif
   def notify_change_cr(change_request, type)
     attachment = @attachment_builder.generate_change_request_attachment(change_request)
     link = change_request_url(change_request)
-    approvers = change_request.approvals.collect{|approval| approval.user}
+    approvers = change_request.approvals.collect(&:user)
     approver_message = "#{type.humanize} <#{link}|change request> needs your approvals"
     notify_users(approvers, approver_message, attachment)
     associated_users = change_request.associated_users.to_a
-    approvers.each {|approver| associated_users.delete(approver)}
+    approvers.each { |approver| associated_users.delete(approver) }
     general_message = "<#{link}|Change request> has been #{type}"
     message_users(associated_users, general_message, attachment)
     message_channel('cab', general_message, attachment)
@@ -38,7 +40,7 @@ class SlackNotif
   def notify_change_ar(access_request, type)
     attachment = @attachment_builder.generate_access_request_attachment(access_request)
     link = access_request_url(access_request)
-    approvers = access_request.approvals.collect{|approval| approval.user}
+    approvers = access_request.approvals.collect(&:user)
     approver_message = "#{type.humanize} <#{link}|access_request> needs your approvals"
     notify_users(approvers, approver_message, attachment)
   end
@@ -54,15 +56,30 @@ class SlackNotif
   def notify_new_comment(comment)
     attachment = @attachment_builder.generate_comment_attachment(comment)
     link = change_request_url(comment.change_request)
-    mentionees =  Mentioner.process_mentions(comment)
-    if !mentionees.empty?
+    mentionees = Mentioner.process_mentions(comment)
+    unless mentionees.empty?
       mentioned_message = "You are mentioned in #{comment.user.name} comment's on a <#{link}|change request>"
       message_users(mentionees, mentioned_message, attachment)
     end
     associated_users = comment.change_request.associated_users.to_a
     associated_users.delete(comment.user)
-    mentionees.each {|mentionee| associated_users.delete(mentionee)}
+    mentionees.each { |mentionee| associated_users.delete(mentionee) }
     general_message = "A new comment from #{comment.user.name} on a <#{link}|change request>"
+    message_users(associated_users, general_message, attachment)
+  end
+
+  def notify_new_ar_comment(ar_comment)
+    attachment = @attachment_builder.generate_ar_comment_attachment(ar_comment)
+    link = access_request_url(ar_comment.access_request)
+    mentionees = Mentioner.process_mentions(ar_comment)
+    unless mentionees.empty?
+      mentioned_message = "You are mentioned in #{ar_comment.user.name} comment's on an <#{link}|access request>"
+      message_users(mentionees, mentioned_message, attachment)
+    end
+    associated_users = ar_comment.access_request.collaborators.to_a
+    associated_users.delete(ar_comment.user)
+    mentionees.each { |mentionee| associated_users.delete(mentionee) }
+    general_message = "A new comment from ${comment.user.name} on a <#{link}|access request>"
     message_users(associated_users, general_message, attachment)
   end
 
@@ -85,7 +102,6 @@ class SlackNotif
     message_channel('incidents', general_message, attachment)
   end
 
-
   def notify_new_access_request(access_request)
     attachment = @attachment_builder.generate_access_request_attachment(access_request)
     link = access_request_url(access_request)
@@ -96,8 +112,8 @@ class SlackNotif
 
   end
 
-
   private
+
   def get_slack_username(user)
     @members.select { |u| user.email == u.profile.email }.first.try(:name)
   end
@@ -124,6 +140,7 @@ class SlackNotif
   end
 
   private
+
   def message_users(users, message, attachment)
     users.each do |user|
       try_send(user, message, [attachment])
@@ -133,5 +150,4 @@ class SlackNotif
   def message_channel(channel, message, attachment)
     @client.chat_postMessage(channel: "##{channel}", text: message, attachments: [attachment])
   end
-
 end

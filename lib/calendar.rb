@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Calendar
   include Rails.application.routes.url_helpers
 
@@ -14,11 +16,11 @@ class Calendar
       'location' => '',
       'start' => { 'dateTime' => change_request.schedule_change_date.to_datetime },
       'end' => { 'dateTime' => change_request.planned_completion.to_datetime },
-      'attendees' => users.collect do |user| { "email" => user.email } end
+      'attendees' => users.collect { |user| { 'email' => user.email } }
     }
   end
 
-  def set_event(user, event, event_id=nil)
+  def set_event(user, event, event_id = nil)
     client = Google::APIClient.new
     client.authorization.access_token = user.token
     service = client.discovered_api('calendar', 'v3')
@@ -35,10 +37,9 @@ class Calendar
       parameters['eventId'] = event_id
     end
 
-    et_event = client.execute(:api_method => api_method,
-                              :parameters => parameters,
-                              :body => JSON.dump(event),
-                              :headers => {'Content-Type' => 'application/json'})
+    et_event = client.execute(api_method: api_method,
+                              parameters: parameters,
+                              body: JSON.dump(event),
+                              headers: { 'Content-Type' => 'application/json' })
   end
-
 end
