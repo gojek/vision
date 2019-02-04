@@ -104,7 +104,8 @@ class SlackNotif
   def notify_new_access_request(access_request)
     attachment = @attachment_builder.generate_access_request_attachment(access_request)
     link = access_request_url(access_request)
-    general_message = "<#{link}|Access request> has been created for #{access_request.employee_name}(#{access_request.employee_department})"
+    general_message = "<#{link}|Access request> has been created for " \
+                      "#{access_request.employee_name}(#{access_request.employee_department})"
     message_users(access_request.associated_users, general_message, attachment)
   end
 
@@ -134,8 +135,6 @@ class SlackNotif
       try_send(user, message, [actionable_attachment])
     end
   end
-
-  private
 
   def message_users(users, message, attachment)
     users.each do |user|
