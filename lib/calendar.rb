@@ -10,7 +10,7 @@ class Calendar
 
   def build_event_from_cr(change_request)
     users = [change_request.user] + change_request.collaborators + change_request.implementers
-    event = {
+    {
       'summary' => change_request.change_summary,
       'description' => "CR: #{change_request_url(change_request)}\nPIC: #{change_request.requestor_name}",
       'location' => '',
@@ -37,9 +37,9 @@ class Calendar
       parameters['eventId'] = event_id
     end
 
-    et_event = client.execute(api_method: api_method,
-                              parameters: parameters,
-                              body: JSON.dump(event),
-                              headers: { 'Content-Type' => 'application/json' })
+    client.execute(api_method: api_method,
+                   parameters: parameters,
+                   body: JSON.dump(event),
+                   headers: { 'Content-Type' => 'application/json' })
   end
 end

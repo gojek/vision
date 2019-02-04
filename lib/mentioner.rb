@@ -9,7 +9,7 @@ class Mentioner
 
   def self.extract_username(comment)
     content = comment.body
-    usernames = content.scan(username_extract_regex).map { |username| username.gsub(mention_prefix, '') }
+    content.scan(username_extract_regex).map { |username| username.gsub(mention_prefix, '') }
   end
 
   def self.find_mentionees_from_username(usernames)

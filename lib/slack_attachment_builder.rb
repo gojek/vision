@@ -8,7 +8,7 @@ class SlackAttachmentBuilder
 
   def generate_change_request_attachment(change_request)
     approvers_name = change_request.approvals.includes(:user).pluck(:name)
-    attachment = {
+    {
       fallback: change_request.change_summary,
       color: '#439FE0',
       title: "#{change_request.id}. #{change_request.change_summary}",
@@ -29,7 +29,7 @@ class SlackAttachmentBuilder
           short: true
         }, {
           title: 'Downtime Impact',
-          value: change_request.downtime_expected ? "#{change_request.expected_downtime_in_minutes} minute(s)" : 'No expected Downtime',
+          value: change_request_downtime(change_request),
           short: false
         }, {
           title: 'Deployment Time',
@@ -46,45 +46,8 @@ class SlackAttachmentBuilder
     }
   end
 
-  def generate_access_request_attachment(access_request)
-    approvers_name = access_request.approvals.includes(:user).pluck(:name)
-    attachment = {
-      fallback: access_request.employee_name,
-      color: '#439FE0',
-      title: "#{access_request.id}. #{access_request.employee_name}",
-      title_link: access_request_url(access_request),
-      callback_id: access_request.id,
-      fields: [
-        {
-          title: 'Request Type',
-          value: access_request.request_type,
-          short: true
-        }, {
-          title: 'Access Type',
-          value: access_request.access_type,
-          short: true
-        }, {
-          title: 'Requested Date',
-          value: access_request.request_date,
-          short: true
-        }, {
-          title: 'Requestor',
-          value: User.find(access_request.user_id).name,
-          short: true
-        }, {
-          title: 'Approvers',
-          value: (approvers_name.join ', '),
-          short: false
-        }
-      ],
-      footer: 'VT-Vision',
-      ts: access_request.created_at.to_datetime.to_f.round
-    }
-  end
-
   def generate_simple_change_request_attachment(change_request)
-    approvers_name = change_request.approvals.includes(:user).pluck(:name)
-    attachment = {
+    {
       fallback: change_request.change_summary,
       color: '#439FE0',
       title: "#{change_request.id}. #{change_request.change_summary}",
@@ -126,7 +89,7 @@ class SlackAttachmentBuilder
 
   def generate_comment_attachment(comment)
     change_request = comment.change_request
-    attachment = {
+    {
       fallback: comment.body,
       text: comment.body,
       color: '#439FE0',
@@ -139,7 +102,7 @@ class SlackAttachmentBuilder
 
   def generate_ar_comment_attachment(ar_comment)
     access_request = ar_comment.access_request
-    attachment = {
+    {
       fallback: ar_comment.body,
       text: ar_comment.body,
       color: '#439FE0',
@@ -152,7 +115,7 @@ class SlackAttachmentBuilder
 
   def generate_approval_status_cr_attachment(change_request, approval)
     notes = approval.notes
-    attachment = {
+    {
       fallback: change_request.change_summary,
       color: '#439FE0',
       title: "#{change_request.id}. #{change_request.change_summary}",
@@ -176,11 +139,12 @@ class SlackAttachmentBuilder
 
   def generate_incident_report_attachment(incident_report)
     acknowledge_time = if incident_report.acknowledge_time.present?
-                         "#{incident_report.acknowledge_time} (#{pluralize(incident_report.time_to_acknowledge_duration.to_i, 'minute')})"
+                         "#{incident_report.acknowledge_time} " \
+                         "(#{pluralize(incident_report.time_to_acknowledge_duration.to_i, 'minute')})"
                        else
                          '-'
                        end
-    attachment = {
+    {
       fallback: incident_report.service_impact,
       color: '#439FE0',
       title: "#{incident_report.id}. #{incident_report.service_impact}",
@@ -219,7 +183,7 @@ class SlackAttachmentBuilder
   end
 
   def generate_access_request_attachment(access_request)
-    attachment = {
+    {
       fallback: access_request.request_type,
       color: '#439FE0',
       title: "#{access_request.id}. #{access_request.employee_name}(#{access_request.employee_department})",
@@ -239,5 +203,15 @@ class SlackAttachmentBuilder
       footer: 'VT-Vision',
       ts: access_request.created_at.to_datetime.to_f.round
     }
+  end
+
+  private
+
+  def change_request_downtime(change_request)
+    if change_request.downtime_expected?
+      "#{change_request.expected_downtime_in_minutes} minute(s)"
+    else
+      'No expected Downtime'
+    end
   end
 end
