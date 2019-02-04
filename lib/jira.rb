@@ -17,7 +17,7 @@ class Jira
   def get_issue(key)
     begin
       issue = @client.Issue.find(key)
-    rescue JIRA::HTTPError => e
+    rescue JIRA::HTTPError
       return key
     end
 
@@ -28,10 +28,12 @@ class Jira
     name = status_category['name']
     url = URI.join(ENV['JIRA_URL'], '/browse/', key)
 
-    html = "<span class='jira-button'>"
-    html << "  <a href='#{url}' target='_blank' data-toggle='popover' title='Summary' data-content='#{summary}'><img class='icon' src='#{issue_type_icon}'> #{key} </a>"
-    html << "  <span class='jira-#{color_name.downcase}'>#{name}</span>"
-    html << '</span>'
+    "<span class='jira-button'>" \
+    "  <a href='#{url}' target='_blank' data-toggle='popover' title='Summary' data-content='#{summary}'>" \
+    "    <img class='icon' src='#{issue_type_icon}'> #{key}" \
+    '  </a>' \
+    "  <span class='jira-#{color_name.downcase}'>#{name}</span>" \
+    '</span>'
   end
 
   def jiraize(text)
