@@ -6,7 +6,7 @@ namespace :slack_integration do
     client.users_list.members.each do |u|
       slack_usernames[u.profile.email] = u.name
     end
-    User.all.each do |user|
+    User.active.each do |user|
       if !(slack_username = slack_usernames[user.email]).blank?
         puts "#{user.email} username is #{slack_username}".colorize(:light_green)
         user.slack_username = slack_username
