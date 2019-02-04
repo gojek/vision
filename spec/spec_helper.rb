@@ -28,7 +28,6 @@ RSpec.configure do |config|
     cal_response_json = File.read(File.expand_path("../webmocks/calendar_response.json", __FILE__))
     cal_add_response_json = File.read(File.expand_path("../webmocks/add_calendar.json", __FILE__))
     get_cal_response_json = File.read(File.expand_path("../webmocks/get_calendar.json", __FILE__))
-    contact_response_xml = File.read(File.expand_path("../webmocks/contact_response.xml", __FILE__))
 
     # get calendar
     stub_request(:get, "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest")
@@ -55,13 +54,6 @@ RSpec.configure do |config|
         'Server' => 'GSE',
         'Content-type' => 'application/json'
       })
-
-    # get contacts
-    stub_request(:get, "https://www.google.com/m8/feeds/contacts/default/full/").
-      with(:headers => {'Accept'=>'*/*', 'Authorization'=>'Bearer 123456',
-                        'Gdata-Version'=>'3.0',
-                        'User-Agent'=>'HTTPClient/1.0 (2.6.0.1, ruby 2.2.2 (2015-04-13))'})
-      .to_return(:status => 200, :body => contact_response_xml, :headers => {})
 
     # delete calendar
     stub_request(:delete, "https://www.googleapis.com/calendar/v3/calendars/primary/events/?sendNotifications=true").
