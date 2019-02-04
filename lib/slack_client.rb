@@ -1,16 +1,16 @@
 class SlackClient
-	def initialize
+  def initialize
     @client = Slack::Web::Client.new
   end
 
-	def get_slack_username(email)
-	    begin
-	    	user = @client.users_lookupByEmail('email': email)
-	    	return user.user.name
-	    rescue Exception => e
-	    	return nil
-	    end
-	end
+  def get_slack_username(email)
+    begin
+      user = @client.users_lookupByEmail('email': email)
+      return user.user.name
+    rescue Exception => e
+      return nil
+    end
+  end
 
   def reassign_slack_username(user)
     user.slack_username = get_slack_username(user.email)
