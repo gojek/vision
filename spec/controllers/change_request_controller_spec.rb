@@ -26,6 +26,12 @@ describe ChangeRequestsController, type: :controller do
         get :show, id: change_request
         expect(assigns(:cr_statuses)).to eq change_request.change_request_statuses
       end
+
+      it 'get all the username from active user' do
+        get :show, id: change_request
+
+        expect(assigns(:usernames)).to include user.email.split('@')[0]
+      end
     end
 
     describe 'GET #index' do
@@ -110,6 +116,22 @@ describe ChangeRequestsController, type: :controller do
         get :new
         expect(assigns(:change_request)).to be_a_new(ChangeRequest)
       end
+
+      it 'returns total of active user' do
+        user_locked = FactoryGirl.create(:user)
+        user_locked.update_attribute(:locked_at, Time.current)
+        get :new
+
+        expect(assigns(:users).count).to match 1
+      end
+
+      it 'returns total of approver user' do
+        approver = FactoryGirl.create(:approver)
+        get :new
+        puts
+
+        expect(assigns(:approvers).count).to match 1
+      end
     end
 
     describe 'GET #edit' do
@@ -122,6 +144,21 @@ describe ChangeRequestsController, type: :controller do
         cr = FactoryGirl.create(:change_request)
         get :edit, id: cr
         expect(response).to redirect_to(change_requests_url)
+      end
+
+      it 'returns total of active user' do
+        user_locked = FactoryGirl.create(:user)
+        user_locked.update_attribute(:locked_at, Time.current)
+        get :edit, id: change_request
+
+        expect(assigns(:users).count).to match 6
+      end
+
+      it 'returns total of approver user' do
+        approver = FactoryGirl.create(:approver)
+        get :edit, id: change_request
+
+        expect(assigns(:approvers).count).to match 3
       end
     end
 
