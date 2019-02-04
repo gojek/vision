@@ -5,14 +5,10 @@ class CsvParser
     CSV.foreach(file.path,headers: true, col_sep: ",") do |row|
       @data = CsvParser.extract(row.to_h)
       @access_request = current_user.AccessRequests.build(@data[:data])
-      if (@data[:error])
+      if @data[:error] || @access_request.invalid?
         invalid << @access_request
       else
-        if @access_request.valid?
-          valid << @access_request
-        else
-          invalid << @access_request
-        end
+        valid << @access_request
       end
     end
     return valid, invalid
@@ -20,6 +16,9 @@ class CsvParser
 
   def self.extract(data)
     error = false
+    data["start_date"] = ""
+    data["end_date"] = ""
+
     if data["fingerprint"] != ""
       data["fingerprint"] = convert(data['fingerprint'])
       data["fingerprint"].each do |i|
@@ -30,7 +29,6 @@ class CsvParser
         end
       end
     end
-    data.delete("fingerprint")
 
     if data["other_access"] != ""
       data['other_access'] = convert(data['other_access'])
@@ -43,31 +41,6 @@ class CsvParser
         end
       end
     end
-    data.delete("other_access")
-
-    data["start_date"] = ""
-    data["end_date"] = ""
-
-    data['set_approvers'] = []
-    data['approvers'] = data['approvers'].split(',')
-    list_approver = User.where(email: data['approvers'])
-    list_approver.each do |s|
-      data['set_approvers'] << s.id
-    end
-    error = true if data['approvers'].size != data['set_approvers'].size
-      
-    data['collaborator_ids'] = []
-    if data['collaborators'] != []
-      data['collaborators'] = data['collaborators'].split(',')
-      list_collaborators = User.where(email: data['collaborators'])
-      list_collaborators.each do |s|
-        data['collaborator_ids'] << s.id
-      end
-      error = true if data['collaborators'].size != data['collaborator_ids'].size
-    end
-
-    data.delete('approvers')
-    data.delete('collaborators')
 
     if data["request_type"] != ""
       unless ['create', 'delete', 'modify'].include?(data["request_type"].downcase)
@@ -87,6 +60,19 @@ class CsvParser
       error = true
     end
 
+    data['set_approvers'] = []
+    data['approvers'] = data['approvers'].split(',')
+    data['set_approvers'] = User.where(email: data['approvers']).map(&:id)
+    error = true if data['approvers'].size != data['set_approvers'].size
+
+    data['collaborators'] = data['collaborators'].split(',')
+    data['collaborator_ids'] = User.where(email: data['collaborators']).map(&:id)
+    error = true if data['collaborators'].size != data['collaborator_ids'].size
+
+    data.delete('approvers')
+    data.delete('collaborators')
+    data.delete("fingerprint")
+    data.delete("other_access")
 
     return {'data': data, 'error': error}
   end
