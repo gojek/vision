@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   end
 
   def token_required!
-    if current_user.token.nil? or current_user.expired_session?
+    if current_user.token.nil?
       sign_out current_user
     elsif current_user.expired?
       current_user.refresh!
