@@ -312,11 +312,6 @@ ActiveRecord::Schema.define(version: 20190124034547) do
     t.text     "action_item"
     t.string   "action_item_status"
     t.datetime "action_item_done_time"
-<<<<<<< HEAD
-    t.string   "visibility_type"
-    t.integer  "resolution_duration"
-=======
->>>>>>> 5185c86122da2a13bcf50bea7bd18d1ee9ee9d24
     t.integer  "time_to_acknowledge_duration"
   end
 
