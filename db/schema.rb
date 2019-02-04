@@ -11,8 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190115065210) do
-
+ActiveRecord::Schema.define(version: 20190124034547) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -286,14 +285,6 @@ ActiveRecord::Schema.define(version: 20190115065210) do
 
   add_index "incident_report_versions", ["item_type", "item_id"], name: "index_incident_report_versions_on_item_type_and_item_id", using: :btree
 
-  create_table "incident_report_visibilities", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "incident_report_id"
-  end
-
-  add_index "incident_report_visibilities", ["incident_report_id"], name: "index_incident_report_visibilities_on_incident_report_id", using: :btree
-  add_index "incident_report_visibilities", ["user_id"], name: "index_incident_report_visibilities_on_user_id", using: :btree
-
   create_table "incident_reports", force: :cascade do |t|
     t.string   "service_impact"
     t.text     "problem_details"
@@ -321,8 +312,11 @@ ActiveRecord::Schema.define(version: 20190115065210) do
     t.text     "action_item"
     t.string   "action_item_status"
     t.datetime "action_item_done_time"
+<<<<<<< HEAD
     t.string   "visibility_type"
     t.integer  "resolution_duration"
+=======
+>>>>>>> 5185c86122da2a13bcf50bea7bd18d1ee9ee9d24
     t.integer  "time_to_acknowledge_duration"
   end
 
@@ -452,8 +446,6 @@ ActiveRecord::Schema.define(version: 20190115065210) do
   add_foreign_key "incident_report_collaborators", "users"
   add_foreign_key "incident_report_logs", "incident_reports"
   add_foreign_key "incident_report_logs", "users"
-  add_foreign_key "incident_report_visibilities", "incident_reports"
-  add_foreign_key "incident_report_visibilities", "users"
   add_foreign_key "incident_reports", "users"
   add_foreign_key "notifications", "change_requests"
   add_foreign_key "notifications", "incident_reports"

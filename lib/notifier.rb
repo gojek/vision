@@ -53,7 +53,7 @@ class Notifier
   	notification_receiver = []
 
   	#add all user
-  	notification_receiver = notification_receiver + User.all
+  	notification_receiver = notification_receiver + User.active
 
   	#substract the whodunnit from user list
   	notification_receiver.each do |receiver|
