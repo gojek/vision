@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
       flash[:alert] = "Please fill the form correctly to propose your access request to approver."
     end
     logger.info "Returning User to.......... #{return_url}"
-    return return_url
+    return_url
   end
 
   def stream(filename, content_type, enumerator)
