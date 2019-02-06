@@ -20,8 +20,7 @@ class CsvParser
     data["end_date"] = ""
 
     if data["fingerprint"] != ""
-      data["fingerprint"] = convert(data['fingerprint'])
-      data["fingerprint"].each do |i|
+      data['fingerprint'].split(',').map {|s| s.strip.sub " ","_" }.each do |i|
       	if ["business_operations","business_area","it_operations","server_room","archive_room","engineering_area"].include?(i)
         	data["fingerprint_"+i] = "1"
         else
@@ -31,8 +30,7 @@ class CsvParser
     end
 
     if data["other_access"] != ""
-      data['other_access'] = convert(data['other_access'])
-      data["other_access"].each do |i|
+      data['other_access'].split(',').map {|s| s.strip.sub " ","_" }.each do |i|
       	if ['internet_access','slack_access','admin_tools','vpn_access','github_gitlab','exit_interview','access_card','parking_cards','id_card',
       		'name_card','insurance_card','cash_advance','metabase','solutions_dashboard'].include?(i)
         	data[i] = "1"
@@ -42,21 +40,13 @@ class CsvParser
       end
     end
 
-    if data["request_type"] != ""
-      unless ['create', 'delete', 'modify'].include?(data["request_type"].downcase)
-        data["request_type"] = ""
-        error = true
-      end
-    else
+    if data["request_type"] == "" || ['create', 'delete', 'modify'].exclude?(data["request_type"].downcase)
+      data["request_type"] = ""
       error = true
     end
 
-    if data["access_type"] != ""
-      unless ['temporary', 'permanent'].include?(data["access_type"].downcase)
-        data["access_type"] = ""
-        error = true
-      end
-    else
+    if data["access_type"] == "" || ['temporary', 'permanent'].exclude?(data["access_type"].downcase)
+      data["access_type"] = ""
       error = true
     end
 
@@ -75,13 +65,5 @@ class CsvParser
     data.delete("other_access")
 
     return {'data': data, 'error': error}
-  end
-
-  def self.convert(str)
-    str = str.split(',')
-    str.each do |s|
-      s.strip!
-      s.sub! " ","_"
-    end
   end
 end
