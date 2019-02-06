@@ -4,9 +4,10 @@ class ChangeRequest < ActiveRecord::Base
   attr_accessor :approvers_list
 
   acts_as_readable :on => :updated_at
-  has_and_belongs_to_many :collaborators, join_table: :collaborators, :class_name =>'User'
+  has_and_belongs_to_many :collaborators, join_table: :collaborators, class_name: :User
   has_and_belongs_to_many :testers, join_table: :testers, class_name: :User
   has_and_belongs_to_many :implementers, join_table: :implementers, class_name: :User
+  has_and_belongs_to_many :associated_users, join_table: :change_requests_associated_users, class_name: :User
   has_many :change_request_statuses, -> {order('created_at asc')}, dependent: :destroy
   has_many :approvals, dependent: :destroy
   has_many :comments, dependent: :destroy
@@ -35,6 +36,17 @@ class ChangeRequest < ActiveRecord::Base
   validates :expected_downtime_in_minutes, numericality: { only_integer: true }, if: :downtime_expected?
   validate :deploy_date, :if => :schedule_change_date? && :planned_completion?
   validate :grace_period_date, :if => :grace_period_date_starts? && :grace_period_end
+
+  after_save :set_associated_users
+
+  def set_associated_users
+    associated_users_array = Array.wrap([user_id])
+    associated_users_array.concat(collaborators.collect(&:id).to_a)
+    associated_users_array.concat(testers.collect(&:id).to_a)
+    associated_users_array.concat(implementers.collect(&:id).to_a)
+    associated_users_array.concat(approvals.collect(&:user_id).to_a)
+    self.associated_user_ids = associated_users_array.uniq
+  end
 
   searchable do
     text :change_summary, stored: true
@@ -254,14 +266,6 @@ class ChangeRequest < ActiveRecord::Base
   end
 
   def self.relevant_change_requests(user)
-    ChangeRequest.where("user_id = ? OR id IN (?)",
-      user.id,
-      Array.wrap(
-        Approval.where("user_id = ?", user.id).collect(&:change_request_id).to_a +
-        user.collaborate_change_request_ids +
-        user.implement_change_request_ids +
-        user.test_change_request_ids
-      ).uniq
-    ).distinct
+    user.associated_change_requests
   end
 end
