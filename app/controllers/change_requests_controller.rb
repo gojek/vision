@@ -121,8 +121,6 @@ class ChangeRequestsController < ApplicationController
         @status.save
         Notifier.cr_notify(current_user, @change_request, 'new_cr')
         ChangeRequestSlackNewJob.perform_async(@change_request)
-        # SlackNotif.new.notify_new_cr @change_request
-        puts 'UDAH LANJUT WOY'
         Thread.new do
           UserMailer.notif_email(@change_request.user, @change_request, @status).deliver_now
           ActiveRecord::Base.connection.close
@@ -158,7 +156,7 @@ class ChangeRequestsController < ApplicationController
         end 
         Notifier.cr_notify(current_user, @change_request, 'update_cr')
         ChangeRequestSlackUpdateJob.perform_async(@change_request)
-        # SlackNotif.new.notify_update_cr @change_request
+
         flash[:success] = 'Change request was successfully updated.'
         flash[:success] += " Calendar event creation failed: #{event.error_messages}." unless event.success?
         format.html { redirect_to @change_request }
@@ -213,7 +211,6 @@ class ChangeRequestsController < ApplicationController
       approval.save!
       Notifier.cr_notify(current_user, @change_request, 'cr_approved')
       ChangeRequestSlackApprovalJob.perform_async(@change_request, approval)
-      # SlackNotif.new.notify_approval_status_cr(@change_request, approval)
       flash[:success] = 'Change Request Approved'
     end
     redirect_to @change_request
@@ -232,7 +229,6 @@ class ChangeRequestsController < ApplicationController
       approval.update(:approve => false, :notes => reject_reason)
       flash[:notice] = 'Change Request Rejected'
       ChangeRequestSlackApprovalJob.perform_async(@change_request, approval)
-      # SlackNotif.new.notify_approval_status_cr(@change_request, approval)
     end
     redirect_to @change_request
   end
