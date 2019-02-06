@@ -16,9 +16,10 @@ class User < ActiveRecord::Base
   has_many :IncidentReports
   has_many :ChangeRequests
   has_many :AccessRequests
-  has_and_belongs_to_many :collaborate_change_requests, join_table: :collaborators, class_name: 'ChangeRequest'
+  has_and_belongs_to_many :collaborate_change_requests, join_table: :collaborators, class_name: :ChangeRequest
   has_and_belongs_to_many :implement_change_requests, join_table: :implementers, class_name: :ChangeRequest
   has_and_belongs_to_many :test_change_requests, join_table: :testers, class_name: :ChangeRequest
+  has_and_belongs_to_many :associated_change_requests, join_table: :change_requests_associated_users, class_name: :ChangeRequest
   has_many :Comments
   has_many :notifications, dependent: :destroy
   has_many :Approvals, :dependent => :destroy
@@ -114,15 +115,7 @@ class User < ActiveRecord::Base
   end
 
   def self.associated_users(change_request)
-    User.where("id IN (?)",  
-      Array.wrap(
-        [change_request.user_id] +
-        change_request.collaborator_ids +
-        change_request.tester_ids +
-        change_request.implementer_ids +
-        change_request.approvals.collect(&:user_id).to_a
-      ).uniq
-    )
+    change_request.associated_users
   end
 
 end
