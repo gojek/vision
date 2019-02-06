@@ -1,4 +1,6 @@
 #
+require 'google_oauth.rb'
+
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
@@ -14,7 +16,7 @@ class ApplicationController < ActionController::Base
     if current_user.token.nil? or current_user.expired_session?
       sign_out current_user
     elsif current_user.expired?
-      current_user.refresh!
+      GoogleOAuth.refresh_token(current_user)
     end
   end
 
