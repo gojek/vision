@@ -63,10 +63,10 @@ require 'notifier.rb'
     respond_to do |format|
       if @incident_report.save
         flash[:success] = 'Incident report was successfully created.'
+        Notifier.ir_notify(current_user, @incident_report, 'new_ir')
+        IncidentReportNewSlackNotifJob.perform_async(@incident_report)
         format.html { redirect_to @incident_report }
         format.json { render :show, status: :created, location: @incident_report }
-        Notifier.ir_notify(current_user, @incident_report, 'new_ir')
-        SlackNotif.new.notify_new_ir @incident_report
       else
         @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
         @current_tags = []
