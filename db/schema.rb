@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190115065210) do
+ActiveRecord::Schema.define(version: 20190124034547) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -210,6 +210,14 @@ ActiveRecord::Schema.define(version: 20190115065210) do
   add_index "change_requests", ["reference_cr_id"], name: "index_change_requests_on_reference_cr_id", using: :btree
   add_index "change_requests", ["user_id"], name: "index_change_requests_on_user_id", using: :btree
 
+  create_table "change_requests_associated_users", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "change_request_id"
+  end
+
+  add_index "change_requests_associated_users", ["change_request_id"], name: "index_change_requests_associated_users_on_change_request_id", using: :btree
+  add_index "change_requests_associated_users", ["user_id"], name: "index_change_requests_associated_users_on_user_id", using: :btree
+
   create_table "collaborators", id: false, force: :cascade do |t|
     t.integer "user_id"
     t.integer "change_request_id"
@@ -394,7 +402,6 @@ ActiveRecord::Schema.define(version: 20190115065210) do
     t.string   "refresh_token"
     t.datetime "expired_at"
     t.string   "slack_username"
-    t.integer  "is_approved",        default: 1
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
@@ -423,6 +430,8 @@ ActiveRecord::Schema.define(version: 20190115065210) do
   add_foreign_key "change_requests", "cabs"
   add_foreign_key "change_requests", "change_requests", column: "reference_cr_id"
   add_foreign_key "change_requests", "users"
+  add_foreign_key "change_requests_associated_users", "change_requests"
+  add_foreign_key "change_requests_associated_users", "users"
   add_foreign_key "comments", "change_requests"
   add_foreign_key "comments", "users"
   add_foreign_key "implementers", "change_requests"
