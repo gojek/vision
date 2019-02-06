@@ -5,7 +5,7 @@ ruby "~> 2.3.0"
 # Bundle edge Rails insteadhttps://developers.google.com/oauthplayground: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.10'
 gem 'sdoc', '~> 0.4.0', group: :doc
-gem 'unicorn'
+gem 'puma'
 gem 'rake', '10.0.0'
 
 # resource-related
