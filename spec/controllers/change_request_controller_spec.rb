@@ -234,7 +234,7 @@ describe ChangeRequestsController, type: :controller do
 
     describe 'POST #create' do
       context 'with valid attributes' do
-        let(:attributes) {FactoryGirl.attributes_for(:change_request, implementer_ids: [user.id, ""], tester_ids: [user.id, ""] , approvers_list: [approver.id, ""])}
+        let(:attributes) {FactoryGirl.attributes_for(:change_request, implementer_ids: [user.id, ""], tester_ids: [user.id, ""] , approver_ids: [approver.id, ""])}
         
 
         it 'saves the new CR in the database' do
@@ -260,7 +260,7 @@ describe ChangeRequestsController, type: :controller do
 
         it 'call slack notification library to send notification to slack veritrans about new cr' do
           expect_any_instance_of(SlackNotif).to receive(:notify_new_cr).with(an_instance_of(ChangeRequest))
-          post :create, change_request: attributes, implementers_list: [approver.id], testers_list: [approver.id] , approvers_list: [approver.id]
+          post :create, change_request: attributes, implementers_list: [approver.id], testers_list: [approver.id] , approver_ids: [approver.id]
         end
       end
 
@@ -304,7 +304,7 @@ describe ChangeRequestsController, type: :controller do
         end
 
         it 'assigns associated_user' do
-          update_attributes = FactoryGirl.attributes_for(:change_request, implementer_ids: [user.id, ""], tester_ids: [user.id, ""] , approvers_list: [approver.id, ""], collaborator_ids: [""])
+          update_attributes = FactoryGirl.attributes_for(:change_request, implementer_ids: [user.id, ""], tester_ids: [user.id, ""] , approver_ids: [approver.id, ""], collaborator_ids: [""])
           patch :update , id: change_request.id, change_request: update_attributes
           change_request.reload
           expect(User.associated_users(change_request).collect(&:id)).to match_array([user.id, approver.id])
@@ -312,7 +312,7 @@ describe ChangeRequestsController, type: :controller do
 
         it 'call slack notification library to send notification to slack veritrans about modified cr' do
           expect_any_instance_of(SlackNotif).to receive(:notify_update_cr).with(an_instance_of(ChangeRequest))
-          update_attributes = FactoryGirl.attributes_for(:change_request, implementer_ids: [user.id, ""], tester_ids: [user.id, ""] , approvers_list: [approver.id, ""])
+          update_attributes = FactoryGirl.attributes_for(:change_request, implementer_ids: [user.id, ""], tester_ids: [user.id, ""] , approver_ids: [approver.id, ""])
           patch :update , id: change_request.id, change_request: update_attributes
         end
       end

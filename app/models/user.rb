@@ -111,11 +111,7 @@ class User < ActiveRecord::Base
   end
 
   def is_associated?(change_request)
-    User.associated_users(change_request).include? self
-  end
-
-  def self.associated_users(change_request)
-    change_request.associated_users
+    change_request.associated_users.include? self
   end
 
 end
