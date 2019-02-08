@@ -1,0 +1,20 @@
+{
+  "name": "Vision Staging",
+  "description": "Internal tools for logging activity",
+  "keywords": [
+    "productivity"
+  ],
+  "website": "http://heroku-18.herokuapp.com",
+  "scripts": {
+    "postdeploy": "bower install"
+  },
+  "image": "heroku/ruby",
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    },
+    {
+      "url": "heroku/ruby"
+    }
+  ]
+}
