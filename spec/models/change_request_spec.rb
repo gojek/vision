@@ -44,9 +44,9 @@ describe ChangeRequest, type: :model do
     expect(change_request.at_least_one_type).to match_array(["Please choose at least one type."])
   end
 
-  describe 'approvers_list=' do
+  describe 'approver_ids=' do
     it 'update change request approvers' do
-      change_request.approvers_list=([user.id, user_2.id])
+      change_request.approver_ids=([user.id, user_2.id])
       change_request.reload
         expect(change_request.approvals.first.user).to eq user
         expect(change_request.approvals.second.user).to eq user_2

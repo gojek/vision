@@ -1,7 +1,7 @@
 class ChangeRequest < ActiveRecord::Base
   include AASM
   belongs_to :user
-  attr_accessor :approvers_list
+  attr_accessor :approver_ids
 
   acts_as_readable :on => :updated_at
   has_and_belongs_to_many :collaborators, join_table: :collaborators, class_name: :User
@@ -220,7 +220,7 @@ class ChangeRequest < ActiveRecord::Base
   end
 
 
-  def approvers_list=(approver_ids)
+  def approver_ids=(approver_ids)
     approvals = Approval.setup_for_change_request(self, approver_ids)
     self.approvals << approvals
   end
@@ -265,7 +265,4 @@ class ChangeRequest < ActiveRecord::Base
     closed_date.present?
   end
 
-  def self.relevant_change_requests(user)
-    user.associated_change_requests
-  end
 end
