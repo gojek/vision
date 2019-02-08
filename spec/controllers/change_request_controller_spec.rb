@@ -34,10 +34,10 @@ describe ChangeRequestsController, type: :controller do
       end
 
       it 'mention jira in change_request' do
-        html  = "<span class='jira-button'>"
-        html << "  <a href='https://veritrans.atlassian.net/browse/TEST-123' target='_blank' data-toggle='popover' title='Summary' data-content='summary'><img class='icon' src='https://veritrans.atlassian.net/images/icons/statuses/generic.png'> TEST-123 </a>"
-        html << "  <span class='jira-yellow'>In Progress</span>"
-        html << "</span>"
+        html  = "<span class='jira-button'>" \
+                "  <a href='https://veritrans.atlassian.net/browse/TEST-123' target='_blank' data-toggle='popover' title='Summary' data-content='summary'><img class='icon' src='https://veritrans.atlassian.net/images/icons/statuses/generic.png'> TEST-123 </a>" \
+                "  <span class='jira-yellow'>In Progress</span>" \
+                "</span>" \
 
         jira_change_request = FactoryGirl.create(:jira_change_request)
         get :show, id: jira_change_request
