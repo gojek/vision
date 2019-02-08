@@ -17,7 +17,7 @@ class ChangeRequestsController < ApplicationController
       when 'approval'
         @change_requests = ChangeRequest.where(id: Approval.where(user_id: current_user.id, approve: nil).collect(&:change_request_id))
       when 'relevant'
-        @change_requests = ChangeRequest.relevant_change_requests(current_user)
+        @change_requests = current_user.associated_change_requests
       end
       @change_requests = @change_requests.where.not(aasm_state: 'draft').order(id: :desc)
     else
@@ -173,7 +173,7 @@ class ChangeRequestsController < ApplicationController
           @current_tags = @change_request.tag_list
           @users = User.all.collect{|u| [u.name, u.id]}
           @approvers = User.approvers.collect{|u| [u.name, u.id] if u.id != current_user.id}
-          @current_approvers = Array.wrap(change_request_params[:approvers_list])
+          @current_approvers = Array.wrap(change_request_params[:approver_ids])
           @current_implementers = Array.wrap(change_request_params[:implementer_ids])
           @current_testers = Array.wrap(change_request_params[:tester_ids])
           @current_collaborators = Array.wrap(change_request_params[:collaborator_ids])
@@ -337,8 +337,8 @@ class ChangeRequestsController < ApplicationController
             implementers_attributes: [:id, :name, :position, :_destroy],
             testers_attributes: [:id, :name, :position, :_destroy],
             :tag_list => [], :implementer_ids => [], :tester_ids => [], 
-            :collaborator_ids => [], :approvers_list => []).tap do |params| 
-              normalized_array_fields = [:approvers_list, :implementer_ids, :tester_ids, :collaborator_ids]
+            :collaborator_ids => [], :approver_ids => []).tap do |params| 
+              normalized_array_fields = [:approver_ids, :implementer_ids, :tester_ids, :collaborator_ids]
               normalized_array_fields.each do |field|
                 params[field].select!{ |id| id.present? }.map!{ |id| id.to_i} if params[field].present?
               end
