@@ -103,7 +103,7 @@
                   <div class="field form-group required">
                 <% end %>
                   <label class="control-label">Approvers</label><br>
-                    <%= f.select :approvers_list, options_for_select(@approvers), { }, { class: 'select2-approve form-control', multiple:true } %>
+                    <%= f.select :approver_ids, options_for_select(@approvers), { }, { class: 'select2-approve form-control', multiple:true } %>
                 </div><!--/field-->
 
 
