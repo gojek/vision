@@ -16,9 +16,6 @@ class CsvParser
 
   def self.extract(data)
     error = false
-    data["start_date"] = ""
-    data["end_date"] = ""
-
     if data["fingerprint"] != ""
       data['fingerprint'].split(',').map {|s| s.strip.sub " ","_" }.each do |i|
       	if ["business_operations","business_area","it_operations","server_room","archive_room","engineering_area"].include?(i)
@@ -48,6 +45,19 @@ class CsvParser
     if data["access_type"] == "" || ['temporary', 'permanent'].exclude?(data["access_type"].downcase)
       data["access_type"] = ""
       error = true
+    else
+      if data["access_type"].downcase == 'temporary'
+        if data["start_date"] == "" && data["end_date"] == ""
+          error = true
+        else
+          begin
+            data["start_date"] = Date.parse(data["start_date"])
+            data["end_date"] = Date.parse(data["end_date"])
+          rescue
+            error = true
+          end
+        end
+      end
     end
 
     data['set_approvers'] = []
