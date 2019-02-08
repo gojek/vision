@@ -7,8 +7,7 @@
   "website": "http://heroku-18.herokuapp.com",
   "scripts": {
     "postdeploy": "bower install"
-  },
-  "image": "heroku/ruby",
+  },s
   "buildpacks": [
     {
       "url": "heroku/nodejs"
