@@ -1,4 +1,3 @@
-require 'csv_exporter'
 
 class AccessRequestsController < ApplicationController
   before_action :authenticate_user!
@@ -11,6 +10,8 @@ class AccessRequestsController < ApplicationController
   require 'notifier.rb'
   require 'slack_notif.rb'
   require 'calendar.rb'
+  require 'csv_exporter'
+
 
   def index
     if params[:type]
