@@ -7,7 +7,7 @@
         <span class="glyphicon glyphicon-collapse-down"> </span>
       </button>
       <div class="dropdown-menu">
-        <%= link_to(change_requests_path(request.GET.merge({format: :csv})) , class: 'dropdown-item pull-left left-export-csv') do %>
+        <%= link_to(change_requests_path(request.GET.merge({format: :csv}).except("page", "per_page")) , class: 'dropdown-item pull-left left-export-csv') do %>
            <i class="fa  fa-file-text"></i> <strong> Export all to csv </strong>
         <% end %>
         <% second_params = {format: :csv, page: params[:page].present? ? params[:page] : 1} %>
