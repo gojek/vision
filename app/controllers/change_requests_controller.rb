@@ -171,8 +171,8 @@ class ChangeRequestsController < ApplicationController
         else
           @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
           @current_tags = @change_request.tag_list
-          @users = User.all.collect{|u| [u.name, u.id]}
-          @approvers = User.approvers.collect{|u| [u.name, u.id] if u.id != current_user.id}
+          @users = User.active.collect{|u| [u.name, u.id]}
+          @approvers = User.approvers.active.collect{|u| [u.name, u.id] if u.id != current_user.id}
           @current_approvers = Array.wrap(change_request_params[:approver_ids])
           @current_implementers = Array.wrap(change_request_params[:implementer_ids])
           @current_testers = Array.wrap(change_request_params[:tester_ids])
