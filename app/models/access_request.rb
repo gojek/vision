@@ -188,4 +188,11 @@ class AccessRequest < ActiveRecord::Base
     (user.is_admin || is_associate?(user)) && !draft?
   end
 
+  def self.relevant_access_requests(user)
+    AccessRequest.where("user_id = #{user.id} OR id IN (
+      #{AccessRequestApproval.where(user_id: user.id).select(:access_request_id).to_sql + " UNION " +
+        user.collaborate_access_requests.select(:access_request_id).to_sql})").distinct
+                        
+  end
+
 end

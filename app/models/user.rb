@@ -115,11 +115,4 @@ class User < ActiveRecord::Base
     associated_change_requests.include? change_request
   end
 
-  def relevant_access_requests
-    AccessRequest.where("user_id = ? OR id IN (?)", 
-      id, 
-      Array.wrap(AccessRequestApproval.where(user_id: id).collect(&:access_request_id).to_a + 
-                  collaborate_access_requests.collect(&:id).to_a).uniq
-    ).distinct;
-  end
 end
