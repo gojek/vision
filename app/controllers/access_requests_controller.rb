@@ -15,7 +15,7 @@ class AccessRequestsController < ApplicationController
       @q = AccessRequest.ransack(params[:q])
       case params[:type]
       when 'relevant'
-        @access_requests = current_user.relevant_access_requests
+        @access_requests = AccessRequest.relevant_access_requests(current_user)
       when 'approval'
         @access_requests = AccessRequest.where(id: AccessRequestApproval.where(user_id: current_user.id, approved: nil).collect(&:access_request_id))
       end
