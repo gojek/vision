@@ -1,4 +1,7 @@
 class CsvParser
+  FINGERPRINT_CONST = ["business_operations","business_area","it_operations","server_room","archive_room","engineering_area"]
+  OTHER_ACCESS_CONST = ['internet_access','slack_access','admin_tools','vpn_access','github_gitlab','exit_interview','access_card','parking_cards','id_card',
+          'name_card','insurance_card','cash_advance','metabase','solutions_dashboard']
   def self.process_csv(file, current_user)
     valid = []
     invalid = []
@@ -14,21 +17,12 @@ class CsvParser
     return valid, invalid
   end
 
-  def self.parse(column)
-    column.split(',').map {|s| s.strip.sub " ","_" }
-  end
-
-  def self.validate(items, available_items)
-    (items - available_items).present?
-  end
-
   def self.extract(data)
     error = false
 
     if !data["fingerprint"].empty?
       items = parse(data["fingerprint"])
-      available_fingerprint = ["business_operations","business_area","it_operations","server_room","archive_room","engineering_area"]
-      if validate(items, available_fingerprint)
+      if validate(items, FINGERPRINT_CONST)
         error = true
       else
         items.map { |item| data["fingerprint_#{item}"] = 1 }
@@ -37,9 +31,7 @@ class CsvParser
 
     if !data["other_access"].empty?
       items = parse(data["other_access"])
-      available_other_access = ['internet_access','slack_access','admin_tools','vpn_access','github_gitlab','exit_interview','access_card','parking_cards','id_card',
-          'name_card','insurance_card','cash_advance','metabase','solutions_dashboard']
-      if validate(items, available_other_access)
+      if validate(items, OTHER_ACCESS_CONST)
         error = true
       else
         items.map { |item| data[item] = 1 }
@@ -84,5 +76,14 @@ class CsvParser
     data.delete("other_access")
 
     return {'data': data, 'error': error}
+  end
+
+  private
+  def self.parse(column)
+    column.split(',').map {|s| s.strip.sub " ","_" }
+  end
+
+  def self.validate(items, available_items)
+    (items - available_items).present?
   end
 end
