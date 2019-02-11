@@ -104,11 +104,11 @@ class ChangeRequestStatusesController < ApplicationController
   private
 
   def set_change_request
-        @change_request = ChangeRequest.find(params[:id])
+    @change_request = ChangeRequest.find(params[:id])
   end
 
   def change_request_status_params
-        params.require(:change_request_status).permit(:reason, :deploy_delayed)
+    params.require(:change_request_status).permit(:reason, :deploy_delayed)
   end
 
   def authorized_user_required
