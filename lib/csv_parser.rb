@@ -3,7 +3,7 @@ class CsvParser
     valid = []
     invalid = []
     CSV.foreach(file.path,headers: true, col_sep: ",") do |row|
-      @data = CsvParser.extract(row.to_h)
+      @data = extract(row.to_h)
       @access_request = current_user.AccessRequests.build(@data[:data])
       if @data[:error] || @access_request.invalid?
         invalid << @access_request
@@ -14,26 +14,35 @@ class CsvParser
     return valid, invalid
   end
 
+  def self.parse(column)
+    column.split(',').map {|s| s.strip.sub " ","_" }
+  end
+
+  def self.validate(items, available_items)
+    (items - available_items).present?
+  end
+
   def self.extract(data)
     error = false
-    if data["fingerprint"] != ""
-      data['fingerprint'].split(',').map {|s| s.strip.sub " ","_" }.each do |i|
-      	if ["business_operations","business_area","it_operations","server_room","archive_room","engineering_area"].include?(i)
-        	data["fingerprint_"+i] = "1"
-        else
-        	error = true
-        end
+
+    if !data["fingerprint"].empty?
+      items = parse(data["fingerprint"])
+      available_fingerprint = ["business_operations","business_area","it_operations","server_room","archive_room","engineering_area"]
+      if validate(items, available_fingerprint)
+        error = true
+      else
+        items.map { |item| data["fingerprint_#{item}"] = 1 }
       end
     end
 
-    if data["other_access"] != ""
-      data['other_access'].split(',').map {|s| s.strip.sub " ","_" }.each do |i|
-      	if ['internet_access','slack_access','admin_tools','vpn_access','github_gitlab','exit_interview','access_card','parking_cards','id_card',
-      		'name_card','insurance_card','cash_advance','metabase','solutions_dashboard'].include?(i)
-        	data[i] = "1"
-        else
-        	error = true
-        end
+    if !data["other_access"].empty?
+      items = parse(data["other_access"])
+      available_other_access = ['internet_access','slack_access','admin_tools','vpn_access','github_gitlab','exit_interview','access_card','parking_cards','id_card',
+          'name_card','insurance_card','cash_advance','metabase','solutions_dashboard']
+      if validate(items, available_other_access)
+        error = true
+      else
+        items.map { |item| data[item] = 1 }
       end
     end
 
