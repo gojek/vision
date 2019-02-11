@@ -46,17 +46,17 @@ class CsvParser
     if data["access_type"] == "" || ['temporary', 'permanent'].exclude?(data["access_type"].downcase)
       data["access_type"] = ""
       error = true
-    else
-      if data["access_type"].downcase == 'temporary'
-        if data["start_date"] == "" && data["end_date"] == ""
+    end
+
+    if data["access_type"].downcase == 'temporary'
+      if data["start_date"] == "" && data["end_date"] == ""
+        error = true
+      else
+        begin
+          data["start_date"] = Date.parse(data["start_date"])
+          data["end_date"] = Date.parse(data["end_date"])
+        rescue
           error = true
-        else
-          begin
-            data["start_date"] = Date.parse(data["start_date"])
-            data["end_date"] = Date.parse(data["end_date"])
-          rescue
-            error = true
-          end
         end
       end
     end
