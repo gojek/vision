@@ -6,7 +6,7 @@ describe IncidentReport, type: :model do
   it { should belong_to(:user)}
   it { should have_many(:notifications).dependent(:destroy) }
   
-  it "is valid with all attibute filled" do
+  it "is valid with all attribute filled" do
     expect(FactoryGirl.build(:incident_report)).to be_valid
   end
   it "is valid with rank number 1- 5" do
@@ -17,8 +17,8 @@ describe IncidentReport, type: :model do
       expect(ir).to be_valid
     end
   end
-  it "is valid with current status either recovered or on going" do
-    allowed_status = %w(Ongoing Recovered Resolved)
+  it "is valid with current status either acknowlegded or on going" do
+    allowed_status = %w(Ongoing Acknowlegded Resolved)
     allowed_status.each do |status|
       ir = FactoryGirl.build(:incident_report, current_status: status)
       expect(ir).to be_valid
@@ -70,11 +70,6 @@ describe IncidentReport, type: :model do
     incident_report = FactoryGirl.build(:incident_report, detection_time: nil)
     incident_report.valid?
     expect(incident_report.errors[:detection_time].size).to eq(2)
-  end
-  it "is invalid without a recovery time" do
-    incident_report = FactoryGirl.build(:incident_report, recovery_time: nil)
-    incident_report.valid?
-    expect(incident_report.errors[:recovery_time].size).to eq(1)
   end
   it "is invalid without a loss related issue" do
     incident_report = FactoryGirl.build(:incident_report, loss_related: nil)
@@ -152,9 +147,34 @@ describe IncidentReport, type: :model do
     incident_report.valid?
     expect(incident_report.errors[:detection_time].size).not_to eq(0)
   end
-  it "is invalid with recovery time other than date time " do 
-    incident_report = FactoryGirl.build(:incident_report, recovery_time: 1)
+
+  it "is invalid with a acknowlegde time less than detection time" do
+    incident_report = FactoryGirl.build(:incident_report, acknowledge_time: 4.days.ago, detection_time: 3.days.ago)
     incident_report.valid?
-    expect(incident_report.errors[:recovery_time].size).to eq(1)
+    expect(incident_report.errors[:acknowledge_time].size).to eq(1)
+  end
+
+  it "is invalid with a acknowlegde time less than occurence time" do
+    incident_report = FactoryGirl.build(:incident_report, acknowledge_time: 4.days.ago, occurrence_time: 3.days.ago)
+    incident_report.valid?
+    expect(incident_report.errors[:acknowledge_time].size).to eq(1)
+  end
+
+  it "is invalid with a resolved time less than occurrence time" do
+    incident_report = FactoryGirl.build(:incident_report, resolved_time: 4.days.ago, occurrence_time: 3.days.ago)
+    incident_report.valid?
+    expect(incident_report.errors[:resolved_time].size).to eq(1)
+  end
+
+  it "is invalid with a resolved time less than detection time" do
+    incident_report = FactoryGirl.build(:incident_report, resolved_time: 4.days.ago, detection_time: 3.days.ago)
+    incident_report.valid?
+    expect(incident_report.errors[:resolved_time].size).to eq(1)
+  end
+
+  it "is invalid with a resolved time less than acknowledge time" do
+    incident_report = FactoryGirl.build(:incident_report, resolved_time: 4.days.ago, acknowledge_time: 3.days.ago)
+    incident_report.valid?
+    expect(incident_report.errors[:resolved_time].size).to eq(1)
   end
 end
