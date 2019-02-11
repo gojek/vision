@@ -6,8 +6,8 @@
   ],
   "website": "http://heroku-18.herokuapp.com",
   "scripts": {
-    "postdeploy": "bower install"
-  },s
+    "postdeploy": "bundler exec rake db:migrate"
+  },
   "buildpacks": [
     {
       "url": "heroku/nodejs"
