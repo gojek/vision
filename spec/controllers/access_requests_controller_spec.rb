@@ -19,7 +19,7 @@ describe AccessRequestsController, type: :controller do
       it "can upload validated data csv file" do
         @file = fixture_file_upload('files/valid.csv', 'text/csv')
         post :import_from_csv, :csv => @file
-        expect(flash[:notice]).to match "5 Access request(s) was successfully created."
+        expect(flash[:notice]).to match "8 Access request(s) was successfully created."
       end
       
       it "can upload not validated data csv file" do
