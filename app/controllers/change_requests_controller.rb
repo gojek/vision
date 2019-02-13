@@ -1,11 +1,10 @@
 class ChangeRequestsController < ApplicationController
-  before_action :set_change_request, only: [:show, :edit, :update, :destroy, :approve, :reject, :edit_grace_period_notes, :edit_implementation_notes, :print]
   before_action :authenticate_user!
+  before_action :set_change_request, only: [:show, :edit, :update, :destroy, :approve, :reject, :edit_grace_period_notes, :edit_implementation_notes, :print]
   before_action :owner_required, only: [:edit, :update, :destroy]
   before_action :not_closed_required, only: [:destroy]
   before_action :submitted_required, only: [:edit]
   before_action :reference_required, only: [:create_hotfix]
-  after_action :unset_session_first_time, only: [:new], if: -> { session['first_time'] }
   before_action :role_not_approver_required, only: :edit
   require 'notifier.rb'
   require 'slack_notif.rb'
@@ -20,7 +19,7 @@ class ChangeRequestsController < ApplicationController
       when 'approval'
         @change_requests = ChangeRequest.where(id: Approval.where(user_id: current_user.id, approve: nil).collect(&:change_request_id))
       when 'relevant'
-        @change_requests = ChangeRequest.where(id: current_user.associated_change_requests.collect(&:id))
+        @change_requests = current_user.associated_change_requests
       end
       @change_requests = @change_requests.where.not(aasm_state: 'draft').order(id: :desc)
     else
@@ -34,10 +33,7 @@ class ChangeRequestsController < ApplicationController
         @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
       end
       format.csv do
-        #offset = params[:page] || 1
-        #@change_requests.order("created_at desc").limit(13).offset(offset)
         if params[:page].present?
-          # download crs current page
           @change_requests = @change_requests.page(params[:page] || 1).per(params[:per_page] || 20)
           render csv: @change_requests, filename: 'change_requests', force_quotes: true
         else
@@ -64,7 +60,7 @@ class ChangeRequestsController < ApplicationController
     @hotfixes = ChangeRequest.where(reference_cr_id: @change_request.id)
     #Notifier.mark_as_read(notifica)
     @usernames = []
-    User.all.each do |user|
+    User.active.each do |user|
       @usernames <<  user.email.split("@").first
     end
     @cr_statuses = @change_request.change_request_statuses
@@ -78,8 +74,8 @@ class ChangeRequestsController < ApplicationController
     @current_approvers = []
     @current_implementers = []
     @current_testers = []
-    @users = User.all.collect{|u| [u.name, u.id]}
-    @approvers = User.approvers.collect{|u| [u.name, u.id] if u.id != current_user.id }
+    @users = User.active.collect{|u| [u.name, u.id] }
+    @approvers = User.approvers.active.collect{|u| [u.name, u.id] if u.id != current_user.id }
   end
 
   def edit
@@ -88,8 +84,8 @@ class ChangeRequestsController < ApplicationController
     @current_collaborators = @change_request.collaborators.collect{|u| u.id}
     @current_implementers = @change_request.implementers.collect{|u| u.id}
     @current_testers = @change_request.testers.collect{|u| u.id}
-    @users = User.all.collect{|u| [u.name, u.id]}
-    @approvers = User.approvers.collect{|u| [u.name, u.id] if u.id != current_user.id}
+    @users = User.active.collect{|u| [u.name, u.id] }
+    @approvers = User.approvers.active.collect{|u| [u.name, u.id] if u.id != current_user.id }
     @current_approvers = @change_request.approvals.collect(&:user_id)
   end
 
@@ -105,17 +101,6 @@ class ChangeRequestsController < ApplicationController
 
   def create
     @change_request = current_user.ChangeRequests.build(change_request_params)
-    @current_approvers = Array.wrap(params[:approvers_list])
-    @current_implementers = Array.wrap(params[:implementers_list])
-    @current_testers = Array.wrap(params[:testers_list])
-    @current_collaborators = Array.wrap(params[:collaborators_list])
-    @change_request.downtime_expected = params[:downtime_expected]
-    @change_request.expected_downtime_in_minutes = params[:expected_downtime_in_minutes]
-
-    @change_request.set_approvers(@current_approvers)
-    @change_request.set_implementers(@current_implementers)
-    @change_request.set_testers(@current_testers)
-    @change_request.set_collaborators(@current_collaborators)
     @change_request.requestor_position = current_user.position
     respond_to do |format|
       unless @change_request.save
@@ -127,17 +112,10 @@ class ChangeRequestsController < ApplicationController
       else
         event = Calendar.new.set_cr(current_user, @change_request)
         @change_request.update(google_event_id: event.data.id) unless event.error?
-
         @change_request.submit!
         @change_request.save
         @status = @change_request.change_request_statuses.new(:status => 'submitted')
         @status.save
-        associated_user_ids = ["#{@change_request.user.id}"]
-        associated_user_ids.concat(@current_approvers)
-        associated_user_ids.concat(@current_implementers)
-        associated_user_ids.concat(@current_testers)
-        associated_user_ids.concat(@current_collaborators)
-        @change_request.associated_user_ids = associated_user_ids.uniq
         Notifier.cr_notify(current_user, @change_request, 'new_cr')
         SlackNotif.new.notify_new_cr @change_request
         Thread.new do
@@ -164,33 +142,16 @@ class ChangeRequestsController < ApplicationController
   end
 
   def update
-    @current_approvers = Array.wrap(params[:approvers_list])
-    @current_implementers = Array.wrap(params[:implementers_list])
-    @current_testers = Array.wrap(params[:testers_list])
-    @current_collaborators = Array.wrap(params[:collaborators_list])
-    @change_request.downtime_expected = params[:downtime_expected]
-    @change_request.expected_downtime_in_minutes = params[:expected_downtime_in_minutes]
-    @change_request.update_approvers(@current_approvers)
-    @change_request.set_implementers(@current_implementers)
-    @change_request.set_testers(@current_testers)
-    @change_request.set_collaborators(@current_collaborators)
     respond_to do |format|
       if @change_request.update(change_request_params)
         event = Calendar.new.set_cr(current_user, @change_request)
         @change_request.update(google_event_id: event.data.id) unless event.error?
-
         if @change_request.draft?
           @change_request.submit!
           @change_request.save
           @status = @change_request.change_request_statuses.new(:status => 'submitted')
           @status.save
-        end
-        associated_user_ids = ["#{@change_request.user.id}"]
-        associated_user_ids.concat(@current_approvers)
-        associated_user_ids.concat(@current_implementers)
-        associated_user_ids.concat(@current_testers)
-        associated_user_ids.concat(@current_collaborators)
-        @change_request.associated_user_ids = associated_user_ids.uniq
+        end 
         Notifier.cr_notify(current_user, @change_request, 'update_cr')
         SlackNotif.new.notify_update_cr @change_request
         flash[:success] = 'Change request was successfully updated.'
@@ -206,8 +167,12 @@ class ChangeRequestsController < ApplicationController
         else
           @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
           @current_tags = @change_request.tag_list
-          @users = User.all.collect{|u| [u.name, u.id]}
-          @approvers = User.approvers.collect{|u| [u.name, u.id] if u.id != current_user.id}
+          @users = User.active.collect{|u| [u.name, u.id]}
+          @approvers = User.approvers.active.collect{|u| [u.name, u.id] if u.id != current_user.id}
+          @current_approvers = Array.wrap(change_request_params[:approver_ids])
+          @current_implementers = Array.wrap(change_request_params[:implementer_ids])
+          @current_testers = Array.wrap(change_request_params[:tester_ids])
+          @current_collaborators = Array.wrap(change_request_params[:collaborator_ids])
           format.html { render :edit }
           format.json { render json: @change_request.errors, status: :unprocessable_entity }
         end
@@ -272,10 +237,10 @@ class ChangeRequestsController < ApplicationController
     @current_collaborators = @old_change_request.collaborators.collect{|u| u.id}
     @current_implementers = @old_change_request.implementers.collect{|u| u.id}
     @current_testers = @old_change_request.testers.collect{|u| u.id}
-    @users = User.all.collect{|u| [u.name, u.id]}
+    @users = User.active.collect{|u| [u.name, u.id] }
     @current_approvers = @old_change_request.approvals.collect(&:user_id)
     @change_request = @old_change_request.dup
-    @approvers = User.approvers.collect{|u| [u.name, u.id] if u.id != current_user.id}
+    @approvers = User.approvers.active.collect{|u| [u.name, u.id] if u.id != current_user.id }
     # Clear certain fields
     @change_request.user = current_user
     @change_request.schedule_change_date = nil
@@ -292,10 +257,10 @@ class ChangeRequestsController < ApplicationController
     @current_collaborators = @old_change_request.collaborators.collect{|u| u.id}
     @current_implementers = @old_change_request.implementers.collect{|u| u.id}
     @current_testers = @old_change_request.testers.collect{|u| u.id}
-    @users = User.all.collect{|u| [u.name, u.id]}
+    @users = User.active.collect{|u| [u.name, u.id] }
     @current_approvers = @old_change_request.approvals.collect(&:user_id)
     @change_request = @old_change_request.dup
-    @approvers = User.approvers.collect{|u| [u.name, u.id] if u.id != current_user.id}
+    @approvers = User.approvers.active.collect{|u| [u.name, u.id] if u.id != current_user.id }
     # Clear certain fields
     @change_request.user = current_user
     @change_request.schedule_change_date = nil
@@ -343,17 +308,12 @@ class ChangeRequestsController < ApplicationController
   end
 
   private
-
     def set_change_request
       if params[:change_request_id]
         @change_request = ChangeRequest.find(params[:change_request_id])
       else
         @change_request = ChangeRequest.find(params[:id])
       end
-    end
-
-    def unset_session_first_time
-      session[:first_time] = false
     end
 
     def change_request_params
@@ -372,7 +332,13 @@ class ChangeRequestsController < ApplicationController
             :type_configuration_change, :type_emergency_change, :type_other,
             implementers_attributes: [:id, :name, :position, :_destroy],
             testers_attributes: [:id, :name, :position, :_destroy],
-            :tag_list => [], :collaborators_list => [])
+            :tag_list => [], :implementer_ids => [], :tester_ids => [], 
+            :collaborator_ids => [], :approver_ids => []).tap do |params| 
+              normalized_array_fields = [:approver_ids, :implementer_ids, :tester_ids, :collaborator_ids]
+              normalized_array_fields.each do |field|
+                params[field].select!{ |id| id.present? }.map!{ |id| id.to_i} if params[field].present?
+              end
+            end
     end
 
     def owner_required
