@@ -16,18 +16,19 @@ class User < ActiveRecord::Base
   has_many :IncidentReports
   has_many :ChangeRequests
   has_many :AccessRequests
-  has_and_belongs_to_many :associated_change_requests, join_table: :change_requests_associated_users, class_name: 'ChangeRequest'
-  has_and_belongs_to_many :collaborate_change_requests, join_table: :collaborators, class_name: 'ChangeRequest'
+  has_and_belongs_to_many :collaborate_change_requests, join_table: :collaborators, class_name: :ChangeRequest
   has_and_belongs_to_many :implement_change_requests, join_table: :implementers, class_name: :ChangeRequest
   has_and_belongs_to_many :test_change_requests, join_table: :testers, class_name: :ChangeRequest
+  has_and_belongs_to_many :associated_change_requests, join_table: :change_requests_associated_users, class_name: :ChangeRequest
   has_many :Comments
   has_many :notifications, dependent: :destroy
   has_many :Approvals, :dependent => :destroy
-  validates :email, format: { with: /\b[A-Z0-9._%a-z\-]+@(veritrans\.co\.id|midtrans\.com|associate\.midtrans\.com)\z/,
+  validates :email, format: { with: /\b[A-Z0-9._%a-z\-]+@(veritrans\.co\.id|midtrans\.com|associate\.midtrans\.com||spots\.co\.id)\z/,
                   message: "must be a veritrans account" }
   validates :email, uniqueness: true
   scope :approvers, -> {where('role = ? OR role = ?', 'approver', 'approver_all')}
   scope :approvers_ar, -> {where('role = ? OR role = ?', 'approver_ar', 'approver_all')}
+  scope :active, -> {where(:locked_at => nil)}
 
 
   def account_active?
@@ -35,7 +36,7 @@ class User < ActiveRecord::Base
   end
 
   def use_company_email?
-    (email =~ /\b[A-Z0-9._%a-z\-]+@(veritrans\.co\.id|midtrans\.com|associate\.midtrans\.com)\z/).present?
+    (email =~ /\b[A-Z0-9._%a-z\-]+@(veritrans\.co\.id|midtrans\.com|associate\.midtrans\.com |spots\.co\.id)\z/).present?
   end
 
   def active_for_authentication?
@@ -92,21 +93,6 @@ class User < ActiveRecord::Base
     token
   end
 
-  #refer to https://developers.google.com/oauthplayground and https://github.com/nahi/httpclient/blob/master/sample/howto.rb
-  def get_contacts
-    client = HTTPClient.new()
-    target = 'https://www.google.com/m8/feeds/contacts/default/full/'
-    token = 'Bearer ' + self.fresh_token
-    response = client.get(target, nil, {'Gdata-version' => '3.0', 'Authorization' => token}).body
-    response
-    xml = Nokogiri.XML(response)
-    all_contact = []
-    xml.xpath('//gd:email').each do |entry|
-      all_contact.push(entry['address'])
-    end
-    all_contact
-  end
-
   def get_slack_username
     client = Slack::Web::Client.new
     client.users_list.members.each do |u|
@@ -125,6 +111,7 @@ class User < ActiveRecord::Base
   end
 
   def is_associated?(change_request)
-    associated_change_requests.include? change_request
+    change_request.associated_users.include? self
   end
+
 end

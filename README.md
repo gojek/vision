@@ -4,7 +4,7 @@ Vision was made with contributions from everyone found in git commit history.
 
 ## Architecture
 
-Vision built with Ruby on Rails, running on Heroku, requires Google Contacts and Calendar API.
+Vision built with Ruby on Rails, running on Heroku, requires Google Calendar API.
 
 To accomplish this, every environment variables are set at `.env` file.
 
@@ -23,28 +23,28 @@ I wish it clear. Feel free to reach out for further questions.
 2. Install bower through NPM. Our assets are managed by bower.
 
 3. Install project dependencies
-
 ```
 bundle install
 ```
-
 Then install bower dependencies:
-
 ```
 bower install
 ```
 
-4. Run rails
+4. Copy example config
+```
+cp config/database.example.yml config/database.yml
+```
 
+5. Run rails
 ```
 foreman start
 ```
 
-5. Visit vision in `localhost:3000`
+6. Visit vision in `localhost:3000`
 
 
-6. For mail interaction in Development environment, install and run Mailcatcher by running
-
+7. For mail interaction in Development environment, install and run Mailcatcher by running
 ```
 gem install mailcatcher
 

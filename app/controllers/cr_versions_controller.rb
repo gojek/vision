@@ -1,7 +1,7 @@
 #
 class CrVersionsController < ApplicationController
-  before_action :set_document_and_version, only: [:diff, :rollback, :destroy]
   before_action :authenticate_user!
+  before_action :set_document_and_version, only: [:diff, :rollback, :destroy]
 
   def diff
   end
