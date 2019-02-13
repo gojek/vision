@@ -31,7 +31,6 @@ class ChangeRequest < ActiveRecord::Base
   validate :at_least_one_category
   validate :at_least_one_type
   validates :implementers, presence: true
-  validates :testers, presence: true
   validates :approvals, presence: true
   validates :expected_downtime_in_minutes, numericality: { only_integer: true }, if: :downtime_expected?
   validate :deploy_date, :if => :schedule_change_date? && :planned_completion?
