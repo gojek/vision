@@ -66,7 +66,7 @@ class AccessRequestsController < ApplicationController
   def show
     @access_request_status = AccessRequestStatus.new
     @usernames = []
-    User.all.each do |user|
+    User.active.each do |user|
       @usernames <<  user.email.split("@").first
     end
   end
@@ -204,7 +204,8 @@ class AccessRequestsController < ApplicationController
           :production_user_id,
           :production_asset,
           :business_justification,
-          :metabase
+          :metabase,
+          :solutions_dashboard
       )
     end
 
@@ -213,8 +214,8 @@ class AccessRequestsController < ApplicationController
     end
 
     def set_users_and_approvers
-      @users = User.all.collect{|u| [u.name, u.id]}
-      @approvers = User.approvers_ar.collect{|u| [u.name, u.id] if u.id != current_user.id }
+      @users = User.active.collect{|u| [u.name, u.id] }
+      @approvers = User.approvers_ar.active.collect{|u| [u.name, u.id] if u.id != current_user.id }
     end
 
     def set_access_request_approval
