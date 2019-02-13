@@ -290,8 +290,8 @@
                   </div>
               </div><!--/col-->
               <div class='col-md-6'>
-                <h3>Tester</h3>
                 <div id="testers">
+                  <h3>Tester</h3>
                   <% if @change_request.errors.messages[:testers] %>
                     <div class="field form-group has-error">
                   <% else %>
@@ -384,8 +384,22 @@
 <%= tinymce %>
 
 <script>
+
+  function hideTestersSection(isChecked) {
+    if(isChecked) {
+      $('#testers').css({ display: 'block' });
+    } else {
+      $(".select2-tester").val(null).trigger('change');
+      $('#testers').css({ display: 'none' });
+    }
+  }
+
   $(document).ready(function () {
     $('body').attr("data-no-turbolink", "true");
+    $('input[name="change_request[testing_environment_available]"]').on('change', function(e) {
+      var isChecked = e.target.checked;
+      hideTestersSection(isChecked);
+    });
     $('input[type="checkbox"].toggle').bootstrapToggle(); // assumes the checkboxes have the class "toggle"
     $('#save').click(function() {
       unsaved = false;

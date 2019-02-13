@@ -337,7 +337,6 @@ class ChangeRequestsController < ApplicationController
             :category_application, :category_network_equipment,:category_server, :category_user_access,
             :category_other,:other_dependency,:solving_duration,
             :type_security_update,:type_install_uninstall,
-            :tested_by_qa, :tested_by_dev, :tested_by_dev_ops,
             :type_configuration_change, :type_emergency_change, :type_other,
             implementers_attributes: [:id, :name, :position, :_destroy],
             testers_attributes: [:id, :name, :position, :_destroy],
