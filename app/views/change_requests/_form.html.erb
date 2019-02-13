@@ -269,14 +269,16 @@
           <div class="box box-default">
             <div class="box-header with border"></div>
             <div class="box-body">
-              <% if @change_request.errors.messages[:testing_environment_available] %>
-                <div class="field form-group has-error">
-              <%else %>
-                <div class="field form-group required">
-              <% end %>
-                  <label class="control-label">Testing in Test/Development Environment Available?</label>
-                  <%= f.check_box :testing_environment_available, checked: @change_request.present? ? @change_request.testing_environment_available : false, data: {toggle: :toggle, on: "YES", off: "NO", onstyle: 'success', offstyle: 'danger'}%>
-                </div><!--/field-->
+              <div class="col-md-12">
+                <% if @change_request.errors.messages[:testing_environment_available] %>
+                  <div class="field form-group has-error">
+                <%else %>
+                  <div class="field form-group required">
+                <% end %>
+                    <label class="control-label">Testing in Test/Development Environment Available?</label>
+                    <%= f.check_box :testing_environment_available, checked: @change_request.present? ? @change_request.testing_environment_available : false, data: {toggle: :toggle, on: "YES", off: "NO", onstyle: 'success', offstyle: 'danger'}%>
+                  </div><!--/field-->
+              </div> 
               <div class='col-md-6'>
                 <% if @change_request.errors.messages[:testing_procedure] %>
                   <div class="field form-group has-error">
@@ -286,13 +288,24 @@
                     <%= f.label :testing_procedure , class: 'control-label'%><br>
                     <%= f.text_area :testing_procedure, class: "form-control tinymce" %>
                   </div>
-                <% if @change_request.errors.messages[:testing_notes] %>
-                  <div class="field form-group has-error">
-                <%else %>
-                  <div class="field form-group required">
-                <% end %>
-                    <%= f.label :testing_notes, class: 'control-label' %><br>
-                    <%= f.text_area :testing_notes, class: "form-control tinymce" %>
+                  <div class="field form-group">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <h4>Tested by:</h4>
+                      </div>
+                      <div class="col-md-12">
+                        <%= f.label :tested_by_dev, 'Developer' %>
+                        <%= f.check_box :tested_by_dev %>
+                      </div>
+                      <div class="col-md-12">
+                        <%= f.label :tested_by_qa, 'Quality Assurance' %>
+                        <%= f.check_box :tested_by_qa %>
+                      </div>
+                      <div class="col-md-12">
+                        <%= f.label :tested_by_dev_ops, 'DevOps' %>
+                        <%= f.check_box :tested_by_dev_ops %>
+                      </div>
+                    </div>
                   </div>
               </div><!--/col-->
               <div class='col-md-6'>
