@@ -38,18 +38,22 @@ class CsvParser
       end
     end
 
-    if data["request_type"] == "" || ['create', 'delete', 'modify'].exclude?(data["request_type"].downcase)
+    if data["request_type"].empty? || ['Create', 'Delete', 'Modify'].exclude?(data["request_type"].capitalize)
       data["request_type"] = ""
       error = true
+    else
+      data["request_type"].capitalize!
     end
 
-    if data["access_type"] == "" || ['temporary', 'permanent'].exclude?(data["access_type"].downcase)
+    if data["access_type"].empty? || ['Temporary', 'Permanent'].exclude?(data["access_type"].capitalize)
       data["access_type"] = ""
       error = true
+    else
+      data["access_type"].capitalize!
     end
 
-    if data["access_type"].downcase == 'temporary'
-      if data["start_date"] == "" && data["end_date"] == ""
+    if data["access_type"] == 'Temporary'
+      if data["start_date"].empty? && data["end_date"].empty?
         error = true
       else
         begin
@@ -61,13 +65,12 @@ class CsvParser
       end
     end
 
-    data['set_approvers'] = []
     data['approvers'] = data['approvers'].split(',')
-    data['set_approvers'] = User.where(email: data['approvers']).map(&:id)
+    data['set_approvers'] = User.where(email: data['approvers'].map{|email| email.strip }).map(&:id)
     error = true if data['approvers'].size != data['set_approvers'].size
 
     data['collaborators'] = data['collaborators'].split(',')
-    data['collaborator_ids'] = User.where(email: data['collaborators']).map(&:id)
+    data['collaborator_ids'] = User.where(email: data['collaborators'].map{|email| email.strip }).map(&:id)
     error = true if data['collaborators'].size != data['collaborator_ids'].size
 
     data.delete('approvers')
