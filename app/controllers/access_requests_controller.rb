@@ -9,7 +9,6 @@ class AccessRequestsController < ApplicationController
   require 'notifier.rb'
   require 'slack_notif.rb'
   require 'calendar.rb'
-  require 'csv_parser.rb'
 
   def index
     if params[:type]
@@ -115,10 +114,10 @@ class AccessRequestsController < ApplicationController
   end
 
   def import_from_csv
-    valid, invalid = CsvParser.process_csv(params[:csv], current_user)
+    @valid, @invalid = CsvParser.process_csv(params[:csv], current_user)
 
     AccessRequest.transaction do
-      valid.each do |access_request|
+      @valid.each do |access_request|
         access_request.save
         if access_request.draft?
           access_request.submit!
@@ -126,17 +125,17 @@ class AccessRequestsController < ApplicationController
         SlackNotif.new.notify_new_access_request(access_request)
       end
 
-      invalid.each do |access_request|
+      @invalid.each do |access_request|
         access_request.save(validate: false)
       end
     end
 
-    if valid.length > 0
-      flash[:notice] = valid.length.to_s + ' Access request(s) was successfully created.'
+    if @valid.length > 0
+      flash[:notice] = @valid.length.to_s + ' Access request(s) was successfully created.'
     end
     
-    if invalid.length > 0
-      flash[:invalid] = invalid.length.to_s + " data(s) is not filled correctly, the data was saved as a draft"
+    if @invalid.length > 0
+      flash[:invalid] = @invalid.length.to_s + " data(s) is not filled correctly, the data was saved as a draft"
     end
     redirect_to access_requests_path
   end
