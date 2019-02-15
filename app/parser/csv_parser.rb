@@ -2,17 +2,18 @@ require 'csv_item_parser.rb'
 
 class CsvParser
   def self.process_csv(file, current_user)
-    valid = []
-    invalid = []
+    @valid = []
+    @invalid = []
     CSV.foreach(file.path,headers: true, col_sep: ",") do |row|
+      # binding.pry
       item_parser = CsvItemParser.parse(row.to_h, current_user)
       ar = item_parser.generate_access_request
       if ar.invalid? || item_parser.item_valid?
-        invalid << ar
+        @invalid << ar
       else
-        valid << ar
+        @valid << ar
       end
     end
-    return valid, invalid
+    return @valid, @invalid
   end
 end
