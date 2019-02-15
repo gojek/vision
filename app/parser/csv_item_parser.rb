@@ -9,6 +9,8 @@ class CsvItemParser
   	'exit_interview','access_card','parking_cards','id_card',
   	'name_card','insurance_card','cash_advance','metabase','solutions_dashboard']
 
+  attr_reader :data, :error, :user
+
 	def self.parse(data, current_user)
 		item = CsvItemParser.new(data, current_user).extract
 	end
@@ -40,7 +42,7 @@ class CsvItemParser
 
   private
 	def extract_fingerprint
-    if !@data["fingerprint"].empty?
+    if @data["fingerprint"].present?
       items = parse(@data["fingerprint"])
       if validate(items, FINGERPRINT_CONST)
         @error = true
@@ -51,7 +53,7 @@ class CsvItemParser
   end
 
   def extract_other_access
-  	if !@data["other_access"].empty?
+  	if @data["other_access"].present?
       items = parse(@data["other_access"])
       if validate(items, OTHER_ACCESS_CONST)
         @error = true
