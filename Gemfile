@@ -36,7 +36,7 @@ gem 'sucker_punch', '~> 2.0'
 
 # oauth
 gem 'omniauth-google-oauth2'
-gem 'google-api-client', '~> 0.8.2', require: 'google/api_client'
+gem 'google-api-client', '~> 0.20.0'
 gem 'httpclient'
 
 # server-related
@@ -68,7 +68,7 @@ gem 'groupdate'
 gem 'nokogiri'
 
 # database
-gem 'pg'
+gem 'pg', '~> 0.19'
 
 # coloring std out
 gem 'colorize'
