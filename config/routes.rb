@@ -9,8 +9,8 @@ Rails.application.routes.draw do
 
   get 'change_requests/tags/:tag', to: 'change_requests#index', as: :tag
   get 'incident_reports/tags/:tag', to: 'incident_reports#index', as: :incident_report_tag
-  get 'change_requests/:id/graceperiod' => 'change_requests#edit_grace_period_notes', :as => 'graceperiod'
-  get 'change_requests/:id/implementation' => 'change_requests#edit_implementation_notes', :as => 'implementation_notes'
+  get 'change_requests/:id/graceperiod' => 'change_requests#edit_grace_period_notes', :as => :graceperiod
+  get 'change_requests/:id/implementation' => 'change_requests#edit_implementation_notes', :as => :implementation_notes
   post 'change_requests/:id/deploy' => 'change_request_statuses#deploy', :as => 'deploy'
   post 'change_requests/:id/rollback' => 'change_request_statuses#rollback', :as =>'rollback'
   post 'change_requests/:id/cancel' => 'change_request_statuses#cancel', :as =>'cancel'
