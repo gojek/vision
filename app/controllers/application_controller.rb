@@ -22,7 +22,6 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    session[:first_time] = true
     return_url = stored_location_for(resource) || change_requests_path
     if current_user.is_approved == User::NOT_YET_FILL_THE_FORM
       return_url = register_path
