@@ -1,4 +1,5 @@
-# frozen_string_literal: true
+require 'google/apis/calendar_v3'
+require 'user_credential.rb'
 
 class Calendar
   include Rails.application.routes.url_helpers
@@ -10,36 +11,29 @@ class Calendar
 
   def build_event_from_cr(change_request)
     users = [change_request.user] + change_request.collaborators + change_request.implementers
-    {
-      'summary' => change_request.change_summary,
-      'description' => "CR: #{change_request_url(change_request)}\nPIC: #{change_request.requestor_name}",
-      'location' => '',
-      'start' => { 'dateTime' => change_request.schedule_change_date.to_datetime },
-      'end' => { 'dateTime' => change_request.planned_completion.to_datetime },
-      'attendees' => users.collect { |user| { 'email' => user.email } }
-    }
-  end
-
-  def set_event(user, event, event_id = nil)
-    client = Google::APIClient.new
-    client.authorization.access_token = user.token
-    service = client.discovered_api('calendar', 'v3')
-
-    parameters = {
-      'calendarId' => ENV['DEPLOY_CALENDAR_ID'],
-      'sendNotifications' => true
-    }
-
-    if event_id.nil?
-      api_method = service.events.insert
-    else
-      api_method = service.events.update
-      parameters['eventId'] = event_id
+    event = Google::Apis::CalendarV3::Event.new
+    event.summary = change_request.change_summary
+    event.description = "CR: #{change_request_url(change_request)}\nPIC: #{change_request.requestor_name}"
+    event.location = ''
+    event.start = Google::Apis::CalendarV3::EventDateTime.new(date_time: change_request.schedule_change_date.to_datetime)
+    event.end = Google::Apis::CalendarV3::EventDateTime.new(date_time: change_request.planned_completion.to_datetime)
+    event.attendees = users.map do |user|
+      Google::Apis::CalendarV3::EventAttendee.new(email: user.email)
     end
-
-    client.execute(api_method: api_method,
-                   parameters: parameters,
-                   body: JSON.dump(event),
-                   headers: { 'Content-Type' => 'application/json' })
+    event
   end
+
+  def set_event(user, event, event_id=nil)
+    service = Google::Apis::CalendarV3::CalendarService.new
+    user_credential = UserCredential.new(user.refresh_token, ["profile,email,https://www.googleapis.com/auth/calendar,https://www.googleapis.com/auth/calendar.events"])
+    service.authorization = user_credential.get_credentials
+    calendar_id = ENV['DEPLOY_CALENDAR_ID']
+    if event_id.nil?
+      service.insert_event(calendar_id, event, send_notifications: true)
+    else
+      service.update_event(calendar_id, event_id, event, send_notifications: true)
+    end
+  end
+
+
 end
