@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 class Jira
   include ActionView::Helpers::SanitizeHelper
   attr_accessor :client, :jira_data
 
   def initialize
     options = {
-      :username     => ENV['JIRA_USERNAME'],
-      :password     => ENV['JIRA_PASSWORD'],
-      :site         => ENV['JIRA_URL'],
-      :context_path => '',
-      :auth_type    => :basic
+      username: ENV['JIRA_USERNAME'],
+      password: ENV['JIRA_PASSWORD'],
+      site: ENV['JIRA_URL'],
+      context_path: '',
+      auth_type: :basic
     }
     @client = JIRA::Client.new(options)
     @jira_data = []
@@ -20,18 +22,20 @@ class Jira
       issue = jira if jira.attrs['key']==key
     end
     return key if issue.nil?
-    
+
     summary = sanitize(issue.fields['summary'], tags: [])
     issue_type_icon = issue.fields['issuetype']['iconUrl']
     status_category = issue.fields['status']['statusCategory']
     color_name = status_category['colorName']
     name = status_category['name']
-    url = URI::join(ENV['JIRA_URL'],'/browse/',key)
+    url = URI.join(ENV['JIRA_URL'], '/browse/', key)
 
-    html  = "<span class='jira-button'>"
-    html << "  <a href='#{url}' target='_blank' data-toggle='popover' title='Summary' data-content='#{summary}'><img class='icon' src='#{issue_type_icon}'> #{key} </a>"
-    html << "  <span class='jira-#{color_name.downcase}'>#{name}</span>"
-    html << "</span>"
+    "<span class='jira-button'>" \
+    "  <a href='#{url}' target='_blank' data-toggle='popover' title='Summary' data-content='#{summary}'>" \
+    "    <img class='icon' src='#{issue_type_icon}'> #{key}" \
+    '  </a>' \
+    "  <span class='jira-#{color_name.downcase}'>#{name}</span>" \
+    '</span>'
   end
 
   def get_jira_data(list_issue)
@@ -45,18 +49,18 @@ class Jira
   def jiraize(text)
     return '' if text.nil?
     matches = text.scan(/([A-Z]+-\d+)/).map { |x| [x[0], get_issue(x[0])] }
-    for m in matches
+    matches.each do |m|
       text.gsub! m[0], m[1]
     end
-    return text
+    text
   end
 
-  def fungsi(sebuah_list)
-    if sebuah_list.count == 1
-      get_jira_data('issueKey ='+sebuah_list[0].scan(/([A-Z]+-\d+)/))
+  def generate_issue_list(issue_string)
+    if issue_string.count == 1
+      get_jira_data('issueKey ='+issue_string[0].scan(/([A-Z]+-\d+)/))
     else
       list_issue = ""
-      sebuah_list.each do |text|
+      issue_string.each do |text|
         list_issue += "issueKey="+text + " OR "
       end
       get_jira_data(list_issue[0..-5])
@@ -65,7 +69,7 @@ class Jira
 
   def jiraize_ir(text)
     list = text.scan(/([A-Z]+-\d+)/).flatten
-    fungsi(list)
+    generate_issue_list(list)
     jiraize(text)
   end
 
@@ -79,7 +83,7 @@ class Jira
     list << change_request.analysis.scan(/([A-Z]+-\d+)/)
     list << change_request.impact.scan(/([A-Z]+-\d+)/)
     list << change_request.solution.scan(/([A-Z]+-\d+)/)
-    fungsi(list.flatten)
+    generate_issue_list(list.flatten)
 
     change_request.business_justification = jiraize(change_request.business_justification)
     change_request.os = jiraize(change_request.os)
