@@ -15,6 +15,8 @@ class AccessRequestsController < ApplicationController
     if params[:type]
       @q = AccessRequest.ransack(params[:q])
       case params[:type]
+      when 'relevant'
+        @access_requests = AccessRequest.relevant_access_requests(current_user)
       when 'approval'
         @access_requests = AccessRequest.where(id: AccessRequestApproval.where(user_id: current_user.id, approved: nil).collect(&:access_request_id))
       end
@@ -43,6 +45,7 @@ class AccessRequestsController < ApplicationController
   end
 
   def create
+    
     AccessRequest.transaction do
       @access_request = current_user.AccessRequests.build(access_request_params)
       assign_collaborators_and_approvers
