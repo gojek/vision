@@ -11,6 +11,7 @@ variables:
   BUNDLE_PATH: /cache/vision/gems
 
 stages:
+  - format
   - test
 
 before_script:
@@ -28,6 +29,11 @@ before_script:
   - bower install --allow-root
   - rm -rf /cache/bower_components
   - cp -r vendor/assets/bower_components /cache/bower_components
+
+rspec:
+  stage: format
+  script:
+    - bundle exec rubocop
 
 rspec:
   stage: test
