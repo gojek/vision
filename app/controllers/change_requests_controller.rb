@@ -180,7 +180,7 @@ class ChangeRequestsController < ApplicationController
     respond_to do |format|
       if @change_request.update(change_request_params)
         is_success, event = Calendar.new.set_cr(current_user, @change_request)
-        @change_request.update(google_event_id: event.data.id) if is_success
+        @change_request.update(google_event_id: event.id) if is_success
 
         if @change_request.draft?
           @change_request.submit!
