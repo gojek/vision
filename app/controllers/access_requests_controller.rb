@@ -114,7 +114,7 @@ class AccessRequestsController < ApplicationController
   end
 
   def import_from_csv
-    @valid, @invalid = CsvParser.process_csv(params[:csv], current_user)
+    @valid, @invalid = AccessRequestsCsvParser.process_csv(params[:csv], current_user)
 
     AccessRequest.transaction do
       @valid.each do |access_request|
