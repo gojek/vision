@@ -25,7 +25,7 @@ class Calendar
 
   def set_event(user, event, event_id=nil)
     service = Google::Apis::CalendarV3::CalendarService.new
-    user_credential = UserCredential.new(user.refresh_token, ["profile,email,https://www.googleapis.com/auth/calendar,https://www.googleapis.com/auth/calendar.events"])
+    user_credential = UserCredential.new(user.refresh_token, 'https://www.googleapis.com/auth/calendar.events,https://www.googleapis.com/auth/calendar')
     service.authorization = user_credential.get_credentials
     calendar_id = ENV['DEPLOY_CALENDAR_ID']
     if event_id.nil?
