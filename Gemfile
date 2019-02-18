@@ -1,28 +1,30 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
-ruby "~> 2.3.0"
+ruby '2.3.0'
 
 # Bundle edge Rails insteadhttps://developers.google.com/oauthplayground: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.10'
+gem 'rake', '10.0.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'unicorn'
-gem 'rake', '10.0.0'
 
 # resource-related
-gem 'sass-rails', '~> 5.0'
-gem 'uglifier', '>= 1.3.0'
-gem 'coffee-rails', '~> 4.1.0'
-gem 'bootstrap-wysihtml5-rails'
-gem 'jquery-rails'
-gem 'turbolinks', '~> 2.5.3'
 gem 'bootstrap-kaminari-views'
+gem 'bootstrap-toggle-rails'
+gem 'bootstrap-wysihtml5-rails'
+gem 'coffee-rails', '~> 4.1.0'
+gem 'fullcalendar-rails'
+gem 'jquery-rails'
 gem 'jquery-turbolinks'
 gem 'jquery-ui-rails'
-gem 'simple_calendar', '~> 1.1.0'
-gem 'fullcalendar-rails'
 gem 'momentjs-rails'
 gem 'nprogress-rails'
-gem 'bootstrap-toggle-rails'
+gem 'sass-rails', '~> 5.0'
+gem 'simple_calendar', '~> 1.1.0'
+gem 'turbolinks', '~> 2.5.3'
+gem 'uglifier', '>= 1.3.0'
 
 # api-related
 gem 'jbuilder', '~> 2.0'
@@ -35,9 +37,9 @@ gem 'paper_trail', '~> 4.1'
 gem 'sucker_punch', '~> 2.0'
 
 # oauth
-gem 'omniauth-google-oauth2'
 gem 'google-api-client', '~> 0.8.2', require: 'google/api_client'
 gem 'httpclient'
+gem 'omniauth-google-oauth2'
 
 # server-related
 # gem 'dotenv' # to allow loading environment variable locally by file
@@ -45,24 +47,24 @@ gem 'foreman', '0.82' # to load environment variable, foreman start/foreman rail
 gem 'thor', '0.19.1'
 
 # data representation
-gem 'ransack'
-gem 'kaminari'
-gem 'to_xls-rails'
-gem 'diffy'
-gem 'cocoon'
-gem 'acts-as-taggable-on'
 gem 'aasm'
-gem 'figaro'
-gem 'html_truncator', '~>0.2'
-gem 'unread'
-gem 'data-confirm-modal'
-gem 'jquery-atwho-rails'
-gem 'exception_notification'
-gem 'pry-byebug'
-gem 'omniauth'
-gem 'tinymce-rails', '4.3.8'
+gem 'acts-as-taggable-on'
+gem 'cocoon'
 gem 'comma', '~> 3.2.1'
+gem 'data-confirm-modal'
+gem 'diffy'
+gem 'exception_notification'
+gem 'figaro'
 gem 'groupdate'
+gem 'html_truncator', '~>0.2'
+gem 'jquery-atwho-rails'
+gem 'kaminari'
+gem 'omniauth'
+gem 'pry-byebug'
+gem 'ransack'
+gem 'tinymce-rails', '4.3.8'
+gem 'to_xls-rails'
+gem 'unread'
 
 # xml parser
 gem 'nokogiri'
@@ -73,12 +75,12 @@ gem 'pg'
 # coloring std out
 gem 'colorize'
 
-#slack notification
+# slack notification
+gem 'slack-notifier'
 gem 'slack-ruby-client'
-gem "slack-notifier"
 
-#jira
-gem 'jira-ruby', :require => 'jira-ruby'
+# jira
+gem 'jira-ruby', require: 'jira-ruby'
 
 # full-text search
 gem 'sunspot_rails'
@@ -97,34 +99,34 @@ group :development do
 
   # mail catcher is being used for email in development
   # based on the https://mailcatcher.me/
-  # it is stated that "Please don't put mailcatcher into your Gemfile. 
+  # it is stated that "Please don't put mailcatcher into your Gemfile.
   # It will conflict with your applications gems at some point."
   # Instead, simply run gem install mailcatcher then mailcatcher to get started.
-
 end
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'faker'
-  gem 'cucumber-rails', require: false
   gem 'byebug'
-  gem 'rspec-rails', '~> 3.5.2'
+  gem 'cucumber-rails', require: false
   gem 'factory_girl_rails', '~> 4.2.1'
+  gem 'faker'
+  gem 'rspec-rails', '~> 3.5.2'
   gem 'sunspot_test'
   # Access an IRB console on exception pages or by using <%= console %> in views
   #
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+  gem 'rubocop', '~> 0.63.1', require: false
   gem 'spring'
 end
 
 group :test do
-  gem 'shoulda-matchers', '~> 3.1'
   gem 'capybara'
   gem 'capybara-screenshot'
   gem 'database_cleaner'
   gem 'launchy'
-  gem 'selenium-webdriver', "~> 2.53.1"
+  gem 'selenium-webdriver', '~> 2.53.1'
+  gem 'shoulda-matchers', '~> 3.1'
   gem 'simplecov'
   gem 'simplecov-rcov'
   gem 'webmock'
