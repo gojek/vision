@@ -1,13 +1,13 @@
 require 'spec_helper'
 require 'sucker_punch/testing/inline'
 
-RSpec.describe ChangeRequestSlackUpdateJob, type: :job do
+RSpec.describe ApprovalChangeRequestSlackNotificationJob, type: :job do
   let(:change_request) {FactoryGirl.create(:change_request) }
   describe "perform async" do
     it "send notification to slack immediately" do
       ActiveJob::Base.queue_adapter = :test
       expect {
-        ChangeRequestSlackUpdateJob.perform_later(change_request)
+        ApprovalChangeRequestSlackNotificationJob.perform_later(change_request)
       }.to have_enqueued_job.with(change_request)
     end
   end
