@@ -1,4 +1,4 @@
-class CsvItemParser
+class AccessRequestCsvParser
 	ALLOWED_FIELD = ["request_type","access_type","start_date","end_date","business_justification",
 		"collaborators","approvers","employee_name","employee_position","employee_department",
 		"employee_email_address","employee_phone","employee_access","fingerprint","corporate_email",
@@ -12,7 +12,7 @@ class CsvItemParser
   attr_reader :data, :error, :user
 
 	def self.parse(data, current_user)
-		item = CsvItemParser.new(data, current_user).extract
+		item = AccessRequestCsvParser.new(data, current_user).extract
 	end
 
 	def initialize(raw_data, current_user)
