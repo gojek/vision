@@ -143,7 +143,7 @@ class ChangeRequestsController < ApplicationController
         associated_user_ids.concat(@current_collaborators)
         @change_request.associated_user_ids = associated_user_ids.uniq
         Notifier.cr_notify(current_user, @change_request, 'new_cr')
-        ChangeRequestSlackNewJob.perform_async(@change_request)
+        NewChangeRequestSlackNotificationJob.perform_async(@change_request)
         Thread.new do
           UserMailer.notif_email(@change_request.user, @change_request, @status).deliver_now
           ActiveRecord::Base.connection.close
@@ -196,7 +196,7 @@ class ChangeRequestsController < ApplicationController
         associated_user_ids.concat(@current_collaborators)
         @change_request.associated_user_ids = associated_user_ids.uniq
         Notifier.cr_notify(current_user, @change_request, 'update_cr')
-        ChangeRequestSlackUpdateJob.perform_async(@change_request)
+        UpdateChangeRequestSlackNotificationJob.perform_async(@change_request)
 
         flash[:success] = 'Change request was successfully updated.'
         flash[:success] += " Calendar event creation failed: #{event.error_message}." if event.error?
@@ -247,7 +247,7 @@ class ChangeRequestsController < ApplicationController
       approval.notes = accept_note
       approval.save!
       Notifier.cr_notify(current_user, @change_request, 'cr_approved')
-      ChangeRequestSlackApprovalJob.perform_async(@change_request, approval)
+      ApprovalChangeRequestSlackNotificationJob.perform_async(@change_request, approval)
       flash[:success] = 'Change Request Approved'
     end
     redirect_to @change_request
@@ -265,7 +265,7 @@ class ChangeRequestsController < ApplicationController
       Notifier.cr_notify(current_user, @change_request, 'cr_rejected')
       approval.update(:approve => false, :notes => reject_reason)
       flash[:notice] = 'Change Request Rejected'
-      ChangeRequestSlackApprovalJob.perform_async(@change_request, approval)
+      ApprovalChangeRequestSlackNotificationJob.perform_async(@change_request, approval)
     end
     redirect_to @change_request
   end
