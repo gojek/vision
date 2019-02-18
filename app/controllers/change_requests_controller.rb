@@ -179,8 +179,8 @@ class ChangeRequestsController < ApplicationController
     @change_request.set_collaborators(@current_collaborators)
     respond_to do |format|
       if @change_request.update(change_request_params)
-        event = Calendar.new.set_cr(current_user, @change_request)
-        @change_request.update(google_event_id: event.data.id) unless event.error?
+        is_success, event = Calendar.new.set_cr(current_user, @change_request)
+        @change_request.update(google_event_id: event.data.id) if is_success
 
         if @change_request.draft?
           @change_request.submit!
@@ -197,7 +197,7 @@ class ChangeRequestsController < ApplicationController
         Notifier.cr_notify(current_user, @change_request, 'update_cr')
         SlackNotif.new.notify_update_cr @change_request
         flash[:success] = 'Change request was successfully updated.'
-        flash[:success] += " Calendar event creation failed: #{event.error_message}." if event.error?
+        flash[:success] += " Calendar event creation failed: #{event.error_message}." unless is_success
         format.html { redirect_to @change_request }
         format.json { render :show, status: :ok, location: @change_request }
       else
