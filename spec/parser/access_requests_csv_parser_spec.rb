@@ -11,12 +11,14 @@ describe AccessRequestsCsvParser do
       @file = fixture_file_upload('files/valid.csv', 'text/csv')
       valid, invalid = AccessRequestsCsvParser.process_csv(@file, user)
       expect(valid.count).to match (8)
+      expect(invalid.count).to match (0)
     end
     
     it "can upload not validated data csv file" do
       @file = fixture_file_upload('files/invalid.csv', 'text/csv')
       valid, invalid = AccessRequestsCsvParser.process_csv(@file, user)
       expect(invalid.count).to match (11)
+      expect(valid.count).to match (0)
     end 
 
     it "can upload both validated and non validated data csv file" do
