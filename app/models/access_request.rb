@@ -29,6 +29,10 @@ class AccessRequest < ActiveRecord::Base
 
   searchable do
     text :employee_name, stored: true
+    text :employee_position, stored: true
+    text :employee_email_address, stored: true
+    text :employee_department, stored: true
+    text :employee_phone, stored: true
     time :created_at, stored: true
   end
 
@@ -184,48 +188,10 @@ class AccessRequest < ActiveRecord::Base
     (user.is_admin || is_associate?(user)) && !draft?
   end
 
-  comma do
-    id
-    user_id "User ID"
-    request_type "Request Type"
-    access_type "Access Type"
-    start_date "Start date"
-    end_date "End date"
-    employee_name "Employee Name"
-    employee_position "Employee Position"
-    employee_email_address "Employee Email Address"
-    employee_department "Employee Departmen"
-    employee_phone "Employee Phone"
-    employee_access "Employee Access"
-    fingerprint_business_area "Fingerprint Business Area"
-    fingerprint_business_operations "Fingerprint Business Operations"
-    fingerprint_it_operations "Fingerprint IT Operations"
-    fingerprint_server_room "Fingerprint Server Room"
-    fingerprint_archive_room "Fingerprint Archive Room"
-    fingerprint_engineering_area "Fingerprint Engineering Area"
-    corporate_email "Corporate Email"
-    internet_access "Internet Access"
-    slack_access "Slack Access"
-    admin_tools "Admin Tools"
-    vpn_access "VPN Access"
-    github_gitlab "Github/Gitlab"
-    exit_interview "Exit Interview"
-    access_card "Access Card"
-    parking_cards "Parking Cards"
-    id_card "ID Card"
-    name_card "Name Card"
-    insurance_card "Insurance Card"
-    cash_advance "Cash Advance"
-    password_reset "Password Reset"
-    user_identification "User Identification"
-    asset_name "Asset Name"
-    production_access "Production Access"
-    production_user_id "Production User ID"
-    production_asset "Production Asset"
-    aasm_state "AASM state"
-    request_date "Request Date"
-    created_at "Created At"
-    updated_at "Updated At"
-    business_justification "Business Justification"
+  def self.relevant_access_requests(user)
+    AccessRequest.where("user_id = #{user.id} OR id IN (
+      #{AccessRequestApproval.where(user_id: user.id).select(:access_request_id).to_sql + " UNION " +
+        user.collaborate_access_requests.select(:access_request_id).to_sql})").distinct
+                        
   end
 end

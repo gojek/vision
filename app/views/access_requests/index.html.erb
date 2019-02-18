@@ -1,6 +1,6 @@
 <% require 'html_truncator' %>
 <section class="content-header">
-  <h1>
+  <h1 class="access-request-title">
     Access Requests
      <%= link_to access_requests_path(request.GET.merge({ format: :csv })), class: 'btn btn-flat btn-primary pull-right' do %>
         <i class="fa fa-download"></i> <strong>Download Access Request</strong>
@@ -8,7 +8,7 @@
     <%= link_to  new_access_request_path, class: 'btn btn-flat btn-primary pull-right'  do %>
          <i class="fa fa-plus"></i> <strong>New Access Request</strong>
     <% end %>
-    
+    <a href="#" data-toggle="control-sidebar" class="btn btn-flat btn-primary pull-right" id='filter-button'><i class="fa fa-filter"></i><span><strong> Filter</strong></span></a>
   </h1>
 </section>
 <section class="content">
@@ -65,6 +65,7 @@
           <div>
             <b>Quick filters:</b>
             <%= link_to "All", access_requests_path, class: 'btn-sm btn-primary' %>
+            <%= link_to "Relevant to me", access_requests_path(type: 'relevant'), class: 'btn-sm btn-primary' %>
             <% if current_user.is_approver? %>
               <%= link_to "Need my approvals", access_requests_path(type: 'approval'), class: 'btn-sm btn-primary' %>
             <% end %>
@@ -127,6 +128,75 @@
     </div>
 
 </div>
+<aside class="control-sidebar control-sidebar-light" style="height: 100vh; overflow: hidden" id='sidebar-pane'>
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <!-- Home tab content -->
+    <a href='#' data-toggle='control-sidebar'> <i class='glyphicon glyphicon-remove pull-right'></i></a>
+    <div class="tab-pane active" id="control-sidebar-home-tab">
+      <h2 class="control-sidebar-heading">Filter</h2>
 
+      <%= search_form_for @q do |f| %>
+        <div id="overflow" style="display: block; height: 80vh; overflow-y: auto">
+          <div class="form-group">
+            <%= f.label :request_type %>
+            <%= f.select :request_type_eq, options_for_select([['Any','']] + AccessRequest::REQUEST_TYPES, params[:q]? params[:q][:request_type_eq] : 'Any' ), {}, {class: 'form-control select2'} %>
+          </div>
+          <div class="form-group">
+            <%= f.label :access_type %>
+            <%= f.select :access_type_eq, options_for_select([['Any','']] + AccessRequest::ACCESS_TYPES, params[:q]? params[:q][:access_type_eq] : 'Any' ), {}, {class: 'form-control select2'} %>
+          </div>
+          <h4>Employee Details</h4>
+          <div class="form-group">
+            <%= f.label :employee_name %>
+            <%= f.search_field :employee_name_cont, class: 'form-control' %>
+          </div>
+          <div class="form-group">
+            <%= f.label :employee_position %>
+            <%= f.search_field :employee_position_cont, class: 'form-control' %>
+          </div>
+          <div class="form-group">
+            <%= f.label :employee_email_address %>
+            <%= f.search_field :employee_email_address_cont, class: 'form-control' %>
+          </div>
+          <div>
+            <%= f.label :employee_department %>
+            <%= f.search_field :employee_department_cont, class: 'form-control' %>
+          </div>
+          <br>
+          <div class="form-group">
+            <%= f.label :created_at_between %><br>
+            from: <%= f.datetime_select :created_at_gteq, :include_blank => true, class: 'form-control' %><br>
+            until: <%= f.datetime_select :created_at_lteq,:include_blank => true, class: 'form-control' %>
+          </div>
+        </div>
+
+        <%= f.submit class: 'btn btn-primary pull-left' %>
+      <%end%>
+      <%= search_form_for @q do |f| %>
+       <%= f.submit 'Reset', class: 'btn btn-primary pull-right' %>
+      <% end %>
+    </div><!-- /.tab-pane -->
+    <!-- Stats tab content -->
+  </div>
+</aside><!-- /.control-sidebar -->
+<!-- Add the sidebar's background. This div must be placed
+     immediately after the control sidebar -->
+<div class='control-sidebar-bg'></div>
 <script>
+  var o = $.AdminLTE.options.controlSidebarOptions;
+  var sidebar = $(o.selector);
+  jQuery(function($){
+    $('body').click(function(e){
+      if (sidebar.hasClass('control-sidebar-open')){
+        var clickedOn = $(e.target);
+        if (!clickedOn.parents().andSelf().is('#sidebar-pane') && !clickedOn.parents().andSelf().is('#filter-button')){
+          sidebar.removeClass('control-sidebar-open');
+        }
+      }
+    });
+  });
+
+
 </script>
+
