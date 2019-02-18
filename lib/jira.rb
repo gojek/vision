@@ -2,6 +2,7 @@
 
 class Jira
   include ActionView::Helpers::SanitizeHelper
+  attr_accessor :client, :jira_data
 
   def initialize
     options = {
@@ -12,15 +13,16 @@ class Jira
       auth_type: :basic
     }
     @client = JIRA::Client.new(options)
+    @jira_data = []
   end
 
   def get_issue(key)
-    begin
-      issue = @client.Issue.find(key)
-    rescue JIRA::HTTPError
-      return key
+    issue = nil
+    @jira_data.each do |jira|
+      issue = jira if jira.attrs['key']==key
     end
-
+    return key if issue.nil?
+    
     summary = sanitize(issue.fields['summary'], tags: [])
     issue_type_icon = issue.fields['issuetype']['iconUrl']
     status_category = issue.fields['status']['statusCategory']
@@ -36,6 +38,14 @@ class Jira
     '</span>'
   end
 
+  def get_jira_data(list_issue)
+    begin
+      @jira_data = @client.Issue.jql(list_issue, {fields: %w(summary status issuetype),fields_by_key:true})
+    rescue JIRA::HTTPError => e
+      @jira_data = []
+    end
+  end
+
   def jiraize(text)
     return '' if text.nil?
     matches = text.scan(/([A-Z]+-\d+)/).map { |x| [x[0], get_issue(x[0])] }
@@ -45,7 +55,36 @@ class Jira
     text
   end
 
+  def fungsi(sebuah_list)
+    if sebuah_list.count == 1
+      get_jira_data('issueKey ='+sebuah_list[0].scan(/([A-Z]+-\d+)/))
+    else
+      list_issue = ""
+      sebuah_list.each do |text|
+        list_issue += "issueKey="+text + " OR "
+      end
+      get_jira_data(list_issue[0..-5])
+    end
+  end
+
+  def jiraize_ir(text)
+    list = text.scan(/([A-Z]+-\d+)/).flatten
+    fungsi(list)
+    jiraize(text)
+  end
+
   def jiraize_cr(change_request)
+    list = []
+    list << change_request.business_justification.scan(/([A-Z]+-\d+)/)
+    list << change_request.os.scan(/([A-Z]+-\d+)/)
+    list << change_request.db .scan(/([A-Z]+-\d+)/)
+    list << change_request.net.scan(/([A-Z]+-\d+)/)
+    list << change_request.other_dependency.scan(/([A-Z]+-\d+)/)
+    list << change_request.analysis.scan(/([A-Z]+-\d+)/)
+    list << change_request.impact.scan(/([A-Z]+-\d+)/)
+    list << change_request.solution.scan(/([A-Z]+-\d+)/)
+    fungsi(list.flatten)
+
     change_request.business_justification = jiraize(change_request.business_justification)
     change_request.os = jiraize(change_request.os)
     change_request.db = jiraize(change_request.db)
