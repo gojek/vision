@@ -33,9 +33,7 @@
 //= require data-confirm-modal
 //= require jquery.atwho
 //= require jquery.caret
-//= require daterangepicker
 //= require turbolinks
-//= require bootstrap-toggle
 //= require noenter
 NProgress.configure({
 
