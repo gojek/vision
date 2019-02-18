@@ -129,9 +129,8 @@ class ChangeRequestsController < ApplicationController
         @status = @change_request.change_request_statuses.new(:status => 'draft')
         @status.save
       else
-        event = Calendar.new.set_cr(current_user, @change_request)
-        @change_request.update(google_event_id: event.data.id) unless event.error?
-
+        is_success, event = Calendar.new.set_cr(current_user, @change_request)
+        @change_request.update(google_event_id: event.id) if is_success
         @change_request.submit!
         @change_request.save
         @status = @change_request.change_request_statuses.new(:status => 'submitted')
@@ -149,7 +148,7 @@ class ChangeRequestsController < ApplicationController
           ActiveRecord::Base.connection.close
         end
         flash[:success] = 'Change request was successfully created.'
-        flash[:success] += " Calendar event creation failed: #{event.error_message}." if event.error?
+        flash[:success] += " Calendar event creation failed: #{event[:error_message]}." unless is_success
       end
       format.html { redirect_to @change_request }
       format.json { render :show, status: :created, location: @change_request }

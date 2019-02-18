@@ -28,12 +28,14 @@ class Calendar
     user_credential = UserCredential.new(user.refresh_token, 'https://www.googleapis.com/auth/calendar.events,https://www.googleapis.com/auth/calendar')
     service.authorization = user_credential.get_credentials
     calendar_id = ENV['DEPLOY_CALENDAR_ID']
-    if event_id.nil?
-      service.insert_event(calendar_id, event, send_notifications: true)
-    else
-      service.update_event(calendar_id, event_id, event, send_notifications: true)
+    begin
+      if event_id.nil?
+        return true, service.insert_event(calendar_id, event, send_notifications: true)
+      else
+        return true, service.update_event(calendar_id, event_id, event, send_notifications: true)
+      end
+    rescue Google::Apis::ClientError => error
+      return false, { error_message: error.to_s }
     end
   end
-
-
 end
