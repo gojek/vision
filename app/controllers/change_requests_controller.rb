@@ -114,13 +114,8 @@ class ChangeRequestsController < ApplicationController
         @status = @change_request.change_request_statuses.new(:status => 'draft')
         @status.save
       else
-<<<<<<< HEAD
         is_success, event = Calendar.new.set_cr(current_user, @change_request)
         @change_request.update(google_event_id: event.id) if is_success
-=======
-        event = Calendar.new.set_cr(current_user, @change_request)
-        @change_request.update(google_event_id: event.data.id) unless event.error?
->>>>>>> 6d0c56c7b9f0520e8e201d24f31a8c431c90e9d6
         @change_request.submit!
         @change_request.save
         @status = @change_request.change_request_statuses.new(:status => 'submitted')
