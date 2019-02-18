@@ -44,22 +44,16 @@ class AccessRequestCsvParser
 	def extract_fingerprint
     if @data["fingerprint"].present?
       items = parse(@data["fingerprint"])
-      if validate(items, FINGERPRINT_CONST)
-        @error = true
-      else
-        items.map { |item| @data["fingerprint_#{item}"] = 1 }
-      end
+      @error = true if validate(items, FINGERPRINT_CONST)
+      (items & FINGERPRINT_CONST).map { |item| @data["fingerprint_#{item}"] = 1 }
     end
   end
 
   def extract_other_access
   	if @data["other_access"].present?
       items = parse(@data["other_access"])
-      if validate(items, OTHER_ACCESS_CONST)
-        @error = true
-      else
-        items.map { |item| @data[item] = 1 }
-      end
+      @error = true if validate(items, OTHER_ACCESS_CONST)
+      (items & OTHER_ACCESS_CONST).map { |item| @data[item] = 1 }
     end
   end
 
