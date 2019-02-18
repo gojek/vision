@@ -13,11 +13,5 @@
   </div>
 </section>
 <section class="content">
-    <%if session[:first_time] %>
-      <div class="alert alert-info alert-dismissible" id="draft-alert" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close" aria-hidden="true">x</button>
-        <strong>Save CR as Draft!</strong> Now you can save this CR as draft by simply leaving out important fields marked with *
-      </div>
-    <% end %>
     <%= render 'form' %>
 </section>
