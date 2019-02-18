@@ -31,25 +31,6 @@ describe AccessRequestsController, type: :controller do
           expect(assigns(:invalid).count).to match(2)
         end
       end
-
-      # it "can upload validated data csv file" do
-      #   @file = fixture_file_upload('files/valid.csv', 'text/csv')
-      #   post :import_from_csv, :csv => @file
-      #   expect(flash[:notice]).to match "8 Access request(s) was successfully created."
-      # end
-      
-      # it "can upload not validated data csv file" do
-      #   @file = fixture_file_upload('files/invalid.csv', 'text/csv')
-      #   post :import_from_csv, :csv => @file
-      #   expect(flash[:invalid]).to match "11 data(s) is not filled correctly, the data was saved as a draft"
-      # end 
-
-      # it "can upload both validated and non validated data csv file" do
-      #   @file = fixture_file_upload('files/valid_invalid.csv', 'text/csv')
-      #   post :import_from_csv, :csv => @file
-      #   expect(flash[:notice]).to match "2 Access request(s) was successfully created."
-      #   expect(flash[:invalid]).to match "2 data(s) is not filled correctly, the data was saved as a draft"
-      # end 
     end
 
     describe 'GET #new' do
