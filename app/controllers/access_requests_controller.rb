@@ -116,10 +116,10 @@ class AccessRequestsController < ApplicationController
   def import_from_csv
     fileExtension = File.extname(params[:csv].original_filename)
     if fileExtension != ".csv"
-      flash[:danger] = 'Uploaded file is not a csv file. Please upload a csv file.'
+      flash[:alert] = 'Uploaded file is not a csv file. Please upload a csv file.'
       redirect_to access_requests_path
     end
-    
+
     @valid, @invalid = AccessRequestsCsvParser.process_csv(params[:csv], current_user)
 
     AccessRequest.transaction do
