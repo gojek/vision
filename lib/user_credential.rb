@@ -14,7 +14,6 @@ class UserCredential
       additional_parameters: { "access_type" => "offline" })
     credentials.refresh_token = @refresh_token
     credentials.fetch_access_token!
-
     return credentials
   end
 end
