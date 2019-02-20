@@ -18,6 +18,7 @@
 //= require admin-lte/plugins/select2/select2.full
 //= require moment/min/moment.min
 //= require tinymce
+//= require daterangepicker
 //= require eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min
 //= require cocoon
 //= require admin-lte
@@ -36,7 +37,6 @@
 //= require turbolinks
 //= require noenter
 //= require bootstrap-toggle/js/bootstrap-toggle.min
-//= require daterangepicker
 
 NProgress.configure({
 
