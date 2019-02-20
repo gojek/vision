@@ -6,11 +6,18 @@ AllCops:
     - 'bin/**/*'
     - 'script/**/*'
     - 'config/**/*'
+    - 'vendor/**/*'
     # baby step
     - 'db/**/*'
     - 'lib/tasks/**/*'
     - 'spec/**/*'
-    - 'app/**/*'
+    - 'app/assets/**/*'
+    - 'app/controllers/**/*'
+    - 'app/helpers/**/*'
+    - 'app/jobs/**/*'
+    - 'app/mailers/**/*'
+    - 'app/models/**/*'
+    - 'app/views/**/*'
 
 # we are not ready for its power
 Style/MethodCallWithArgsParentheses:
