@@ -79,15 +79,6 @@ describe AccessRequestCsvParser do
       item.send(:extract_collaborators)
       expect(item.data).to have_key("collaborator_ids")
     end
-
-    it 'test clear unused field' do
-      item = AccessRequestCsvParser.new(raw_data, user)
-      item.send(:clear_field)
-      expect(item.data).not_to have_key("approvers")
-      expect(item.data).not_to have_key("collaborators")
-      expect(item.data).not_to have_key("fingerprint")
-      expect(item.data).not_to have_key("other_access")
-    end
   end
 
   describe 'testing extract method with invalid value' do
