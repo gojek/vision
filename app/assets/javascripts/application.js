@@ -17,7 +17,6 @@
 //= require moment/min/moment.min
 //= require tinymce
 //= require eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min
-//= require ./daterangepicker
 //= require cocoon
 //= require admin-lte
 //= require nprogress
@@ -28,17 +27,18 @@
 //= require amcharts3/amcharts/serial
 //= require amcharts3/amcharts/themes/light
 //= require Chart.js/Chart.min
-//= require data-confirm-modal
-//= require Caret.js/dist/jquery.caret.js
 //= require At.js/dist/js/jquery.atwho.min
+//= require Caret.js/dist/jquery.caret.js
+//= require daterangepicker
 //= require turbolinks
-//= require noenter
 //= require bootstrap-toggle
+//= require noenter
+
 
 NProgress.configure({
 
 
-});
+}); 
 $(function(){
   $(".select2").select2();
   $('.datetimepicker').datetimepicker({
