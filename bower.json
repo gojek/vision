@@ -21,12 +21,9 @@
     "Chart.js": "~1.0.2",
     "bootstrap": "~3.3.5",
     "bootstrap-social": "4.10.1",
-    "bootstrap-toggle": "latest",
-    "Sortable": "sortablejs#^1.8.3",
-    "amcharts3": "^3.21.14",
-    "moment": "^2.24.0",
-    "jquery.caret": "^1.5.2",
-    "At.js": "jquery.atwho#^1.5.4",
-    "jquery-depends-on": "^1.5.1"
+    "Sortable": "sortablejs#^1.2.0",
+    "amcharts3": "^3.16.0",
+    "moment": "^2.10.3",
+    "At.js": "jquery.atwho#^1.3.2"  
   }
 }
