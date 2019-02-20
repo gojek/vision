@@ -35,9 +35,7 @@ class IncidentReportsController < ApplicationController
   def show
     @incident_report.mark_as_read! :for => current_user
     Notifier.ir_read(current_user,@incident_report)
-    unless @incident_report.action_item.nil?
-      @action_item = Jira.new.jiraize_ir(@incident_report.action_item)
-    end
+    @incident_report = Jira.new.jiraize_ir(@incident_report)
   end
 
   def new

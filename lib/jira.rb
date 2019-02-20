@@ -19,7 +19,7 @@ class Jira
   def get_issue(key)
     issue = nil
     @jira_data.each do |jira|
-      issue = jira if jira.attrs['key']==key
+      issue = jira if jira.key==key
     end
     return key if issue.nil?
     
@@ -55,9 +55,9 @@ class Jira
     text
   end
 
-  def fungsi(sebuah_list)
-    if sebuah_list.count == 1
-      get_jira_data('issueKey ='+sebuah_list[0].scan(/([A-Z]+-\d+)/))
+  def generate_issue_list(issue_string)
+    if issue_string.count == 1
+      get_jira_data('issueKey='+issue_string[0])
     else
       list_issue = ""
       sebuah_list.each do |text|
@@ -75,15 +75,15 @@ class Jira
 
   def jiraize_cr(change_request)
     list = []
-    list << change_request.business_justification.scan(/([A-Z]+-\d+)/)
-    list << change_request.os.scan(/([A-Z]+-\d+)/)
-    list << change_request.db .scan(/([A-Z]+-\d+)/)
-    list << change_request.net.scan(/([A-Z]+-\d+)/)
-    list << change_request.other_dependency.scan(/([A-Z]+-\d+)/)
-    list << change_request.analysis.scan(/([A-Z]+-\d+)/)
-    list << change_request.impact.scan(/([A-Z]+-\d+)/)
-    list << change_request.solution.scan(/([A-Z]+-\d+)/)
-    fungsi(list.flatten)
+    list << change_request.business_justification.scan(/([A-Z]+-\d+)/) if change_request.business_justification.present?
+    list << change_request.os.scan(/([A-Z]+-\d+)/) if change_request.os.present?
+    list << change_request.db.scan(/([A-Z]+-\d+)/) if change_request.db.present?
+    list << change_request.net.scan(/([A-Z]+-\d+)/) if change_request.net.present?
+    list << change_request.other_dependency.scan(/([A-Z]+-\d+)/) if change_request.other_dependency.present?
+    list << change_request.analysis.scan(/([A-Z]+-\d+)/) if change_request.analysis.present?
+    list << change_request.impact.scan(/([A-Z]+-\d+)/) if change_request.impact.present?
+    list << change_request.solution.scan(/([A-Z]+-\d+)/) if change_request.solution.present?
+    generate_issue_list(list.flatten)
 
     change_request.business_justification = jiraize(change_request.business_justification)
     change_request.os = jiraize(change_request.os)
