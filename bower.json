@@ -21,9 +21,6 @@
     "Chart.js": "~1.0.2",
     "bootstrap": "~3.3.5",
     "bootstrap-social": "4.10.1",
-<<<<<<< Updated upstream
-    "bootstrap-toggle": "^2.2.2"
-=======
     "bootstrap-toggle": "latest",
     "Sortable": "sortablejs#^1.8.3",
     "amcharts3": "^3.21.14",
@@ -31,6 +28,5 @@
     "jquery.caret": "^1.5.2",
     "At.js": "jquery.atwho#^1.5.4",
     "jquery-depends-on": "^1.5.1"
->>>>>>> Stashed changes
   }
 }
