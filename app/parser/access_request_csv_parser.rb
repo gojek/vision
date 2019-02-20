@@ -76,7 +76,7 @@ class AccessRequestCsvParser
     end
 
     return if @data['access_type'] != 'Temporary'
-    if @raw_data['start_date'].empty? && @raw_data['end_date'].empty?
+    if @raw_data['start_date'].empty? || @raw_data['end_date'].empty?
       @error = true
     else
       begin
