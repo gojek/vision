@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
 class AccessRequestCsvParser
-  ALLOWED_FIELD = %w[business_justification
-                    employee_name employee_position employee_department
+  ALLOWED_FIELD = %w[business_justification employee_name employee_position employee_department
                      employee_email_address employee_phone employee_access corporate_email
-                    password_reset user_identification asset_name production_access
+                     password_reset user_identification asset_name production_access
                      production_user_id production_asset].freeze
   FINGERPRINT_CONST = %w[business_operations business_area it_operations
                          server_room archive_room engineering_area].freeze
