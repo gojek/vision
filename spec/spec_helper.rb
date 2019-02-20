@@ -90,27 +90,31 @@ RSpec.configure do |config|
     stub_request(:post, "https://slack.com/api/users.list")
       .to_return(status: 200, body: '{"ok": true}', headers: {})
 
-    stub_request(:get, "https://veritrans.atlassian.net/rest/api/2/issue/TEST-123")
-      .to_return(
-        status: 200, 
-        body: '{
-          "fields":{
-            "id": "1234", 
-            "self": "https://veritrans.atlassian.net/rest/api/2/issue/1234",
-            "key":"TEST-123", 
-            "summary":"summary", 
-            "issuetype":{
-              "iconUrl":"https://veritrans.atlassian.net/images/icons/statuses/generic.png"
-            }, 
-            "status":{
-              "statusCategory":{
-                "colorName":"Yellow",
-                "name":"In Progress"
-              }
-            }
-          }
-        }', 
-        headers: {})
+    # stub_request(:get, "https://veritrans.atlassian.net/rest/api/2/search.*")
+    #   .to_return(
+    #     status: 200, 
+    #     body: '[
+    #       #<JIRA::Resource::Issue:0x007fcf77329da0 
+    #         @attrs={
+    #           "id"=>"1234", 
+    #           "self"=>"https://veritrans.atlassian.net/rest/api/2/issue/1234", 
+    #           "key"=>"TEST-123", 
+    #           "fields"=>{
+    #             "summary"=>"summary", 
+    #             "issuetype"=>{
+    #               "iconUrl"=>"https://veritrans.atlassian.net/images/icons/issuetypes/story.svg", 
+    #             }, 
+    #             "status"=>{
+    #               "statusCategory"=>{
+    #                 "colorName"=>"green", 
+    #                 "name"=>"Done"
+    #               }
+    #             }
+    #           }
+    #         } 
+    #       >
+    #     ]', 
+    #     headers: {})
 
     # clear action mailer
     ActionMailer::Base.deliveries = []
