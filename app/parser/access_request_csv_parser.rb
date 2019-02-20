@@ -89,12 +89,17 @@ class AccessRequestCsvParser
   end
 
   def extract_approvers
-    @raw_data['approvers'] = @raw_data['approvers'].split(',')
-    @data['set_approvers'] = User.where(email: @raw_data['approvers'].map(&:strip)).map(&:id)
-    @error = true if @raw_data['approvers'].size != @data['set_approvers'].size
+    if @raw_data['approvers'].present?
+      @raw_data['approvers'] = @raw_data['approvers'].split(',')
+      @data['set_approvers'] = User.where(email: @raw_data['approvers'].map(&:strip)).map(&:id)
+      @error = true if @raw_data['approvers'].size != @data['set_approvers'].size
+    else
+      @error = true
+    end
   end
 
   def extract_collaborators
+    return if @raw_data['collaborators'].blank?
     @raw_data['collaborators'] = @raw_data['collaborators'].split(',')
     @data['collaborator_ids'] = User.where(email: @raw_data['collaborators'].map(&:strip)).map(&:id)
     @error = true if @raw_data['collaborators'].size != @data['collaborator_ids'].size
