@@ -3,19 +3,20 @@ require 'sucker_punch/testing/inline'
 
 RSpec.describe NewChangeRequestSlackNotificationJob, type: :job do
   let(:change_request) {FactoryGirl.create(:change_request) }
-  let(:slack_notif) {SlackNotif.new}
   describe "perform async" do
-    it "send notification to slack immediately" do
+    it "enqueued send notification to slack" do
       ActiveJob::Base.queue_adapter = :test
       expect {
         NewChangeRequestSlackNotificationJob.perform_later(change_request)
       }.to have_enqueued_job.with(change_request)
     end
 
-    it "send notification to slack immediately" do
+    it "request stub for notification to slack" do
+      stub = stub_request(:post, "https://slack.com/api/chat.postMessage")
+        .to_return(status: 200, body: '{"ok": true}', headers: {})
       ActiveJob::Base.queue_adapter = :test
-      expect(slack_notif).to receive(:notify_new_cr)
-      NewChangeRequestSlackNotificationJob.perform_later(change_request)
+      NewChangeRequestSlackNotificationJob.perform_async(change_request)
+      expect(stub).to have_been_requested.times(6)
     end
   end
 end
