@@ -21,6 +21,6 @@
     "Chart.js": "~1.0.2",
     "bootstrap": "~3.3.5",
     "bootstrap-social": "4.10.1",
-    "bootstrap-toggle": "latest"
+    "bootstrap-toggle": "^2.2.2"
   }
 }
