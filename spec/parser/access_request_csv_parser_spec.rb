@@ -31,105 +31,104 @@ describe AccessRequestCsvParser do
 
   describe 'testing extract method' do
     it 'test extract_fingerprint' do
-      item = AccessRequestCsvParser.new(raw_data, user)
-      item.send(:extract_fingerprint)
-      expect(item.data).to have_key("fingerprint_business_area")
-      expect(item.data).to have_key("fingerprint_business_operations")
+      item_parser = AccessRequestCsvParser.new(raw_data, user)
+      item_parser.send(:extract_fingerprint)
+      expect(item_parser.data).to have_key("fingerprint_business_area")
+      expect(item_parser.data).to have_key("fingerprint_business_operations")
     end
 
     it 'test extract_other_access' do
-      item = AccessRequestCsvParser.new(raw_data, user)
-      item.send(:extract_other_access)
-      expect(item.data).to have_key("internet_access")
-      expect(item.data).to have_key("slack_access")
-      expect(item.data).to have_key("vpn_access")
+      item_parser = AccessRequestCsvParser.new(raw_data, user)
+      item_parser.send(:extract_other_access)
+      expect(item_parser.data).to have_key("internet_access")
+      expect(item_parser.data).to have_key("slack_access")
+      expect(item_parser.data).to have_key("vpn_access")
     end
 
     it 'test extract_access_type' do
-      item = AccessRequestCsvParser.new(raw_data, user)
-      item.send(:extract_access_type)
-      expect(item.data["access_type"]).to match(/^(Permanent)|(Temporary)/)
+      item_parser = AccessRequestCsvParser.new(raw_data, user)
+      item_parser.send(:extract_access_type)
+      expect(item_parser.data["access_type"]).to match(/^(Permanent)|(Temporary)/)
     end
 
     it 'test extract_access_type temporary' do
       raw_data["access_type"]="Temporary"
       raw_data["start_date"]="2018-01-01"
       raw_data["end_date"]="2018-01-12"
-      item = AccessRequestCsvParser.new(raw_data, user)
-      item.send(:extract_access_type)
-      expect(item.data["access_type"]).to match(/^(Permanent)|(Temporary)/)
-      expect(item.data["start_date"]).to eq(Date.parse(raw_data["start_date"]))
-      expect(item.data["end_date"]).to eq(Date.parse(raw_data["end_date"]))
+      item_parser = AccessRequestCsvParser.new(raw_data, user)
+      item_parser.send(:extract_access_type)
+      expect(item_parser.data["access_type"]).to match(/^(Permanent)|(Temporary)/)
+      expect(item_parser.data["start_date"]).to eq(Date.parse(raw_data["start_date"]))
+      expect(item_parser.data["end_date"]).to eq(Date.parse(raw_data["end_date"]))
     end
 
     it 'test extract_request_type' do
-      item = AccessRequestCsvParser.new(raw_data, user)
-      item.send(:extract_request_type)
-      expect(item.data["request_type"]).to match(/^(Create)|(Delete)|(Modify)/)
+      item_parser = AccessRequestCsvParser.new(raw_data, user)
+      item_parser.send(:extract_request_type)
+      expect(item_parser.data["request_type"]).to match(/^(Create)|(Delete)|(Modify)/)
     end
 
     it 'test extract_approvers' do
-      item = AccessRequestCsvParser.new(raw_data, user)
-      item.send(:extract_approvers)
-      expect(item.data).to have_key("set_approvers")
+      item_parser = AccessRequestCsvParser.new(raw_data, user)
+      item_parser.send(:extract_approvers)
+      expect(item_parser.data).to have_key("set_approvers")
     end
 
     it 'test extract_collaborators' do
-      item = AccessRequestCsvParser.new(raw_data, user)
-      item.send(:extract_collaborators)
-      expect(item.data).to have_key("collaborator_ids")
+      item_parser = AccessRequestCsvParser.new(raw_data, user)
+      item_parser.send(:extract_collaborators)
+      expect(item_parser.data).to have_key("collaborator_ids")
     end
   end
 
   describe 'testing extract method with invalid value' do
     it 'test extract_fingerprint' do
       raw_data["fingerprint"]="party area"
-      item = AccessRequestCsvParser.new(raw_data, user)
-      item.send(:extract_fingerprint)
-      expect(item.error).to be_truthy
+      item_parser = AccessRequestCsvParser.new(raw_data, user)
+      item_parser.send(:extract_fingerprint)
+      expect(item_parser.error).to be_truthy
     end
 
     it 'test extract_other_access' do
       raw_data["other_access"]="bathroom access"
-      item = AccessRequestCsvParser.new(raw_data, user)
-      item.send(:extract_other_access)
-      expect(item.error).to be_truthy
+      item_parser = AccessRequestCsvParser.new(raw_data, user)
+      item_parser.send(:extract_other_access)
+      expect(item_parser.error).to be_truthy
     end
 
     it 'test extract_access_type' do
       raw_data["access_type"] = "Never"
-      item = AccessRequestCsvParser.new(raw_data, user)
-      item.send(:extract_access_type)
-      expect(item.data["access_type"]).to be_empty
+      item_parser = AccessRequestCsvParser.new(raw_data, user)
+      item_parser.send(:extract_access_type)
+      expect(item_parser.data["access_type"]).to be_empty
     end
 
     it 'test extract_request_type' do
       raw_data["request_type"] = "Destroy"
-      item = AccessRequestCsvParser.new(raw_data, user)
-      item.send(:extract_request_type)
-      expect(item.data["request_type"]).to be_empty
+      item_parser = AccessRequestCsvParser.new(raw_data, user)
+      item_parser.send(:extract_request_type)
+      expect(item_parser.data["request_type"]).to be_empty
     end
 
     it 'test extract_approvers' do
       raw_data["approvers"] = "johndoe@midtrans.com"
-      item = AccessRequestCsvParser.new(raw_data, user)
-      item.send(:extract_approvers)
-      expect(item.data["set_approvers"]).to be_empty
+      item_parser = AccessRequestCsvParser.new(raw_data, user)
+      item_parser.send(:extract_approvers)
+      expect(item_parser.data["set_approvers"]).to be_empty
     end
 
     it 'test extract_collaborators' do
       raw_data["collaborators"] = "johndoe@midtrans.com"
-      item = AccessRequestCsvParser.new(raw_data, user)
-      item.send(:extract_collaborators)
-      expect(item.data["collaborator_ids"]).to be_empty
+      item_parser = AccessRequestCsvParser.new(raw_data, user)
+      item_parser.send(:extract_collaborators)
+      expect(item_parser.data["collaborator_ids"]).to be_empty
     end
   end
 
   describe 'testing data processing' do
     it 'is a valid access request' do
-      item = AccessRequestCsvParser.new(raw_data, user).extract
-      ar = item.generate_access_request
-      expect(ar.valid? && !item.error).to eq(true)
+      item_parser = AccessRequestCsvParser.new(raw_data, user).extract
+      expect(item_parser.item_invalid?).to eq(false)
     end
 
     it 'is a valid access request with minimum requirements' do
@@ -144,16 +143,14 @@ describe AccessRequestCsvParser do
       raw_data["production_access"] = ""
       raw_data["production_user_id"] = ""
 
-      item = AccessRequestCsvParser.new(raw_data, user).extract
-      ar = item.generate_access_request
-      expect(ar.valid? && !item.error).to eq(true)
+      item_parser = AccessRequestCsvParser.new(raw_data, user).extract
+      expect(item_parser.item_invalid?).to eq(false)
     end 
 
     it 'is an invalid access request' do
       raw_data["approvers"] = ""
-      item = AccessRequestCsvParser.new(raw_data, user).extract
-      ar = item.generate_access_request
-      expect(ar.valid? && !item.error).to eq(false)
+      item_parser = AccessRequestCsvParser.new(raw_data, user).extract
+      expect(item_parser.item_invalid?).to eq(true)
     end
   end
 end
