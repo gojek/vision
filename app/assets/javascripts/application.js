@@ -29,11 +29,11 @@
 //= require amcharts3/amcharts/themes/light
 //= require Chart.js/Chart.min
 //= require data-confirm-modal
-//= require jquery.caret/dist/jquery.caret-1.5.2.min
+//= require Caret.js/dist/jquery.caret.js
 //= require At.js/dist/js/jquery.atwho.min
 //= require turbolinks
 //= require noenter
-//= require bootstrap-toggle/js/bootstrap-toggle.min
+//= require bootstrap-toggle
 
 NProgress.configure({
 
