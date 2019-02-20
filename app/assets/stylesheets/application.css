@@ -19,7 +19,7 @@
  *= require nprogress
  *= require nprogress-bootstrap
  *= require bootstrap-social/bootstrap-social
- *= require bootstrap-toggle
+ *= require bootstrap-toggle/css/bootstrap-toggle.min
  *= require jquery.atwho
  *= require_tree .
  *= require_self
