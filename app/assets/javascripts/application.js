@@ -13,27 +13,24 @@
 //= require jquery.turbolinks
 //= require jquery_ujs
 //= require jquery-ui
-//= require Sortable
-//= require depends_on
 //= require admin-lte/plugins/select2/select2.full
 //= require moment/min/moment.min
 //= require tinymce
-//= require daterangepicker
 //= require eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min
+//= require ./daterangepicker
 //= require cocoon
 //= require admin-lte
-//= require moment
 //= require nprogress
 //= require nprogress-turbolinks
 //= require fullcalendar
-//= require amcharts
-//= require pie
-//= require serial
-//= require light
+//= require amcharts3/amcharts/amcharts
+//= require amcharts3/amcharts/pie
+//= require amcharts3/amcharts/serial
+//= require amcharts3/amcharts/themes/light
 //= require Chart.js/Chart.min
 //= require data-confirm-modal
-//= require jquery.atwho
-//= require jquery.caret
+//= require At.js/dist/js/jquery.atwho.min
+//= require jquery.caret/dist/jquery.caret-1.5.2.min
 //= require turbolinks
 //= require noenter
 //= require bootstrap-toggle/js/bootstrap-toggle.min
@@ -44,11 +41,6 @@ NProgress.configure({
 });
 $(function(){
   $(".select2").select2();
-  //$(".select2-tag").val(["cr@veritrans.co.id", "stig@veritrans.co.id"]);
-  //$(".select2-tag").select2({
-  	//tags: true,
-  	//tokenSeparators: [',', ' ']
-  //});
   $('.datetimepicker').datetimepicker({
     format: "yyyy-mm-dd"
   });
