@@ -13,6 +13,7 @@
 //= require jquery.turbolinks
 //= require jquery_ujs
 //= require jquery-ui
+//= require admin-lte/plugins/select2/select2.full
 //= require moment/min/moment.min
 //= require tinymce
 //= require eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min
@@ -32,8 +33,7 @@
 //= require jquery.caret/dist/jquery.caret-1.5.2.min
 //= require turbolinks
 //= require noenter
-//= require bootstrap-toggle/js/bootstrap-toggle
-//= require select2/dist/js/select2
+//= require bootstrap-toggle/js/bootstrap-toggle.min
 
 NProgress.configure({
 
