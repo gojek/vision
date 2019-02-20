@@ -34,12 +34,12 @@ class AccessRequestCsvParser
     self
   end
 
-  def generate_access_request
-    @user.AccessRequests.build(@data)
+  def access_request
+    @ar ||= @user.AccessRequests.build(@data)
   end
 
   def item_invalid?
-    @error
+    access_request.invalid? || @error
   end
 
   private

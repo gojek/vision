@@ -8,11 +8,10 @@ class AccessRequestsCsvParser
     @invalid = []
     CSV.foreach(file.path, headers: true, col_sep: ',') do |row|
       item_parser = AccessRequestCsvParser.parse(row.to_h, current_user)
-      ar = item_parser.generate_access_request
-      if ar.invalid? || item_parser.item_invalid?
-        @invalid << ar
+      if item_parser.item_invalid?
+        @invalid << item_parser.access_request
       else
-        @valid << ar
+        @valid << item_parser.access_request
       end
     end
     [@valid, @invalid]
