@@ -35,6 +35,9 @@
 //= require jquery.caret
 //= require turbolinks
 //= require noenter
+//= require bootstrap-toggle/js/bootstrap-toggle.min
+//= require daterangepicker
+
 NProgress.configure({
 
 
