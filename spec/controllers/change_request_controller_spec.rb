@@ -59,23 +59,6 @@ describe ChangeRequestsController, type: :controller do
 
         expect(assigns(:usernames)).to include user.email.split('@')[0]
       end
-
-      it 'mention jira in change_request' do
-        html  = "<span class='jira-button'>" \
-                "  <a href='https://veritrans.atlassian.net/browse/TEST-123' target='_blank' data-toggle='popover' title='Summary' data-content='summary'><img class='icon' src='https://veritrans.atlassian.net/images/icons/statuses/generic.png'> TEST-123 </a>" \
-                "  <span class='jira-yellow'>In Progress</span>" \
-                "</span>" \
-
-        jira_change_request = FactoryGirl.create(:jira_change_request)
-        get :show, id: jira_change_request
-
-        expect(assigns(:change_request).net).to eq html
-        expect(assigns(:change_request).os).to eq html
-        expect(assigns(:change_request).db).to eq html
-        expect(assigns(:change_request).analysis).to eq html
-        expect(assigns(:change_request).impact).to eq html
-        expect(assigns(:change_request).solution).to eq html
-      end
     end
 
     describe 'GET #index' do
