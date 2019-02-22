@@ -15,6 +15,8 @@ describe SlackNotif do
   let(:change_request_link){routes.change_request_url(change_request)}
   let(:incident_report_link){routes.incident_report_url(incident_report)}
   let(:access_request_link){routes.access_request_url(access_request)}
+  let(:change_request_channel) { ENV['SLACK_CR_CHANNEL'] }
+  let(:incident_report_channel) { ENV['SLACK_IR_CHANNEL'] }
 
   describe 'Notify about change request' do
     let(:change_request_attachment){attachment_builder.generate_change_request_attachment(change_request)}
@@ -31,9 +33,9 @@ describe SlackNotif do
 
     describe 'Sending notification about new CR' do
       let(:new_cr_message) {"<#{change_request_link}|Change request> has been created"}
-      let(:approver_message) {"Created <#{change_request_link}|Change request> needs your approvals"}
+      let(:approver_message) {"Created <#{change_request_link}|change request> needs your approvals"}
 
-      it 'Send message to all appropriate approvers of the CR' do
+      it 'Send notify to all appropriate approvers of the CR' do
         approvers = change_request.approvals.collect{|approval| approval.user}
         expect(slack_notifier).to receive(:notify_users).with(approvers, approver_message, change_request_attachment)
         slack_notifier.notify_new_cr(change_request)
@@ -45,12 +47,12 @@ describe SlackNotif do
         change_request.reload
         associated_users = change_request.associated_users.to_a
         approvers.each {|approver| associated_users.delete(approver)}
-        expect(slack_client).to receive(:message_users).with(associated_users, new_cr_message, anything())
+        expect(slack_client).to receive(:message_users).with(associated_users, new_cr_message, change_request_attachment)
         slack_notifier.notify_new_cr(change_request)
       end
 
-      it 'Send general message to cab channel' do
-        expect(slack_client).to receive(:message_channel).with('cab', new_cr_message, anything())
+      it 'Send general message to spesified change request channel' do
+        expect(slack_client).to receive(:message_channel).with(change_request_channel, new_cr_message, anything())
         slack_notifier.notify_new_cr(change_request)
       end
 
@@ -74,7 +76,7 @@ describe SlackNotif do
 
     describe 'Sending notification about modified CR' do
       let(:modified_cr_message) {"<#{change_request_link}|Change request> has been modified"}
-      let(:approver_message) {"Modified <#{change_request_link}|Change request> needs your approvals"}
+      let(:approver_message) {"Modified <#{change_request_link}|change request> needs your approvals"}
 
       it 'Send message to all appropriate approvers of the CR' do
         approvers = change_request.approvals.collect{|approval| approval.user}
@@ -92,9 +94,9 @@ describe SlackNotif do
         slack_notifier.notify_update_cr(change_request)
       end
 
-      it 'Send message to cab channel' do
+      it 'Send message to spesified change request channel' do
         general_message = "<#{change_request_link}|Change request> has been modified"
-        expect(slack_client).to receive(:message_channel).with('cab', modified_cr_message, anything())
+        expect(slack_client).to receive(:message_channel).with(change_request_channel, modified_cr_message, anything())
         slack_notifier.notify_update_cr(change_request)
       end
 
@@ -111,12 +113,11 @@ describe SlackNotif do
     let(:comment) {FactoryGirl.create(:comment, body: 'comment @dwiyan and @kevin', user: user, change_request: change_request)}
     let(:mentionees){[user, other_user]}
     let(:comment_attachment){attachment_builder.generate_comment_attachment(comment)}
-    let(:mentioned_message) {"You are mentioned in #{comment.user.name} comment's on a <#{change_request_link}|Change request>"}
+    let(:mentioned_message) {"You are mentioned in #{comment.user.name} comment's on a <#{change_request_link}|change request>"}
     let(:general_message) {"A new comment from #{comment.user.name} on a <#{change_request_link}|Change request>"}
 
     it 'Send message to mentionees that they are mentioned' do
-      expect(slack_client).to receive(:message_users).with(mentionees, mentioned_message, anything())
-      expect(slack_client).to receive(:message_users)
+      expect(slack_client).to receive(:message_users).twice
       slack_notifier.notify_new_comment(comment)
     end
 
@@ -126,8 +127,7 @@ describe SlackNotif do
       associated_users = change_request.associated_users.to_a
       associated_users.delete(comment.user)
       mentionees.each {|mentionee| associated_users.delete(mentionee)}
-      expect(slack_client).to receive(:message_users).with(associated_users, general_message, anything())
-      expect(slack_client).to receive(:message_users)
+      expect(slack_client).to receive(:message_users).twice
       slack_notifier.notify_new_comment(comment)
     end
 
@@ -135,7 +135,6 @@ describe SlackNotif do
       expect(slack_client).to receive(:message_users).with(anything(), anything(), comment_attachment).twice
       slack_notifier.notify_new_comment(comment)
     end
-
   end
 
   describe 'Sending notification about new comment AR' do
@@ -147,21 +146,20 @@ describe SlackNotif do
     let(:general_message) {"A new comment from #{comment.user.name} on a <#{access_request_link}|access request>"}
 
     it 'Send message to mentionees that they are mentioned' do
-      expect(slack_client).to receive(:message_users).with(mentionees, mentioned_message, anything())
       expect(slack_client).to receive(:message_users)
       slack_notifier.notify_new_ar_comment(comment)
     end
 
     it 'Send attachment from attachment builder' do
-      expect(slack_client).to receive(:message_users).with(anything(), anything(), comment_attachment).twice
+      expect(slack_client).to receive(:message_users).with(anything(), anything(), comment_attachment)
       slack_notifier.notify_new_ar_comment(comment)
     end
   end
 
-  describe 'Sending notification about new Incident Report' do
-    it 'Send message to incidents channel' do
+  describe 'Sending notification about new Incident Report to sepesified incident report slack channel' do
+    it 'Send message to incident report slack channel' do
       general_message = "<#{incident_report_link}|Incident report> has been created"
-      expect(slack_client).to receive(:message_channel).with('incidents', general_message, anything())
+      expect(slack_client).to receive(:message_channel).with(incident_report_channel, general_message, anything())
       slack_notifier.notify_new_ir(incident_report)
     end
   end

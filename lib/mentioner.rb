@@ -1,17 +1,19 @@
+# frozen_string_literal: true
+
 class Mentioner
   def self.process_mentions(comment)
     usernames = extract_username(comment)
-    mentionees =find_mentionees_from_username(usernames)
-    return Array.wrap(mentionees)
+    mentionees = find_mentionees_from_username(usernames)
+    Array.wrap(mentionees)
   end
 
   def self.extract_username(comment)
     content = comment.body
-    usernames = content.scan(username_extract_regex).map{|username| username.gsub(mention_prefix,'')}
+    content.scan(username_extract_regex).map { |username| username.gsub(mention_prefix, '') }
   end
 
   def self.find_mentionees_from_username(usernames)
-    emails = usernames.flat_map {|mention| [mention + '@veritrans.co.id', mention + '@midtrans.com']}
+    emails = usernames.flat_map { |mention| [mention + '@veritrans.co.id', mention + '@midtrans.com'] }
     User.where(email: emails)
   end
 
