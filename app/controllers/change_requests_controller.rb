@@ -160,7 +160,7 @@ class ChangeRequestsController < ApplicationController
         Notifier.cr_notify(current_user, @change_request, 'update_cr')
         SlackNotif.new.notify_update_cr @change_request
         flash[:success] = 'Change request was successfully updated.'
-        flash[:success] += " Calendar event creation failed: #{event.error_message}." unless is_success
+        flash[:success] += " Calendar event creation failed: #{event[:error_message]}." unless is_success
         format.html { redirect_to @change_request }
         format.json { render :show, status: :ok, location: @change_request }
       else
