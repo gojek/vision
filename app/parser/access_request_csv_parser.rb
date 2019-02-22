@@ -35,7 +35,7 @@ class AccessRequestCsvParser
   end
 
   def access_request
-    @ar ||= @user.AccessRequests.build(@data)
+    @access_request ||= @user.AccessRequests.build(@data)
   end
 
   def item_invalid?
@@ -47,14 +47,14 @@ class AccessRequestCsvParser
   def extract_fingerprint
     return if @raw_data['fingerprint'].blank?
     items = parse(@raw_data['fingerprint'])
-    @error = true if !subset_of(items, FINGERPRINT_CONST)
+    @error ||= !subset_of(items, FINGERPRINT_CONST)
     (items & FINGERPRINT_CONST).map { |item| @data["fingerprint_#{item}"] = 1 }
   end
 
   def extract_other_access
     return if @raw_data['other_access'].blank?
     items = parse(@raw_data['other_access'])
-    @error = true if !subset_of(items, OTHER_ACCESS_CONST)
+    @error ||= !subset_of(items, OTHER_ACCESS_CONST)
     (items & OTHER_ACCESS_CONST).map { |item| @data[item] = 1 }
   end
 
@@ -89,15 +89,20 @@ class AccessRequestCsvParser
   end
 
   def extract_approvers
-    @raw_data['approvers'] = @raw_data['approvers'].split(',')
-    @data['set_approvers'] = User.where(email: @raw_data['approvers'].map(&:strip)).map(&:id)
-    @error = true if @raw_data['approvers'].size != @data['set_approvers'].size
+    if @raw_data['approvers'].present?
+      @raw_data['approvers'] = @raw_data['approvers'].split(',')
+      @data['set_approvers'] = User.where(email: @raw_data['approvers'].map(&:strip)).map(&:id)
+      @error ||= @raw_data['approvers'].size != @data['set_approvers'].size
+    else
+      @error = true
+    end
   end
 
   def extract_collaborators
+    return if @raw_data['collaborators'].blank?
     @raw_data['collaborators'] = @raw_data['collaborators'].split(',')
     @data['collaborator_ids'] = User.where(email: @raw_data['collaborators'].map(&:strip)).map(&:id)
-    @error = true if @raw_data['collaborators'].size != @data['collaborator_ids'].size
+    @error ||= @raw_data['collaborators'].size != @data['collaborator_ids'].size
   end
 
   def fetch_allowed_field_from(raw_data)
