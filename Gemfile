@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-ruby "~> 2.4.5"
+ruby '~> 2.4.5'
 
 # Bundle edge Rails insteadhttps://developers.google.com/oauthplayground: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.10'
@@ -37,9 +37,9 @@ gem 'paper_trail', '~> 4.1'
 gem 'sucker_punch', '~> 2.0'
 
 # oauth
-gem 'omniauth-google-oauth2'
 gem 'google-api-client', '~> 0.20.0'
 gem 'httpclient'
+gem 'omniauth-google-oauth2'
 
 # server-related
 # gem 'dotenv' # to allow loading environment variable locally by file
