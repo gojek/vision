@@ -35,7 +35,7 @@ class AccessRequestCsvParser
   end
 
   def access_request
-    @ar ||= @user.AccessRequests.build(@data)
+    @access_request ||= @user.AccessRequests.build(@data)
   end
 
   def item_invalid?
@@ -47,14 +47,14 @@ class AccessRequestCsvParser
   def extract_fingerprint
     return if @raw_data['fingerprint'].blank?
     items = parse(@raw_data['fingerprint'])
-    @error = true if !subset_of(items, FINGERPRINT_CONST)
+    @error ||= !subset_of(items, FINGERPRINT_CONST)
     (items & FINGERPRINT_CONST).map { |item| @data["fingerprint_#{item}"] = 1 }
   end
 
   def extract_other_access
     return if @raw_data['other_access'].blank?
     items = parse(@raw_data['other_access'])
-    @error = true if !subset_of(items, OTHER_ACCESS_CONST)
+    @error ||= !subset_of(items, OTHER_ACCESS_CONST)
     (items & OTHER_ACCESS_CONST).map { |item| @data[item] = 1 }
   end
 
