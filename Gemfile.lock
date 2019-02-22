@@ -498,6 +498,7 @@ DEPENDENCIES
   rake (= 10.0.0)
   ransack
   rspec-rails (~> 3.5.2)
+  rubocop (~> 0.63.1)
   sanitize
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
