@@ -29,6 +29,11 @@ before_script:
   - rm -rf /cache/bower_components
   - cp -r vendor/assets/bower_components /cache/bower_components
 
+format:
+  stage: test
+  script:
+    - bundle exec rubocop
+
 rspec:
   stage: test
   script:
