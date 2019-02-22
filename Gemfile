@@ -40,7 +40,6 @@ gem 'sucker_punch', '~> 2.0'
 gem 'omniauth-google-oauth2'
 gem 'google-api-client', '~> 0.20.0'
 gem 'httpclient'
-gem 'omniauth-google-oauth2'
 
 # server-related
 # gem 'dotenv' # to allow loading environment variable locally by file
