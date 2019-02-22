@@ -51,6 +51,9 @@ Naming/PredicateName:
   NamePrefixBlacklist:
     - is_
 
+Naming/MemoizedInstanceVariableName:
+  Enabled: false
+
 Layout/EmptyLineAfterGuardClause:
   Enabled: false
 
