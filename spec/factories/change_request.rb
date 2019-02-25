@@ -71,7 +71,7 @@ FactoryGirl.define do
       os "TEST-123"
       analysis "TEST-123"
       solution "TEST-123"
-      impact "TEST-123"
+      impact "TEST-999"
     end
 
     trait :invalid_change_request do
