@@ -16,10 +16,51 @@ class Jira
     @jira_data = []
   end
 
+  def jiraize_ir(incident_report)
+    return incident_report if incident_report.action_item.nil?
+    list = incident_report.action_item.scan(/([A-Z]+-\d+)/).flatten
+    generate_issue_list(list)
+    incident_report.action_item = jiraize(incident_report.action_item)
+    incident_report
+  end
+
+  def jiraize_cr(change_request)
+    list = Set.new
+    list.merge(find_jira_key(change_request.business_justification))
+    list.merge(find_jira_key(change_request.os))
+    list.merge(find_jira_key(change_request.db))
+    list.merge(find_jira_key(change_request.net))
+    list.merge(find_jira_key(change_request.other_dependency))
+    list.merge(find_jira_key(change_request.analysis))
+    list.merge(find_jira_key(change_request.impact))
+    list.merge(find_jira_key(change_request.solution))
+    list.delete('')
+    generate_issue_list(list.flatten)
+
+    change_request.business_justification = jiraize(change_request.business_justification)
+    change_request.os = jiraize(change_request.os)
+    change_request.db = jiraize(change_request.db)
+    change_request.net = jiraize(change_request.net)
+    change_request.other_dependency = jiraize(change_request.other_dependency)
+    change_request.analysis = jiraize(change_request.analysis)
+    change_request.impact = jiraize(change_request.impact)
+    change_request.solution = jiraize(change_request.solution)
+    change_request
+  end
+
+  def jiraize(text)
+    return '' if text.blank?
+    matches = text.scan(/([A-Z]+-\d+)/).map { |x| [x[0], get_issue(x[0])] }
+    matches.each do |m|
+      text.gsub! m[0], m[1]
+    end
+    text
+  end
+
   def get_issue(key)
     issue = nil
     @jira_data.each do |jira|
-      issue = jira if jira.key==key
+      issue = jira if jira.key == key
     end
     return key if issue.nil?
     
@@ -32,67 +73,34 @@ class Jira
 
     "<span class='jira-button'>" \
     "  <a href='#{url}' target='_blank' data-toggle='popover' title='Summary' data-content='#{summary}'>" \
-    "    <img class='icon' src='#{issue_type_icon}'> #{key}" \
-    '  </a>' \
+    "    <img class='icon' src='#{issue_type_icon}'> #{key} </a>" \
     "  <span class='jira-#{color_name.downcase}'>#{name}</span>" \
     '</span>'
   end
 
   def get_jira_data(list_issue)
-    begin
-      @jira_data = @client.Issue.jql(list_issue, {fields: %w(summary status issuetype),fields_by_key:true})
-    rescue JIRA::HTTPError => e
-      @jira_data = []
+    @jira_data = @client.Issue.jql(list_issue, fields: %w[summary status issuetype], fields_by_key: true)
+  rescue JIRA::HTTPError
+    list_issue.split(' OR ').each do |issue|
+      begin
+        @jira_data << @client.Issue.jql(issue, fields: %w[summary status issuetype], fields_by_key: true)[0]
+      rescue JIRA::HTTPError
+        nil
+      end
     end
-  end
-
-  def jiraize(text)
-    return '' if text.nil?
-    matches = text.scan(/([A-Z]+-\d+)/).map { |x| [x[0], get_issue(x[0])] }
-    matches.each do |m|
-      text.gsub! m[0], m[1]
-    end
-    text
   end
 
   def generate_issue_list(issue_string)
-    if issue_string.count == 1
-      get_jira_data('issueKey='+issue_string[0])
-    else
-      list_issue = ""
-      sebuah_list.each do |text|
-        list_issue += "issueKey="+text + " OR "
-      end
-      get_jira_data(list_issue[0..-5])
-    end
+    return if issue_string.empty?
+    list_issue = issue_string.map { |item| "issueKey=#{item}" }.join(' OR ')
+    get_jira_data(list_issue)
   end
 
-  def jiraize_ir(text)
-    list = text.scan(/([A-Z]+-\d+)/).flatten
-    fungsi(list)
-    jiraize(text)
-  end
+  private
 
-  def jiraize_cr(change_request)
-    list = []
-    list << change_request.business_justification.scan(/([A-Z]+-\d+)/) if change_request.business_justification.present?
-    list << change_request.os.scan(/([A-Z]+-\d+)/) if change_request.os.present?
-    list << change_request.db.scan(/([A-Z]+-\d+)/) if change_request.db.present?
-    list << change_request.net.scan(/([A-Z]+-\d+)/) if change_request.net.present?
-    list << change_request.other_dependency.scan(/([A-Z]+-\d+)/) if change_request.other_dependency.present?
-    list << change_request.analysis.scan(/([A-Z]+-\d+)/) if change_request.analysis.present?
-    list << change_request.impact.scan(/([A-Z]+-\d+)/) if change_request.impact.present?
-    list << change_request.solution.scan(/([A-Z]+-\d+)/) if change_request.solution.present?
-    generate_issue_list(list.flatten)
-
-    change_request.business_justification = jiraize(change_request.business_justification)
-    change_request.os = jiraize(change_request.os)
-    change_request.db = jiraize(change_request.db)
-    change_request.net = jiraize(change_request.net)
-    change_request.other_dependency = jiraize(change_request.other_dependency)
-    change_request.analysis = jiraize(change_request.analysis)
-    change_request.impact = jiraize(change_request.impact)
-    change_request.solution = jiraize(change_request.solution)
-    return change_request
+  def find_jira_key(text)
+    return [] if text.blank?
+    jira_keys = text.scan(/([A-Z]+-\d+)/).flatten
+    jira_keys.present? ? jira_keys : []
   end
 end
