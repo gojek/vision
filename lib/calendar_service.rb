@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'google_client.rb'
 
 class CalendarService
-
   def initialize(user)
     @service = GoogleClient.new user
   end
@@ -11,5 +12,4 @@ class CalendarService
     change_request.google_event_id = event.id
     event
   end
-
 end
