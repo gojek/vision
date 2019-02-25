@@ -54,6 +54,15 @@ RSpec.configure do |config|
         'Server' => 'GSE',
         'Content-type' => 'application/json'
       })
+    # Event calender
+    stub_request(:post, "https://www.googleapis.com/calendar/v3/calendars/veritrans.co.id_u8h6tgnhgedrt0c2ognpe7q3q0@group.calendar.google.com/events?sendNotifications=true")
+      .to_return(status: 403, body: JSON.dump({
+        "error":{
+          "errors":[{
+            "domain":"calendar",
+            "reason":"requiredAccessLevel",
+            "message":"You need to have writer access to this calendar."}],
+            "code":403,"message":"You need to have writer access to this calendar."}}))
 
     # delete calendar
     stub_request(:delete, "https://www.googleapis.com/calendar/v3/calendars/primary/events/?sendNotifications=true").
