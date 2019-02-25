@@ -3,8 +3,8 @@
 require 'googleauth'
 
 class UserCredential
-  def initialize(refresh_token)
-    @refresh_token = refresh_token
+  def initialize(user)
+    @user = user
     @scope = 'https://www.googleapis.com/auth/calendar.events,https://www.googleapis.com/auth/calendar'
   end
 
@@ -15,8 +15,12 @@ class UserCredential
       scope: @scope,
       additional_parameters: { 'access_type' => 'offline' }
     )
-    credentials.refresh_token = @refresh_token
-    credentials.fetch_access_token!
+    credentials.refresh_token = @user.refresh_token
+    if @user.expired?
+      credentials.fetch_access_token!
+    else
+      credentials.access_token = @user.token
+    end
     credentials
   end
 end
