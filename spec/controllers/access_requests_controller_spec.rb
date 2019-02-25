@@ -3,10 +3,34 @@ require 'spec_helper'
 describe AccessRequestsController, type: :controller do
   context 'user access' do
     let(:user) {FactoryGirl.create(:user)}
+    let(:approver_ar) {FactoryGirl.create(:approver_ar, email:'patrick.star@midtrans.com')}
     let(:access_request) {access_request = FactoryGirl.create(:access_request, user: user)}
+
     before :each do
       controller.request.env['devise.mapping'] = Devise.mappings[:user]
       sign_in user
+    end
+
+    describe 'POST #import_from_csv' do
+      before :each do
+        controller.request.env['devise.mapping'] = Devise.mappings[:approver_ar]
+        sign_in approver_ar
+      end
+      describe "can upload csv" do
+        before :each do
+          @file = fixture_file_upload('files/valid_invalid.csv', 'text/csv')
+        end
+
+        it "check the total of valid access_request from csv" do
+          post :import_from_csv, :csv => @file
+          expect(assigns(:valid).count).to match(2)
+        end
+
+        it "check the total of invalid access_request from csv" do
+          post :import_from_csv, :csv => @file
+          expect(assigns(:invalid).count).to match(2)
+        end
+      end
     end
 
     describe 'GET #new' do
