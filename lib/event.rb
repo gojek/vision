@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'google/apis/calendar_v3'
 
 class Event < Google::Apis::CalendarV3::Event
   attr_writer :saved
-  attr_writer :error_messages
+  attr_accessor :error_messages
 
   def initialize
     @saved = false
@@ -30,17 +32,4 @@ class Event < Google::Apis::CalendarV3::Event
   def success?
     @saved
   end
- 
-  def saved=(saved)
-    @saved = saved
-  end
-
-  def error_messages=(error_messages)
-    @error_messages = error_messages
-  end
-
-  def error_messages
-    @error_messages
-  end
-
 end
