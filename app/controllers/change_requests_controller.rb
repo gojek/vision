@@ -8,7 +8,7 @@ class ChangeRequestsController < ApplicationController
   before_action :role_not_approver_required, only: :edit
   require 'notifier.rb'
   require 'slack_notif.rb'
-  require 'calendar.rb'
+  require 'calendar_service.rb'
 
   def index
     if params[:type]
@@ -114,8 +114,7 @@ class ChangeRequestsController < ApplicationController
         @status = @change_request.change_request_statuses.new(:status => 'draft')
         @status.save
       else
-        is_success, event = Calendar.new.set_cr(current_user, @change_request)
-        @change_request.update(google_event_id: event.id) if is_success
+        event = calendar_service.assign_event_for(@change_request)
         @change_request.submit!
         @change_request.save
         @status = @change_request.change_request_statuses.new(:status => 'submitted')
@@ -127,7 +126,7 @@ class ChangeRequestsController < ApplicationController
           ActiveRecord::Base.connection.close
         end
         flash[:success] = 'Change request was successfully created.'
-        flash[:success] += " Calendar event creation failed: #{event[:error_message]}." unless is_success
+        flash[:success] += " Calendar event creation failed: #{event.error_messages}." unless event.success?
       end
       format.html { redirect_to @change_request }
       format.json { render :show, status: :created, location: @change_request }
@@ -148,9 +147,7 @@ class ChangeRequestsController < ApplicationController
   def update
     respond_to do |format|
       if @change_request.update(change_request_params)
-        is_success, event = Calendar.new.set_cr(current_user, @change_request)
-        @change_request.update(google_event_id: event.id) if is_success
-
+        event = calendar_service.assign_event_for(@change_request)
         if @change_request.draft?
           @change_request.submit!
           @change_request.save
@@ -160,7 +157,7 @@ class ChangeRequestsController < ApplicationController
         Notifier.cr_notify(current_user, @change_request, 'update_cr')
         SlackNotif.new.notify_update_cr @change_request
         flash[:success] = 'Change request was successfully updated.'
-        flash[:success] += " Calendar event creation failed: #{event[:error_message]}." unless is_success
+        flash[:success] += " Calendar event creation failed: #{event.error_messages}." unless event.success?
         format.html { redirect_to @change_request }
         format.json { render :show, status: :ok, location: @change_request }
       else
@@ -313,6 +310,11 @@ class ChangeRequestsController < ApplicationController
   end
 
   private
+
+    def calendar_service
+      CalendarService.new(current_user)
+    end
+
     def set_change_request
       if params[:change_request_id]
         @change_request = ChangeRequest.find(params[:change_request_id])
