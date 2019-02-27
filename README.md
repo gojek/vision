@@ -4,7 +4,7 @@ Vision was made with contributions from everyone found in git commit history.
 
 ## Architecture
 
-Vision built with Ruby on Rails, running on Heroku, requires Google Contacts and Calendar API.
+Vision built with Ruby on Rails, running on Heroku, requires Google Calendar API.
 
 To accomplish this, every environment variables are set at `.env` file.
 
@@ -50,4 +50,10 @@ gem install mailcatcher
 
 mailcatcher
 
+```
+
+8. Slack notification configuration. Set environment variable to:
+```
+SLACK_IR_CHANNEL=<incident_report_slack_channel>
+SLACK_CR_CHANNEL=<change_request_slack_channel>
 ```
