@@ -1,11 +1,13 @@
 class ChangeRequest < ActiveRecord::Base
   include AASM
   belongs_to :user
+  attr_accessor :approver_ids
+
   acts_as_readable :on => :updated_at
-  has_and_belongs_to_many :associated_users, join_table: :change_requests_associated_users, :class_name =>'User'
-  has_and_belongs_to_many :collaborators, join_table: :collaborators, :class_name =>'User'
+  has_and_belongs_to_many :collaborators, join_table: :collaborators, class_name: :User
   has_and_belongs_to_many :testers, join_table: :testers, class_name: :User
   has_and_belongs_to_many :implementers, join_table: :implementers, class_name: :User
+  has_and_belongs_to_many :associated_users, join_table: :change_requests_associated_users, class_name: :User
   has_many :change_request_statuses, -> {order('created_at asc')}, dependent: :destroy
   has_many :approvals, dependent: :destroy
   has_many :comments, dependent: :destroy
@@ -21,7 +23,7 @@ class ChangeRequest < ActiveRecord::Base
   STATUS = %w(submitted deployed rollbacked cancelled succeeded failed draft)
 
   validates :change_summary, :priority,:change_requirement, :business_justification, :analysis, :solution, :impact, :scope, :design,
-            :backup, :testing_procedure, :testing_notes, :schedule_change_date, :planned_completion, :definition_of_success, :definition_of_failed, presence: true
+            :backup, :testing_procedure, :schedule_change_date, :planned_completion, :definition_of_success, :definition_of_failed, presence: true
   validates_inclusion_of :testing_environment_available, :in => [true, false]
   accepts_nested_attributes_for :implementers, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :testers, :allow_destroy => true
@@ -29,11 +31,21 @@ class ChangeRequest < ActiveRecord::Base
   validate :at_least_one_category
   validate :at_least_one_type
   validates :implementers, presence: true
-  validates :testers, presence: true
   validates :approvals, presence: true
   validates :expected_downtime_in_minutes, numericality: { only_integer: true }, if: :downtime_expected?
   validate :deploy_date, :if => :schedule_change_date? && :planned_completion?
   validate :grace_period_date, :if => :grace_period_date_starts? && :grace_period_end
+
+  after_save :set_associated_users
+
+  def set_associated_users
+    associated_users_array = Array.wrap([user_id])
+    associated_users_array.concat(collaborators.collect(&:id).to_a)
+    associated_users_array.concat(testers.collect(&:id).to_a)
+    associated_users_array.concat(implementers.collect(&:id).to_a)
+    associated_users_array.concat(approvals.collect(&:user_id).to_a)
+    self.associated_user_ids = associated_users_array.uniq
+  end
 
   searchable do
     text :change_summary, stored: true
@@ -52,7 +64,6 @@ class ChangeRequest < ActiveRecord::Base
     text :definition_of_success, stored: true
     text :definition_of_failed, stored: true
     text :testing_procedure, stored: true
-    text :testing_notes, stored: true
     text :implementation_notes, stored: true
     text :grace_period_notes, stored: true
     time :created_at, stored: true
@@ -206,51 +217,10 @@ class ChangeRequest < ActiveRecord::Base
     result = dhms[0].to_s + " Days, " + dhms[1].to_s + " Hours, " + dhms[2].to_s + " minutes."
   end
 
-  def set_approvers(approver_id_list)
-    self.approvals.delete_all
-    approver_id_list.each do |approver_id|
-      approver = User.find(approver_id)
-      approval = Approval.create(user: approver)
-      self.approvals << approval
-    end
-  end
 
-  def update_approvers(approver_id_list)
-    current_approver_ids = Approval.where(change_request_id: self.id).pluck(:user_id)
-    approver_id_list.map! {|id| id.to_i}
-    deleted_approver_ids = current_approver_ids - approver_id_list
-    if deleted_approver_ids.present?
-      Approval.where(change_request_id: self.id).where(user_id: deleted_approver_ids).destroy_all
-    end
-    approver_id_list.each do |approver_id|
-      app = Approval.where(user_id: approver_id).where(change_request_id: self.id).first
-      if (!app.present?)
-        approver = User.find(approver_id)
-        new_approval = Approval.create(user: User.find(approver_id))
-        self.approvals << new_approval
-      end
-    end
-  end
-
-  def set_implementers(implementer_id_list)
-    self.implementers = []
-    implementer_id_list.each do |implementer_id|
-      self.implementers << User.find(implementer_id)
-    end
-  end
-
-  def set_testers(tester_id_list)
-    self.testers = []
-    tester_id_list.each do |tester_id|
-      self.testers << User.find(tester_id)
-    end
-  end
-
-  def set_collaborators(collaborator_id_list)
-    self.collaborators = []
-    collaborator_id_list.each do |collaborator_id|
-      self.collaborators << User.find(collaborator_id)
-    end
+  def approver_ids=(approver_ids)
+    approvals = Approval.setup_for_change_request(self, approver_ids)
+    self.approvals << approvals
   end
 
   def has_approver?(user)
@@ -288,7 +258,9 @@ class ChangeRequest < ActiveRecord::Base
   def is_approved?(user)
     Approval.where(change_request_id: id, user_id: user.id).first.approve
   end
+
   def closed?
     closed_date.present?
   end
+
 end
