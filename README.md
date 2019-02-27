@@ -51,3 +51,9 @@ gem install mailcatcher
 mailcatcher
 
 ```
+
+8. Slack notification configuration. Set environment variable to:
+```
+SLACK_IR_CHANNEL=<incident_report_slack_channel>
+SLACK_CR_CHANNEL=<change_request_slack_channel>
+```
