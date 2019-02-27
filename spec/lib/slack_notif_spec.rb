@@ -149,12 +149,9 @@ describe SlackNotif do
     let(:mentioned_message) {"You are mentioned in #{comment.user.name} comment's on a <#{access_request_link}|access request>"}
     let(:general_message) {"A new comment from #{comment.user.name} on a <#{access_request_link}|access request>"}
 
-    it 'Send message to mentionees that they are mentioned' do
+  
+    it 'Send message from attachment builder and mentionees that mentioned' do
       expect(slack_client).to receive(:message_users)
-      slack_notifier.notify_new_ar_comment(comment)
-    end
-
-    it 'Send attachment from attachment builder' do
       expect(slack_client).to receive(:message_users).with(anything(), anything(), comment_attachment)
       slack_notifier.notify_new_ar_comment(comment)
     end
