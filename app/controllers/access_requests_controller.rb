@@ -1,3 +1,4 @@
+
 class AccessRequestsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_access_request, except: [:index, :new, :create, :search, :import_from_csv]
@@ -8,6 +9,7 @@ class AccessRequestsController < ApplicationController
   before_action :set_paper_trail_whodunnit
   require 'notifier.rb'
   require 'slack_notif.rb'
+  require 'csv_exporter.rb'
 
   def index
     if params[:type]
@@ -25,6 +27,12 @@ class AccessRequestsController < ApplicationController
     end
     @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
     @access_requests = @access_requests.page(params[:page]).per(params[:per_page])
+    respond_to do |format|
+      format.html
+      format.csv do
+        self.stream("Access Requests.csv", 'text/csv', CSVExporter.export_from_active_records(@access_requests))
+      end
+    end
   end
 
   def new
