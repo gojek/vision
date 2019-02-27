@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190118074453) do
+ActiveRecord::Schema.define(version: 20190124034547) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -286,6 +286,14 @@ ActiveRecord::Schema.define(version: 20190118074453) do
 
   add_index "incident_report_versions", ["item_type", "item_id"], name: "index_incident_report_versions_on_item_type_and_item_id", using: :btree
 
+  create_table "incident_report_visibilities", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "incident_report_id"
+  end
+
+  add_index "incident_report_visibilities", ["incident_report_id"], name: "index_incident_report_visibilities_on_incident_report_id", using: :btree
+  add_index "incident_report_visibilities", ["user_id"], name: "index_incident_report_visibilities_on_user_id", using: :btree
+
   create_table "incident_reports", force: :cascade do |t|
     t.string   "service_impact"
     t.text     "problem_details"
@@ -314,10 +322,7 @@ ActiveRecord::Schema.define(version: 20190118074453) do
     t.text     "action_item"
     t.string   "action_item_status"
     t.datetime "action_item_done_time"
-<<<<<<< HEAD
     t.string   "visibility_type"
-=======
->>>>>>> development
     t.integer  "time_to_acknowledge_duration"
   end
 
@@ -387,6 +392,14 @@ ActiveRecord::Schema.define(version: 20190118074453) do
   add_index "testers", ["change_request_id"], name: "index_testers_on_change_request_id", using: :btree
   add_index "testers", ["user_id"], name: "index_testers_on_user_id", using: :btree
 
+  create_table "transfer_emails", force: :cascade do |t|
+    t.string   "old_email"
+    t.string   "new_email"
+    t.boolean  "is_changed", default: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string   "email",              default: "", null: false
     t.integer  "sign_in_count",      default: 0,  null: false
@@ -448,6 +461,8 @@ ActiveRecord::Schema.define(version: 20190118074453) do
   add_foreign_key "incident_report_collaborators", "users"
   add_foreign_key "incident_report_logs", "incident_reports"
   add_foreign_key "incident_report_logs", "users"
+  add_foreign_key "incident_report_visibilities", "incident_reports"
+  add_foreign_key "incident_report_visibilities", "users"
   add_foreign_key "incident_reports", "users"
   add_foreign_key "notifications", "change_requests"
   add_foreign_key "notifications", "incident_reports"
