@@ -48,8 +48,8 @@ describe ChangeRequest, type: :model do
     it 'update change request approvers' do
       change_request.approver_ids=([user.id, user_2.id])
       change_request.reload
-        expect(change_request.approvals.first.user).to eq user
-        expect(change_request.approvals.second.user).to eq user_2
+      expect(change_request.approvals.first.user).to eq user
+      expect(change_request.approvals.second.user).to eq user_2
      end
   end
 end

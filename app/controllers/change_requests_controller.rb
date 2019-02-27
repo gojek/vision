@@ -329,7 +329,7 @@ class ChangeRequestsController < ApplicationController
             :os, :net, :category, :cr_type, :change_requirement,
             :business_justification, :note, :analysis,
             :solution, :impact, :scope, :design, :backup,
-            :testing_environment_available, :testing_procedure, :testing_notes,
+            :testing_environment_available, :testing_procedure,
             :downtime_expected, :expected_downtime_in_minutes,
             :schedule_change_date, :planned_completion, :grace_period_starts,
             :grace_period_end, :implementation_notes, :grace_period_notes,
