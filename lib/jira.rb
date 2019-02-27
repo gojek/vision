@@ -18,7 +18,7 @@ class Jira
 
   def jiraize_ir(incident_report)
     return incident_report if incident_report.action_item.nil?
-    list = incident_report.action_item.scan(/([A-Z]+-\d+)/).flatten
+    list = incident_report.action_item.scan(/([A-Z0-9]+-\d+)/).flatten
     generate_issue_list(list)
     incident_report.action_item = jiraize(incident_report.action_item)
     incident_report
@@ -50,7 +50,7 @@ class Jira
 
   def jiraize(text)
     return '' if text.blank?
-    matches = text.scan(/([A-Z]+-\d+)/).map { |x| [x[0], get_issue(x[0])] }
+    matches = text.scan(/([A-Z0-9]+-\d+)/).map { |x| [x[0], get_issue(x[0])] }
     matches.each do |m|
       text.gsub! m[0], m[1]
     end
@@ -94,7 +94,7 @@ class Jira
 
   def find_jira_key(text)
     return [] if text.blank?
-    jira_keys = text.scan(/([A-Z]+-\d+)/).flatten
+    jira_keys = text.scan(/([A-Z0-9]+-\d+)/).flatten
     jira_keys.present? ? jira_keys : []
   end
 end
