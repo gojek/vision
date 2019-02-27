@@ -64,7 +64,7 @@
                 <td><%= user.name %></td>
                 <td><%= user.role%></td>
                 <td>
-                    <% if user.is_approved? %>
+                    <% if user.approved? %>
                         <% if user != current_user && current_user.is_admin %>
                             <% if user.account_active? %>
                                 <%= link_to  lock_user_path(user.id), data: { method: :put, confirm: 'Are you sure you want to lock this user?' }, class: 'btn btn-warning'  do %>
@@ -79,14 +79,14 @@
                         <%= link_to edit_path(user), class: 'btn btn-primary' do %>
                             <i class="fa fa-pencil-square-o fa-fw"></i> Edit
                         <%end%>
-                    <% elsif user.is_approved == 2 %>
+                    <% elsif user.need_approvals? %>
                         <%= link_to  approve_user_path(user.id), data: { method: :put, confirm: 'Are you sure you want to approve this user?' }, class: 'btn btn-primary'  do %>
                                  <i class="fa fa-check"></i>Approve 
                             <%end %> 
                         <%= link_to  reject_user_path(user.id), data: { method: :put, confirm: 'Are you sure you want to reject this user?' }, class: 'btn btn-danger'  do %>
                                  <i class="fa fa-check"></i>Reject 
                             <%end %>
-                    <% elsif user.is_approved == 1 %>
+                    <% elsif user.pending? %>
                         <%= link_to  approve_user_path(user.id), class: 'btn btn-primary', disabled: true  do %>
                                  <i class="fa fa-check"></i>Approve 
                             <%end %> 
@@ -101,11 +101,11 @@
                </td>
                <td>
                    <% if user != current_user && current_user.is_admin %>
-                        <% if user.is_approved == 0 %>
+                        <% if user.rejected? %>
                             Rejected
-                        <% elsif user.is_approved == 1 %>
+                        <% elsif user.pending? %>
                             Pending
-                        <% elsif user.is_approved == 2 %>
+                        <% elsif user.need_approvals? %>
                             Waiting for approval
                         <% else %>
                             Approved
