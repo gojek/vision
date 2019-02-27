@@ -16,17 +16,17 @@ class SlackClient
     @client.chat_postMessage(channel: "##{channel}", text: message, attachments: [attachment])
   end
 
+  def reassign_slack_username(user)
+    user.slack_username = get_slack_username(user)
+    user.save
+  end
+
   private
   def get_slack_username(user)
     user = @client.users_lookupByEmail('email': user.email)
     user.user.name
   rescue StandardError
     nil
-  end
-
-  def reassign_slack_username(user)
-    user.slack_username = get_slack_username(user)
-    user.save
   end
 
   def try_send(user, message, attachments)
