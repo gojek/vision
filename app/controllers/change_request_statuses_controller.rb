@@ -1,7 +1,7 @@
 class ChangeRequestStatusesController < ApplicationController
-        before_action :set_change_request, only:[:deploy, :rollback, :cancel, :close, :fail, :submit]
-        before_action :authorized_user_required, only:[:deploy, :rollback, :cancel, :close, :fail, :submit]
   before_action :authenticate_user!
+  before_action :set_change_request, only:[:deploy, :rollback, :cancel, :close, :fail, :submit]
+  before_action :authorized_user_required, only:[:deploy, :rollback, :cancel, :close, :fail, :submit]
 
   private def alert_users(status:)
     if @change_request && @status
@@ -104,11 +104,11 @@ class ChangeRequestStatusesController < ApplicationController
   private
 
   def set_change_request
-        @change_request = ChangeRequest.find(params[:id])
+    @change_request = ChangeRequest.find(params[:id])
   end
 
   def change_request_status_params
-        params.require(:change_request_status).permit(:reason, :deploy_delayed)
+    params.require(:change_request_status).permit(:reason, :deploy_delayed)
   end
 
   def authorized_user_required
