@@ -20,11 +20,12 @@
  *= require nprogress-bootstrap
  *= require bootstrap-social/bootstrap-social
  *= require bootstrap-toggle
- *= require jquery.atwho
+ *= require At.js/dist/css/jquery.atwho
  *= require_tree .
  *= require_self
 
  */
+ 
 #nprogress .spinner-icon{
   border-top-color:#fff !important;
   border-left-color:#fff !important;
