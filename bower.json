@@ -20,6 +20,10 @@
     "eonasdan-bootstrap-datetimepicker": "~4.15.35",
     "Chart.js": "~1.0.2",
     "bootstrap": "~3.3.5",
-    "bootstrap-social": "4.10.1"
+    "bootstrap-social": "4.10.1",
+    "Sortable": "sortablejs#^1.2.0",
+    "amcharts3": "^3.16.0",
+    "moment": "^2.10.3",
+    "At.js": "jquery.atwho#^1.3.2"  
   }
 }
