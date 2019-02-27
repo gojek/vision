@@ -51,7 +51,7 @@ class User < ActiveRecord::Base
       user.name = auth[:info][:name]
       user.role = 'requestor'
       user.is_admin = false
-      user.slack_username = SlackClient.new.get_slack_username(user.email)
+      SlackClient.new.reassign_slack_username(user)
     end
   end
 
