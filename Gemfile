@@ -5,11 +5,10 @@ source 'https://rubygems.org'
 ruby '~> 2.4.5'
 
 # Bundle edge Rails insteadhttps://developers.google.com/oauthplayground: gem 'rails', github: 'rails/rails'
+gem 'puma'
 gem 'rails', '4.2.10'
 gem 'rake', '10.0.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
-gem 'puma'
-gem 'rake', '10.0.0'
 
 # resource-related
 gem 'bootstrap-kaminari-views'
