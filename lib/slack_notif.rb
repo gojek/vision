@@ -109,9 +109,7 @@ class SlackNotif
 
   private
   def notify_users(users, message, attachment)
-    users.each do |user|
-      actionable_attachment = @attachment_builder.wrap_approver_actions(attachment, user)
-      @slack_client.try_send(user, message, [actionable_attachment])
-    end
+    actionable_attachment = @attachment_builder.wrap_approver_actions(attachment)
+    @slack_client.message_users(users, message, attachment)
   end
 end
