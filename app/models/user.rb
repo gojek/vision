@@ -13,10 +13,11 @@ class User < ActiveRecord::Base
   has_many :IncidentReports
   has_many :ChangeRequests
   has_many :AccessRequests
-  has_and_belongs_to_many :associated_change_requests, join_table: :change_requests_associated_users, class_name: 'ChangeRequest'
-  has_and_belongs_to_many :collaborate_change_requests, join_table: :collaborators, class_name: 'ChangeRequest'
+  has_and_belongs_to_many :collaborate_access_requests, join_table: :access_request_collaborators, class_name: :AccessRequest
+  has_and_belongs_to_many :collaborate_change_requests, join_table: :collaborators, class_name: :ChangeRequest
   has_and_belongs_to_many :implement_change_requests, join_table: :implementers, class_name: :ChangeRequest
   has_and_belongs_to_many :test_change_requests, join_table: :testers, class_name: :ChangeRequest
+  has_and_belongs_to_many :associated_change_requests, join_table: :change_requests_associated_users, class_name: :ChangeRequest
   has_many :Comments
   has_many :notifications, dependent: :destroy
   has_many :Approvals, :dependent => :destroy
@@ -59,10 +60,6 @@ class User < ActiveRecord::Base
     expired_at < Time.now
   end
 
-  def expired_session?
-    (expired_at + 7.days) < Time.now
-  end
-
   def fresh_token
     refresh! if (expired? || token == nil)
     token
@@ -86,6 +83,7 @@ class User < ActiveRecord::Base
   end
 
   def is_associated?(change_request)
-    associated_change_requests.include? change_request
+    change_request.associated_users.include? self
   end
+
 end
