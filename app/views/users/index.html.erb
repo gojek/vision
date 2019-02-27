@@ -64,7 +64,7 @@
                 <td><%= user.name %></td>
                 <td><%= user.role%></td>
                 <td>
-                    <% if user.is_approved == 3 %>
+                    <% if user.is_approved? %>
                         <% if user != current_user && current_user.is_admin %>
                             <% if user.account_active? %>
                                 <%= link_to  lock_user_path(user.id), data: { method: :put, confirm: 'Are you sure you want to lock this user?' }, class: 'btn btn-warning'  do %>

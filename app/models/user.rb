@@ -33,6 +33,10 @@ class User < ActiveRecord::Base
   scope :active, -> {where(:locked_at => nil)}
 
 
+  def is_approved?
+    is_approved == 3
+  end
+
   def account_active?
     locked_at.nil?
   end
