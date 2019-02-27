@@ -47,6 +47,7 @@ describe SlackNotif do
         change_request.reload
         associated_users = change_request.associated_users.to_a
         approvers.each {|approver| associated_users.delete(approver)}
+        expect(slack_client).to receive(:message_users).with(approvers, approver_message, change_request_attachment)
         expect(slack_client).to receive(:message_users).with(associated_users, new_cr_message, change_request_attachment)
         slack_notifier.notify_new_cr(change_request)
       end
@@ -57,6 +58,7 @@ describe SlackNotif do
       end
 
       it 'Send attachment from attachment builder' do
+        expect(slack_client).to receive(:message_users).with(anything(), approver_message, change_request_attachment)
         expect(slack_client).to receive(:message_users).with(anything(), anything(), change_request_attachment)
         expect(slack_client).to receive(:message_channel).with(anything(), anything(), change_request_attachment)
         slack_notifier.notify_new_cr(change_request)
@@ -90,6 +92,7 @@ describe SlackNotif do
         change_request.reload
         associated_users = change_request.associated_users.to_a
         approvers.each {|approver| associated_users.delete(approver)}
+        expect(slack_client).to receive(:message_users).with(approvers, approver_message, change_request_attachment)
         expect(slack_client).to receive(:message_users).with(associated_users, modified_cr_message, anything())
         slack_notifier.notify_update_cr(change_request)
       end
@@ -101,6 +104,7 @@ describe SlackNotif do
       end
 
       it 'Send attachment from attachment builder' do
+        expect(slack_client).to receive(:message_users).with(anything(), approver_message, change_request_attachment)
         expect(slack_client).to receive(:message_users).with(anything(), anything(), change_request_attachment)
         expect(slack_client).to receive(:message_channel).with(anything(), anything(), change_request_attachment)
         slack_notifier.notify_update_cr(change_request)
