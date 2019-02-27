@@ -74,7 +74,7 @@ class SlackNotif
     attachment = @attachment_builder.generate_ar_comment_attachment(ar_comment)
     link = access_request_url(ar_comment.access_request)
     mentionees = Mentioner.process_mentions(ar_comment)
-    if mentionees.empty?
+    unless mentionees.empty?
       mentioned_message = "You are mentioned in #{ar_comment.user.name} comment's on an <#{link}|access request>"
       @slack_client.message_users(mentionees, mentioned_message, attachment)
     end
