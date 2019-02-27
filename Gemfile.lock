@@ -205,7 +205,6 @@ GEM
       activerecord
       kaminari-core (= 1.1.1)
     kaminari-core (1.1.1)
-    kgio (2.11.2)
     launchy (2.4.3)
       addressable (~> 2.3)
     loofah (2.2.3)
@@ -267,8 +266,8 @@ GEM
     pry-byebug (3.6.0)
       byebug (~> 10.0)
       pry (~> 0.10)
-    puma (3.12.0)
     public_suffix (3.0.3)
+    puma (3.12.0)
     rack (1.6.11)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -302,7 +301,6 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rainbow (3.0.0)
-    raindrops (0.19.0)
     rake (10.0.0)
     ransack (1.8.10)
       actionpack (>= 3.0, < 5.2)
@@ -508,7 +506,7 @@ DEPENDENCIES
   paper_trail (~> 4.1)
   pg (~> 0.19)
   pry-byebug
-  puma
+  puma (~> 3.12.0)
   rails (= 4.2.10)
   rails_12factor
   rake (= 10.0.0)
