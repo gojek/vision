@@ -105,7 +105,7 @@ describe IncidentReportsController, type: :controller do
         it "changes @incident_report's attributes" do
           source = 'External'
           patch :update, id: incident_report,
-            incident_report: FactoryGirl.attributes_for(:incident_report, source: source)
+            incident_report: FactoryGirl.attributes_for(:incident_report_with_reason_update, source: source).except(:user)
           incident_report.reload
           expect(incident_report.source).to eq(source)
         end
@@ -115,7 +115,7 @@ describe IncidentReportsController, type: :controller do
         it "doesnt change the @incidnet report's attributes" do
           source = 'source'
           patch :update, id: incident_report,
-            incident_report: FactoryGirl.attributes_for(:incident_report, source: source)
+            incident_report: FactoryGirl.attributes_for(:incident_report_with_reason_update, source: source).except(:user)
           incident_report.reload
           expect(incident_report.source).to_not eq(source)
         end
@@ -168,7 +168,7 @@ describe IncidentReportsController, type: :controller do
 
     describe 'DELETE #destroy' do
       before :each do
-        @incident_report = FactoryGirl.create(:incident_report,user:user)
+        @incident_report = FactoryGirl.create(:incident_report, user:user)
       end
       it "deletes the incident report" do
         expect{
@@ -194,7 +194,7 @@ describe IncidentReportsController, type: :controller do
         it "changes @incident_report's attributes" do
           source = 'External'
           patch :update, id: incident_report,
-            incident_report: FactoryGirl.attributes_for(:incident_report, source: source)
+            incident_report: FactoryGirl.attributes_for(:incident_report_with_reason_update, source: source).except(:user)
           incident_report.reload
           expect(incident_report.source).to eq(source)
         end
@@ -204,7 +204,8 @@ describe IncidentReportsController, type: :controller do
         it "doesnt change the @incident_report's attributes" do
           source = 'source'
           patch :update, id: incident_report,
-            incident_report: FactoryGirl.attributes_for(:incident_report, source: source)
+            incident_report: FactoryGirl.attributes_for(:incident_report_with_reason_update, source: source).except(:user)
+          incident_report.reload          
           expect(incident_report.source).to_not eq(source)
         end
       end
