@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-ruby '~> 2.3.0'
+ruby '~> 2.4.5'
 
 # Bundle edge Rails insteadhttps://developers.google.com/oauthplayground: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.10'
@@ -38,7 +38,7 @@ gem 'paper_trail', '~> 4.1'
 gem 'sucker_punch', '~> 2.0'
 
 # oauth
-gem 'google-api-client', '~> 0.8.2', require: 'google/api_client'
+gem 'google-api-client', '~> 0.20.0'
 gem 'httpclient'
 gem 'omniauth-google-oauth2'
 
@@ -71,7 +71,7 @@ gem 'unread'
 gem 'nokogiri'
 
 # database
-gem 'pg'
+gem 'pg', '~> 0.19'
 
 # coloring std out
 gem 'colorize'
