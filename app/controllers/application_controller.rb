@@ -39,11 +39,11 @@ class ApplicationController < ActionController::Base
   private
 
   def approved_account
-    return if current_user.is_approved?
+    return if current_user.approved?
 
-    flash_message = if current_user.is_approved == 2
+    flash_message = if current_user.need_approvals?
                       'Your account is not yet approved to open Vision'
-                    elsif current_user.is_approved == 1
+                    elsif current_user.pending?
                       'Fill the form'
                     else
                       'Sorry, your access request to Vision is rejected.'
