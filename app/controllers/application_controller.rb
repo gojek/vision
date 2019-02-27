@@ -15,8 +15,6 @@ class ApplicationController < ActionController::Base
   def token_required!
     if current_user.token.nil? or current_user.expired_session?
       sign_out current_user
-    elsif current_user.expired?
-      GoogleOAuth.refresh_token(current_user)
     end
   end
 
