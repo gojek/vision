@@ -7,6 +7,8 @@ class IncidentReportsController < ApplicationController
   before_action :set_users_and_tags, only: [:new, :create, :edit, :update]
   before_action :set_incident_report_log, only: [:update]
 
+  require 'csv_exporter'
+
   def index
     if params[:tag]
       @q = IncidentReport.ransack(params[:q])
@@ -27,13 +29,7 @@ class IncidentReportsController < ApplicationController
           # download current page only
           render csv: @incident_reports, filename: 'incident_reports', force_quotes: true
         else
-          enumerator = Enumerator.new do |lines|
-            lines << IncidentReport.to_comma_headers.to_csv
-            IncidentReport.find_each do |record|
-              lines << record.to_comma.to_csv
-            end
-          end
-          self.stream('incident_reports_all.csv', 'text/csv', enumerator)
+          self.stream('incident_reports_all.csv', 'text/csv', CSVExporter.export_from_active_records(@incident_reports))
         end
       end
       format.xls { send_data(@incident_reports.to_xls) }
