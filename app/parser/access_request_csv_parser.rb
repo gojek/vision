@@ -83,6 +83,9 @@ class AccessRequestCsvParser
         @data['start_date'] = Date.parse(@raw_data['start_date'])
         @data['end_date'] = Date.parse(@raw_data['end_date'])
       rescue StandardError
+        @data['access_type'] = ''
+        @data['start_date'] = ''
+        @data['end_date'] = ''
         @error = true
       end
     end
