@@ -16,10 +16,11 @@ class User < ActiveRecord::Base
   has_many :IncidentReports
   has_many :ChangeRequests
   has_many :AccessRequests
-  has_and_belongs_to_many :associated_change_requests, join_table: :change_requests_associated_users, class_name: 'ChangeRequest'
-  has_and_belongs_to_many :collaborate_change_requests, join_table: :collaborators, class_name: 'ChangeRequest'
+  has_and_belongs_to_many :collaborate_access_requests, join_table: :access_request_collaborators, class_name: :AccessRequest
+  has_and_belongs_to_many :collaborate_change_requests, join_table: :collaborators, class_name: :ChangeRequest
   has_and_belongs_to_many :implement_change_requests, join_table: :implementers, class_name: :ChangeRequest
   has_and_belongs_to_many :test_change_requests, join_table: :testers, class_name: :ChangeRequest
+  has_and_belongs_to_many :associated_change_requests, join_table: :change_requests_associated_users, class_name: :ChangeRequest
   has_many :Comments
   has_many :notifications, dependent: :destroy
   has_many :Approvals, :dependent => :destroy
@@ -94,21 +95,6 @@ class User < ActiveRecord::Base
     token
   end
 
-  #refer to https://developers.google.com/oauthplayground and https://github.com/nahi/httpclient/blob/master/sample/howto.rb
-  def get_contacts
-    client = HTTPClient.new()
-    target = 'https://www.google.com/m8/feeds/contacts/default/full/'
-    token = 'Bearer ' + self.fresh_token
-    response = client.get(target, nil, {'Gdata-version' => '3.0', 'Authorization' => token}).body
-    response
-    xml = Nokogiri.XML(response)
-    all_contact = []
-    xml.xpath('//gd:email').each do |entry|
-      all_contact.push(entry['address'])
-    end
-    all_contact
-  end
-
   def get_slack_username
     client = Slack::Web::Client.new
     client.users_list.members.each do |u|
@@ -127,6 +113,7 @@ class User < ActiveRecord::Base
   end
 
   def is_associated?(change_request)
-    associated_change_requests.include? change_request
+    change_request.associated_users.include? self
   end
+
 end
