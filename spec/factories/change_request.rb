@@ -21,7 +21,6 @@ FactoryGirl.define do
     backup "Backup"
     testing_environment_available true
     testing_procedure "Procedure"
-    testing_notes "Notes"
     schedule_change_date {Time.now}
     planned_completion {3.days.from_now}
     grace_period_starts {Time.now}
@@ -82,14 +81,9 @@ FactoryGirl.define do
       approval = FactoryGirl.create(:approval)
       cr.approvals << approval
 
-      associated_user_ids = [collaborator.id, implementer.id, tester.id, approval.user.id]
-      cr.associated_user_ids = associated_user_ids.uniq
     end
 
     after(:create) do |cr|
-      if !cr.user.nil?
-        cr.update(associated_user_ids: cr.associated_user_ids << cr.user.id)
-      end
       status = FactoryGirl.create(:change_request_status, status: 'submitted')
       cr.update(change_request_statuses: cr.change_request_statuses << status)
     end

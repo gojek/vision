@@ -5,11 +5,10 @@ class ChangeRequestsController < ApplicationController
   before_action :not_closed_required, only: [:destroy]
   before_action :submitted_required, only: [:edit]
   before_action :reference_required, only: [:create_hotfix]
-  after_action :unset_session_first_time, only: [:new], if: -> { session['first_time'] }
   before_action :role_not_approver_required, only: :edit
   require 'notifier.rb'
   require 'slack_notif.rb'
-  require 'calendar.rb'
+  require 'calendar_service.rb'
 
   def index
     if params[:type]
@@ -18,7 +17,7 @@ class ChangeRequestsController < ApplicationController
       when 'approval'
         @change_requests = ChangeRequest.where(id: Approval.where(user_id: current_user.id, approve: nil).collect(&:change_request_id))
       when 'relevant'
-        @change_requests = ChangeRequest.where(id: current_user.associated_change_requests.collect(&:id))
+        @change_requests = current_user.associated_change_requests
       end
       @change_requests = @change_requests.where.not(aasm_state: 'draft').order(id: :desc)
     else
@@ -32,10 +31,7 @@ class ChangeRequestsController < ApplicationController
         @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
       end
       format.csv do
-        #offset = params[:page] || 1
-        #@change_requests.order("created_at desc").limit(13).offset(offset)
         if params[:page].present?
-          # download crs current page
           @change_requests = @change_requests.page(params[:page] || 1).per(params[:per_page] || 20)
           render csv: @change_requests, filename: 'change_requests', force_quotes: true
         else
@@ -109,17 +105,6 @@ class ChangeRequestsController < ApplicationController
 
   def create
     @change_request = current_user.ChangeRequests.build(change_request_params)
-    @current_approvers = Array.wrap(params[:approvers_list])
-    @current_implementers = Array.wrap(params[:implementers_list])
-    @current_testers = Array.wrap(params[:testers_list])
-    @current_collaborators = Array.wrap(params[:collaborators_list])
-    @change_request.downtime_expected = params[:downtime_expected]
-    @change_request.expected_downtime_in_minutes = params[:expected_downtime_in_minutes]
-
-    @change_request.set_approvers(@current_approvers)
-    @change_request.set_implementers(@current_implementers)
-    @change_request.set_testers(@current_testers)
-    @change_request.set_collaborators(@current_collaborators)
     @change_request.requestor_position = current_user.position
     respond_to do |format|
       unless @change_request.save
@@ -129,27 +114,19 @@ class ChangeRequestsController < ApplicationController
         @status = @change_request.change_request_statuses.new(:status => 'draft')
         @status.save
       else
-        event = Calendar.new.set_cr(current_user, @change_request)
-        @change_request.update(google_event_id: event.data.id) unless event.error?
-
+        event = calendar_service.assign_event_for(@change_request)
         @change_request.submit!
         @change_request.save
         @status = @change_request.change_request_statuses.new(:status => 'submitted')
         @status.save
-        associated_user_ids = ["#{@change_request.user.id}"]
-        associated_user_ids.concat(@current_approvers)
-        associated_user_ids.concat(@current_implementers)
-        associated_user_ids.concat(@current_testers)
-        associated_user_ids.concat(@current_collaborators)
-        @change_request.associated_user_ids = associated_user_ids.uniq
         Notifier.cr_notify(current_user, @change_request, 'new_cr')
-        SlackNotif.new.notify_new_cr @change_request
+        NewChangeRequestSlackNotificationJob.perform_async(@change_request)
         Thread.new do
           UserMailer.notif_email(@change_request.user, @change_request, @status).deliver_now
           ActiveRecord::Base.connection.close
         end
         flash[:success] = 'Change request was successfully created.'
-        flash[:success] += " Calendar event creation failed: #{event.error_message}." if event.error?
+        flash[:success] += " Calendar event creation failed: #{event.error_messages}." unless event.success?
       end
       format.html { redirect_to @change_request }
       format.json { render :show, status: :created, location: @change_request }
@@ -168,37 +145,20 @@ class ChangeRequestsController < ApplicationController
   end
 
   def update
-    @current_approvers = Array.wrap(params[:approvers_list])
-    @current_implementers = Array.wrap(params[:implementers_list])
-    @current_testers = Array.wrap(params[:testers_list])
-    @current_collaborators = Array.wrap(params[:collaborators_list])
-    @change_request.downtime_expected = params[:downtime_expected]
-    @change_request.expected_downtime_in_minutes = params[:expected_downtime_in_minutes]
-    @change_request.update_approvers(@current_approvers)
-    @change_request.set_implementers(@current_implementers)
-    @change_request.set_testers(@current_testers)
-    @change_request.set_collaborators(@current_collaborators)
     respond_to do |format|
       if @change_request.update(change_request_params)
-        event = Calendar.new.set_cr(current_user, @change_request)
-        @change_request.update(google_event_id: event.data.id) unless event.error?
-
+        event = calendar_service.assign_event_for(@change_request)
         if @change_request.draft?
           @change_request.submit!
           @change_request.save
           @status = @change_request.change_request_statuses.new(:status => 'submitted')
           @status.save
-        end
-        associated_user_ids = ["#{@change_request.user.id}"]
-        associated_user_ids.concat(@current_approvers)
-        associated_user_ids.concat(@current_implementers)
-        associated_user_ids.concat(@current_testers)
-        associated_user_ids.concat(@current_collaborators)
-        @change_request.associated_user_ids = associated_user_ids.uniq
+        end 
         Notifier.cr_notify(current_user, @change_request, 'update_cr')
-        SlackNotif.new.notify_update_cr @change_request
+        UpdateChangeRequestSlackNotificationJob.perform_async(@change_request)
+
         flash[:success] = 'Change request was successfully updated.'
-        flash[:success] += " Calendar event creation failed: #{event.error_message}." if event.error?
+        flash[:success] += " Calendar event creation failed: #{event.error_messages}." unless event.success?
         format.html { redirect_to @change_request }
         format.json { render :show, status: :ok, location: @change_request }
       else
@@ -210,8 +170,12 @@ class ChangeRequestsController < ApplicationController
         else
           @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
           @current_tags = @change_request.tag_list
-          @users = User.active.collect{|u| [u.name, u.id] }
-          @approvers = User.approvers.active.collect{|u| [u.name, u.id] if u.id != current_user.id }
+          @users = User.active.collect{|u| [u.name, u.id]}
+          @approvers = User.approvers.active.collect{|u| [u.name, u.id] if u.id != current_user.id}
+          @current_approvers = Array.wrap(change_request_params[:approver_ids])
+          @current_implementers = Array.wrap(change_request_params[:implementer_ids])
+          @current_testers = Array.wrap(change_request_params[:tester_ids])
+          @current_collaborators = Array.wrap(change_request_params[:collaborator_ids])
           format.html { render :edit }
           format.json { render json: @change_request.errors, status: :unprocessable_entity }
         end
@@ -246,7 +210,7 @@ class ChangeRequestsController < ApplicationController
       approval.notes = accept_note
       approval.save!
       Notifier.cr_notify(current_user, @change_request, 'cr_approved')
-      SlackNotif.new.notify_approval_status_cr(@change_request, approval)
+      ApprovalChangeRequestSlackNotificationJob.perform_async(@change_request, approval)
       flash[:success] = 'Change Request Approved'
     end
     redirect_to @change_request
@@ -264,7 +228,7 @@ class ChangeRequestsController < ApplicationController
       Notifier.cr_notify(current_user, @change_request, 'cr_rejected')
       approval.update(:approve => false, :notes => reject_reason)
       flash[:notice] = 'Change Request Rejected'
-      SlackNotif.new.notify_approval_status_cr(@change_request, approval)
+      ApprovalChangeRequestSlackNotificationJob.perform_async(@change_request, approval)
     end
     redirect_to @change_request
   end
@@ -348,6 +312,10 @@ class ChangeRequestsController < ApplicationController
 
   private
 
+    def calendar_service
+      CalendarService.new(current_user)
+    end
+
     def set_change_request
       if params[:change_request_id]
         @change_request = ChangeRequest.find(params[:change_request_id])
@@ -356,16 +324,12 @@ class ChangeRequestsController < ApplicationController
       end
     end
 
-    def unset_session_first_time
-      session[:first_time] = false
-    end
-
     def change_request_params
       params.require(:change_request).permit(:reference_cr_id, :change_summary, :priority, :db,
             :os, :net, :category, :cr_type, :change_requirement,
             :business_justification, :note, :analysis,
             :solution, :impact, :scope, :design, :backup,
-            :testing_environment_available, :testing_procedure, :testing_notes,
+            :testing_environment_available, :testing_procedure,
             :downtime_expected, :expected_downtime_in_minutes,
             :schedule_change_date, :planned_completion, :grace_period_starts,
             :grace_period_end, :implementation_notes, :grace_period_notes,
@@ -376,7 +340,13 @@ class ChangeRequestsController < ApplicationController
             :type_configuration_change, :type_emergency_change, :type_other,
             implementers_attributes: [:id, :name, :position, :_destroy],
             testers_attributes: [:id, :name, :position, :_destroy],
-            :tag_list => [], :collaborators_list => [])
+            :tag_list => [], :implementer_ids => [], :tester_ids => [], 
+            :collaborator_ids => [], :approver_ids => []).tap do |params| 
+              normalized_array_fields = [:approver_ids, :implementer_ids, :tester_ids, :collaborator_ids]
+              normalized_array_fields.each do |field|
+                params[field].select!{ |id| id.present? }.map!{ |id| id.to_i} if params[field].present?
+              end
+            end
     end
 
     def owner_required
