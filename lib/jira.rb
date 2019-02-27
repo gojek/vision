@@ -79,9 +79,10 @@ class Jira
   end
 
   def get_jira_data(list_issue)
-    @jira_data = @client.Issue.jql(list_issue, fields: %w[summary status issuetype], fields_by_key: true, validate_query: false)
+    @jira_data = @client.Issue.jql(list_issue,
+                                   fields: %w[summary status issuetype], fields_by_key: true, validate_query: false)
   rescue JIRA::HTTPError
-    @jira_data 
+    @jira_data
   end
 
   def generate_issue_list(issue_string)
