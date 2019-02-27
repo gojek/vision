@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   require 'notifier.rb' # Omg
 
   def check_user
-    unless current_user.nil?
+    if current_user.present?
       token_required!
       approved_account
     end
@@ -39,18 +39,17 @@ class ApplicationController < ActionController::Base
   private
 
   def approved_account
-    if current_user.is_approved == 2
-      sign_out current_user
-      flash[:alert] = 'Your account is not yet approved to open Vision'
-      redirect_to signin_path
-    elsif current_user.is_approved == 1
-      sign_out current_user
-      flash[:alert] = 'Fill the form'
-      redirect_to signin_path
-    elsif current_user.is_approved == 0
-      sign_out current_user
-      flash[:alert] = 'Sorry, your access request to Vision is rejected.'
-      redirect_to signin_path
-    end
+    return if current_user.is_approved?
+
+    flash_message = if current_user.is_approved == 2
+                      'Your account is not yet approved to open Vision'
+                    elsif current_user.is_approved == 1
+                      'Fill the form'
+                    else
+                      'Sorry, your access request to Vision is rejected.'
+                    end
+    flash[:alert] = flash_message
+    sign_out current_user
+    redirect_to signin_path
   end
 end
