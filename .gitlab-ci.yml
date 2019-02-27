@@ -1,4 +1,4 @@
-image: node:stretch
+image: ruby:2.4.5-stretch
 
 services:
   - postgres:alpine
@@ -17,14 +17,15 @@ before_script:
   - mkdir -p /cache/debs
   - ln -sf /cache/debs /var/cache/apt
   - apt-get update
-  - apt-get install ruby bundler -y
-  - ruby --version
+  - curl -sL https://deb.nodesource.com/setup_11.x | bash -
+  - apt-get -y install nodejs
+  - gem install bundler --version 1.17.3
   - bundle install --retry 10 --quiet --deployment --path=$BUNDLE_PATH
+  - npm install -g bower
   - mkdir -p /cache/bower_components
   - rm -rf vendor/assets/bower_components
   - cp -r /cache/bower_components vendor/assets/bower_components
   - rm -rf vendor/assets/bower_components/bower_components
-  - npm install -g bower
   - bower install --allow-root
   - rm -rf /cache/bower_components
   - cp -r vendor/assets/bower_components /cache/bower_components
