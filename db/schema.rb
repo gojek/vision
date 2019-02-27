@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190124034547) do
+ActiveRecord::Schema.define(version: 20190213120419) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -165,9 +165,8 @@ ActiveRecord::Schema.define(version: 20190124034547) do
     t.string   "scope"
     t.text     "design"
     t.text     "backup"
-    t.boolean  "testing_environment_available"
+    t.boolean  "testing_environment_available", default: true
     t.text     "testing_procedure"
-    t.text     "testing_notes"
     t.datetime "schedule_change_date"
     t.datetime "planned_completion"
     t.datetime "grace_period_starts"
@@ -175,8 +174,8 @@ ActiveRecord::Schema.define(version: 20190124034547) do
     t.text     "implementation_notes"
     t.text     "grace_period_notes"
     t.integer  "user_id"
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
     t.text     "net"
     t.text     "db"
     t.text     "os"
@@ -207,6 +206,7 @@ ActiveRecord::Schema.define(version: 20190124034547) do
     t.string   "google_event_id"
     t.boolean  "downtime_expected"
     t.integer  "expected_downtime_in_minutes"
+    t.text     "testing_notes"
   end
 
   add_index "change_requests", ["cab_id"], name: "index_change_requests_on_cab_id", using: :btree
