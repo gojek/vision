@@ -31,11 +31,7 @@ class User < ActiveRecord::Base
   scope :approvers_ar, -> {where('role = ? OR role = ?', 'approver_ar', 'approver_all')}
   default_scope { where.not(:is_approved => 1) }
   scope :active, -> {where(:locked_at => nil)}
-
-
-  def is_approved?
-    is_approved == 3
-  end
+  enum is_approved: { rejected: 0, pending: 1, need_approvals: 2, approved: 3 }
 
   def account_active?
     locked_at.nil?
