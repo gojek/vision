@@ -13,7 +13,7 @@ class Jira
       auth_type: :basic
     }
     @client = JIRA::Client.new(options)
-    @jira_data = []
+    @jira_data = {}
   end
 
   def jiraize_ir(incident_report)
@@ -48,6 +48,8 @@ class Jira
     change_request
   end
 
+  private
+
   def jiraize(text)
     return '' if text.blank?
     matches = text.scan(/([A-Z0-9]+-\d+)/).map { |x| [x[0], get_issue(x[0])] }
@@ -58,12 +60,8 @@ class Jira
   end
 
   def get_issue(key)
-    issue = nil
-    @jira_data.each do |jira|
-      issue = jira if jira.key == key
-    end
-    return key if issue.nil?
-    
+    return key unless (issue = @jira_data[key])
+
     summary = sanitize(issue.fields['summary'], tags: [])
     issue_type_icon = issue.fields['issuetype']['iconUrl']
     status_category = issue.fields['status']['statusCategory']
@@ -78,19 +76,21 @@ class Jira
     '</span>'
   end
 
-  def get_jira_data(list_issue)
-    @jira_data = @client.Issue.jql(list_issue, fields: %w[summary status issuetype], fields_by_key: true, validate_query: false)
-  rescue JIRA::HTTPError
-    @jira_data 
-  end
-
   def generate_issue_list(issue_string)
     return if issue_string.empty?
     list_issue = issue_string.map { |item| "issueKey=#{item}" }.join(' OR ')
     get_jira_data(list_issue)
   end
 
-  private
+  def get_jira_data(list_issue)
+    raw_issues = @client.Issue.jql(list_issue,
+                                   fields: %w[summary status issuetype], fields_by_key: true, validate_query: false)
+    raw_issues.each do |issue|
+      @jira_data[issue.key] = issue
+    end
+  rescue JIRA::HTTPError
+    @jira_data
+  end
 
   def find_jira_key(text)
     return [] if text.blank?
