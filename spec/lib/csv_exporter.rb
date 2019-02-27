@@ -14,6 +14,5 @@ describe CSVExporter do
     expect(enumerator.next).to eq(AccessRequest.to_comma_headers.to_csv)
     expect(enumerator.next).to eq(AccessRequest.first.to_comma.to_csv)
     expect(enumerator.next).to eq(AccessRequest.last.to_comma.to_csv) 
-    expect(enumerator.class.to_s).to eq('Enumerator')
   end
 end
