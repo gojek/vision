@@ -65,7 +65,6 @@ Rails.application.routes.draw do
 
   get 'incident_reports/edit'
 
-
   get 'users/show'
 
   get 'users/index'
@@ -128,6 +127,7 @@ Rails.application.routes.draw do
 
     collection do
       get :search
+      post :import_from_csv
     end
   end
 
