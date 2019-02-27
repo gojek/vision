@@ -25,9 +25,9 @@ class SlackNotif
   def notify_change_cr(change_request, type)
     attachment = @attachment_builder.generate_change_request_attachment(change_request)
     link = change_request_url(change_request)
-    approvers = change_request.approvals.collect{|approval| approval.user}
-    approver_message = "#{type.humanize} <#{link}|Change request> needs your approvals"
-    notify_users(approvers, approver_message, attachment)
+    approvers = change_request.approvals.collect(&:user)
+    approver_message = "#{type.humanize} <#{link}|change request> needs your approvals"
+    notify_approvers(approvers, approver_message, attachment)
     associated_users = change_request.associated_users.to_a
     approvers.each { |approver| associated_users.delete(approver) }
     general_message = "<#{link}|Change request> has been #{type}"
@@ -40,7 +40,7 @@ class SlackNotif
     link = access_request_url(access_request)
     approvers = access_request.approvals.collect(&:user)
     approver_message = "#{type.humanize} <#{link}|access_request> needs your approvals"
-    notify_users(approvers, approver_message, attachment)
+    notify_approvers(approvers, approver_message, attachment)
   end
 
   def notify_approval_status_cr(change_request, approval)
@@ -108,7 +108,7 @@ class SlackNotif
   end
 
   private
-  def notify_users(users, message, attachment)
+  def notify_approvers(users, message, attachment)
     actionable_attachment = @attachment_builder.wrap_approver_actions(attachment)
     @slack_client.message_users(users, message, attachment)
   end
