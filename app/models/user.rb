@@ -36,20 +36,21 @@ class User < ActiveRecord::Base
   has_many :Comments
   has_many :notifications, dependent: :destroy
   has_many :Approvals, :dependent => :destroy
-  validates :email, format: { with: /\b[A-Z0-9._%a-z\-]+@(veritrans\.co\.id|midtrans\.com|associate\.midtrans\.com||spots\.co\.id)\z/,
+  validates :email, format: { with: /\b[A-Z0-9._%a-z\-]+@(veritrans\.co\.id|midtrans\.com|associate\.midtrans\.com||spots\.co\.id|go-jek\.com)\z/,
                   message: "must be a veritrans account" }
   validates :email, uniqueness: true
   scope :approvers, -> {where('role = ? OR role = ?', 'approver', 'approver_all')}
   scope :approvers_ar, -> {where('role = ? OR role = ?', 'approver_ar', 'approver_all')}
+  default_scope { where.not(:is_approved => 1) }
   scope :active, -> {where(:locked_at => nil)}
-
+  enum is_approved: { rejected: 0, pending: 1, need_approvals: 2, approved: 3 }
 
   def account_active?
     locked_at.nil? && (is_approved == APPROVED || is_approved == NOT_YET_FILL_THE_FORM)
   end
 
   def use_company_email?
-    (email =~ /\b[A-Z0-9._%a-z\-]+@(veritrans\.co\.id|midtrans\.com|associate\.midtrans\.com |spots\.co\.id)\z/).present?
+    (email =~ /\b[A-Z0-9._%a-z\-]+@(veritrans\.co\.id|midtrans\.com|associate\.midtrans\.com |spots\.co\.id|go-jek\.com)\z/).present?
   end
 
   def active_for_authentication?
