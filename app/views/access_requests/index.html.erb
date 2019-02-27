@@ -5,12 +5,20 @@
     <%= link_to  new_access_request_path, class: 'btn btn-flat btn-primary pull-right'  do %>
          <i class="fa fa-plus"></i> <strong>New Access Request</strong>
     <% end %>
+    <button type="button" class="btn btn-flat btn-primary pull-right" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i><strong> Import from csv</strong></button>
     <a href="#" data-toggle="control-sidebar" class="btn btn-flat btn-primary pull-right" id='filter-button'><i class="fa fa-filter"></i><span><strong> Filter</strong></span></a>
   </h1>
 </section>
 <section class="content">
  <div class="row">
-    <div class='col-lg-6'>
+    <div class='col-lg-12'>
+      <%if flash[:notice] != nil %>
+       <div class="alert alert-success alert-dismissable ">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4>  <i class="icon fa fa-check"></i> Success!</h4>
+          <p id="notice"><%= flash[:notice]  %></p>
+      </div>
+      <% end %>
       <%if flash[:alert] != nil %>
         <div class="alert alert-danger alert-dismissable ">
           <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -18,11 +26,11 @@
           <p id="notice"><%= flash[:alert]  %></p>
         </div>
       <% end %>
-      <%if flash[:notice] != nil %>
-       <div class="alert alert-success alert-dismissable ">
+      <%if flash[:invalid] != nil %>
+       <div class="alert alert-warning alert-dismissable ">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-        <h4>  <i class="icon fa fa-check"></i> Success!</h4>
-          <p id="notice"><%= flash[:notice]  %></p>
+        <h4>  <i class="icon fa fa-times"></i> Warning</h4>
+          <p id="notice"><%= flash[:invalid]  %></p>
       </div>
       <% end %>
     </div>
@@ -124,6 +132,45 @@
       </div><!-- /.box -->
     </div>
 
+    <div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Import from CSV</h4>
+      </div>
+      <div class="modal-body">
+        <h4>Attention!</h4>
+        <div>
+          <ul>
+            <li>Please make sure you follow the example csv below!</li>
+            <li>Please make sure approvers and collaborators email are exists!</li>
+            <li>For employee access, please write exactly like on the webpage, but without the word "Fingerprint"</li>
+            <li>For other access, please write exactly like on the webpage</li>
+            <li>For column employee access, password reset and production access, please fill with "1" or "0" without quotation marks</li>
+            <li>If there is a writing error, the data will be saved as a draft. Please kindly check all the data</li>
+          </ul>
+          <%= link_to 'example.csv', download: '' do %>
+            <i class="fa fa-file"></i> <strong>example.csv</strong>
+          <% end %>
+        </div>
+        <br>
+        <%= form_tag import_from_csv_access_requests_path, multipart:true, method: "post", :onsubmit => "return ValidateFileExtension(this);" do %>
+            <%= file_field_tag :csv %>
+            <br>
+            <%= submit_tag("Submit") %>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 </div>
 <aside class="control-sidebar control-sidebar-light" style="height: 100vh; overflow: hidden" id='sidebar-pane'>
   <!-- Tab panes -->
@@ -181,6 +228,33 @@
      immediately after the control sidebar -->
 <div class='control-sidebar-bg'></div>
 <script>
+  var _validFileExtensions = [".csv"];    
+  function ValidateFileExtension(file) {
+      var arrInputs = file.getElementsByTagName("input");
+      for (var i = 0; i < arrInputs.length; i++) {
+          var oInput = arrInputs[i];
+          if (oInput.type == "file") {
+              var sFileName = oInput.value;
+              if (sFileName.length > 0) {
+                  var blnValid = false;
+                  for (var j = 0; j < _validFileExtensions.length; j++) {
+                      var sCurExtension = _validFileExtensions[j];
+                      if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
+                          blnValid = true;
+                          break;
+                      }
+                  }
+                  
+                  if (!blnValid) {
+                      alert("Sorry, file extensions is invalid, allowed extensions are: " + _validFileExtensions.join(", "));
+                      return false;
+                  }
+              }
+          }
+      } 
+      return true;
+  }
+
   var o = $.AdminLTE.options.controlSidebarOptions;
   var sidebar = $(o.selector);
   jQuery(function($){
@@ -193,7 +267,6 @@
       }
     });
   });
-
 
 </script>
 
