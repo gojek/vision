@@ -29,6 +29,10 @@ class AccessRequest < ActiveRecord::Base
 
   searchable do
     text :employee_name, stored: true
+    text :employee_position, stored: true
+    text :employee_email_address, stored: true
+    text :employee_department, stored: true
+    text :employee_phone, stored: true
     time :created_at, stored: true
   end
 
@@ -81,7 +85,7 @@ class AccessRequest < ActiveRecord::Base
       !terminal_state? && !has_approver?(user)
   end
 
-  def set_approvers(approver_id_list)
+  def set_approvers=(approver_id_list)
     self.approvals.delete_all
     approver_id_list.each do |approver_id|
       approver = User.find(approver_id)
@@ -227,6 +231,12 @@ class AccessRequest < ActiveRecord::Base
     created_at "Created At"
     updated_at "Updated At"
     business_justification "Business Justification"
+  end
+
+  def self.relevant_access_requests(user)
+    AccessRequest.where("user_id = #{user.id} OR id IN (
+      #{AccessRequestApproval.where(user_id: user.id).select(:access_request_id).to_sql + " UNION " +
+        user.collaborate_access_requests.select(:access_request_id).to_sql})").distinct
   end
 
 end
