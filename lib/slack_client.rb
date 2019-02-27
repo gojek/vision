@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class SlackClient
+  attr_accessor :client
   def initialize
     @client = Slack::Web::Client.new
   end
@@ -16,15 +17,15 @@ class SlackClient
   end
 
   private
-  def get_slack_username(email)
-    user = @client.users_lookupByEmail('email': email)
+  def get_slack_username(user)
+    user = @client.users_lookupByEmail('email': user.email)
     user.user.name
   rescue StandardError
     nil
   end
 
   def reassign_slack_username(user)
-    user.slack_username = get_slack_username(user.email)
+    user.slack_username = get_slack_username(user)
     user.save
   end
 
