@@ -17,8 +17,8 @@ class Jira
   end
 
   def jiraize_ir(incident_report)
-    return incident_report if incident_report.action_item.nil?
-    list = incident_report.action_item.scan(/([A-Z0-9]+-\d+)/).flatten
+    list = find_jira_key(incident_report.action_item)
+    return incident_report if list.blank?
     generate_issue_list(list)
     incident_report.action_item = jiraize(incident_report.action_item)
     incident_report
