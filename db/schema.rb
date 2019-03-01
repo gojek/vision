@@ -379,14 +379,6 @@ ActiveRecord::Schema.define(version: 20190121041026) do
   add_index "testers", ["change_request_id"], name: "index_testers_on_change_request_id", using: :btree
   add_index "testers", ["user_id"], name: "index_testers_on_user_id", using: :btree
 
-  create_table "transfer_emails", force: :cascade do |t|
-    t.string   "old_email"
-    t.string   "new_email"
-    t.boolean  "is_changed", default: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-  end
-
   create_table "users", force: :cascade do |t|
     t.string   "email",              default: "", null: false
     t.integer  "sign_in_count",      default: 0,  null: false
@@ -409,7 +401,6 @@ ActiveRecord::Schema.define(version: 20190121041026) do
     t.string   "refresh_token"
     t.datetime "expired_at"
     t.string   "slack_username"
-    t.integer  "is_approved",        default: 1
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
