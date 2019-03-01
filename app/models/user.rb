@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   acts_as_reader
   ROLES = %w(requestor approver release_manager approver_ar approver_all)
   ADMIN = %w(Admin User)
+  VALID_EMAIL = /\b[A-Z0-9._%a-z\-]+@(veritrans\.co\.id|midtrans\.com|associate\.midtrans\.com|spots\.co\.id|go-jek\.com)\z/
   validates :role, inclusion: { in: ROLES,
                               message: '%{value} is not a valid role' }
   validates :email, presence: true
@@ -25,7 +26,7 @@ class User < ActiveRecord::Base
   has_many :notifications, dependent: :destroy
   has_many :Approvals, :dependent => :destroy
   #TODO remove veritrans and midtrans regex when migrating to gojek
-  validates :email, format: { with: /\b[A-Z0-9._%a-z\-]+@(veritrans\.co\.id|midtrans\.com|associate\.midtrans\.com|spots\.co\.id|go-jek\.com)\z/,
+  validates :email, format: { with: VALID_EMAIL,
                   message: "must be a veritrans account" }
   validates :email, uniqueness: true
   scope :approvers, -> {where('role = ? OR role = ?', 'approver', 'approver_all')}
@@ -38,7 +39,7 @@ class User < ActiveRecord::Base
   end
 
   def use_company_email?
-    (email =~ /\b[A-Z0-9._%a-z\-]+@(veritrans\.co\.id|midtrans\.com|associate\.midtrans\.com |spots\.co\.id|go-jek\.com)\z/).present?
+    (email =~ VALID_EMAIL).present?
   end
 
   def active_for_authentication?
