@@ -8,6 +8,7 @@ class UserRequestMailer < ApplicationMailer
 
   def reject_email(user)
     @user = user
+    @contact_email = ENV['CONTACT_EMAIL']
     mail(to: @user.email, subject: 'Vision Access Request')
   end
 end
