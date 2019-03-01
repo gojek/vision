@@ -58,36 +58,10 @@ class User < ActiveRecord::Base
   def self.find_version_author(version)
     find(version.terminator)
   end
-
-  def token_to_params
-    {'refresh_token' => refresh_token,
-    'client_id' => ENV['GOOGLE_API_KEY'],
-    'client_secret' => ENV['GOOGLE_API_SECRET'],
-    'grant_type' => 'refresh_token'}
-  end
-
-  def request_token_from_google
-    url = URI('https://accounts.google.com/o/oauth2/token')
-    Net::HTTP.post_form(url, self.token_to_params)
-  end
-
-  def refresh!
-    response = request_token_from_google
-    data = JSON.parse(response.body)
-    logger.info("Got This from Response: #{data.inspect}" )
-    update_attributes(
-      token: data['access_token'],
-      expired_at: Time.now + (data['expires_in'].to_i).seconds
-    )
-  end
-
+  
   # this will make user logout when google credentials are expired (always 1 hour)
   def expired?
     expired_at < Time.now
-  end
-
-  def expired_session?
-    (expired_at + 7.days) < Time.now
   end
 
   def fresh_token
