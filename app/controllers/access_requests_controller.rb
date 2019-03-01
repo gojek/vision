@@ -9,7 +9,6 @@ class AccessRequestsController < ApplicationController
   before_action :set_paper_trail_whodunnit
   require 'notifier.rb'
   require 'slack_notif.rb'
-  require 'calendar.rb'
   require 'csv_exporter.rb'
 
   def index
