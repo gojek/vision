@@ -1,3 +1,4 @@
+
 class AccessRequestsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_access_request, except: [:index, :new, :create, :search, :import_from_csv]
@@ -27,13 +28,8 @@ class AccessRequestsController < ApplicationController
     end
     @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
     @access_requests = @access_requests.page(params[:page]).per(params[:per_page])
-
     respond_to do |format|
       format.html
-      format.xls { 
-        send_data(@access_requests.to_xls, :type => "application/excel; charset=utf-8; header=present", 
-          :filename => "Access Requests-#{Time.now.to_formatted_s(:long)}.xls")
-      }
       format.csv do
         self.stream("Access Requests.csv", 'text/csv', CSVExporter.export_from_active_records(@access_requests))
       end
