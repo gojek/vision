@@ -285,6 +285,9 @@
           <h3 class='box-title'>Testing</h3>
         </div><!--/box-header-->
         <div class='box-body'>
+          <% if @change_request.testers.empty? %>
+            <div class="alert alert-danger">This change request has no tester.</div>
+          <% end %>
           <p><strong>Testing environment available:</strong>
           <%= @change_request.testing_environment_available %></p>
           <div class="table-responsive">
@@ -321,20 +324,6 @@
             </table>
           </div><!--/table-responsive-->
 
-          <div class="table-responsive">
-            <table class="table table-striped table-bordered table-hover">
-              <thead>
-                <tr>
-                  <th><strong>Testing Notes:</strong></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><%=raw @change_request.testing_notes %></td>
-                </tr>
-              </tbody>
-            </table>
-          </div><!--/table-responsive-->
         </div><!--/box-body-->
       </div><!--box-->
 

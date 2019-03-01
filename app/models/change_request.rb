@@ -24,7 +24,7 @@ class ChangeRequest < ActiveRecord::Base
   STATUS = %w(submitted deployed rollbacked cancelled succeeded failed draft)
 
   validates :change_summary, :priority,:change_requirement, :business_justification, :analysis, :solution, :impact, :scope, :design,
-            :backup, :testing_procedure, :testing_notes, :schedule_change_date, :planned_completion, :definition_of_success, :definition_of_failed, presence: true
+            :backup, :testing_procedure, :schedule_change_date, :planned_completion, :definition_of_success, :definition_of_failed, presence: true
   validates_inclusion_of :testing_environment_available, :in => [true, false]
   accepts_nested_attributes_for :implementers, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :testers, :allow_destroy => true
@@ -32,7 +32,6 @@ class ChangeRequest < ActiveRecord::Base
   validate :at_least_one_category
   validate :at_least_one_type
   validates :implementers, presence: true
-  validates :testers, presence: true
   validates :approvals, presence: true
   validates :expected_downtime_in_minutes, numericality: { only_integer: true }, if: :downtime_expected?
   validate :deploy_date, :if => :schedule_change_date? && :planned_completion?
@@ -66,7 +65,6 @@ class ChangeRequest < ActiveRecord::Base
     text :definition_of_success, stored: true
     text :definition_of_failed, stored: true
     text :testing_procedure, stored: true
-    text :testing_notes, stored: true
     text :implementation_notes, stored: true
     text :grace_period_notes, stored: true
     time :created_at, stored: true

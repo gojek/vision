@@ -2,9 +2,13 @@
 <section class="content-header">
   <h1 class="access-request-title">
     Access Requests
-     <%= link_to access_requests_path(request.GET.merge({ format: :csv })), class: 'btn btn-flat btn-primary pull-right' do %>
-        <i class="fa fa-download"></i> <strong>Download Access Request</strong>
+    <%= button_tag class: 'btn btn-flat btn-primary pull-right dropdown-toggle', id: 'dropdownMenuDownload', data: { toggle: 'dropdown' }, aria: { hashpopup: true, expanded: true }  do %>
+        <i class="fa  fa-file-text"></i><strong> Export to CSV</strong> <span class="caret"></span>
     <%end %>
+    <ul class="dropdown-menu pull-right" aria-labelledby="dropdownMenuDownload">
+      <li><%= link_to 'Current page', access_requests_path(request.GET.merge({format: :csv, page: params[:page] || 1, per_page: (params[:per_page] || 20) })) %></li>
+      <li><%= link_to 'All', access_requests_path(request.GET.merge({ format: :csv }).except("page", "per_page")) %></li>
+    </ul>
     <%= link_to  new_access_request_path, class: 'btn btn-flat btn-primary pull-right'  do %>
          <i class="fa fa-plus"></i> <strong>New Access Request</strong>
     <% end %>
