@@ -15,7 +15,6 @@ class ChangeRequest < ActiveRecord::Base
   acts_as_taggable
   has_paper_trail class_name: 'ChangeRequestVersion', meta: { author_username: :user_name }
   SCOPE = %w(Major Minor)
-  ACTION_ITEM_STATUS = ['In Progress', 'Done']
   PRIORITY = %w(High Medium Low)
   validates :scope,
             inclusion: { in: SCOPE, message: '%{value} is not a valid scope' }
