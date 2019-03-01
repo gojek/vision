@@ -7,6 +7,8 @@ class IncidentReportsController < ApplicationController
   before_action :set_users_and_tags, only: [:new, :create, :edit, :update]
   before_action :set_incident_report_log, only: [:update]
 
+  require 'csv_exporter'
+
   def index
     if params[:tag]
       @q = IncidentReport.ransack(params[:q])
@@ -23,7 +25,12 @@ class IncidentReportsController < ApplicationController
     respond_to do |format|
       format.html
       format.csv do
-        self.stream('Incident Reports.csv', 'text/csv', CSVExporter.export_from_active_records(@incident_reports))
+        if params[:page].present?
+          # download current page only
+          render csv: @incident_reports, filename: 'incident_reports', force_quotes: true
+        else
+          self.stream('incident_reports_all.csv', 'text/csv', CSVExporter.export_from_active_records(@incident_reports))
+        end
       end
       format.xls { send_data(@incident_reports.to_xls) }
     end
@@ -50,10 +57,10 @@ class IncidentReportsController < ApplicationController
     respond_to do |format|
       if @incident_report.save
         flash[:success] = 'Incident report was successfully created.'
+        Notifier.ir_notify(current_user, @incident_report, 'new_ir')
+        IncidentReportNewSlackNotifJob.perform_async(@incident_report)
         format.html { redirect_to @incident_report }
         format.json { render :show, status: :created, location: @incident_report }
-        Notifier.ir_notify(current_user, @incident_report, 'new_ir')
-        SlackNotif.new.notify_new_ir @incident_report
       else
         @tags = ActsAsTaggableOn::Tag.all.collect(&:name)
         @current_tags = []
