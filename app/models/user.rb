@@ -86,10 +86,6 @@ class User < ActiveRecord::Base
     expired_at < Time.now
   end
 
-  def expired_session?
-    (expired_at + 7.days) < Time.now
-  end
-
   def fresh_token
     refresh! if (expired? || token == nil)
     token

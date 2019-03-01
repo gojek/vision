@@ -5,9 +5,9 @@ source 'https://rubygems.org'
 ruby '~> 2.4.5'
 
 # Bundle edge Rails insteadhttps://developers.google.com/oauthplayground: gem 'rails', github: 'rails/rails'
+gem 'puma', '~> 3.12.0'
 gem 'rails', '4.2.10'
 gem 'sdoc', '~> 0.4.0', group: :doc
-gem 'unicorn'
 
 # resource-related
 gem 'bootstrap-kaminari-views'
