@@ -18,7 +18,7 @@ describe AccessRequest, type: :model do
 	end
 
   it 'submit record submitted date' do
-    Timecop.freeze
+    Timecop.freeze(Timecop.freeze(Time.new(2016, 1, 11)))
     access_request.submit!
     expect(access_request.reload.request_date).to eq Time.current
   end
