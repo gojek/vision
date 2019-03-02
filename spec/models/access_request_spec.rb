@@ -126,7 +126,7 @@ describe AccessRequest, type: :model do
   describe 'set_approvers' do
     let (:access_request_approv) {FactoryGirl.create(:access_request, approvals_alpha: 1)}
     it 'set access request approvers' do
-      access_request_approv.set_approvers([user.id])
+      access_request_approv.set_approvers=([user.id])
       expect(access_request_approv.approvals.first.user).to eq user
     end
   end
