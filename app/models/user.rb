@@ -7,7 +7,19 @@ class User < ActiveRecord::Base
   acts_as_reader
   ROLES = %w(requestor approver release_manager approver_ar approver_all)
   ADMIN = %w(Admin User)
-  VALID_EMAIL = /\b[A-Z0-9._%a-z\-]+@(veritrans\.co\.id|midtrans\.com|associate\.midtrans\.com|spots\.co\.id|go-jek\.com)\z/
+  LIST_EMAIL_DOMAIN = ENV['VALID_EMAIL'] || "midtrans.com,veritrans.co.id,associate.midtrans.com,spots.co.id,go-jek.com"
+  VALID_EMAIL = Regexp.new("\\b[A-Z0-9._%a-z\\-]+@("+LIST_EMAIL_DOMAIN.gsub(/\s+/, '').gsub(',','|').gsub('.','\\.')+")\\z")
+
+  APPROVER_EMAIL = ENV['APPROVER_EMAIL'] || 'ika.​muiz@midtrans.​com'
+  DEFAULT_APPROVED_STATUS = 1
+  DEFAULT_ROLE = 'requestor'
+
+  # is_approved status
+  REJECTED = 0
+  NOT_YET_FILL_THE_FORM = 1
+  WAITING_FOR_APPROVAL = 2
+  APPROVED = 3
+
   validates :role, inclusion: { in: ROLES,
                               message: '%{value} is not a valid role' }
   validates :email, presence: true
@@ -23,6 +35,7 @@ class User < ActiveRecord::Base
   has_many :notifications, dependent: :destroy
   has_many :Approvals, :dependent => :destroy
   #TODO remove veritrans and midtrans regex when migrating to gojek
+
   validates :email, format: { with: VALID_EMAIL,
                   message: "must be a veritrans account" }
   validates :email, uniqueness: true
@@ -36,6 +49,7 @@ class User < ActiveRecord::Base
   end
 
   def use_company_email?
+    binding.pry
     (email =~ VALID_EMAIL).present?
   end
 
@@ -44,26 +58,25 @@ class User < ActiveRecord::Base
   end
 
   def self.from_omniauth(auth)
-    check_transfer(auth)
-    where(provider: auth[:provider], uid: auth[:uid]).first_or_create do |user|
-      user.email = auth[:info][:email]
-      user.name = auth[:info][:name]
-      user.role = 'requestor'
-      user.is_admin = false
-      user.slack_username = user.get_slack_username
-    end
-  end
-
-  def self.check_transfer(auth)
-    data = TransferEmail.find_by_new_email(auth[:info][:email])
-    TransferEmail.transaction do
-      unless data.nil? 
-        unless data.is_changed
-          old_user = User.find_by_email(data.old_email)
-          old_user.update('email': data.new_email, 'uid': auth[:uid])
-          data.update('is_changed':true)
-        end
+    user = where("provider = ? AND uid = ? OR email = ?", auth[:provider], auth[:uid], auth[:info][:email]).first
+    # user = where(provider: auth[:provider], uid: auth[:uid]).first
+    if user.nil?
+      User.transaction do 
+        new_user = User.create(
+          :email => auth[:info][:email],
+          :name => auth[:info][:name],
+          :role => DEFAULT_ROLE,
+          :is_admin => false,
+          :uid => auth[:uid],
+          :provider => auth[:provider],
+        )
+        new_user.slack_username = new_user.get_slack_username
+        new_user.save
+        return new_user
       end
+    else
+      user.uid = auth[:uid]
+      return user
     end
   end
 
