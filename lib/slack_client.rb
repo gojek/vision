@@ -22,6 +22,7 @@ class SlackClient
   end
 
   private
+
   def get_slack_username(user)
     user = @client.users_lookupByEmail('email': user.email)
     user.user.name
