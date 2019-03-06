@@ -37,7 +37,7 @@ class IncidentReportJob
     [
       ir.id, ir.service_impact, ir.problem_details,     
       ir.current_status, ir.rank, ir.measurer_status, ir.recurrence_concern,    
-      ir.occurrence_time, ir.detection_time, ir.recovery_time,
+      ir.occurrence_time, ir.detection_time,
       ir.recovery_duration, ir.resolved_time, ir.how_detected, ir.loss_related
     ]
   end
