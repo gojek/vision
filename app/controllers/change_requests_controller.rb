@@ -8,6 +8,7 @@ class ChangeRequestsController < ApplicationController
   before_action :role_not_approver_required, only: :edit
   require 'notifier.rb'
   require 'slack_notif.rb'
+  require 'csv_exporter.rb'
   require 'calendar_service.rb'
 
   def index
@@ -35,13 +36,7 @@ class ChangeRequestsController < ApplicationController
           @change_requests = @change_requests.page(params[:page] || 1).per(params[:per_page] || 20)
           render csv: @change_requests, filename: 'change_requests', force_quotes: true
         else
-          enumerator = Enumerator.new do |lines|
-            lines << ChangeRequest.to_comma_headers.to_csv
-            ChangeRequest.order('id DESC').each do |record|
-              lines << record.to_comma.to_csv
-            end
-          end
-          self.stream('change_requests_all.csv', 'text/csv', enumerator)
+          self.stream('change_requests_all.csv', 'text/csv', CSVExporter.export_from_active_records(@change_requests))
         end
       end
     end
@@ -120,7 +115,7 @@ class ChangeRequestsController < ApplicationController
         @status = @change_request.change_request_statuses.new(:status => 'submitted')
         @status.save
         Notifier.cr_notify(current_user, @change_request, 'new_cr')
-        SlackNotif.new.notify_new_cr @change_request
+        NewChangeRequestSlackNotificationJob.perform_async(@change_request)
         Thread.new do
           UserMailer.notif_email(@change_request.user, @change_request, @status).deliver_now
           ActiveRecord::Base.connection.close
@@ -155,7 +150,8 @@ class ChangeRequestsController < ApplicationController
           @status.save
         end 
         Notifier.cr_notify(current_user, @change_request, 'update_cr')
-        SlackNotif.new.notify_update_cr @change_request
+        UpdateChangeRequestSlackNotificationJob.perform_async(@change_request)
+
         flash[:success] = 'Change request was successfully updated.'
         flash[:success] += " Calendar event creation failed: #{event.error_messages}." unless event.success?
         format.html { redirect_to @change_request }
@@ -209,7 +205,7 @@ class ChangeRequestsController < ApplicationController
       approval.notes = accept_note
       approval.save!
       Notifier.cr_notify(current_user, @change_request, 'cr_approved')
-      SlackNotif.new.notify_approval_status_cr(@change_request, approval)
+      ApprovalChangeRequestSlackNotificationJob.perform_async(@change_request, approval)
       flash[:success] = 'Change Request Approved'
     end
     redirect_to @change_request
@@ -227,7 +223,7 @@ class ChangeRequestsController < ApplicationController
       Notifier.cr_notify(current_user, @change_request, 'cr_rejected')
       approval.update(:approve => false, :notes => reject_reason)
       flash[:notice] = 'Change Request Rejected'
-      SlackNotif.new.notify_approval_status_cr(@change_request, approval)
+      ApprovalChangeRequestSlackNotificationJob.perform_async(@change_request, approval)
     end
     redirect_to @change_request
   end
@@ -328,7 +324,7 @@ class ChangeRequestsController < ApplicationController
             :os, :net, :category, :cr_type, :change_requirement,
             :business_justification, :note, :analysis,
             :solution, :impact, :scope, :design, :backup,
-            :testing_environment_available, :testing_procedure, :testing_notes,
+            :testing_environment_available, :testing_procedure,
             :downtime_expected, :expected_downtime_in_minutes,
             :schedule_change_date, :planned_completion, :grace_period_starts,
             :grace_period_end, :implementation_notes, :grace_period_notes,
