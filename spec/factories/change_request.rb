@@ -21,7 +21,6 @@ FactoryGirl.define do
     backup "Backup"
     testing_environment_available true
     testing_procedure "Procedure"
-    testing_notes "Notes"
     schedule_change_date {Time.now}
     planned_completion {3.days.from_now}
     grace_period_starts {Time.now}
