@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Jira
+  JIRA_KEY_REGEX = /[A-Z0-9]+-\d+/
   include ActionView::Helpers::SanitizeHelper
   attr_accessor :client, :jira_data
 
@@ -48,15 +49,9 @@ class Jira
     change_request
   end
 
-  private
-
   def jiraize(text)
-    return '' if text.blank?
-    matches = text.scan(/([A-Z0-9]+-\d+)/).map { |x| [x[0], get_issue(x[0])] }
-    matches.each do |m|
-      text.gsub! m[0], m[1]
-    end
-    text
+    return text if text.blank?
+    text.gsub(JIRA_KEY_REGEX) { |key| get_issue(key) }
   end
 
   def get_issue(key)
@@ -94,7 +89,7 @@ class Jira
 
   def find_jira_key(text)
     return [] if text.blank?
-    jira_keys = text.scan(/([A-Z0-9]+-\d+)/).flatten
+    jira_keys = text.scan(JIRA_KEY_REGEX)
     jira_keys.present? ? jira_keys : []
   end
 end
