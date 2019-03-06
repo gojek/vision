@@ -34,7 +34,6 @@ class User < ActiveRecord::Base
   has_many :Comments
   has_many :notifications, dependent: :destroy
   has_many :Approvals, :dependent => :destroy
-  #TODO remove veritrans and midtrans regex when migrating to gojek
 
   validates :email, format: { with: VALID_EMAIL,
                   message: "must be a veritrans account" }
@@ -59,7 +58,6 @@ class User < ActiveRecord::Base
 
   def self.from_omniauth(auth)
     user = where("provider = ? AND uid = ? OR email = ?", auth[:provider], auth[:uid], auth[:info][:email]).first
-    # user = where(provider: auth[:provider], uid: auth[:uid]).first
     if user.nil?
       User.transaction do 
         new_user = User.create(
