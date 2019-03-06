@@ -8,7 +8,7 @@ describe SlackAttachmentBuilder do
   let(:comment) {FactoryGirl.create(:comment, user: user, change_request: change_request, body: 'a comment')}
   let(:attachment_builder) {SlackAttachmentBuilder.new}
 
-  before { Timecop.freeze(Time.new("2016")) }
+  before { Timecop.freeze(Time.new(2016, 1, 11, 0, 0, 0, "+07:00"))}
   after { Timecop.return() }
 
   describe 'generate change request attachment' do
@@ -29,7 +29,7 @@ describe SlackAttachmentBuilder do
           { title: "Approvers", value: "patrick star, patrick star", short: false }
         ],
         footer: "VT-Vision",
-        ts: 1451581200
+        ts: 1452445200
       )
     end
   end
@@ -45,7 +45,7 @@ describe SlackAttachmentBuilder do
         title: "change summary",
         title_link: "http://localhost:3000/change_requests/#{change_request.id}",
         footer: "VT-Vision",
-        ts: 1451581200
+        ts: 1452445200 
       )
     end
   end
@@ -66,7 +66,7 @@ describe SlackAttachmentBuilder do
           { title: "Note", value: "Ok", short: false }
         ],
         footer: "VT-Vision",
-        ts: 1451581200
+        ts: 1452445200 
       )
     end
   end
@@ -86,11 +86,11 @@ describe SlackAttachmentBuilder do
           { title: "Level", value: 1, short: true },
           { title: "Details", value: "Problem details", short: false },
           { title: "Occurence Time", value: Time.new("2011"), short: false },
-          { title: "Acknowledge Time", value: "2015-12-31 00:00:00 +0700 (1440 minutes)", short: false },
+          { title: "Acknowledge Time", value: "2016-01-10 00:00:00 +0700 (1440 minutes)", short: false },
           { title: "Reporter", value: "patrick star", short: false }
         ],
         footer: "VT-Vision",
-        ts: 1451581200
+        ts: 1452445200 
       )
     end
   end
