@@ -269,14 +269,16 @@
           <div class="box box-default">
             <div class="box-header with border"></div>
             <div class="box-body">
-              <% if @change_request.errors.messages[:testing_environment_available] %>
-                <div class="field form-group has-error">
-              <%else %>
-                <div class="field form-group required">
-              <% end %>
-                  <label class="control-label">Testing in Test/Development Environment Available?</label>
-                  <%= f.check_box :testing_environment_available, checked: @change_request.present? ? @change_request.testing_environment_available : false, data: {toggle: :toggle, on: "YES", off: "NO", onstyle: 'success', offstyle: 'danger'}%>
-                </div><!--/field-->
+              <div class="col-md-12">
+                <% if @change_request.errors.messages[:testing_environment_available] %>
+                  <div class="field form-group has-error">
+                <%else %>
+                  <div class="field form-group required">
+                <% end %>
+                    <label class="control-label">Testing in Test/Development Environment Available?</label>
+                    <%= f.check_box :testing_environment_available, checked: @change_request.testing_environment_available, data: {toggle: :toggle, on: "YES", off: "NO", onstyle: 'success', offstyle: 'danger'}%>
+                  </div><!--/field-->
+              </div> 
               <div class='col-md-6'>
                 <% if @change_request.errors.messages[:testing_procedure] %>
                   <div class="field form-group has-error">
@@ -286,22 +288,14 @@
                     <%= f.label :testing_procedure , class: 'control-label'%><br>
                     <%= f.text_area :testing_procedure, class: "form-control tinymce" %>
                   </div>
-                <% if @change_request.errors.messages[:testing_notes] %>
-                  <div class="field form-group has-error">
-                <%else %>
-                  <div class="field form-group required">
-                <% end %>
-                    <%= f.label :testing_notes, class: 'control-label' %><br>
-                    <%= f.text_area :testing_notes, class: "form-control tinymce" %>
-                  </div>
               </div><!--/col-->
               <div class='col-md-6'>
-                <h3>Tester</h3>
                 <div id="testers">
+                  <h3>Tester</h3>
                   <% if @change_request.errors.messages[:testers] %>
                     <div class="field form-group has-error">
                   <% else %>
-                    <div class="field form-group required">
+                    <div class="field form-group">
                   <% end %>
                   <!-- <div class="field form-group"> -->
                     <label class= "control-label">Testers</label><br>
@@ -390,8 +384,22 @@
 <%= tinymce %>
 
 <script>
+
+  function hideTestersSection(isChecked) {
+    if(isChecked) {
+      $('#testers').css({ display: 'block' });
+    } else {
+      $(".select2-tester").val(null).trigger('change');
+      $('#testers').css({ display: 'none' });
+    }
+  }
+
   $(document).ready(function () {
     $('body').attr("data-no-turbolink", "true");
+    $('input[name="change_request[testing_environment_available]"]').on('change', function(e) {
+      var isChecked = e.target.checked;
+      hideTestersSection(isChecked);
+    });
     $('input[type="checkbox"].toggle').bootstrapToggle(); // assumes the checkboxes have the class "toggle"
     $('#save').click(function() {
       unsaved = false;
