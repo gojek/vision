@@ -1,5 +1,10 @@
 require 'spec_helper'
 require 'jira'
+require 'jira_helpers.rb'
+
+RSpec.configure do |c|
+  c.include JiraHelpers
+end
 
 describe Jira do
   let(:jira) {Jira.new}
