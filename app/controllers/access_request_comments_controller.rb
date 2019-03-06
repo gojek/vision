@@ -14,7 +14,7 @@ class AccessRequestCommentsController < ApplicationController
         format.html { redirect_to @ar}
         format.json { render :show, status: :created, location: @comment }
       else
-        format.html { render :new }
+        format.html { redirect_to @ar}
         format.json { render json: @comment.errors, status: :unprocessable_entity }
       end
     end
