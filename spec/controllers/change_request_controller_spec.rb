@@ -6,33 +6,6 @@ describe ChangeRequestsController, type: :controller do
     SolrResultStub = Struct.new("SolrResultStub", :results)
   end
 
-  describe 'non requestor access' do
-    let(:user1) {FactoryGirl.create(:user)}
-    let(:user2) {FactoryGirl.create(:user)}
-    let(:approver) {FactoryGirl.create(:approver)}
-    let(:change_request) {FactoryGirl.create(:submitted_change_request, user: user1)}
-
-    before :each do
-      controller.request.env['devise.mapping'] = Devise.mappings[:user]
-      sign_in user2
-    end
-    describe 'GET #edit-implementation-notes' do
-      it 'will redirect to Change Request List if current user is the owner of the requested ChangeRequest' do
-        cr = FactoryGirl.create(:change_request)
-        get :edit_implementation_notes, id: cr
-        expect(response).to redirect_to(change_requests_url)
-      end
-    end
-
-    describe 'GET #edit-graceperiod-notes' do
-      it 'will redirect to Change Request List if current user is the owner of the requested ChangeRequest' do
-        cr = FactoryGirl.create(:change_request)
-        get :edit_grace_period_notes, id: cr
-        expect(response).to redirect_to(change_requests_url)
-      end
-    end
-  end
-
   describe 'requestor access' do
     let(:user) {FactoryGirl.create(:user)}
     let(:approver) {FactoryGirl.create(:approver)}
@@ -253,11 +226,6 @@ describe ChangeRequestsController, type: :controller do
           }.to change(Approval, :count).by(1)
         end
 
-        it 'assigns associated_user' do
-          post :create, change_request: attributes
-          expect(User.associated_users(assigns(:change_request)).collect(&:id)).to match_array([user.id, approver.id])
-        end
-
         it 'call slack notification library to send notification to slack veritrans about new cr' do
           expect_any_instance_of(SlackNotif).to receive(:notify_new_cr).with(an_instance_of(ChangeRequest))
           post :create, change_request: attributes, implementers_list: [approver.id], testers_list: [approver.id] , approver_ids: [approver.id]
@@ -301,13 +269,6 @@ describe ChangeRequestsController, type: :controller do
           patch :update , id: change_request.id, change_request: update_attributes
           change_request.reload
           expect(change_request.note).to eq(note)
-        end
-
-        it 'assigns associated_user' do
-          update_attributes = FactoryGirl.attributes_for(:change_request, implementer_ids: [user.id, ""], tester_ids: [user.id, ""] , approver_ids: [approver.id, ""], collaborator_ids: [""])
-          patch :update , id: change_request.id, change_request: update_attributes
-          change_request.reload
-          expect(User.associated_users(change_request).collect(&:id)).to match_array([user.id, approver.id])
         end
 
         it 'call slack notification library to send notification to slack veritrans about modified cr' do
