@@ -108,8 +108,9 @@ class SlackNotif
   end
 
   private
+
   def notify_approvers(users, message, attachment)
     actionable_attachment = @attachment_builder.wrap_approver_actions(attachment)
-    @slack_client.message_users(users, message, attachment)
+    @slack_client.message_users(users, message, actionable_attachment)
   end
 end
