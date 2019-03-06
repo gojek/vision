@@ -203,27 +203,4 @@ describe User, type: :model do
     end
   end
 
-  describe "User is changing to go-jek email" do
-    it 'should change the user email when the user is mapped with old email and first time login with go-jek email' do
-      old = FactoryGirl.create(:old_email)
-      auth = {:provider => 'google_oauth2', :uid => '12345', :info => {:email => 'dummy@go-jek.com'}}
-      te = FactoryGirl.create(:transfer_email, old_email:old.email, new_email:'dummy@go-jek.com')
-      user = User.from_omniauth(auth)
-
-      expect(user.email).to match 'dummy@go-jek.com'
-      expect(user.uid).to match '12345'
-      expect(user.name).to match old.name
-      expect(user.slack_username).to match old.slack_username
-    end
-
-    it 'should login when its not first time login with go-jek email and already transfered email' do
-      gojek = FactoryGirl.create(:user, email:'dummy@go-jek.com')
-      auth = {:provider => 'google_oauth2', :uid => gojek.uid, :info => {:email => gojek.email}}
-      te = FactoryGirl.create(:transfer_email, old_email:'some-email@midtrans.com', new_email:gojek.email, is_changed:true)
-      user = User.from_omniauth(auth)
-
-      expect(user.new_record?).to match false
-    end
-  end
-
 end
