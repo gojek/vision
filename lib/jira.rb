@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Jira
-  JIRA_KEY_REGEX = /[A-Z0-9]+-\d+/
+  JIRA_KEY_REGEX = /[A-Z0-9]+-\d+/.freeze
   include ActionView::Helpers::SanitizeHelper
   attr_accessor :client, :jira_data
 
