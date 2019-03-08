@@ -102,7 +102,7 @@ describe User, type: :model do
     end
 
     it "will register new user based on the auth from omniauth if user not registered" do
-      user_success_stub
+      user_lookup_success_stub
       auth = {:provider => 'google_oauth2', :uid => '123456', :info => {:email => 'patrick@veritrans.co.id', :name => 'patrick star'}}
       user = User.from_omniauth(auth)
       expect(user.provider).to eq auth[:provider]
@@ -115,7 +115,7 @@ describe User, type: :model do
     end
 
     it "will register the user but slack username is nil because not found" do
-      user_failed_stub
+      user_lookup_failed_stub
       auth = {:provider => 'google_oauth2', :uid => '123456', :info => {:email => 'dummy@dummy.com', :name => 'dummy baby'}}
       user = User.from_omniauth(auth)
 
