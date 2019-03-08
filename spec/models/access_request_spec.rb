@@ -18,7 +18,7 @@ describe AccessRequest, type: :model do
 	end
 
   it 'submit record submitted date' do
-    Timecop.freeze
+    Timecop.freeze(Timecop.freeze(Time.new(2016, 1, 11)))
     access_request.submit!
     expect(access_request.reload.request_date).to eq Time.current
   end
@@ -126,7 +126,7 @@ describe AccessRequest, type: :model do
   describe 'set_approvers' do
     let (:access_request_approv) {FactoryGirl.create(:access_request, approvals_alpha: 1)}
     it 'set access request approvers' do
-      access_request_approv.set_approvers([user.id])
+      access_request_approv.set_approvers=([user.id])
       expect(access_request_approv.approvals.first.user).to eq user
     end
   end
