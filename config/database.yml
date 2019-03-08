@@ -1,0 +1,3 @@
+default: &default
+  adapter: postgresql
+  pool: <%= ENV.fetch("DB_POOL") { 8 } %>
