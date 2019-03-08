@@ -2,10 +2,13 @@
 
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def google_oauth2
+    refresh_token = request.env['omniauth.auth'][:credentials][:refresh_token]
     @user = User.from_omniauth(request.env['omniauth.auth'])
     @user.token = request.env['omniauth.auth'][:credentials][:token]
-    @user.refresh_token = request.env['omniauth.auth'][:credentials][:refresh_token]
     @user.expired_at = Time.at(request.env['omniauth.auth'][:credentials][:expires_at]).to_datetime
+    if refresh_token.present?
+      @user.refresh_token = refresh_token
+    end
     @user.valid?
     @user.save
 		if @user.persisted?
