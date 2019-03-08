@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190213120419) do
+ActiveRecord::Schema.define(version: 20190227081123) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -105,12 +105,13 @@ ActiveRecord::Schema.define(version: 20190213120419) do
 
   create_table "approvals", force: :cascade do |t|
     t.integer  "change_request_id"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
     t.integer  "user_id"
     t.boolean  "approve"
     t.text     "notes"
     t.datetime "approval_date"
+    t.string   "approval_type",     default: "Mandatory"
   end
 
   add_index "approvals", ["change_request_id"], name: "index_approvals_on_change_request_id", using: :btree
@@ -286,14 +287,6 @@ ActiveRecord::Schema.define(version: 20190213120419) do
 
   add_index "incident_report_versions", ["item_type", "item_id"], name: "index_incident_report_versions_on_item_type_and_item_id", using: :btree
 
-  create_table "incident_report_visibilities", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "incident_report_id"
-  end
-
-  add_index "incident_report_visibilities", ["incident_report_id"], name: "index_incident_report_visibilities_on_incident_report_id", using: :btree
-  add_index "incident_report_visibilities", ["user_id"], name: "index_incident_report_visibilities_on_user_id", using: :btree
-
   create_table "incident_reports", force: :cascade do |t|
     t.string   "service_impact"
     t.text     "problem_details"
@@ -315,6 +308,7 @@ ActiveRecord::Schema.define(version: 20190213120419) do
     t.datetime "created_at",                                   null: false
     t.datetime "updated_at",                                   null: false
     t.datetime "resolved_time"
+    t.decimal  "resolution_duration"
     t.decimal  "recovery_duration"
     t.boolean  "expected",                     default: false
     t.boolean  "has_further_action",           default: false
@@ -325,12 +319,6 @@ ActiveRecord::Schema.define(version: 20190213120419) do
   end
 
   add_index "incident_reports", ["user_id"], name: "index_incident_reports_on_user_id", using: :btree
-
-  create_table "midtrans_email_migrations", force: :cascade do |t|
-    t.string  "old_email",                 null: false
-    t.string  "new_email",                 null: false
-    t.boolean "migrated",  default: false
-  end
 
   create_table "notifications", force: :cascade do |t|
     t.integer  "user_id"
@@ -396,14 +384,6 @@ ActiveRecord::Schema.define(version: 20190213120419) do
   add_index "testers", ["change_request_id"], name: "index_testers_on_change_request_id", using: :btree
   add_index "testers", ["user_id"], name: "index_testers_on_user_id", using: :btree
 
-  create_table "transfer_emails", force: :cascade do |t|
-    t.string   "old_email"
-    t.string   "new_email"
-    t.boolean  "is_changed", default: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-  end
-
   create_table "users", force: :cascade do |t|
     t.string   "email",              default: "", null: false
     t.integer  "sign_in_count",      default: 0,  null: false
@@ -465,8 +445,6 @@ ActiveRecord::Schema.define(version: 20190213120419) do
   add_foreign_key "incident_report_collaborators", "users"
   add_foreign_key "incident_report_logs", "incident_reports"
   add_foreign_key "incident_report_logs", "users"
-  add_foreign_key "incident_report_visibilities", "incident_reports"
-  add_foreign_key "incident_report_visibilities", "users"
   add_foreign_key "incident_reports", "users"
   add_foreign_key "notifications", "change_requests"
   add_foreign_key "notifications", "incident_reports"
