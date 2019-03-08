@@ -19,17 +19,17 @@ describe UsersController, type: :controller do
 
       it 'is sign_in pending user' do
         sign_in pending_user
-        expect(response).to redirect_to signin_path
+        expect(response.status).to eq 200
       end
 
       it 'is sign_in waiting approval user' do
-        sign_in user
+        sign_in waiting
         expect(response.status).to eq 200
       end
 
       it 'is sign_in approved user' do
-        sign_in waiting
-        expect(response).to redirect_to signin_path
+        sign_in user
+        expect(response.status).to eq 200
       end
     end
 
@@ -55,7 +55,7 @@ describe UsersController, type: :controller do
         sign_in admin
         get :index
 
-        expect(response.status).to eq 200
+        expect(assigns(:users)).not_to be_empty
       end
 
       it 'is non admin accessing default index page' do
@@ -66,10 +66,10 @@ describe UsersController, type: :controller do
       end
 
       it 'is admin accessing filter index page' do
+        FactoryGirl.create(:waiting_user)
         sign_in admin
-        get :index, q: {is_approved_eq: 2}
-
-        expect(response.body).to include 'Approved'
+        get :index, q: {is_approved_eq: 3}
+        expect(assigns(:users).size).to eq 1
       end
     end
 
