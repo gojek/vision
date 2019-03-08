@@ -38,7 +38,7 @@ coverage
 lib/tasks/approval.rb
 vision.dump
 
-config/database.yml
+# config/database.yml
 coverage/*
 .byebug_history
 .keep
