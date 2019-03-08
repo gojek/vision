@@ -8,7 +8,6 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     if refresh_token.present?
       @user.refresh_token = refresh_token
     end
-    binding.pry
     @user.valid?
     @user.save
     if @user.persisted?

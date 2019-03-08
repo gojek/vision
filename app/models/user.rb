@@ -48,7 +48,6 @@ class User < ActiveRecord::Base
   end
 
   def use_company_email?
-    binding.pry
     (email =~ VALID_EMAIL).present?
   end
 
