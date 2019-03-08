@@ -8,6 +8,7 @@ class ChangeRequestsController < ApplicationController
   before_action :role_not_approver_required, only: :edit
   require 'notifier.rb'
   require 'slack_notif.rb'
+  require 'csv_exporter.rb'
   require 'calendar_service.rb'
 
   def index
@@ -35,13 +36,7 @@ class ChangeRequestsController < ApplicationController
           @change_requests = @change_requests.page(params[:page] || 1).per(params[:per_page] || 20)
           render csv: @change_requests, filename: 'change_requests', force_quotes: true
         else
-          enumerator = Enumerator.new do |lines|
-            lines << ChangeRequest.to_comma_headers.to_csv
-            ChangeRequest.order('id DESC').each do |record|
-              lines << record.to_comma.to_csv
-            end
-          end
-          self.stream('change_requests_all.csv', 'text/csv', enumerator)
+          self.stream('change_requests_all.csv', 'text/csv', CSVExporter.export_from_active_records(@change_requests))
         end
       end
     end
@@ -329,7 +324,7 @@ class ChangeRequestsController < ApplicationController
             :os, :net, :category, :cr_type, :change_requirement,
             :business_justification, :note, :analysis,
             :solution, :impact, :scope, :design, :backup,
-            :testing_environment_available, :testing_procedure, :testing_notes,
+            :testing_environment_available, :testing_procedure,
             :downtime_expected, :expected_downtime_in_minutes,
             :schedule_change_date, :planned_completion, :grace_period_starts,
             :grace_period_end, :implementation_notes, :grace_period_notes,

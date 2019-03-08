@@ -13,7 +13,7 @@
     <%end %>
     <ul class="dropdown-menu pull-right" aria-labelledby="dropdownMenuDownload">
       <li><%= link_to 'Current page IR', incident_reports_path(request.GET.merge({format: :csv, page: params[:page] || 1, per_page: (params[:per_page] || 20) })) %></li>
-      <li><%= link_to 'All IR', incident_reports_path(request.GET.merge({ format: :csv })) %></li>
+      <li><%= link_to 'All IR', incident_reports_path(request.GET.merge({ format: :csv }).except("page", "per_page")) %></li>
     </ul>
     <%= link_to  new_incident_report_path, class: 'btn btn-flat btn-primary pull-right'  do %>
          <i class="fa fa-plus"></i> <strong>New Incident Report</strong>

@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'slack_notif'
 require 'mentioner.rb'
 
-describe CommentsController, type:  :controller do
+describe AccessRequestCommentsController, type:  :controller do
   let(:access_request) {FactoryGirl.create(:access_request)}
   let(:ar_comment) {FactoryGirl.build(:access_request_comment, body: 'comment')}
   before :each do
@@ -15,7 +15,7 @@ describe CommentsController, type:  :controller do
       it 'saves the new comment in the databse' do
         expect{
           post :create, access_request_id: access_request.id, access_request_comment: {body: 'comment'}
-        }.to change(Comment, :count).by(1)
+        }.to change(AccessRequestComment, :count).by(1)
       end
 
       it 'call slack notification library to notify to the mentionees that they have been mentioned' do
