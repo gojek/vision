@@ -47,12 +47,11 @@ class AccessRequestsController < ApplicationController
   def create
     AccessRequest.transaction do
       @access_request = current_user.AccessRequests.build(access_request_params)
-      assign_collaborators_and_approvers
       if @access_request.save
         if @access_request.draft?
           @access_request.submit!
         end
-        SlackNotif.new.notify_new_access_request(@access_request)
+        NewAccessRequestSlackNotificationJob.perform_async(@access_request)
         flash[:success] = 'Access request was successfully created.'
       else
         @access_request.save(validate: false)
@@ -89,21 +88,10 @@ class AccessRequestsController < ApplicationController
   def update
     @current_approvers = Array.wrap(params[:approvers_list])
     @current_collaborators = Array.wrap(params[:collaborators_list])
-    @access_request.update_approvers(@current_approvers)
-    @access_request.set_collaborators(@current_collaborators)
     if @access_request.update(access_request_params)
       if @access_request.draft?
-        @access_request.submit! 
-      if @access_request.update(access_request_params)
-        if @access_request.draft?
-          @access_request.submit!
-          SlackNotif.new.notify_new_access_request(@access_request)
-        end
-        flash[:success] = 'Access request was successfully edited.'
-      else
-        @access_request.save(:validate=> false)
-        flash[:notice] = 'Access request was edited as a draft.'
-        flash[:invalid] = @access_request.errors.full_messages
+        @access_request.submit!
+        NewAccessRequestSlackNotificationJob.perform_async(@access_request)
       end
       flash[:success] = 'Access request was successfully edited.'
     else
@@ -139,7 +127,7 @@ class AccessRequestsController < ApplicationController
         if access_request.draft?
           access_request.submit!
         end
-        SlackNotif.new.notify_new_access_request(access_request)
+        NewAccessRequestSlackNotificationJob.perform_async(@access_request)
       end
 
       @invalid.each do |access_request|
@@ -249,8 +237,15 @@ class AccessRequestsController < ApplicationController
         :production_asset,
         :business_justification,
         :metabase,
-        :solutions_dashboard
-    )
+        :solutions_dashboard,
+        :approver_ids => [],
+        :collaborator_ids => []
+    ).tap do |params|
+      normalized_array_fields = [:approver_ids, :collaborator_ids]
+      normalized_array_fields.each do |field|
+        params[field].select!{ |id| id.present? }.map!{ |id| id.to_i} if params[field].present?
+      end
+    end
   end
 
   def set_access_request_reason
@@ -275,12 +270,5 @@ class AccessRequestsController < ApplicationController
       flash[:alert] = 'You are not eligible to change the status of this Access Request'
       redirect_to @access_request
     end
-  end
-
-  def assign_collaborators_and_approvers
-    @current_approvers = Array.wrap(params[:approvers_list])
-    @current_collaborators = Array.wrap(params[:collaborators_list])
-    @access_request.set_approvers = @current_approvers
-    @access_request.set_collaborators(@current_collaborators)
   end
 end
