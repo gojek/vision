@@ -82,8 +82,8 @@ class AccessRequestsController < ApplicationController
   end
 
   def update
-    @current_approvers = Array.wrap(params[:approvers_list])
-    @current_collaborators = Array.wrap(params[:collaborators_list])
+    @current_approvers = Array.wrap(access_request_params[:approvers_ids])
+    @current_collaborators = Array.wrap(access_request_params[:collaborators_ids])
     if @access_request.update(access_request_params)
       if @access_request.draft?
         @access_request.submit!
@@ -123,7 +123,7 @@ class AccessRequestsController < ApplicationController
         if access_request.draft?
           access_request.submit!
         end
-        NewAccessRequestSlackNotificationJob.perform_async(@access_request)
+        NewAccessRequestSlackNotificationJob.perform_async(access_request)
       end
 
       @invalid.each do |access_request|

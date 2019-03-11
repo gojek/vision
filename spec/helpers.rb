@@ -26,4 +26,17 @@ module Helpers
         content_type: 'application/json'
       });
   end
+
+  def google_oauth_login_mock(user, request)
+    OmniAuth.config.test_mode = true
+    OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new({
+      :provider => 'google_oauth2',
+      :uid => '123545',
+      :info => {
+        :email => user.email,
+        :name => user.name
+      }
+    })
+    
+  end
 end
