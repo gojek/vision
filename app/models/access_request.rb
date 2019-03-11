@@ -4,7 +4,6 @@ class AccessRequest < ActiveRecord::Base
   before_save :create_access_request_status
 
   attr_accessor :approver_ids
-  attr_accessor :collaborator_ids
 
   include AASM
   belongs_to :user

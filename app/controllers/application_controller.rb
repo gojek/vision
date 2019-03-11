@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   before_action :check_user
+  before_action :check_pending_user
   require 'notifier.rb' # Omg
 
   def check_user
@@ -50,7 +51,13 @@ class ApplicationController < ActionController::Base
       flash[:alert] = flash_message
 
       sign_out current_user
-      redirect_to signin_path
+      redirect_to signin_path    
+    end
+  end
+
+  def check_pending_user
+    if current_user.present? && current_user.pending?
+      redirect_to register_path
     end
   end
 

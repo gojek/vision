@@ -3,6 +3,7 @@ require 'capybara-screenshot/rspec'
 require 'simplecov'
 SimpleCov.start 'rails'
 ENV["RAILS_ENV"] ||= 'test'
+ENV["APPROVER_EMAIL"] ||= 'ika.​muiz@midtrans.com'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'webmock/rspec'
