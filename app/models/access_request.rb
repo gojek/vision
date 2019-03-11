@@ -3,6 +3,9 @@ class AccessRequest < ActiveRecord::Base
 
   before_save :create_access_request_status
 
+  attr_accessor :approver_ids
+  attr_accessor :collaborator_ids
+
   include AASM
   belongs_to :user
   has_and_belongs_to_many :collaborators, join_table: :access_request_collaborators, class_name: 'User'
@@ -27,7 +30,7 @@ class AccessRequest < ActiveRecord::Base
 
   attr_accessor :reason
 
-  searchable do
+  searchable auto_index: false do
     text :employee_name, stored: true
     text :employee_position, stored: true
     text :employee_email_address, stored: true
@@ -85,20 +88,8 @@ class AccessRequest < ActiveRecord::Base
       !terminal_state? && !has_approver?(user)
   end
 
-  def set_approvers=(approver_id_list)
-    self.approvals.delete_all
-    approver_id_list.each do |approver_id|
-      approver = User.find(approver_id)
-      approval = AccessRequestApproval.create(user: approver)
-      self.approvals << approval
-    end
-  end
-
-  def set_collaborators(collaborator_id_list)
-    self.collaborators = []
-    collaborator_id_list.each do |collaborator_id|
-      self.collaborators << User.find(collaborator_id)
-    end
+  def approver_ids=(approver_ids)
+    self.approvals << AccessRequestApproval.setup_for_access_request(self, approver_ids)
   end
 
   def previous
@@ -156,23 +147,6 @@ class AccessRequest < ActiveRecord::Base
 
   def has_approver?(user)
     AccessRequestApproval.where(access_request_id: id, user_id: user.id).any?
-  end
-
-  def update_approvers(approver_id_list)
-    current_approver_ids = AccessRequestApproval.where(access_request_id: self.id).pluck(:user_id)
-    approver_id_list.map! { |id| id.to_i }
-    deleted_approver_ids = current_approver_ids - approver_id_list
-    if deleted_approver_ids.present?
-      AccessRequestApproval.where(access_request_id: self.id).where(user_id: deleted_approver_ids).destroy_all
-    end
-    approver_id_list.each do |approver_id|
-      app = AccessRequestApproval.where(user_id: approver_id).where(access_request_id: self.id).first
-      if (!app.present?)
-        approver = User.find(approver_id)
-        new_approval = AccessRequestApproval.create(user: User.find(approver_id))
-        self.approvals << new_approval
-      end
-    end
   end
 
   def is_associate?(user)

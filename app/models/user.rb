@@ -13,11 +13,8 @@ class User < ActiveRecord::Base
   DEFAULT_APPROVED_STATUS = 1
   DEFAULT_ROLE = 'requestor'
 
+
   # is_approved status
-  REJECTED = 0
-  NOT_YET_FILL_THE_FORM = 1
-  WAITING_FOR_APPROVAL = 2
-  APPROVED = 3
 
   validates :role, inclusion: { in: ROLES,
                               message: '%{value} is not a valid role' }
@@ -33,21 +30,20 @@ class User < ActiveRecord::Base
   has_many :Comments
   has_many :notifications, dependent: :destroy
   has_many :Approvals, :dependent => :destroy
-  validates :email, format: { with: /\b[A-Z0-9._%a-z\-]+@(veritrans\.co\.id|midtrans\.com|associate\.midtrans\.com||spots\.co\.id|go-jek\.com)\z/,
+  validates :email, format: { with: /\b[A-Z0-9._%a-z\-]+@(veritrans\.co\.id|midtrans\.com|associate\.midtrans\.com||spots\.co\.id|go-jek|gmail\.com)\z/,
                   message: "must be a veritrans account" }
   validates :email, uniqueness: true
   scope :approvers, -> {where('role = ? OR role = ?', 'approver', 'approver_all')}
   scope :approvers_ar, -> {where('role = ? OR role = ?', 'approver_ar', 'approver_all')}
-  default_scope { where.not(:is_approved => 1) }
   scope :active, -> {where(:locked_at => nil)}
   enum is_approved: { rejected: 0, pending: 1, need_approvals: 2, approved: 3 }
 
   def account_active?
-    locked_at.nil? && (is_approved == APPROVED || is_approved == NOT_YET_FILL_THE_FORM)
+    locked_at.nil? && (self.approved? || self.pending?)
   end
 
   def use_company_email?
-    (email =~ /\b[A-Z0-9._%a-z\-]+@(veritrans\.co\.id|midtrans\.com|associate\.midtrans\.com |spots\.co\.id|go-jek\.com)\z/).present?
+    (email =~ /\b[A-Z0-9._%a-z\-]+@(veritrans\.co\.id|midtrans\.com|associate\.midtrans\.com |spots\.co\.id|go-jek|gmail\.com)\z/).present?
   end
 
   def active_for_authentication?
@@ -55,12 +51,12 @@ class User < ActiveRecord::Base
   end
 
   def inactive_message
-    account_active? ? super : (is_approved == REJECTED ? "Sorry, your access request to Vision is rejected." : 
+    account_active? ? super : (self.rejected? ? "Sorry, your access request to Vision is rejected." : 
                                                          "Your account is not yet approved to open Vision")
   end
 
   def self.from_omniauth(auth)
-    user = where(provider: auth[:provider], uid: auth[:uid]).first
+    user = where(provider: auth[:provider], uid: auth[:uid]).first    
     if user.nil?
       User.transaction do 
         new_user = User.create(

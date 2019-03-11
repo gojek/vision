@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     return_url = stored_location_for(resource) || change_requests_path
-    if current_user.is_approved == User::NOT_YET_FILL_THE_FORM
+    if current_user.pending?
       return_url = register_path
       flash[:alert] = "Please fill the form correctly to propose your access request to approver."
     end
@@ -41,17 +41,17 @@ class ApplicationController < ActionController::Base
   private
 
   def approved_account
-    return if current_user.approved?
+    unless current_user.approved? || current_user.pending?
+      flash_message = if current_user.need_approvals?
+        'Your account is not yet approved to open Vision'
+      elsif current_user.rejected?
+        'Sorry, your access request to Vision is rejected.'
+      end
+      flash[:alert] = flash_message
 
-    flash_message = if current_user.need_approvals?
-                      'Your account is not yet approved to open Vision'
-                    elsif current_user.pending?
-                      'Fill the form'
-                    else
-                      'Sorry, your access request to Vision is rejected.'
-                    end
-    flash[:alert] = flash_message
-    sign_out current_user
-    redirect_to signin_path
+      sign_out current_user
+      redirect_to signin_path
+    end
   end
+
 end
