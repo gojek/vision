@@ -2,9 +2,8 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :admin_required, except: [:new, :create]
-  before_action :check_approved_user, only: [:new, :create]
+  before_action :redirect_non_pending_user, only: [:new, :create]
   skip_before_action :admin_required, only:[:approver]
-  skip_before_action :check_user, only: [:new, :create]
 
 
   def index
@@ -35,13 +34,13 @@ class UsersController < ApplicationController
         redirect_to signin_path
       else
         approvers = Array.wrap([ approver_id ])
-        @access_request.set_approvers(approvers)
+        @access_request.approver_ids = approvers
         if @access_request.save
           @access_request.submit!
-          current_user.is_approved = User::WAITING_FOR_APPROVAL
+          current_user.is_approved = User.is_approveds[:need_approvals]
           current_user.save
           sign_out current_user
-          SlackNotif.new.notify_new_access_request(@access_request)
+          NewAccessRequestSlackNotificationJob.perform_async(@access_request)          
           flash[:success] = 'Request has been created and waiting for approval. You\'ll get notification once its approved'
           redirect_to signin_path
         else
@@ -119,13 +118,11 @@ class UsersController < ApplicationController
   end
 
 
-  def check_approved_user
-    case current_user.is_approved
-      when User::REJECTED
-      when User::WAITING_FOR_APPROVAL
-        redirect_to signin_path
-      when User::APPROVED
-        redirect_to root_path
+  def redirect_non_pending_user
+    if current_user.rejected? || current_user.need_approvals?
+      redirect_to signin_path
+    elsif current_user.approved?
+      redirect_to root_path
     end
   end
 end

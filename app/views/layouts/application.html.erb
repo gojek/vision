@@ -16,7 +16,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="shortcut icon" href="/favicon.ico">
   </head>
-  <% if current_user!=nil && current_user.is_approved != 1 %>
+  <% if current_user.present? && !current_user.pending? %>
     <body class="skin-blue sidebar-mini sidebar-collapse" >
       <div class="wrapper">
 
