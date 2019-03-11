@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190227081123) do
+ActiveRecord::Schema.define(version: 20190213120419) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -106,13 +106,12 @@ ActiveRecord::Schema.define(version: 20190227081123) do
 
   create_table "approvals", force: :cascade do |t|
     t.integer  "change_request_id"
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
     t.integer  "user_id"
     t.boolean  "approve"
     t.text     "notes"
     t.datetime "approval_date"
-    t.string   "approval_type",     default: "Mandatory"
   end
 
   add_index "approvals", ["change_request_id"], name: "index_approvals_on_change_request_id", using: :btree
@@ -209,8 +208,6 @@ ActiveRecord::Schema.define(version: 20190227081123) do
     t.string   "google_event_id"
     t.boolean  "downtime_expected"
     t.integer  "expected_downtime_in_minutes"
-    t.text     "testing_notes"
-    t.string   "entity_source",                 default: "Midtrans", null: false
   end
 
   add_index "change_requests", ["cab_id"], name: "index_change_requests_on_cab_id", using: :btree
