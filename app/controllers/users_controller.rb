@@ -4,6 +4,7 @@ class UsersController < ApplicationController
   before_action :admin_required, except: [:new, :create]
   before_action :redirect_non_pending_user, only: [:new, :create]
   skip_before_action :admin_required, only:[:approver]
+  skip_before_action :check_pending_user, only: [:new, :create]
 
 
   def index

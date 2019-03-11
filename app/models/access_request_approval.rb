@@ -13,7 +13,6 @@ class AccessRequestApproval < ActiveRecord::Base
       AccessRequestApproval.where(access_request_id: access_request.id).pluck(:user_id) : []
     deleted_approver_ids = current_approver_ids - approver_ids
     approver_ids = approver_ids - current_approver_ids
-
     AccessRequestApproval.where(access_request_id: access_request.id, user_id: deleted_approver_ids).destroy_all
     AccessRequestApproval.create(
       approver_ids.map do |approver_id|
