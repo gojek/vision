@@ -53,7 +53,7 @@ describe User, type: :model do
   end
 
   it "is invalid with a non-veritrans email" do
-    user.email = 'squidward@gmail.com'
+    user.email = 'squidward@hotmail.com'
     user.valid?
     expect(user.errors[:email].size).to eq(1)
   end
@@ -106,7 +106,7 @@ describe User, type: :model do
       expect(user.email).to eq auth[:info][:email]
       expect(user.name).to eq auth[:info][:name]
       expect(user.role).to eq 'requestor'
-      expect(user.slack_username).to eq @slack_username
+      expect(user.slack_username).to eq [@slack_username, true].to_s
       expect(user.is_admin).to eq false
     end
   end

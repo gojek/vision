@@ -71,7 +71,7 @@ describe AccessRequestCsvParser do
     it 'test extract_approvers' do
       item_parser = AccessRequestCsvParser.new(raw_data, user)
       item_parser.send(:extract_approvers)
-      expect(item_parser.data).to have_key("set_approvers")
+      expect(item_parser.data).to have_key("approver_ids")
     end
 
     it 'test extract_collaborators' do
@@ -114,7 +114,7 @@ describe AccessRequestCsvParser do
       raw_data["approvers"] = "johndoe@midtrans.com"
       item_parser = AccessRequestCsvParser.new(raw_data, user)
       item_parser.send(:extract_approvers)
-      expect(item_parser.data["set_approvers"]).to be_empty
+      expect(item_parser.data["approver_ids"]).to be_empty
     end
 
     it 'test extract_collaborators' do
