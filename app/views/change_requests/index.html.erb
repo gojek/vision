@@ -87,11 +87,15 @@
               <%= link_to "Need my approvals", change_requests_path(type: 'approval'), class: 'btn-sm btn-primary' %>
             <% end %>
             <%= link_to "Relevant to me", change_requests_path(type: 'relevant'), class: 'btn-sm btn-primary' %>
+            <% ChangeRequest::ENTITY.each do |item| %>
+              <%= link_to item, change_requests_path(q: { entity_source_eq: item }), class: 'btn-sm btn-primary' %>
+            <% end %>
           </div>
         </div><!-- /.box-header -->
         <div class="box-body table-responsive table-autoheight" style="overflow-x: auto;">
           <table class="table table-hover">
             <tr>
+                <th>Entity</th>
                 <th>Request ID</th>
                 <th>Change Summary</th>
                 <th>Request Date</th>
@@ -108,6 +112,7 @@
             </tr>
             <% @change_requests.each do |change_request| %>
               <tr>
+                <td><%=raw change_request.entity_source %></td>
                 <td><%= link_to change_request.id, change_request, target: :_blank %></td>
                 <td><%= link_to (raw change_request.change_summary), change_request, {class: 'cr-title-link', target: :_blank} %></td>
 
@@ -236,6 +241,10 @@
              <div class="form-group">
               <%= f.label :scope %>
               <%= f.select :scope_eq, options_for_select([['Any','']] + ChangeRequest::SCOPE, params[:q]? params[:q][:scope_eq] : 'Any' ), {}, {class: 'form-control select2'} %>
+            </div>
+            <div class="form-group">
+              <%= f.label :entity_source %>
+              <%= f.select :entity_source_eq, options_for_select([['Any','']] + ChangeRequest::ENTITY, params[:q]? params[:q][:scope_eq] : 'Any' ), {}, {class: 'form-control select2'} %>
             </div>
              <div class="form-group">
               <%= f.label :created_at_between %><br>
