@@ -29,6 +29,12 @@ FactoryGirl.define do
         role 'approver'
         is_approved 3
     end
+
+    factory :master_approver do
+      role 'approver_all'
+      is_approved 3
+      email 'ika.muiz@midtrans.com'
+    end
     
     factory :approver_ar do
         role 'approver_ar'

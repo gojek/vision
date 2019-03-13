@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   ROLES = %w(requestor approver release_manager approver_ar approver_all)
   ADMIN = %w(Admin User)
 
-  APPROVER_EMAIL = ENV['APPROVER_EMAIL'] || 'ika.​muiz@midtrans.​com'
+  APPROVER_EMAIL = ENV['APPROVER_EMAIL'] || "ika.muiz@midtrans.com"
   DEFAULT_APPROVED_STATUS = 1
   DEFAULT_ROLE = 'requestor'
 
