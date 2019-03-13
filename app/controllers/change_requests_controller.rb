@@ -319,7 +319,7 @@ class ChangeRequestsController < ApplicationController
     def change_request_params
       params.require(:change_request).permit(:reference_cr_id, :change_summary, :priority, :db,
             :os, :net, :category, :cr_type, :change_requirement,
-            :business_justification, :note, :analysis,
+            :business_justification, :note, :analysis, :entity_source,
             :solution, :impact, :scope, :design, :backup,
             :testing_environment_available, :testing_procedure,
             :downtime_expected, :expected_downtime_in_minutes,
