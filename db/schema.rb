@@ -284,14 +284,6 @@ ActiveRecord::Schema.define(version: 20190121041026) do
 
   add_index "incident_report_versions", ["item_type", "item_id"], name: "index_incident_report_versions_on_item_type_and_item_id", using: :btree
 
-  create_table "incident_report_visibilities", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "incident_report_id"
-  end
-
-  add_index "incident_report_visibilities", ["incident_report_id"], name: "index_incident_report_visibilities_on_incident_report_id", using: :btree
-  add_index "incident_report_visibilities", ["user_id"], name: "index_incident_report_visibilities_on_user_id", using: :btree
-
   create_table "incident_reports", force: :cascade do |t|
     t.string   "service_impact"
     t.text     "problem_details"
