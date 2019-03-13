@@ -1,6 +1,11 @@
 require 'spec_helper'
 require 'slack_notif'
 require 'slack_attachment_builder.rb'
+require 'slack_helpers.rb'
+
+RSpec.configure do |c|
+  c.include SlackHelpers
+end
 
 describe SlackNotif do
   let(:user) {FactoryGirl.create(:approver, email: 'dwiyan@veritrans.co.id', slack_username: 'dwiyan')}
@@ -67,10 +72,8 @@ describe SlackNotif do
       end
 
       it 'Failed send general message to cab channel' do
-        stub_request(:post, "https://slack.com/api/chat.postMessage")
-          .to_return(status: 200, body: '{"ok": false, "error":"channel_not_found"}', headers: {})
-        stub_request(:post, "https://slack.com/api/users.lookupByEmail").
-          to_return(status: 200, body: '{"ok": false, "error":"users_not_found"}', headers: {})
+        error_not_found_stub('channel')
+        error_not_found_stub('users')
           
         expect do
           slack_notifier.notify_new_cr(change_request)
