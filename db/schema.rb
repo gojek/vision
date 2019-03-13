@@ -446,8 +446,6 @@ ActiveRecord::Schema.define(version: 20190121041026) do
   add_foreign_key "incident_report_collaborators", "users"
   add_foreign_key "incident_report_logs", "incident_reports"
   add_foreign_key "incident_report_logs", "users"
-  add_foreign_key "incident_report_visibilities", "incident_reports"
-  add_foreign_key "incident_report_visibilities", "users"
   add_foreign_key "incident_reports", "users"
   add_foreign_key "notifications", "change_requests"
   add_foreign_key "notifications", "incident_reports"
