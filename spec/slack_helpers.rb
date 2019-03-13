@@ -21,4 +21,14 @@ module SlackHelpers
       .with(body: { 'email' => 'dummy@dummy.com', 'token' => nil })
       .to_return(status: 200, body: '{"ok": false, "error":"users_not_found"}', headers: {})
   end
+
+  def error_not_found_stub(subject)
+    if subject == 'channel'
+      stub_request(:post, 'https://slack.com/api/chat.postMessage')
+        .to_return(status: 200, body: '{"ok": false, "error":"channel_not_found"}', headers: {})
+    elsif subject == 'users'
+      stub_request(:post, 'https://slack.com/api/users.lookupByEmail')
+        .to_return(status: 200, body: '{"ok": false, "error":"users_not_found"}', headers: {})
+    end
+  end
 end
