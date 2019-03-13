@@ -9,8 +9,7 @@ describe UsersController, type: :controller do
 
     before :each do
       controller.request.env['devise.mapping'] = Devise.mappings[:user]
-      FactoryGirl.create(:user, email: "ika.​muiz@midtrans.com")
-      sign_in user
+      ENV['CONTACT_EMAIL'] = 'vision@midtrans.com'
     end
 
 
@@ -25,6 +24,14 @@ describe UsersController, type: :controller do
       it 'should be render :new template' do
         get :new
         expect(response).to render_template(:new)
+      it 'is sign_in pending user' do
+        sign_in pending_user
+        expect(response.status).to eq 200
+      end
+
+      it 'is sign_in waiting approval user' do
+        sign_in waiting
+        expect(response.status).to eq 200
       end
     end
 
@@ -52,7 +59,11 @@ describe UsersController, type: :controller do
           user.reload
           expect(user.is_approved).to eq 'need_approvals'
         end 
-      end
+        
+        it 'is sign_in approved user' do
+          sign_in user
+          expect(response.status).to eq 200
+        end
     
     end
 
@@ -86,11 +97,25 @@ describe UsersController, type: :controller do
     end
 
     describe 'get #index' do
+      it 'is admin accessing default index page' do
+        sign_in admin
+        get :index
+
+        expect(assigns(:users)).not_to be_empty
+      end
+
       it 'is non admin accessing default index page' do
         sign_in user
         get :index
 
         expect(response).to redirect_to(root_path)
+      end
+
+      it 'is admin accessing filter index page' do
+        FactoryGirl.create(:waiting_user)
+        sign_in admin
+        get :index, q: {is_approved_eq: 3}
+        expect(assigns(:users).size).to eq 1
       end
     end
 
