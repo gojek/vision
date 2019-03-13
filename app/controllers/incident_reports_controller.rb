@@ -73,9 +73,7 @@ class IncidentReportsController < ApplicationController
   end
 
   def update
-    @current_collaborators = Array.wrap(params[:collaborators_list])
-    @incident_report.set_collaborators(@current_collaborators)
-
+    
     respond_to do |format|
       if @incident_report.update(incident_report_params)
 
@@ -346,7 +344,12 @@ class IncidentReportsController < ApplicationController
               :source, :rank, :loss_related, :occurred_reason,
               :overlooked_reason, :solving_duration, :recovery_action, :prevent_action,
               :recurrence_concern, :current_status, :measurer_status, :has_further_action,
-              :action_item, :action_item_status, :tag_list => [])
+              :action_item, :action_item_status, :entity_source, :collaborator_ids => [], :tag_list => []).tap do |param|
+                normalized_array_fields = [:collaborator_ids]
+                normalized_array_fields.each do |field|
+                  params[field].select!{ |id| id.present? }.map!{ |id| id.to_i} if params[field].present?
+                end
+              end 
   end
 
   def owner_required
