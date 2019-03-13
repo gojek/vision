@@ -10,7 +10,9 @@ describe UsersController, type: :controller do
     let(:pending_user) {FactoryGirl.create(:pending_user)}
 
     before :each do
-      ENV['CONTACT_EMAIL'] = 'vision@midtrans.com'
+      FactoryGirl.create(:user).email
+      FactoryGirl.create(:master_approver).email
+      FactoryGirl.create(:user, email: 'vision@veritrans.co.id')
       controller.request.env['devise.mapping'] = Devise.mappings[:pending_user]
       sign_in pending_user
     end
@@ -34,14 +36,10 @@ describe UsersController, type: :controller do
     end
 
     describe 'POST #/register' do
-
-
-
       describe 'if success' do
-
         it 'should be redirect_to to sign in page' do
           post :create, access_request: attributes, approver_ids: [approver], collaborator_ids: []
-          expect(response).to redirect_to new_user_session_path
+          expect(response).to redirect_to signin_path
         end
 
         it 'should be redirect_to to sign in page and contains some success flash message' do
