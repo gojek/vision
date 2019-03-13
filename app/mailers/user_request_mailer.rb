@@ -1,5 +1,5 @@
 class UserRequestMailer < ApplicationMailer
-  default from: "narendra.hanif@***REMOVED***"
+  default from: ENV['CONTACT_EMAIL']
 
   def approve_email(user)
     @user = user
