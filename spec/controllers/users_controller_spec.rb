@@ -9,6 +9,7 @@ describe UsersController, type: :controller do
     let(:pending_user) {FactoryGirl.create(:pending_user)}
     before :each do
       controller.request.env['devise.mapping'] = Devise.mappings[:user]
+      ENV['CONTACT_EMAIL'] = 'vision@midtrans.com'
     end
 
     describe 'user try to sign in' do
