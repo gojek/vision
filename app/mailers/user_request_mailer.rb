@@ -1,5 +1,5 @@
 class UserRequestMailer < ApplicationMailer
-  default from: "narendra.hanif@veritrans.co.id"
+  default from: ENV['CONTACT_EMAIL']
 
   def approve_email(user)
     @user = user
@@ -8,6 +8,7 @@ class UserRequestMailer < ApplicationMailer
 
   def reject_email(user)
     @user = user
+    @contact_email = ENV['CONTACT_EMAIL']
     mail(to: @user.email, subject: 'Vision Access Request')
   end
 end
