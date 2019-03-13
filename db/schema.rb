@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190213120419) do
+ActiveRecord::Schema.define(version: 20190313110659) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -174,8 +174,8 @@ ActiveRecord::Schema.define(version: 20190213120419) do
     t.text     "implementation_notes"
     t.text     "grace_period_notes"
     t.integer  "user_id"
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
+    t.datetime "created_at",                                         null: false
+    t.datetime "updated_at",                                         null: false
     t.text     "net"
     t.text     "db"
     t.text     "os"
@@ -207,6 +207,7 @@ ActiveRecord::Schema.define(version: 20190213120419) do
     t.boolean  "downtime_expected"
     t.integer  "expected_downtime_in_minutes"
     t.text     "testing_notes"
+    t.string   "entity_source",                 default: "Midtrans", null: false
   end
 
   add_index "change_requests", ["cab_id"], name: "index_change_requests_on_cab_id", using: :btree
@@ -285,6 +286,14 @@ ActiveRecord::Schema.define(version: 20190213120419) do
   end
 
   add_index "incident_report_versions", ["item_type", "item_id"], name: "index_incident_report_versions_on_item_type_and_item_id", using: :btree
+
+  create_table "incident_report_visibilities", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "incident_report_id"
+  end
+
+  add_index "incident_report_visibilities", ["incident_report_id"], name: "index_incident_report_visibilities_on_incident_report_id", using: :btree
+  add_index "incident_report_visibilities", ["user_id"], name: "index_incident_report_visibilities_on_user_id", using: :btree
 
   create_table "incident_reports", force: :cascade do |t|
     t.string   "service_impact"
@@ -382,6 +391,14 @@ ActiveRecord::Schema.define(version: 20190213120419) do
 
   add_index "testers", ["change_request_id"], name: "index_testers_on_change_request_id", using: :btree
   add_index "testers", ["user_id"], name: "index_testers_on_user_id", using: :btree
+
+  create_table "transfer_emails", force: :cascade do |t|
+    t.string   "old_email"
+    t.string   "new_email"
+    t.boolean  "is_changed", default: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "email",              default: "", null: false
