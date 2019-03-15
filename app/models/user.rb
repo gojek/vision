@@ -1,3 +1,7 @@
+require 'net/http'
+require 'json'
+require 'slack_client.rb'
+
 # a model representing user
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
@@ -56,24 +60,18 @@ class User < ActiveRecord::Base
   end
 
   def self.from_omniauth(auth)
-    user = where(provider: auth[:provider], uid: auth[:uid]).first    
-    if user.nil?
-      User.transaction do 
-        new_user = User.create(
-          :email => auth[:info][:email],
-          :name => auth[:info][:name],
-          :role => DEFAULT_ROLE,
-          :is_admin => false,
-          :is_approved => DEFAULT_APPROVED_STATUS,
-          :uid => auth[:uid],
-          :provider => auth[:provider],
-        )
-        new_user.slack_username = new_user.get_slack_username,
-        new_user.save
-        return new_user
+    User.transaction do 
+      where(provider: auth[:provider], uid: auth[:uid]).first_or_create do |user|
+        user.email = auth[:info][:email]
+        user.name = auth[:info][:name]
+        user.role = 'requestor'
+        user.is_admin = false
+        user.role = DEFAULT_ROLE
+        user.is_approved = DEFAULT_APPROVED_STATUS
+        user.uid = auth[:uid]
+        user.provider = auth[:provider]
+        SlackClient.new.reassign_slack_username(user)
       end
-    else
-      return user
     end
   end
 
@@ -91,15 +89,6 @@ class User < ActiveRecord::Base
     token
   end
 
-  def get_slack_username
-    client = Slack::Web::Client.new
-    client.users_list.members.each do |u|
-      if email == u.profile.email
-        return u.name
-      end
-    end
-    nil
-  end
   def have_notifications?
     (notifications.cr.count != 0 || notifications.ir.count != 0)
   end
