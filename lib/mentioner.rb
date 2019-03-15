@@ -13,7 +13,10 @@ class Mentioner
   end
 
   def self.find_mentionees_from_username(usernames)
-    emails = usernames.flat_map { |mention| [mention + '@veritrans.co.id', mention + '@midtrans.com', mention + '@go-jek.com'] }
+    emails = usernames.flat_map do |mention|
+      [mention + '@veritrans.co.id',
+       mention + '@midtrans.com', mention + '@go-jek.com']
+    end
     User.where(email: emails)
   end
 
