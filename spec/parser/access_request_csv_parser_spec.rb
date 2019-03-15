@@ -4,7 +4,8 @@ require 'mentioner'
 describe AccessRequestCsvParser do
   let!(:user) {FactoryGirl.create(:user)}
   let!(:approver_ar) {FactoryGirl.create(:approver_ar, email:'patrick.star@midtrans.com')}
-  let(:raw_data) {{"request_type"=>"Create",
+  let(:raw_data) {{"entity_source"=>"midtrans",
+                   "request_type"=>"Create",
                    "access_type"=>"Permanent",
                    "start_date"=>"",
                    "end_date"=>"",
@@ -30,6 +31,13 @@ describe AccessRequestCsvParser do
   
 
   describe 'testing extract method' do
+    it 'test extract_entity' do
+      item_parser = AccessRequestCsvParser.new(raw_data, user)
+      item_parser.send(:extract_entity)
+      expect(item_parser.data).to have_key("entity_source")
+      expect(item_parser.data['entity_source']).to eq("Midtrans")
+    end
+
     it 'test extract_fingerprint' do
       item_parser = AccessRequestCsvParser.new(raw_data, user)
       item_parser.send(:extract_fingerprint)
