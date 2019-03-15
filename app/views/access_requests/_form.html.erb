@@ -24,6 +24,10 @@
         <div class="box-body">
           <div class="col-md-6">
             <div class="field form-group required">
+              <%= f.label :entity_source, class: 'control-label' %>
+              <%= f.select :entity_source ,options_for_select(AccessRequest::ENTITY, @access_request.entity_source), {include_blank: true}, {class: 'form-control select2'}%>
+            </div><!--/field-->
+            <div class="field form-group required">
               <%= f.label :request_type, {class: 'control-label'} %><br>
               <%= f.select :request_type, options_for_select(AccessRequest::REQUEST_TYPES, @access_request.request_type), {:include_blank => false}, {class: 'form-control select2'} %>
             </div><!--/field-->

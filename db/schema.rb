@@ -91,11 +91,12 @@ ActiveRecord::Schema.define(version: 20190313111416) do
     t.string   "asset_name"
     t.string   "aasm_state"
     t.datetime "request_date"
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
+    t.datetime "created_at",                                           null: false
+    t.datetime "updated_at",                                           null: false
     t.string   "business_justification"
     t.boolean  "metabase",                        default: false
     t.boolean  "solutions_dashboard",             default: false
+    t.string   "entity_source",                   default: "Midtrans", null: false
   end
 
   add_index "access_requests", ["user_id"], name: "index_access_requests_on_user_id", using: :btree
@@ -209,7 +210,10 @@ ActiveRecord::Schema.define(version: 20190313111416) do
 =======
     t.text     "testing_notes"
     t.string   "entity_source",                 default: "Midtrans", null: false
+<<<<<<< HEAD
 >>>>>>> 47da56fc (add entity to change request)
+=======
+>>>>>>> 2d0363c0 (new feature)
   end
 
   add_index "change_requests", ["cab_id"], name: "index_change_requests_on_cab_id", using: :btree
