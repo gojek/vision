@@ -54,9 +54,9 @@ describe UsersController, type: :controller do
         end
 
         it 'should be update current_user\'s is_approved = 2' do
-          post :create, access_request: attributes, approver_ids: [approver], collaborator_ids: []
-          user.reload
-          expect(user.is_approved).to eq 'need_approvals'
+          post :create, access_request: attributes
+          pending_user.reload
+          expect(pending_user.is_approved).to eq 'need_approvals'
         end 
         
         it 'is sign_in approved user' do
