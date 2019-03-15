@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190213120419) do
+ActiveRecord::Schema.define(version: 20190315065927) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -94,11 +94,12 @@ ActiveRecord::Schema.define(version: 20190213120419) do
     t.string   "production_asset"
     t.string   "aasm_state"
     t.datetime "request_date"
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
+    t.datetime "created_at",                                           null: false
+    t.datetime "updated_at",                                           null: false
     t.string   "business_justification"
     t.boolean  "metabase",                        default: false
     t.boolean  "solutions_dashboard",             default: false
+    t.string   "entity_source",                   default: "Midtrans", null: false
   end
 
   add_index "access_requests", ["user_id"], name: "index_access_requests_on_user_id", using: :btree
@@ -174,8 +175,8 @@ ActiveRecord::Schema.define(version: 20190213120419) do
     t.text     "implementation_notes"
     t.text     "grace_period_notes"
     t.integer  "user_id"
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
+    t.datetime "created_at",                                         null: false
+    t.datetime "updated_at",                                         null: false
     t.text     "net"
     t.text     "db"
     t.text     "os"
@@ -207,6 +208,7 @@ ActiveRecord::Schema.define(version: 20190213120419) do
     t.boolean  "downtime_expected"
     t.integer  "expected_downtime_in_minutes"
     t.text     "testing_notes"
+    t.string   "entity_source",                 default: "Midtrans", null: false
   end
 
   add_index "change_requests", ["cab_id"], name: "index_change_requests_on_cab_id", using: :btree
