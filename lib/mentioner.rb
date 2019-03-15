@@ -13,11 +13,8 @@ class Mentioner
   end
 
   def self.find_mentionees_from_username(usernames)
-    usernames_vt = usernames.map { |mention| mention + '@veritrans.co.id' }
-    usernames_mt = usernames.map { |mention| mention + '@midtrans.com' }
-    usernames_gojek = usernames.map { |mention| mention + '@go-jek.com' }
-    User.where(email: [usernames_vt, usernames_mt, usernames_gojek])
-    # TODO: remove usernames_vt and usernames_mt when migrating to gojek
+    emails = usernames.flat_map { |mention| [mention + '@veritrans.co.id', mention + '@midtrans.com', mention + '@go-jek.com'] }
+    User.where(email: emails)
   end
 
   def self.username_extract_regex
