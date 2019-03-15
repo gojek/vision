@@ -1,3 +1,7 @@
+require 'net/http'
+require 'json'
+require 'slack_client.rb'
+
 # a model representing user
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
@@ -67,8 +71,7 @@ class User < ActiveRecord::Base
           :uid => auth[:uid],
           :provider => auth[:provider],
         )
-        new_user.slack_username = new_user.get_slack_username
-        new_user.save
+        SlackClient.new.reassign_slack_username(new_user)
         return new_user
       end
     else
@@ -91,15 +94,6 @@ class User < ActiveRecord::Base
     token
   end
 
-  def get_slack_username
-    client = Slack::Web::Client.new
-    client.users_list.members.each do |u|
-      if email == u.profile.email
-        return u.name
-      end
-    end
-    nil
-  end
   def have_notifications?
     (notifications.cr.count != 0 || notifications.ir.count != 0)
   end
