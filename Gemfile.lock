@@ -522,7 +522,7 @@ DEPENDENCIES
   simplecov
   simplecov-rcov
   slack-notifier
-  slack-ruby-client
+  slack-ruby-client (~> 0.13.1)
   spring
   sucker_punch (~> 2.0)
   sunspot_rails
