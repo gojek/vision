@@ -83,6 +83,7 @@ class IncidentReport < ActiveRecord::Base
     how_detected 'how was problem detected'     
     loss_related 'loss related issue'
     source 'source'
+    enitity_source 'entity source'
   end
 
   def user_name
