@@ -292,14 +292,6 @@ ActiveRecord::Schema.define(version: 20190313111416) do
 
   add_index "incident_report_versions", ["item_type", "item_id"], name: "index_incident_report_versions_on_item_type_and_item_id", using: :btree
 
-  create_table "incident_report_visibilities", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "incident_report_id"
-  end
-
-  add_index "incident_report_visibilities", ["incident_report_id"], name: "index_incident_report_visibilities_on_incident_report_id", using: :btree
-  add_index "incident_report_visibilities", ["user_id"], name: "index_incident_report_visibilities_on_user_id", using: :btree
-
   create_table "incident_reports", force: :cascade do |t|
     t.string   "service_impact"
     t.text     "problem_details"
@@ -397,14 +389,6 @@ ActiveRecord::Schema.define(version: 20190313111416) do
 
   add_index "testers", ["change_request_id"], name: "index_testers_on_change_request_id", using: :btree
   add_index "testers", ["user_id"], name: "index_testers_on_user_id", using: :btree
-
-  create_table "transfer_emails", force: :cascade do |t|
-    t.string   "old_email"
-    t.string   "new_email"
-    t.boolean  "is_changed", default: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-  end
 
   create_table "users", force: :cascade do |t|
     t.string   "email",              default: "", null: false
