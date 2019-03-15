@@ -65,7 +65,7 @@ class SlackAttachmentBuilder
     }
   end
 
-  def wrap_approver_actions(attachment, _user)
+  def wrap_approver_actions(attachment)
     actionable_attachment = attachment.dup
     actionable_attachment[:actions] = [
       {
