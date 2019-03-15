@@ -26,7 +26,7 @@ class IncidentReport < ActiveRecord::Base
   SOURCE = %w(Internal External)
   RECURRENCE_CONCERN = %w(Low Medium High)
   ACTION_ITEM_STATUS = ['In Progress', 'Done']
-  ENTITY_SOURCES = ENV['ENTITY_SOURCES'].split(",").map!(&:titleize) || []
+  ENTITY_SOURCES = ENV['ENTITY_SOURCES'].split(",").map!(&:capitalize) || ["Midtrans"]
 
   has_many :notifications, dependent: :destroy
   validates :service_impact, :problem_details, :how_detected, :occurrence_time,
