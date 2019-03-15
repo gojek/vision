@@ -1,4 +1,9 @@
 require 'spec_helper'
+require 'slack_helpers.rb'
+
+RSpec.configure do |c|
+  c.include SlackHelpers
+end
 
 describe User, type: :model do
 
@@ -102,10 +107,9 @@ describe User, type: :model do
     end
 
     it "will register new user based on the auth from omniauth if user not registered" do
+      user_lookup_success_stub
       auth = {:provider => 'google_oauth2', :uid => '123456', :info => {:email => 'patrick@veritrans.co.id', :name => 'patrick star'}}
-      WebMock.allow_net_connect!
       user = User.from_omniauth(auth)
-      WebMock.disable_net_connect!
       expect(user.provider).to eq auth[:provider]
       expect(user.uid).to eq auth[:uid]
       expect(user.email).to eq auth[:info][:email]
@@ -114,37 +118,15 @@ describe User, type: :model do
       expect(user.slack_username).to eq @slack_username
       expect(user.is_admin).to eq false
     end
-  end
 
-  describe 'get slack username' do
-    context 'when there is no user with the email in slack veritrans' do
-      before :each do
-        user_slack = UserSlack.new('salah', Profile.new('e' + user.email))
-        @users_list = UserList.new([user_slack])
-        allow_any_instance_of(Slack::Web::Client).to receive(:users_list).and_return(@users_list)
+    it "will register the user but slack username is nil because not found" do
+      user_lookup_failed_stub
+      auth = {:provider => 'google_oauth2', :uid => '123456', :info => {:email => 'dummy@dummy.com', :name => 'dummy baby'}}
+      user = User.from_omniauth(auth)
 
-      end
-
-      it 'will return nil' do
-        expect(user.send(:get_slack_username)).to eq nil
-      end
-    end
-
-    context 'when the user has been logged in to slack veritrans' do
-      before :each do
-        @slack_username = 'patrick.star'
-        user_slack = UserSlack.new(@slack_username, Profile.new(user.email))
-        @users_list = UserList.new([user_slack])
-        allow_any_instance_of(Slack::Web::Client).to receive(:users_list).and_return(@users_list)
-
-      end
-
-      it 'will return the username' do
-        expect(user.send(:get_slack_username)).to eq @slack_username
-      end
+      expect(user.slack_username).to be_nil
     end
   end
-
 
   it "expired? method will return true if user token has been expired" do
     user = FactoryGirl.create(:user, :expired_at => Time.now - 1.hour)
