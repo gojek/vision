@@ -83,11 +83,6 @@ class User < ActiveRecord::Base
     expired_at < Time.now
   end
 
-  def fresh_token
-    refresh! if (expired? || token == nil)
-    token
-  end
-
   def have_notifications?
     (notifications.cr.count != 0 || notifications.ir.count != 0)
   end
