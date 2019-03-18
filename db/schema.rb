@@ -106,12 +106,13 @@ ActiveRecord::Schema.define(version: 20190315065927) do
 
   create_table "approvals", force: :cascade do |t|
     t.integer  "change_request_id"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
     t.integer  "user_id"
     t.boolean  "approve"
     t.text     "notes"
     t.datetime "approval_date"
+    t.string   "approval_type",     default: "Mandatory"
   end
 
   add_index "approvals", ["change_request_id"], name: "index_approvals_on_change_request_id", using: :btree
@@ -168,6 +169,7 @@ ActiveRecord::Schema.define(version: 20190315065927) do
     t.text     "backup"
     t.boolean  "testing_environment_available", default: true
     t.text     "testing_procedure"
+    t.text     "testing_notes"
     t.datetime "schedule_change_date"
     t.datetime "planned_completion"
     t.datetime "grace_period_starts"
@@ -306,8 +308,8 @@ ActiveRecord::Schema.define(version: 20190315065927) do
     t.string   "current_status"
     t.string   "measurer_status"
     t.integer  "user_id"
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
+    t.datetime "created_at",                                        null: false
+    t.datetime "updated_at",                                        null: false
     t.datetime "resolved_time"
     t.decimal  "resolution_duration"
     t.decimal  "recovery_duration"
@@ -317,6 +319,7 @@ ActiveRecord::Schema.define(version: 20190315065927) do
     t.string   "action_item_status"
     t.datetime "action_item_done_time"
     t.integer  "time_to_acknowledge_duration"
+    t.string   "entity_source",                default: "Midtrans", null: false
   end
 
   add_index "incident_reports", ["user_id"], name: "index_incident_reports_on_user_id", using: :btree
@@ -407,6 +410,7 @@ ActiveRecord::Schema.define(version: 20190315065927) do
     t.string   "refresh_token"
     t.datetime "expired_at"
     t.string   "slack_username"
+    t.integer  "is_approved",        default: 1
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
