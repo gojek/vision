@@ -38,7 +38,7 @@
               <div class="col-md-6">
                 <div class="field form-group required">
                   <%= f.label :entity_source, class: 'control-label' %>
-                  <%= f.select :entity_source ,options_for_select(ChangeRequest::ENTITY, @change_request.entity_source), {include_blank: true}, {class: 'form-control select2'}%>
+                  <%= f.select :entity_source ,options_for_select(ChangeRequest::ENTITY_SOURCES, @change_request.entity_source), {include_blank: true}, {class: 'form-control select2'}%>
                 </div><!--/field-->
                 <% if @change_request.errors.messages[:change_summary] %>
                   <div class="field form-group has-error">

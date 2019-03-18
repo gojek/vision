@@ -1,5 +1,9 @@
+require 'entity_source_module.rb'
+
 class ChangeRequest < ActiveRecord::Base
   include AASM
+  include EntitySourceModule
+
   belongs_to :user
   attr_accessor :approver_ids
 
@@ -16,8 +20,7 @@ class ChangeRequest < ActiveRecord::Base
   has_paper_trail class_name: 'ChangeRequestVersion', meta: { author_username: :user_name }
   SCOPE = %w(Major Minor)
   PRIORITY = %w(High Medium Low)
-  ENTITY_SOURCES = ENV['ENTITY_SOURCES'] || "midtrans"
-  ENTITY = ENTITY_SOURCES.split(',').each {|s| s.capitalize!}
+  
   validates :scope,
             inclusion: { in: SCOPE, message: '%{value} is not a valid scope' }
   validates :priority,
