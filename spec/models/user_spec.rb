@@ -138,10 +138,6 @@ describe User, type: :model do
     expect(user.expired?).to eq false
   end
 
-
-  it "fresh_token method will return current token if not expired" do
-    expect(user.fresh_token).to eq '123456'
-  end
   
   it "should return list of all approvers if User.approvers is called" do
     approver1 = FactoryGirl.create(:approver)
