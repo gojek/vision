@@ -17,13 +17,7 @@ class User < ActiveRecord::Base
   APPROVER_EMAIL = ENV['APPROVER_EMAIL'] || 'ika.​muiz@midtrans.​com'
   DEFAULT_APPROVED_STATUS = 1
   DEFAULT_ROLE = 'requestor'
-
-  # is_approved status
-  REJECTED = 0
-  NOT_YET_FILL_THE_FORM = 1
-  WAITING_FOR_APPROVAL = 2
-  APPROVED = 3
-
+  
   validates :role, inclusion: { in: ROLES,
                               message: '%{value} is not a valid role' }
   validates :email, presence: true
