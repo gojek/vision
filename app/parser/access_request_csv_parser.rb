@@ -10,6 +10,7 @@ class AccessRequestCsvParser
   OTHER_ACCESS_CONST = %w[internet_access slack_access admin_tools vpn_access github_gitlab
                           exit_interview access_card parking_cards id_card
                           name_card insurance_card cash_advance metabase solutions_dashboard].freeze
+  ENTITY_SOURCE_CONST = (ENV['ENTITY_SOURCES'] || 'midtrans').split(',').each(&:capitalize!)
 
   attr_reader :data, :error, :user
 
@@ -31,6 +32,7 @@ class AccessRequestCsvParser
     extract_access_type
     extract_approvers
     extract_collaborators
+    extract_entity
     self
   end
 
@@ -43,6 +45,15 @@ class AccessRequestCsvParser
   end
 
   private
+
+  def extract_entity
+    item = @raw_data['entity_source'].capitalize
+    unless ENTITY_SOURCE_CONST.include?(item)
+      @error ||= true
+      return
+    end
+    @data['entity_source'] = item
+  end
 
   def extract_fingerprint
     return if @raw_data['fingerprint'].blank?
