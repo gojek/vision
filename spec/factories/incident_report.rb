@@ -18,6 +18,7 @@ FactoryGirl.define do
     current_status "Acknowledged"
     measurer_status "Implemented"
     user {FactoryGirl.create(:user)}
+    entity_source "Midtrans"
 
     factory :invalid_incident_report do 
       service_impact "Service impact"
@@ -60,6 +61,12 @@ FactoryGirl.define do
       measurer_status "Implemented"
       user {FactoryGirl.create(:user)}
       reason "reason"
+    end
+
+    factory :jira_incident_report do
+      has_further_action true
+      action_item "TEST-123"
+      action_item_status "In Progress"
     end
     
   end  
