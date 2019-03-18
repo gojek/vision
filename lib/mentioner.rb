@@ -14,8 +14,9 @@ class Mentioner
 
   def self.find_mentionees_from_username(usernames)
     emails = usernames.flat_map do |mention|
-      [mention + '@veritrans.co.id',
-       mention + '@midtrans.com', mention + '@go-jek.com']
+      valid_emails.map do |email|
+        mention + '@' + email 
+      end    
     end
     User.where(email: emails)
   end
@@ -26,5 +27,9 @@ class Mentioner
 
   def self.mention_prefix
     '@'
+  end
+
+  def self.valid_emails
+    ENV['VALID_EMAIL'].split(',')
   end
 end
