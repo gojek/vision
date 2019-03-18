@@ -167,6 +167,7 @@ ActiveRecord::Schema.define(version: 20190213120419) do
     t.text     "backup"
     t.boolean  "testing_environment_available", default: true
     t.text     "testing_procedure"
+    t.text     "testing_notes"
     t.datetime "schedule_change_date"
     t.datetime "planned_completion"
     t.datetime "grace_period_starts"
@@ -206,7 +207,6 @@ ActiveRecord::Schema.define(version: 20190213120419) do
     t.string   "google_event_id"
     t.boolean  "downtime_expected"
     t.integer  "expected_downtime_in_minutes"
-    t.text     "testing_notes"
   end
 
   add_index "change_requests", ["cab_id"], name: "index_change_requests_on_cab_id", using: :btree
