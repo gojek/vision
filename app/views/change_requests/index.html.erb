@@ -69,7 +69,7 @@
               <%= link_to "Need my approvals", change_requests_path(type: 'approval'), class: 'btn-sm btn-primary' %>
             <% end %>
             <%= link_to "Relevant to me", change_requests_path(type: 'relevant'), class: 'btn-sm btn-primary' %>
-            <% ChangeRequest::ENTITY.each do |item| %>
+            <% ChangeRequest::ENTITY_SOURCES.each do |item| %>
               <%= link_to item, change_requests_path(q: { entity_source_eq: item }), class: 'btn-sm btn-primary' %>
             <% end %>
           </div>
@@ -226,7 +226,7 @@
             </div>
             <div class="form-group">
               <%= f.label :entity_source %>
-              <%= f.select :entity_source_eq, options_for_select([['Any','']] + ChangeRequest::ENTITY, params[:q]? params[:q][:scope_eq] : 'Any' ), {}, {class: 'form-control select2'} %>
+              <%= f.select :entity_source_eq, options_for_select([['Any','']] + ChangeRequest::ENTITY_SOURCES, params[:q]? params[:q][:scope_eq] : 'Any' ), {}, {class: 'form-control select2'} %>
             </div>
              <div class="form-group">
               <%= f.label :created_at_between %><br>
