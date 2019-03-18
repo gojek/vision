@@ -176,8 +176,8 @@ ActiveRecord::Schema.define(version: 20190313111416) do
     t.text     "implementation_notes"
     t.text     "grace_period_notes"
     t.integer  "user_id"
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
+    t.datetime "created_at",                                         null: false
+    t.datetime "updated_at",                                         null: false
     t.text     "net"
     t.text     "db"
     t.text     "os"
@@ -208,6 +208,8 @@ ActiveRecord::Schema.define(version: 20190313111416) do
     t.string   "google_event_id"
     t.boolean  "downtime_expected"
     t.integer  "expected_downtime_in_minutes"
+    t.text     "testing_notes"
+    t.string   "entity_source",                 default: "Midtrans", null: false
   end
 
   add_index "change_requests", ["cab_id"], name: "index_change_requests_on_cab_id", using: :btree
