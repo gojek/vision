@@ -36,8 +36,8 @@ FactoryGirl.define do
     end
 
     factory :gojek_email do
-        sequence(:email) { |n| "patrick#{n}@gojek.com" }
-        is_approved 3
+      sequence(:email) { |n| "patrick#{n}@gojek.com" }
+      is_approved 3
     end
 
     factory :waiting_user do
@@ -50,6 +50,11 @@ FactoryGirl.define do
 
     factory :rejected_user do
         is_approved 0
+        sequence(:email) { |n| "patrick#{n}@go-jek.com" }
+    end
+
+    factory :old_email do
+        email 'dummy@midtrans.com'
     end
   end
 end
