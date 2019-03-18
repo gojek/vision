@@ -177,6 +177,10 @@ div.field > div.field {
   font-weight: inherit;
 }
 
+section.content-header .btn.btn-flat:first-child {
+	margin-left: 1rem;
+}
+
 .access-request-title > .btn.btn-flat.pull-right {
   margin-left: 1rem;
 }
