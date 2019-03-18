@@ -1,6 +1,7 @@
 # a model representating incident report document
 class IncidentReport < ActiveRecord::Base
   include ActiveModel::Dirty
+  include EntitySourceModule
   
   belongs_to :user
   has_and_belongs_to_many :collaborators, join_table: :incident_report_collaborators, class_name: 'User'
@@ -26,7 +27,6 @@ class IncidentReport < ActiveRecord::Base
   SOURCE = %w(Internal External)
   RECURRENCE_CONCERN = %w(Low Medium High)
   ACTION_ITEM_STATUS = ['In Progress', 'Done']
-  ENTITY_SOURCES = (ENV['ENTITY_SOURCES'] || 'Midtrans').split(",").map!(&:capitalize)
 
   has_many :notifications, dependent: :destroy
   validates :service_impact, :problem_details, :how_detected, :occurrence_time,
@@ -50,7 +50,6 @@ class IncidentReport < ActiveRecord::Base
   validate  :validate_detection_time
   validate  :validate_acknowledge_time, if: :acknowledge_time?
   validate  :validate_resolve_time, if: :resolved_time?
-  validates :entity_source, presence: true
 
   attr_accessor :editor
   attr_accessor :reason

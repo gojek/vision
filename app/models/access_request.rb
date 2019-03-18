@@ -1,9 +1,12 @@
+require_relative '../modules/entity_source_module.rb'
+
 class AccessRequest < ActiveRecord::Base
   has_paper_trail
 
   before_save :create_access_request_status
 
   include AASM
+  include EntitySourceModule
   belongs_to :user
   has_and_belongs_to_many :collaborators, join_table: :access_request_collaborators, class_name: 'User'
   has_many :approvals, join_table: :access_request_approvals, dependent: :destroy, class_name: 'AccessRequestApproval'
@@ -15,9 +18,7 @@ class AccessRequest < ActiveRecord::Base
 
   REQUEST_TYPES = %w(Create Delete Modify).freeze
   ACCESS_TYPES = [PERMANENT, TEMPORARY]
-  ENTITY_SOURCES = ENV['ENTITY_SOURCES'] || "midtrans"
-  ENTITY = ENTITY_SOURCES.split(',').each {|s| s.capitalize!}
-
+  
   validates :approvals, presence: true
   validates :business_justification, presence: true
   validates :request_type, inclusion: { in: REQUEST_TYPES, message: '%{value} is not a valid scope' }
