@@ -26,6 +26,7 @@ class IncidentReport < ActiveRecord::Base
   SOURCE = %w(Internal External)
   RECURRENCE_CONCERN = %w(Low Medium High)
   ACTION_ITEM_STATUS = ['In Progress', 'Done']
+  ENTITY_SOURCES = (ENV['ENTITY_SOURCES'] || 'Midtrans').split(",").map!(&:capitalize)
 
   has_many :notifications, dependent: :destroy
   validates :service_impact, :problem_details, :how_detected, :occurrence_time,
@@ -49,6 +50,7 @@ class IncidentReport < ActiveRecord::Base
   validate  :validate_detection_time
   validate  :validate_acknowledge_time, if: :acknowledge_time?
   validate  :validate_resolve_time, if: :resolved_time?
+  validates :entity_source, presence: true
 
   attr_accessor :editor
   attr_accessor :reason
@@ -81,6 +83,7 @@ class IncidentReport < ActiveRecord::Base
     how_detected 'how was problem detected'     
     loss_related 'loss related issue'
     source 'source'
+    entity_source 'entity source'
   end
 
   def user_name
@@ -173,13 +176,6 @@ class IncidentReport < ActiveRecord::Base
 
   def editable?(user)
     return (self.user == user) || user.is_admin || (self.collaborators.include? user)
-  end
-
-  def set_collaborators(collaborator_id_list)
-    self.collaborators = []
-    collaborator_id_list.each do |collaborator_id|
-      self.collaborators << User.find(collaborator_id)
-    end
   end
 
   def create_incident_report_log

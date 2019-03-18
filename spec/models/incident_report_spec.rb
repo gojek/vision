@@ -9,6 +9,7 @@ describe IncidentReport, type: :model do
   it "is valid with all attribute filled" do
     expect(FactoryGirl.build(:incident_report)).to be_valid
   end
+
   it "is valid with rank number 1- 5" do
     total_incident_report = IncidentReport.all.count
     allowed_rank_number = [1,2,3,4,5]
@@ -38,6 +39,15 @@ describe IncidentReport, type: :model do
       expect(ir).to be_valid
     end
   end
+
+  it "is valid with defined entity source" do
+    allowed_entity_sources = %w(Midtrans Gojek)
+    allowed_entity_sources.each do |entity_source| 
+      ir = FactoryGirl.build(:incident_report, entity_source: entity_source)
+      expect(ir).to be_valid
+    end
+  end
+
   it "is valid with status of measurer either implemeted or development" do
     allowed_measurer = %w(Implemented Development)
     allowed_measurer.each do |measurer|
