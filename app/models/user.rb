@@ -60,18 +60,16 @@ class User < ActiveRecord::Base
   end
 
   def self.from_omniauth(auth)
-    User.transaction do 
-      where(provider: auth[:provider], uid: auth[:uid]).first_or_create do |user|
-        user.email = auth[:info][:email]
-        user.name = auth[:info][:name]
-        user.role = 'requestor'
-        user.is_admin = false
-        user.role = DEFAULT_ROLE
-        user.is_approved = DEFAULT_APPROVED_STATUS
-        user.uid = auth[:uid]
-        user.provider = auth[:provider]
-        SlackClient.new.reassign_slack_username(user)
-      end
+    where(provider: auth[:provider], uid: auth[:uid]).first_or_create do |user|
+      user.email = auth[:info][:email]
+      user.name = auth[:info][:name]
+      user.role = 'requestor'
+      user.is_admin = false
+      user.role = DEFAULT_ROLE
+      user.is_approved = DEFAULT_APPROVED_STATUS
+      user.uid = auth[:uid]
+      user.provider = auth[:provider]
+      SlackClient.new.reassign_slack_username(user)
     end
   end
 
