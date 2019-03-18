@@ -4,6 +4,7 @@ require 'simplecov'
 SimpleCov.start 'rails'
 ENV["RAILS_ENV"] ||= 'test'
 ENV["VALID_EMAIL"] ||= 'midtrans.com,veritrans.co.id,go-jek.com'
+ENV["JIRA_URL"] = "https://veritrans.atlassian.net/"
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'webmock/rspec'
