@@ -3,6 +3,8 @@ require 'capybara-screenshot/rspec'
 require 'simplecov'
 SimpleCov.start 'rails'
 ENV["RAILS_ENV"] ||= 'test'
+ENV["ENTITY_SOURCES"] ||= 'midtrans,spots,gojek'
+ENV["JIRA_URL"] = "https://veritrans.atlassian.net/"
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'webmock/rspec'
