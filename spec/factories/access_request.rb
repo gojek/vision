@@ -66,27 +66,27 @@ FactoryGirl.define do
       aasm_state 'cancelled'
     end
 
-    before(:create) do |ir, evaluator|
+    before(:create) do |ar, evaluator|
       if evaluator.temporary
-        ir.access_type = 'Temporary'
-        ir.start_date = 3.days.from_now
-        ir.end_date = 4.days.from_now
+        ar.access_type = 'Temporary'
+        ar.start_date = 3.days.from_now
+        ar.end_date = 4.days.from_now
       end
 
-      ir.user = FactoryGirl.create(:user)
+      ar.user = FactoryGirl.create(:user)
 
       evaluator.collaborators_num.times do |i|
-        ir.collaborators << FactoryGirl.create(:user)
+        ar.collaborators << FactoryGirl.create(:user)
       end
       
       evaluator.approvals_accept.times do |i|
-        ir.approvals << FactoryGirl.create(:access_request_approval, approved: true)
+        ar.approvals << FactoryGirl.create(:access_request_approval, approved: true)
       end
       evaluator.approvals_reject.times do |i|
-        ir.approvals << FactoryGirl.create(:access_request_approval, approved: false)
+        ar.approvals << FactoryGirl.create(:access_request_approval, approved: false)
       end
       evaluator.approvals_alpha.times do |i|
-        ir.approvals << FactoryGirl.create(:access_request_approval, approved: nil)
+        ar.approvals << FactoryGirl.create(:access_request_approval, approved: nil)
       end
     end
   end
