@@ -15,7 +15,8 @@ class AccessRequest < ActiveRecord::Base
 
   REQUEST_TYPES = %w(Create Delete Modify).freeze
   ACCESS_TYPES = [PERMANENT, TEMPORARY]
-
+  ENTITY_SOURCES = ENV['ENTITY_SOURCES'] || "midtrans"
+  ENTITY = ENTITY_SOURCES.split(',').each {|s| s.capitalize!}
 
   validates :approvals, presence: true
   validates :business_justification, presence: true
@@ -189,6 +190,7 @@ class AccessRequest < ActiveRecord::Base
   end
 
   comma do
+    entity_source "Entity Source"
     id
     user_id "User ID"
     request_type "Request Type"
