@@ -15,8 +15,8 @@ class Mentioner
   def self.find_mentionees_from_username(usernames)
     emails = usernames.flat_map do |mention|
       valid_emails.map do |email|
-        mention + '@' + email 
-      end    
+        mention + '@' + email
+      end
     end
     User.where(email: emails)
   end
