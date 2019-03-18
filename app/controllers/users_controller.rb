@@ -38,7 +38,7 @@ class UsersController < ApplicationController
         @access_request.approver_ids = approvers
         if @access_request.save
           @access_request.submit!
-          current_user.is_approved = User.is_approveds[:need_approvals]
+          current_user.need_approvals!
           current_user.save
           sign_out current_user
           NewAccessRequestSlackNotificationJob.perform_async(@access_request)          
