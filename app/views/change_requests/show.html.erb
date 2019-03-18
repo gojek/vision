@@ -97,6 +97,10 @@
           <div class= 'form-group'>
           <%=raw @change_request.tag_list.map{ |tag| link_to tag, change_requests_path(tag_list: [tag]), class:'btn btn-primary btn-xs' }.join('     ')  %>
         </div>
+          <h5>Entity Source</h5>
+          <div class="well well-sm">
+            <%=raw @change_request.entity_source %>
+          </div><!--/well-->
           <table class="table table-striped table-bordered">
             <thead>
               <tr>

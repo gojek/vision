@@ -23,6 +23,8 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 # If you are not using ActiveRecord, you can remove this line.
 ActiveRecord::Migration.maintain_test_schema!
 
+ENV['ENTITY_SOURCES']='midtrans,spots,gojek'
+
 RSpec.configure do |config|
   config.before(:each) do
     ::Sunspot.session = ::Sunspot::Rails::StubSessionProxy.new(::Sunspot.session)
