@@ -61,6 +61,12 @@ FactoryGirl.define do
       user {FactoryGirl.create(:user)}
       reason "reason"
     end
+
+    factory :jira_incident_report do
+      has_further_action true
+      action_item "TEST-123"
+      action_item_status "In Progress"
+    end
     
   end  
 
