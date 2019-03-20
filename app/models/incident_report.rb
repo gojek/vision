@@ -68,7 +68,7 @@ class IncidentReport < ActiveRecord::Base
 
   comma do
     id     
-    entity_source 'entity source'
+    __use__:entity_source
     service_impact 'service impact'     
     problem_details 'problem details' do |problem_details| Sanitize.fragment(problem_details) end
     current_status 'current status' 

@@ -1,5 +1,3 @@
-require 'entity_source_module.rb'
-
 class ChangeRequest < ActiveRecord::Base
   include AASM
   include EntitySourceModule
@@ -104,8 +102,8 @@ class ChangeRequest < ActiveRecord::Base
   end
 
   comma do
-    entity_source 'Entity'
     id 'Request id'
+    __use__:entity_source
     change_summary 'Change summary'
     all_category 'Category'
     all_type 'Type'
