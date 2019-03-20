@@ -7,8 +7,7 @@ module EntitySourceModule
   included do
     validates :entity_source, presence: true
     comma :entity_source do
-      entity_source "Entity source"
+      entity_source 'Entity source'
     end
   end
-
 end
