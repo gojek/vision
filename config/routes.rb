@@ -27,6 +27,7 @@ Rails.application.routes.draw do
           get :deleted # <= this
           get :export_csv
           get :search #=> 'change_requests#search', :as => 'search'
+          get :jiraize
     end
     #collection do
       #get :autocomplete_tag_name

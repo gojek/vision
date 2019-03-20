@@ -15,8 +15,6 @@ class User < ActiveRecord::Base
   LIST_EMAIL_DOMAIN = ENV['VALID_EMAIL'] || "midtrans.com,veritrans.co.id,associate.midtrans.com,spots.co.id,go-jek.com"
   VALID_EMAIL = Regexp.new("\\b[A-Z0-9._%a-z\\-]+@("+LIST_EMAIL_DOMAIN.gsub(/\s+/, '').gsub(',','|').gsub('.','\\.')+")\\z")
 
-  APPROVER_EMAIL = ENV['APPROVER_EMAIL'] || 'ika.​muiz@midtrans.​com'
-  DEFAULT_APPROVED_STATUS = 1
   DEFAULT_ROLE = 'requestor'
   
   validates :role, inclusion: { in: ROLES,
@@ -60,16 +58,23 @@ class User < ActiveRecord::Base
   end
 
   def self.from_omniauth(auth)
-    where(provider: auth[:provider], uid: auth[:uid]).first_or_create do |user|
-      user.email = auth[:info][:email]
-      user.name = auth[:info][:name]
-      user.role = 'requestor'
-      user.is_admin = false
-      user.role = DEFAULT_ROLE
-      user.is_approved = DEFAULT_APPROVED_STATUS
-      user.uid = auth[:uid]
-      user.provider = auth[:provider]
-      SlackClient.new.reassign_slack_username(user)
+    user = where("(provider = ? AND uid = ?) OR email = ?", auth[:provider], auth[:uid], auth[:info][:email]).first
+    if user.nil?
+      User.transaction do 
+        new_user = User.create(
+          :email => auth[:info][:email],
+          :name => auth[:info][:name],
+          :role => DEFAULT_ROLE,
+          :is_admin => false,
+          :uid => auth[:uid],
+          :provider => auth[:provider],
+        )
+        SlackClient.new.reassign_slack_username(new_user)
+        return new_user
+      end
+    else
+      user.update(uid: auth[:uid])
+      return user
     end
   end
 
