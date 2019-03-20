@@ -38,7 +38,6 @@ class User < ActiveRecord::Base
   validates :email, uniqueness: true
   scope :approvers, -> {where('role = ? OR role = ?', 'approver', 'approver_all')}
   scope :approvers_ar, -> {where('role = ? OR role = ?', 'approver_ar', 'approver_all')}
-  default_scope { where.not(:is_approved => 1) }
   scope :active, -> {where(:locked_at => nil)}
   enum is_approved: { rejected: 0, pending: 1, need_approvals: 2, approved: 3 }
 

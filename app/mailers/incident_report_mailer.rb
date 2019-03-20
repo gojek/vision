@@ -1,5 +1,5 @@
 class IncidentReportMailer < ApplicationMailer
-  default from: "vision@midtrans.com"
+  default from: ENV['VISION_EMAIL']
 
   def send_csv(ir_csv, email)
     attachments['incident_report.csv'] = {mime_type: 'text/csv', content: ir_csv}
