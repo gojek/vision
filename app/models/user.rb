@@ -14,8 +14,6 @@ class User < ActiveRecord::Base
   LIST_EMAIL_DOMAIN = ENV['VALID_EMAIL'] || "midtrans.com,veritrans.co.id,associate.midtrans.com,spots.co.id,go-jek.com"
   VALID_EMAIL = Regexp.new("\\b[A-Z0-9._%a-z\\-]+@("+LIST_EMAIL_DOMAIN.gsub(/\s+/, '').gsub(',','|').gsub('.','\\.')+")\\z")
 
-  APPROVER_EMAIL = ENV['APPROVER_EMAIL'] || 'ika.​muiz@midtrans.​com'
-  DEFAULT_APPROVED_STATUS = 1
   DEFAULT_ROLE = 'requestor'
   
   validates :role, inclusion: { in: ROLES,
@@ -38,7 +36,6 @@ class User < ActiveRecord::Base
   validates :email, uniqueness: true
   scope :approvers, -> {where('role = ? OR role = ?', 'approver', 'approver_all')}
   scope :approvers_ar, -> {where('role = ? OR role = ?', 'approver_ar', 'approver_all')}
-  default_scope { where.not(:is_approved => 1) }
   scope :active, -> {where(:locked_at => nil)}
   enum is_approved: { rejected: 0, pending: 1, need_approvals: 2, approved: 3 }
 
@@ -55,7 +52,7 @@ class User < ActiveRecord::Base
   end
 
   def self.from_omniauth(auth)
-    user = where("provider = ? AND uid = ? OR email = ?", auth[:provider], auth[:uid], auth[:info][:email]).first
+    user = where("(provider = ? AND uid = ?) OR email = ?", auth[:provider], auth[:uid], auth[:info][:email]).first
     if user.nil?
       User.transaction do 
         new_user = User.create(
@@ -70,7 +67,7 @@ class User < ActiveRecord::Base
         return new_user
       end
     else
-      user.uid = auth[:uid]
+      user.update(uid: auth[:uid])
       return user
     end
   end
