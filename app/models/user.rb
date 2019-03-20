@@ -12,14 +12,13 @@ class User < ActiveRecord::Base
 
   ROLES = %w(requestor approver release_manager approver_ar approver_all)
   ADMIN = %w(Admin User)
+  LIST_EMAIL_DOMAIN = ENV['VALID_EMAIL'] || "midtrans.com,veritrans.co.id,associate.midtrans.com,spots.co.id,go-jek.com"
+  VALID_EMAIL = Regexp.new("\\b[A-Z0-9._%a-z\\-]+@("+LIST_EMAIL_DOMAIN.gsub(/\s+/, '').gsub(',','|').gsub('.','\\.')+")\\z")
 
-  APPROVER_EMAIL = ENV['APPROVER_EMAIL'] || "ika.muiz@midtrans.com"
+  APPROVER_EMAIL = ENV['APPROVER_EMAIL'] || 'ika.​muiz@midtrans.​com'
   DEFAULT_APPROVED_STATUS = 1
   DEFAULT_ROLE = 'requestor'
-
-
-  # is_approved status
-
+  
   validates :role, inclusion: { in: ROLES,
                               message: '%{value} is not a valid role' }
   validates :email, presence: true
@@ -34,7 +33,8 @@ class User < ActiveRecord::Base
   has_many :Comments
   has_many :notifications, dependent: :destroy
   has_many :Approvals, :dependent => :destroy
-  validates :email, format: { with: /\b[A-Z0-9._%a-z\-]+@(veritrans\.co\.id|midtrans\.com|associate\.midtrans\.com||spots\.co\.id|go-jek\.com)\z/,
+
+  validates :email, format: { with: VALID_EMAIL,
                   message: "must be a veritrans account" }
   validates :email, uniqueness: true
   scope :approvers, -> {where('role = ? OR role = ?', 'approver', 'approver_all')}
@@ -47,7 +47,7 @@ class User < ActiveRecord::Base
   end
 
   def use_company_email?
-    (email =~ /\b[A-Z0-9._%a-z\-]+@(veritrans\.co\.id|midtrans\.com|associate\.midtrans\.com |spots\.co\.id|go-jek\.com)\z/).present?
+    (email =~ VALID_EMAIL).present?
   end
 
   def active_for_authentication?
@@ -80,11 +80,6 @@ class User < ActiveRecord::Base
   # this will make user logout when google credentials are expired (always 1 hour)
   def expired?
     expired_at < Time.now
-  end
-
-  def fresh_token
-    refresh! if (expired? || token == nil)
-    token
   end
 
   def have_notifications?
