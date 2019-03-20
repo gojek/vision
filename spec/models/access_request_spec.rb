@@ -123,18 +123,20 @@ describe AccessRequest, type: :model do
     end
   end
 
-  describe 'set_approvers' do
+  describe 'approver_ids' do
     let (:access_request_approv) {FactoryGirl.create(:access_request, approvals_alpha: 1)}
     it 'set access request approvers' do
-      access_request_approv.set_approvers=([user.id])
+      access_request_approv.approver_ids = [user.id]
+      access_request_approv.reload
       expect(access_request_approv.approvals.first.user).to eq user
     end
   end
 
-  describe 'set_collaborators' do
+  describe 'colloborator_ids' do
     let (:access_request_collab) {FactoryGirl.create(:access_request, collaborators_num: 0)}
     it 'set access request collaborators' do
-      access_request_collab.set_collaborators([user.id])
+      access_request_collab.collaborator_ids=([user.id])
+      access_request.reload
       expect(access_request_collab.reload.collaborators.first).to eq user
     end
   end
