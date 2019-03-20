@@ -1,5 +1,3 @@
-require_relative '../modules/entity_source_module.rb'
-
 class AccessRequest < ActiveRecord::Base
   has_paper_trail
 
@@ -191,8 +189,8 @@ class AccessRequest < ActiveRecord::Base
   end
 
   comma do
-    entity_source "Entity Source"
     id
+    __use__:entity_source
     user_id "User ID"
     request_type "Request Type"
     access_type "Access Type"
