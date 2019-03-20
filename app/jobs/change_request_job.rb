@@ -11,7 +11,7 @@ class ChangeRequestJob
           csv << cr.attributes.values
         end
       end
-		  ChangeRequestMailer.send_csv(csv_string, email).deliver_now
+      ChangeRequestMailer.send_csv(csv_string, email).deliver_now
     end
   end
 end
