@@ -101,15 +101,7 @@
                </td>
                <td>
                    <% if user != current_user && current_user.is_admin %>
-                        <% if user.rejected? %>
-                            Rejected
-                        <% elsif user.pending? %>
-                            Pending
-                        <% elsif user.need_approvals? %>
-                            Waiting for approval
-                        <% else %>
-                            Approved
-                        <% end %>
+                        <%= user_approved_status(user) %>
                     <%end%>
                </td>
             <% end %>
