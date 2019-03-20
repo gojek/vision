@@ -35,6 +35,7 @@ module Vision
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
     config.autoload_paths << "#{Rails.root}/lib"
+    config.autoload_paths << "#{Rails.root}/app/modules"
     # add bower components to it
     config.assets.paths << Rails.root.join("vendor", "assets", "bower_components")
 
