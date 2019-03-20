@@ -238,5 +238,5 @@ class AccessRequest < ActiveRecord::Base
       #{AccessRequestApproval.where(user_id: user.id).select(:access_request_id).to_sql + " UNION " +
         user.collaborate_access_requests.select(:access_request_id).to_sql})").distinct
   end
-
+ 
 end
