@@ -17,6 +17,8 @@ class AccessRequest < ActiveRecord::Base
 
   REQUEST_TYPES = %w(Create Delete Modify).freeze
   ACCESS_TYPES = [PERMANENT, TEMPORARY]
+  DEFAULT_REQUEST_TYPE = 'Create'
+  DEFAULT_ACCESS_TYPE = PERMANENT
 
 
   validates :approvals, presence: true
@@ -210,6 +212,22 @@ class AccessRequest < ActiveRecord::Base
     AccessRequest.where("user_id = #{user.id} OR id IN (
       #{AccessRequestApproval.where(user_id: user.id).select(:access_request_id).to_sql + " UNION " +
         user.collaborate_access_requests.select(:access_request_id).to_sql})").distinct
+  end
+
+  def self.create_for_new_registration_user(new_user, params, approver_user) 
+    AccessRequest.transaction do
+      access_request = new_user.AccessRequests.build(
+        params.merge({
+          request_type: DEFAULT_REQUEST_TYPE,
+          access_type: DEFAULT_ACCESS_TYPE,
+          employee_email_address: new_user.email
+        })
+      )
+      approvers = Array.wrap([ approver_user.id ])
+      access_request.approver_ids = approvers
+      access_request.save
+      access_request
+    end
   end
 
 end
