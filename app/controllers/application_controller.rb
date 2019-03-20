@@ -7,7 +7,10 @@ class ApplicationController < ActionController::Base
   require 'notifier.rb' # Omg
 
   def check_user
-    token_required! unless current_user.nil?
+    if current_user.present?
+      token_required!
+      approved_account
+    end
   end
 
   def token_required!
@@ -29,5 +32,22 @@ class ApplicationController < ActionController::Base
     self.response.headers["Last-Modified"] = Time.now.ctime.to_s
 
     self.response_body = enumerator
+  end
+
+  private
+
+  def approved_account
+    return if current_user.approved?
+
+    flash_message = if current_user.need_approvals?
+                      'Your account is not yet approved to open Vision'
+                    elsif current_user.pending?
+                      'Fill the form'
+                    else
+                      'Sorry, your access request to Vision is rejected.'
+                    end
+    flash[:alert] = flash_message
+    sign_out current_user
+    redirect_to signin_path
   end
 end
