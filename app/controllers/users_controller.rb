@@ -18,42 +18,23 @@ class UsersController < ApplicationController
   end
 
   def create
-    request_type_default = 'Create'
-    access_type_default = 'Permanent'
-    AccessRequest.transaction do
-      @access_request = current_user.AccessRequests.build(
-        register_user_params.merge({
-          :request_type => request_type_default,
-          :access_type => access_type_default,
-          :employee_email_address => current_user.email
-        })
-      )
-
-      approver_id = User.find_by_email(User::APPROVER_EMAIL).id
-      if approver_id.nil?
-        flash[:error] = 'An error occured.'
-        redirect_to signin_path
-      else
-        approvers = Array.wrap([ approver_id ])
-        @access_request.approver_ids = approvers
-        if @access_request.save
-          @access_request.submit!
-          current_user.need_approvals!
-          current_user.save
-          sign_out current_user
-          NewAccessRequestSlackNotificationJob.perform_async(@access_request)          
-          flash[:success] = 'Request has been created and waiting for approval. You\'ll get notification once its approved'
-          redirect_to signin_path
-        else
-          render 'new'
-        end
-      end     
+    approver_user = User.find_by_email(User::APPROVER_EMAIL)
+    @access_request = AccessRequest.create_for_new_registration_user(current_user, register_user_params, approver_user)
+    if @access_request.errors.present?
+      render 'new'  
+    else
+      @access_request.submit!
+      current_user.need_approvals!
+      current_user.save
+      sign_out current_user
+      NewAccessRequestSlackNotificationJob.perform_async(@access_request)          
+      flash[:success] = 'Request has been created and waiting for approval. You\'ll get notification once its approved'
+      redirect_to signin_path
     end
   end
 
   def edit
     @user = User.find params[:id]
-
   end
 
   def update
