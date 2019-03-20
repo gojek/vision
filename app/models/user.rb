@@ -9,10 +9,12 @@ class User < ActiveRecord::Base
   devise :trackable, :lockable, :timeoutable,
          :omniauthable, omniauth_providers: [:google_oauth2]
   acts_as_reader
+
   ROLES = %w(requestor approver release_manager approver_ar approver_all)
   ADMIN = %w(Admin User)
   LIST_EMAIL_DOMAIN = ENV['VALID_EMAIL'] || "midtrans.com,veritrans.co.id,associate.midtrans.com,spots.co.id,go-jek.com"
   VALID_EMAIL = Regexp.new("\\b[A-Z0-9._%a-z\\-]+@("+LIST_EMAIL_DOMAIN.gsub(/\s+/, '').gsub(',','|').gsub('.','\\.')+")\\z")
+  APPROVER_EMAIL = ENV['APPROVER_EMAIL'] || 'ika.muiz@midtrans.com'
 
   DEFAULT_ROLE = 'requestor'
   
@@ -40,7 +42,7 @@ class User < ActiveRecord::Base
   enum is_approved: { rejected: 0, pending: 1, need_approvals: 2, approved: 3 }
 
   def account_active?
-    locked_at.nil?
+    locked_at.nil? && (self.approved? || self.pending?)
   end
 
   def use_company_email?
@@ -49,6 +51,11 @@ class User < ActiveRecord::Base
 
   def active_for_authentication?
     super && account_active?
+  end
+
+  def inactive_message
+    account_active? ? super : (self.rejected? ? "Sorry, your access request to Vision is rejected." : 
+                                                         "Your account is not yet approved to open Vision")
   end
 
   def self.from_omniauth(auth)

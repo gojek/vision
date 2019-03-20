@@ -75,11 +75,11 @@
 
             <div class="field form-group">
               <label>Collaborators</label><br>
-              <%= select_tag "collaborators_list" ,options_for_select(@users), class: 'select2-collaborate form-control', multiple:true %>
+              <%= f.select :collaborator_ids, options_for_select(@users), {}, { class: 'select2-collaborate form-control', multiple:true } %>
             </div><!--/field-->
             <div class="field form-group required">
               <label class="control-label">Approvers</label><br>
-              <%= select_tag "approvers_list" ,options_for_select(@approvers), class: 'select2-approve form-control', multiple:true %>
+              <%= f.select :approver_ids, options_for_select(@approvers), {}, { class: 'select2-approve form-control', multiple:true } %>
             </div><!--/field-->
 
 

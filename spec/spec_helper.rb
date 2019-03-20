@@ -3,7 +3,9 @@ require 'capybara-screenshot/rspec'
 require 'simplecov'
 SimpleCov.start 'rails'
 ENV["RAILS_ENV"] ||= 'test'
+ENV["CONTACT_EMAIL"] ||= 'contact@vision.com'
 ENV["VALID_EMAIL"] ||= 'midtrans.com,veritrans.co.id,go-jek.com'
+ENV["APPROVER_EMAIL"] ||= 'ika.muiz@midtrans.com'
 ENV['VISION_EMAIL'] ||= 'vision@midtrans.com'
 ENV["JIRA_URL"] = "https://veritrans.atlassian.net/"
 require File.expand_path("../../config/environment", __FILE__)
