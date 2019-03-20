@@ -4,6 +4,8 @@ require 'simplecov'
 SimpleCov.start 'rails'
 ENV["RAILS_ENV"] ||= 'test'
 ENV["CONTACT_EMAIL"] ||= 'contact@vision.com'
+ENV["VALID_EMAIL"] ||= 'midtrans.com,veritrans.co.id,go-jek.com'
+ENV["APPROVER_EMAIL"] ||= 'ika.muiz@midtrans.com'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'webmock/rspec'
