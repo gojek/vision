@@ -6,7 +6,6 @@ class ChangeRequestsController < ApplicationController
   before_action :submitted_required, only: [:edit]
   before_action :reference_required, only: [:create_hotfix]
   before_action :role_not_approver_required, only: :edit
-  require 'sucker_punch/async_syntax'
   require 'notifier.rb'
   require 'slack_notif.rb'
   require 'calendar.rb'

@@ -6,9 +6,6 @@ class UsersController < ApplicationController
   skip_before_action :admin_required, only:[:approver]
   skip_before_action :check_pending_user, only: [:new, :create]
 
-  require 'sucker_punch/async_syntax'
-
-
 
   def index
     @q = User.ransack(params[:q])
