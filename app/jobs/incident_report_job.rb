@@ -31,10 +31,8 @@ class IncidentReportJob
           end
         end
       end
-    end
-    ActiveRecord::Base.connection_pool.with_connection do
       IncidentReportMailer.send_csv(csv_string, email).deliver_later
-    end
+    end  
   end
 
   def get_data(ir)
