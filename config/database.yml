@@ -1,3 +1,7 @@
 production:
   adapter: postgresql
   pool: <%= ENV.fetch("DB_POOL") { 8 } %>
+
+staging:
+  adapter: postgresql
+  pool: <%= ENV.fetch("DB_POOL") { 8 } %>
