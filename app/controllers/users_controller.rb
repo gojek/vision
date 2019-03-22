@@ -87,7 +87,6 @@ class UsersController < ApplicationController
 
   def register_user_params
     params.require(:access_request).permit(
-      :employee_name,
       :employee_position,
       :employee_department,
       :business_justification,

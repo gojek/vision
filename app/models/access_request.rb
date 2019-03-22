@@ -222,6 +222,7 @@ class AccessRequest < ActiveRecord::Base
           request_type: DEFAULT_REQUEST_TYPE,
           access_type: DEFAULT_ACCESS_TYPE,
           employee_email_address: new_user.email,
+          employee_name: new_user.name,
           vision_access: true
         })
       )
