@@ -22,17 +22,17 @@ class IncidentReportJob
   ]
 
   def perform(ir_ids, email)
-    csv_string = CSV.generate do |csv|
-      csv << CSV_COLUMNS
-      IncidentReport.where(id: ir_ids).order('created_at DESC').find_in_batches do |group|
-        group.each do |ir|
-          csv << get_data(ir)
+    ActiveRecord::Base.connection_pool.with_connection do
+      csv_string = CSV.generate do |csv|
+        csv << CSV_COLUMNS
+        IncidentReport.where(id: ir_ids).order('created_at DESC').find_in_batches do |group|
+          group.each do |ir|
+            csv << get_data(ir)
+          end
         end
       end
-    end
-    ActiveRecord::Base.connection_pool.with_connection do
       IncidentReportMailer.send_csv(csv_string, email).deliver_later
-    end
+    end  
   end
 
   def get_data(ir)
