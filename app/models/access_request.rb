@@ -3,6 +3,8 @@ class AccessRequest < ActiveRecord::Base
 
   before_save :create_access_request_status
 
+  attr_accessor :approver_ids
+
   include AASM
   belongs_to :user
   has_and_belongs_to_many :collaborators, join_table: :access_request_collaborators, class_name: 'User'
@@ -12,10 +14,12 @@ class AccessRequest < ActiveRecord::Base
   has_many :notifications, dependent: :destroy
   TEMPORARY = 'Temporary'.freeze
   PERMANENT = 'Permanent'.freeze
+  CREATE = 'Create'.freeze
+  DELETE = 'Delete'.freeze
+  MODIFY = 'Modify'.freeze
 
-  REQUEST_TYPES = %w(Create Delete Modify).freeze
+  REQUEST_TYPES = [CREATE, DELETE, MODIFY]
   ACCESS_TYPES = [PERMANENT, TEMPORARY]
-
 
   validates :approvals, presence: true
   validates :business_justification, presence: true
@@ -85,20 +89,8 @@ class AccessRequest < ActiveRecord::Base
       !terminal_state? && !has_approver?(user)
   end
 
-  def set_approvers=(approver_id_list)
-    self.approvals.delete_all
-    approver_id_list.each do |approver_id|
-      approver = User.find(approver_id)
-      approval = AccessRequestApproval.create(user: approver)
-      self.approvals << approval
-    end
-  end
-
-  def set_collaborators(collaborator_id_list)
-    self.collaborators = []
-    collaborator_id_list.each do |collaborator_id|
-      self.collaborators << User.find(collaborator_id)
-    end
+  def approver_ids=(approver_ids)
+    self.approvals << AccessRequestApproval.setup_for_access_request(self, approver_ids)
   end
 
   def previous
@@ -158,23 +150,6 @@ class AccessRequest < ActiveRecord::Base
     AccessRequestApproval.where(access_request_id: id, user_id: user.id).any?
   end
 
-  def update_approvers(approver_id_list)
-    current_approver_ids = AccessRequestApproval.where(access_request_id: self.id).pluck(:user_id)
-    approver_id_list.map! { |id| id.to_i }
-    deleted_approver_ids = current_approver_ids - approver_id_list
-    if deleted_approver_ids.present?
-      AccessRequestApproval.where(access_request_id: self.id).where(user_id: deleted_approver_ids).destroy_all
-    end
-    approver_id_list.each do |approver_id|
-      app = AccessRequestApproval.where(user_id: approver_id).where(access_request_id: self.id).first
-      if (!app.present?)
-        approver = User.find(approver_id)
-        new_approval = AccessRequestApproval.create(user: User.find(approver_id))
-        self.approvals << new_approval
-      end
-    end
-  end
-
   def is_associate?(user)
     stakeholders = [self.user] + collaborators + (approvals.map { |approval| approval.user })
     stakeholders.include? user
@@ -231,6 +206,7 @@ class AccessRequest < ActiveRecord::Base
     created_at "Created At"
     updated_at "Updated At"
     business_justification "Business Justification"
+    vision_access "Vision access"
   end
 
   def self.relevant_access_requests(user)
@@ -238,5 +214,23 @@ class AccessRequest < ActiveRecord::Base
       #{AccessRequestApproval.where(user_id: user.id).select(:access_request_id).to_sql + " UNION " +
         user.collaborate_access_requests.select(:access_request_id).to_sql})").distinct
   end
- 
+
+  def self.create_for_new_registration_user(new_user, params, approver_user) 
+    AccessRequest.transaction do
+      access_request = new_user.AccessRequests.build(
+        params.merge({
+          request_type: CREATE,
+          access_type: PERMANENT,
+          employee_email_address: new_user.email,
+          employee_name: new_user.name,
+          vision_access: true
+        })
+      )
+      approvers = Array.wrap([ approver_user.id ])
+      access_request.approver_ids = approvers
+      access_request.save
+      access_request
+    end
+  end
+
 end
