@@ -3,7 +3,6 @@ class ChangeRequestStatusesController < ApplicationController
   before_action :set_change_request, only:[:deploy, :rollback, :cancel, :close, :fail, :submit]
   before_action :authorized_user_required, only:[:deploy, :rollback, :cancel, :close, :fail, :submit]
 
-  require 'sucker_punch/async_syntax'
 
 
   private def alert_users(status:)

@@ -179,22 +179,6 @@ describe User, type: :model do
       user.reload
       expect(user.is_associated?(cr)).to eq false
     end
-
-    describe "action from access request" do
-      let(:user_to_be_approved) {FactoryGirl.create(:pending_user)}
-      let(:ar_for_approves_user) {FactoryGirl.create(:submitted_access_request_for_pending_user, employee_email_address: user_to_be_approved.email)}
-      it "approved relevant user when action = approve" do
-        User.action_from_access_request(ar_for_approves_user, 'approve')
-        user_to_be_approved.reload
-        expect(user_to_be_approved.is_approved).to eq('approved')
-      end
-
-      it "rejects relevant user when action = reject" do
-        User.action_from_access_request(ar_for_approves_user, 'reject')
-        user_to_be_approved.reload
-        expect(user_to_be_approved.is_approved).to eq('rejected')
-      end
-    end
   end
 
 end
