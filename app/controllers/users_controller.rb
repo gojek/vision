@@ -11,6 +11,7 @@ class UsersController < ApplicationController
     @q = User.ransack(params[:q])
     @users = @q.result(distinct: true).page(params[:page])
              .per(params[:per_page])
+             .order("created_at DESC")
   end
 
   def new

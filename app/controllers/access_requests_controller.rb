@@ -168,21 +168,33 @@ class AccessRequestsController < ApplicationController
   end
 
   def approve
-    if @approval.update(approved: true, notes: params["notes"])
-      flash[:success] = 'Access Request approved'
-    else
-      flash[:notice] = @approval.errors.full_messages.to_sentence
+    AccessRequest.transaction do
+      if @approval.update(approved: true, notes: params["notes"])
+        flash[:success] = 'Access Request approved'
+        if @access_request.vision_access
+          user = User.action_from_access_request(@access_request, 'approve') 
+          UserRequestMailer.approve_email(user).deliver_now
+        end
+      else
+        flash[:notice] = @approval.errors.full_messages.to_sentence
+      end
+      redirect_to @access_request
     end
-    redirect_to @access_request
   end
 
   def reject
-    if @approval.update(approved: false, notes: params["notes"])
-      flash[:success] = 'Access Request rejected'
-    else
-      flash[:notice] = @approval.errors.full_messages.to_sentence
-    end
-    redirect_to @access_request
+    AccessRequest.transaction do
+      if @approval.update(approved: false, notes: params["notes"])
+        flash[:success] = 'Access Request rejected'
+        if @access_request.vision_access
+          user = User.action_from_access_request(@access_request, 'reject') 
+          UserRequestMailer.reject_email(user).deliver_now
+        end
+      else
+        flash[:notice] = @approval.errors.full_messages.to_sentence
+      end
+      redirect_to @access_request
+    end   
   end
 
   private
@@ -238,6 +250,7 @@ class AccessRequestsController < ApplicationController
         :business_justification,
         :metabase,
         :solutions_dashboard,
+        :vision_access,
         :approver_ids => [],
         :collaborator_ids => []
     ).tap do |params|
