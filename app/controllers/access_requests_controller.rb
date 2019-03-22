@@ -10,7 +10,6 @@ class AccessRequestsController < ApplicationController
   require 'notifier.rb'
   require 'slack_notif.rb'
   require 'csv_exporter.rb'
-  require 'sucker_punch/async_syntax'
 
 
   def index
@@ -170,8 +169,8 @@ class AccessRequestsController < ApplicationController
       if @approval.update(approved: true, notes: params["notes"])
         flash[:success] = 'Access Request approved'
         if @access_request.vision_access
-          user = User.action_from_access_request(@access_request, 'approve') 
-          UserRequestMailer.approve_email(user).deliver_later
+          @access_request.user.approved!
+          UserRequestMailer.approve_email(@access_request.user).deliver_later
         end
       else
         flash[:notice] = @approval.errors.full_messages.to_sentence
@@ -185,8 +184,8 @@ class AccessRequestsController < ApplicationController
       if @approval.update(approved: false, notes: params["notes"])
         flash[:success] = 'Access Request rejected'
         if @access_request.vision_access
-          user = User.action_from_access_request(@access_request, 'reject') 
-          UserRequestMailer.reject_email(user).deliver_later
+          @access_request.user.rejected!
+          UserRequestMailer.reject_email(@access_request.user).deliver_later
         end
       else
         flash[:notice] = @approval.errors.full_messages.to_sentence
