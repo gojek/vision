@@ -14,7 +14,6 @@ class User < ActiveRecord::Base
   ADMIN = %w(Admin User)
   LIST_EMAIL_DOMAIN = ENV['VALID_EMAIL'] || "midtrans.com,veritrans.co.id,associate.midtrans.com,spots.co.id,go-jek.com"
   VALID_EMAIL = Regexp.new("\\b[A-Z0-9._%a-z\\-]+@("+LIST_EMAIL_DOMAIN.gsub(/\s+/, '').gsub(',','|').gsub('.','\\.')+")\\z")
-  APPROVER_EMAIL = ENV['APPROVER_EMAIL'] || 'ika.muiz@midtrans.com'
 
   DEFAULT_ROLE = 'requestor'
   
