@@ -1,4 +1,5 @@
 # 'app/controllers/users/omniauth_callbacks_controller.rb'
+
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def google_oauth2
     refresh_token = request.env['omniauth.auth'][:credentials][:refresh_token]
@@ -10,7 +11,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     end
     @user.valid?
     @user.save
-    if @user.persisted?
+		if @user.persisted?
       sign_in_and_redirect @user, event: :authentication
     else
       if !@user.use_company_email?
@@ -18,11 +19,13 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       else
         err_message = 'Authentication failed!'
       end
-      redirect_to root_path, flash: { alert: err_message }
+      redirect_to signin_path, flash: { alert: err_message }
     end
   end
 
   def failure
     redirect_to root_path
   end
+
+
 end
