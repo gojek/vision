@@ -14,12 +14,12 @@ class AccessRequest < ActiveRecord::Base
   has_many :notifications, dependent: :destroy
   TEMPORARY = 'Temporary'.freeze
   PERMANENT = 'Permanent'.freeze
+  CREATE = 'Create'.freeze
+  DELETE = 'Delete'.freeze
+  MODIFY = 'Modify'.freeze
 
-  REQUEST_TYPES = %w(Create Delete Modify).freeze
+  REQUEST_TYPES = [CREATE, DELETE, MODIFY]
   ACCESS_TYPES = [PERMANENT, TEMPORARY]
-  DEFAULT_REQUEST_TYPE = 'Create'
-  DEFAULT_ACCESS_TYPE = PERMANENT
-
 
   validates :approvals, presence: true
   validates :business_justification, presence: true
@@ -31,7 +31,7 @@ class AccessRequest < ActiveRecord::Base
 
   attr_accessor :reason
 
-  searchable auto_index: false do
+  searchable do
     text :employee_name, stored: true
     text :employee_position, stored: true
     text :employee_email_address, stored: true
@@ -219,8 +219,8 @@ class AccessRequest < ActiveRecord::Base
     AccessRequest.transaction do
       access_request = new_user.AccessRequests.build(
         params.merge({
-          request_type: DEFAULT_REQUEST_TYPE,
-          access_type: DEFAULT_ACCESS_TYPE,
+          request_type: CREATE,
+          access_type: PERMANENT,
           employee_email_address: new_user.email,
           employee_name: new_user.name,
           vision_access: true
