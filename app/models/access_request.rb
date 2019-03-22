@@ -206,6 +206,7 @@ class AccessRequest < ActiveRecord::Base
     created_at "Created At"
     updated_at "Updated At"
     business_justification "Business Justification"
+    vision_access "Vision access"
   end
 
   def self.relevant_access_requests(user)
@@ -220,7 +221,8 @@ class AccessRequest < ActiveRecord::Base
         params.merge({
           request_type: DEFAULT_REQUEST_TYPE,
           access_type: DEFAULT_ACCESS_TYPE,
-          employee_email_address: new_user.email
+          employee_email_address: new_user.email,
+          vision_access: true
         })
       )
       approvers = Array.wrap([ approver_user.id ])
