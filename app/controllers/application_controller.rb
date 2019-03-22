@@ -22,6 +22,10 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     return_url = stored_location_for(resource) || change_requests_path
+    if current_user.pending?
+      return_url = register_path
+      flash[:alert] = "Please fill the form correctly to propose your access request to approver."
+    end
     logger.info "Returning User to.......... #{return_url}"
     return_url
   end
@@ -53,7 +57,6 @@ class ApplicationController < ActionController::Base
 
   def check_pending_user
     if current_user.present? && current_user.pending?
-      flash[:alert] = "Please fill the form correctly to propose your access request to approver."
       redirect_to register_path
     end
   end
