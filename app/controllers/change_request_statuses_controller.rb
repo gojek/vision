@@ -3,10 +3,13 @@ class ChangeRequestStatusesController < ApplicationController
   before_action :set_change_request, only:[:deploy, :rollback, :cancel, :close, :fail, :submit]
   before_action :authorized_user_required, only:[:deploy, :rollback, :cancel, :close, :fail, :submit]
 
+  require 'sucker_punch/async_syntax'
+
+
   private def alert_users(status:)
     if @change_request && @status
       begin
-        UserMailer.notif_email(@change_request.user, @change_request, @status).deliver_now
+        UserMailer.notif_email(@change_request.user, @change_request, @status).deliver_later
         Notifier.cr_notify(current_user, @change_request, status)
         SlackNotif.new.notify_terminate_cr(@change_request, status)
       rescue => e
@@ -94,7 +97,7 @@ class ChangeRequestStatusesController < ApplicationController
       @status.status = 'submitted'
       if @status.save
         @change_request.submit!
-        UserMailer.notif_email(@change_request.user, @change_request, @status).deliver_now
+        UserMailer.notif_email(@change_request.user, @change_request, @status).deliver_later
         #no need to notify, because it same with new cr
       end
     end

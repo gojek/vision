@@ -6,6 +6,9 @@ class UsersController < ApplicationController
   skip_before_action :admin_required, only:[:approver]
   skip_before_action :check_pending_user, only: [:new, :create]
 
+  require 'sucker_punch/async_syntax'
+
+
 
   def index
     @q = User.ransack(params[:q])
@@ -68,7 +71,7 @@ class UsersController < ApplicationController
     @user = User.find params[:id]
     @user.approved!
     flash[:success] = 'User approved succesfully'
-    UserRequestMailer.approve_email(@user).deliver_now
+    UserRequestMailer.approve_email(@user).deliver_later
     redirect_to users_path
   end
 
@@ -76,7 +79,7 @@ class UsersController < ApplicationController
     @user = User.find params[:id]
     @user.rejected!
     flash[:success] = 'User rejected succesfully'
-    UserRequestMailer.reject_email(@user).deliver_now
+    UserRequestMailer.reject_email(@user).deliver_later
     redirect_to users_path
   end
 
