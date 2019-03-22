@@ -2,6 +2,8 @@
 
 class ChangeRequestJob 
   include SuckerPunch::Job 
+  require 'sucker_punch/async_syntax'
+
 
   def perform(cr_ids, email)
     ActiveRecord::Base.connection_pool.with_connection do
@@ -11,7 +13,7 @@ class ChangeRequestJob
           csv << cr.attributes.values
         end
       end
-      ChangeRequestMailer.send_csv(csv_string, email).deliver_now
+      ChangeRequestMailer.send_csv(csv_string, email).deliver_later
     end
   end
 end

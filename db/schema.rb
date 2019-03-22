@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190213120419) do
+ActiveRecord::Schema.define(version: 20190320123757) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -99,6 +99,7 @@ ActiveRecord::Schema.define(version: 20190213120419) do
     t.string   "business_justification"
     t.boolean  "metabase",                        default: false
     t.boolean  "solutions_dashboard",             default: false
+    t.boolean  "vision_access",                   default: false
   end
 
   add_index "access_requests", ["user_id"], name: "index_access_requests_on_user_id", using: :btree
@@ -167,6 +168,7 @@ ActiveRecord::Schema.define(version: 20190213120419) do
     t.text     "backup"
     t.boolean  "testing_environment_available", default: true
     t.text     "testing_procedure"
+    t.text     "testing_notes"
     t.datetime "schedule_change_date"
     t.datetime "planned_completion"
     t.datetime "grace_period_starts"
@@ -206,7 +208,6 @@ ActiveRecord::Schema.define(version: 20190213120419) do
     t.string   "google_event_id"
     t.boolean  "downtime_expected"
     t.integer  "expected_downtime_in_minutes"
-    t.text     "testing_notes"
   end
 
   add_index "change_requests", ["cab_id"], name: "index_change_requests_on_cab_id", using: :btree
@@ -405,6 +406,7 @@ ActiveRecord::Schema.define(version: 20190213120419) do
     t.string   "refresh_token"
     t.datetime "expired_at"
     t.string   "slack_username"
+    t.integer  "is_approved",        default: 1
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

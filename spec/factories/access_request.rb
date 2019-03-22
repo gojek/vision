@@ -48,6 +48,7 @@ FactoryGirl.define do
     password_reset true
     user_identification 'user_identification'
     asset_name 'Asset Name'
+    vision_access false
 
     factory :draft_access_request do
       aasm_state 'draft'
@@ -55,6 +56,12 @@ FactoryGirl.define do
 
     factory :submitted_access_request do
       aasm_state 'submitted'
+      request_date Time.current
+    end
+
+    factory :submitted_access_request_for_pending_user do
+      aasm_state 'submitted'
+      vision_access true
       request_date Time.current
     end
 

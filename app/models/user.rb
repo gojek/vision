@@ -9,8 +9,14 @@ class User < ActiveRecord::Base
   devise :trackable, :lockable, :timeoutable,
          :omniauthable, omniauth_providers: [:google_oauth2]
   acts_as_reader
+
   ROLES = %w(requestor approver release_manager approver_ar approver_all)
   ADMIN = %w(Admin User)
+  LIST_EMAIL_DOMAIN = ENV['VALID_EMAIL'] || "midtrans.com,veritrans.co.id,associate.midtrans.com,spots.co.id,go-jek.com"
+  VALID_EMAIL = Regexp.new("\\b[A-Z0-9._%a-z\\-]+@("+LIST_EMAIL_DOMAIN.gsub(/\s+/, '').gsub(',','|').gsub('.','\\.')+")\\z")
+
+  DEFAULT_ROLE = 'requestor'
+  
   validates :role, inclusion: { in: ROLES,
                               message: '%{value} is not a valid role' }
   validates :email, presence: true
@@ -25,33 +31,50 @@ class User < ActiveRecord::Base
   has_many :Comments
   has_many :notifications, dependent: :destroy
   has_many :Approvals, :dependent => :destroy
-  validates :email, format: { with: /\b[A-Z0-9._%a-z\-]+@(veritrans\.co\.id|midtrans\.com|associate\.midtrans\.com||spots\.co\.id)\z/,
+
+  validates :email, format: { with: VALID_EMAIL,
                   message: "must be a veritrans account" }
   validates :email, uniqueness: true
   scope :approvers, -> {where('role = ? OR role = ?', 'approver', 'approver_all')}
   scope :approvers_ar, -> {where('role = ? OR role = ?', 'approver_ar', 'approver_all')}
   scope :active, -> {where(:locked_at => nil)}
-
+  enum is_approved: { rejected: 0, pending: 1, need_approvals: 2, approved: 3 }
 
   def account_active?
-    locked_at.nil?
+    locked_at.nil? && (self.approved? || self.pending?)
   end
 
   def use_company_email?
-    (email =~ /\b[A-Z0-9._%a-z\-]+@(veritrans\.co\.id|midtrans\.com|associate\.midtrans\.com |spots\.co\.id)\z/).present?
+    (email =~ VALID_EMAIL).present?
   end
 
   def active_for_authentication?
     super && account_active?
   end
 
+  def inactive_message
+    account_active? ? super : (self.rejected? ? "Sorry, your access request to Vision is rejected." : 
+                                                         "Your account is not yet approved to open Vision")
+  end
+
   def self.from_omniauth(auth)
-    where(provider: auth[:provider], uid: auth[:uid]).first_or_create do |user|
-      user.email = auth[:info][:email]
-      user.name = auth[:info][:name]
-      user.role = 'requestor'
-      user.is_admin = false
-      SlackClient.new.reassign_slack_username(user)
+    user = where("(provider = ? AND uid = ?) OR email = ?", auth[:provider], auth[:uid], auth[:info][:email]).first
+    if user.nil?
+      User.transaction do 
+        new_user = User.create(
+          :email => auth[:info][:email],
+          :name => auth[:info][:name],
+          :role => DEFAULT_ROLE,
+          :is_admin => false,
+          :uid => auth[:uid],
+          :provider => auth[:provider],
+        )
+        SlackClient.new.reassign_slack_username(new_user)
+        return new_user
+      end
+    else
+      user.update(uid: auth[:uid])
+      return user
     end
   end
 
@@ -62,11 +85,6 @@ class User < ActiveRecord::Base
   # this will make user logout when google credentials are expired (always 1 hour)
   def expired?
     expired_at < Time.now
-  end
-
-  def fresh_token
-    refresh! if (expired? || token == nil)
-    token
   end
 
   def have_notifications?
@@ -80,5 +98,4 @@ class User < ActiveRecord::Base
   def is_associated?(change_request)
     change_request.associated_users.include? self
   end
-
 end
