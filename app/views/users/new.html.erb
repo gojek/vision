@@ -47,23 +47,23 @@
                     <%= form_for(@access_request, url: post_register_path) do |f| %>
                       <div class="form-group">
                         <%= f.label :employee_name %>
-                        <%= f.text_field :employee_name, class: 'form-control' %>
+                        <%= f.text_field :employee_name, class: 'form-control', placeholder: 'ex: Joen Doe' %>
                       </div>
                       <div class="form-group">
                         <%= f.label :employee_position %>
-                        <%= f.text_field :employee_position, class: 'form-control' %>
+                        <%= f.text_field :employee_position, class: 'form-control', placeholder: 'Your job title ex: DevOps Engineer'%>
                       </div>
                       <div class="form-group">
                         <%= f.label :employee_department %>
-                        <%= f.text_field :employee_department, class: 'form-control' %>
+                        <%= f.text_field :employee_department, class: 'form-control', placeholder: 'Department location of your job, ex: Engineering'%>
                       </div>
                       <div class="form-group">
                         <%= f.label :employee_phone %>
-                        <%= f.text_field :employee_phone, class: 'form-control' %>
+                        <%= f.text_field :employee_phone, class: 'form-control', placeholder: 'Your phone number, ex: +62 821xxxx'%>
                       </div>
                       <div class="form-group">
                         <%= f.label :business_justification %>
-                        <%= f.text_area :business_justification, class: 'form-control' %>
+                        <%= f.text_area :business_justification, class: 'form-control', placeholder: 'Fill what you want to proposed, ex: Access vision for create Change Request'%>
                       </div>
                       <div class="form-group">
                         <%= f.submit "Register", class: 'btn btn-primary btn-flat'%>
