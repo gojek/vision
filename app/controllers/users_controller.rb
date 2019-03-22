@@ -19,7 +19,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    approver_user = User.find_by_email(User::APPROVER_EMAIL)
+    approver_user = User.find_by_email(ENV['APPROVER_EMAIL'])
     @access_request = AccessRequest.create_for_new_registration_user(current_user, register_user_params, approver_user)
     if @access_request.errors.present?
       render 'new'  
