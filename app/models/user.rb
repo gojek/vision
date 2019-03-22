@@ -98,15 +98,4 @@ class User < ActiveRecord::Base
   def is_associated?(change_request)
     change_request.associated_users.include? self
   end
-
-  def self.action_from_access_request(access_request, action)
-    user = find_by_email(access_request.employee_email_address)
-    case action
-    when('approve')
-      user.approved!
-    when('reject')
-      user.rejected!
-    end
-    user
-  end
 end
