@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190121041026) do
+ActiveRecord::Schema.define(version: 20190320123757) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -100,6 +100,7 @@ ActiveRecord::Schema.define(version: 20190121041026) do
     t.boolean  "metabase",                        default: false
     t.boolean  "solutions_dashboard",             default: false
     t.string   "entity_source",                   default: "Midtrans", null: false
+    t.boolean  "vision_access",                   default: false
   end
 
   add_index "access_requests", ["user_id"], name: "index_access_requests_on_user_id", using: :btree
