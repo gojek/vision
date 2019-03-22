@@ -94,8 +94,8 @@ class AccessRequestCsvParser
   def extract_approvers
     if @raw_data['approvers'].present?
       @raw_data['approvers'] = @raw_data['approvers'].split(',')
-      @data['set_approvers'] = User.where(email: @raw_data['approvers'].map(&:strip)).map(&:id)
-      @error ||= @raw_data['approvers'].size != @data['set_approvers'].size
+      @data['approver_ids'] = User.where(email: @raw_data['approvers'].map(&:strip)).map(&:id)
+      @error ||= @raw_data['approvers'].size != @data['approver_ids'].size
     else
       @error = true
     end

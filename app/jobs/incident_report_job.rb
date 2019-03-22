@@ -2,6 +2,8 @@
 
 class IncidentReportJob
   include SuckerPunch::Job
+  require 'sucker_punch/async_syntax'
+
 
   CSV_COLUMNS = [
     'id',
@@ -29,7 +31,7 @@ class IncidentReportJob
           end
         end
       end
-      IncidentReportMailer.send_csv(csv_string, email).deliver_now
+      IncidentReportMailer.send_csv(csv_string, email).deliver_later
     end  
   end
 
