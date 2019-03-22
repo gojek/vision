@@ -2,6 +2,8 @@
 
 class ChangeRequestJob 
   include SuckerPunch::Job 
+  require 'sucker_punch/async_syntax'
+
 
   def perform(cr_ids, email)
     ActiveRecord::Base.connection_pool.with_connection do
