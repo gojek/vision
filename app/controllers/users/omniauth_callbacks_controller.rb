@@ -11,7 +11,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     end
     @user.valid?
     @user.save
-    if @user.persisted?
+		if @user.persisted?
       sign_in_and_redirect @user, event: :authentication
     else
       if !@user.use_company_email?
