@@ -79,11 +79,24 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
   config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.default_url_options = { host: 'vt-vision-staging2.herokuapp.com' }
+  config.action_mailer.default_url_options = { host: 'vision-stg.herokuapp.com'}
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    address: "vt-vision-staging2.herokuapp.com",
-    port: "1025"
+    address: "smtp.gmail.com",
+    port: "587",
+    domain: "gmail.com",
+    authentication: "plain",
+    enable_startttls_auto: true,
+    user_name: ENV['GMAIL_USERNAME_DEV'],
+    password: ENV['GMAIL_PASSWORD_DEV']
+    #user_name: ENV['GMAIL_USERNAME_DEV'],
+    #password: ENV['GMAIL_PASSWORD_DEV']
+  }
+  Rails.application.config.middleware.use ExceptionNotification::Rack,
+  :email => {
+    :email_prefix => "[VISION] ",
+    :sender_address => %{"vision-notifier" <vision@veritrans.co.id>},
+    :exception_recipients => %w{vision@veritrans.co.id}
   }
 
 end

@@ -43,6 +43,11 @@ describe User, type: :model do
     expect(user).to be_valid
   end
 
+  it "is valid with a gojek email" do
+    gojek = FactoryGirl.create(:gojek_email)
+    expect(gojek).to be_valid
+  end
+
   it "is invalid without an email address" do
     user.email = nil
     user.valid?
@@ -58,7 +63,7 @@ describe User, type: :model do
   end
 
   it "is invalid with a non-veritrans email" do
-    user.email = 'squidward@gmail.com'
+    user.email = 'squidward@hotmail.com'
     user.valid?
     expect(user.errors[:email].size).to eq(1)
   end
@@ -97,7 +102,7 @@ describe User, type: :model do
 
     it "will find the user based on the auth from omniauth if user already registered" do
       user = FactoryGirl.create(:user)
-      auth = {:provider => 'google_oauth2', :uid => user.uid}
+      auth = {:provider => 'google_oauth2', :uid => user.uid, :info => {:email => user.email}}
       expect(User.from_omniauth(auth)).to eq user
     end
 
@@ -110,7 +115,7 @@ describe User, type: :model do
       expect(user.email).to eq auth[:info][:email]
       expect(user.name).to eq auth[:info][:name]
       expect(user.role).to eq 'requestor'
-      expect(user.slack_username).to eq @slack_username
+      expect(user.slack_username).to eq @slack_username.to_s
       expect(user.is_admin).to eq false
     end
 
@@ -133,10 +138,6 @@ describe User, type: :model do
     expect(user.expired?).to eq false
   end
 
-
-  it "fresh_token method will return current token if not expired" do
-    expect(user.fresh_token).to eq '123456'
-  end
   
   it "should return list of all approvers if User.approvers is called" do
     approver1 = FactoryGirl.create(:approver)
@@ -179,4 +180,5 @@ describe User, type: :model do
       expect(user.is_associated?(cr)).to eq false
     end
   end
+
 end
