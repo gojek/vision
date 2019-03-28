@@ -1,0 +1,87 @@
+<% content_for :register do %>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-6 col-xs-push-3">
+          <div class="box box-default" id="register-form-field">
+            <div class="box-header with border"></div>
+            <div class="box-body">
+              <section class="content-header">
+                <h1>Register new user</h1>
+                <br>
+              </section>
+
+              <% if @access_request.errors.any? %>
+                <div class="alert alert-danger">
+                  <ul>
+                    <% @access_request.errors.full_messages.each do |error| %>
+                      <li><%= error %></li>
+                    <% end %>
+                  </ul>
+                </div>
+              <% end %>
+
+              <section class="content">
+                <div class="row">
+                  <div class='col-xs-12'>
+                      <%if flash[:success] != nil %>
+                        <div class='alert alert-success'>
+                            <p id="notice"><%= flash[:success]  %></p>
+                        </div>
+                      <% end %>
+
+                      <%if !flash[:error].nil? %>
+                        <div class='alert alert-danger'>
+                            <p id="notice"><%= flash[:error]  %></p>
+                        </div>
+                      <% end %>
+
+                      <%if !flash[:alert].nil? %>
+                        <div class='alert alert-info'>
+                            <p id="notice"><%= flash[:alert]  %></p>
+                        </div>
+                      <% end %>
+                  </div>
+
+                  <div class="col-xs-12">
+                    <%= form_for(@access_request, url: post_register_path) do |f| %>
+                      <div class="form-group">
+                        <%= f.label :employee_position %>
+                        <%= f.text_field :employee_position, class: 'form-control', placeholder: 'Your job title ex: DevOps Engineer' %>
+                      </div>
+                      <div class="form-group">
+                        <%= f.label :employee_department %>
+                        <%= f.text_field :employee_department, class: 'form-control', placeholder: 'Department location ex: Engineering' %>
+                      </div>
+                      <div class="form-group">
+                        <%= f.label :employee_phone %>
+                        <%= f.text_field :employee_phone, class: 'form-control' , placeholder: 'Your phone number, ex: +62 821 xxxxx'%>
+                      </div>
+                      <div class="form-group">
+                        <%= f.label :business_justification %>
+                        <%= f.text_area :business_justification, class: 'form-control', placeholder: 'Tell what you want to propose, ex: Testing vision' %>
+                      </div>
+                      <div class="form-group">
+                        <%= f.submit "Register", class: 'btn btn-primary btn-flat'%>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    <style>
+      body {
+        background: #d2d6de;
+      }
+
+      div#register-form-field {
+        margin-top: 2rem;
+      }
+    </style>
+  </body>
+<% end %>
