@@ -9,11 +9,9 @@ describe ChangeRequestJob, :type => :job do
     it "delivers an email to a vaild sender with valid attributes" do
       ActiveJob::Base.queue_adapter = :test
       crs.map! {|c| c.id }
-      ChangeRequestJob.perform_async(crs, user.email)
-      expect(ActionMailer::Base.deliveries.size).to eq 1
-      email = ActionMailer::Base.deliveries.first
-      expect(email.subject).to eq "Change Requests CSV"
-      expect(email.to[0]).to eq user.email
+      expect { 
+        ChangeRequestJob.perform_async(crs, user.email)
+      }.to have_enqueued_job(ActionMailer::DeliveryJob)
     end 
   end 
 end

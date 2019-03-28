@@ -118,7 +118,7 @@ class ChangeRequestsController < ApplicationController
         Notifier.cr_notify(current_user, @change_request, 'new_cr')
         NewChangeRequestSlackNotificationJob.perform_async(@change_request)
         Thread.new do
-          UserMailer.notif_email(@change_request.user, @change_request, @status).deliver_now
+          UserMailer.notif_email(@change_request.user, @change_request, @status).deliver_later
           ActiveRecord::Base.connection.close
         end
         flash[:success] = 'Change request was successfully created.'
