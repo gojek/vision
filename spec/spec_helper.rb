@@ -4,12 +4,16 @@ require 'simplecov'
 SimpleCov.start 'rails'
 ENV["RAILS_ENV"] ||= 'test'
 ENV["ENTITY_SOURCES"] ||= 'midtrans,spots,gojek'
+ENV["CONTACT_EMAIL"] ||= 'contact@vision.com'
+ENV["VALID_EMAIL"] ||= 'midtrans.com,veritrans.co.id,go-jek.com'
+ENV["APPROVER_EMAIL"] ||= 'ika.muiz@midtrans.com'
+ENV['VISION_EMAIL'] ||= 'vision@midtrans.com'
 ENV["JIRA_URL"] = "https://veritrans.atlassian.net/"
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'webmock/rspec'
 require 'sunspot/rails/spec_helper'
-require 'capybara/rspec'  
+require 'capybara/rspec'
 require 'capybara/rails'
 require 'sucker_punch/testing/inline'
 

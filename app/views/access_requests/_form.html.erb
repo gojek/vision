@@ -79,11 +79,11 @@
 
             <div class="field form-group">
               <label>Collaborators</label><br>
-              <%= select_tag "collaborators_list" ,options_for_select(@users), class: 'select2-collaborate form-control', multiple:true %>
+              <%= f.select :collaborator_ids, options_for_select(@users), {}, { class: 'select2-collaborate form-control', multiple:true } %>
             </div><!--/field-->
             <div class="field form-group required">
               <label class="control-label">Approvers</label><br>
-              <%= select_tag "approvers_list" ,options_for_select(@approvers), class: 'select2-approve form-control', multiple:true %>
+              <%= f.select :approver_ids, options_for_select(@approvers), {}, { class: 'select2-approve form-control', multiple:true } %>
             </div><!--/field-->
 
 
@@ -207,12 +207,14 @@
 
                 <%= f.check_box :solutions_dashboard %>
                 <%= f.label :solutions_dashboard, class: 'inherit-font-weight' %><br>
+
+                <%= f.check_box :vision_access %>
+                <%= f.label :vision_access, class: 'inherit-font-weight' %><br>
               </div><!--/field-->
             </div><!--/field-->
 
           </div><!--/col-->
           <div class="col-md-6">
-
             <div class="field form-group">
               <%= f.check_box :password_reset  %>
               <%= f.label :password_reset %><br>

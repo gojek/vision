@@ -10,13 +10,27 @@
       <!-- START LOCK SCREEN ITEM -->
 
         <% if flash[:alert] != nil%>
-                    <div class="alert alert-danger text-center" >
-                    <%= flash[:alert] %>
-                    </div>
-                    <% end %>
+          <div class="alert alert-danger text-center" >
+            <%= flash[:alert] %>
+          </div>
+        <% end %>
+
+        <% if !flash[:success].nil? %>
+          <div class="alert alert-success text-center" >
+            <%= flash[:success] %>
+          </div>
+        <% end %>
+
+        <% if !flash[:error].nil? %>
+          <div class="alert alert-danger text-center" >
+            <%= flash[:error] %>
+          </div>
+        <% end %>
         <!-- lockscreen credentials (contains the form) -->
            <%= link_to user_google_oauth2_omniauth_authorize_path, class:'btn btn-block btn-social btn-google' do %>
                         <i class="fa fa-google-plus"></i> Sign in with Google <% end %>
+
+        
 
     </div><!-- /.center -->
   </body>

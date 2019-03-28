@@ -11,6 +11,7 @@ describe AccessRequestsController, type: :controller do
       sign_in user
     end
 
+
     describe "GET #index" do
       it "populates all access requests if no params passed" do
         get :index
