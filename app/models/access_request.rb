@@ -166,7 +166,7 @@ class AccessRequest < ActiveRecord::Base
 
   comma do
     id
-    __use__:entity_source
+    entity_source 'Entity source'
     user_id "User ID"
     request_type "Request Type"
     access_type "Access Type"
