@@ -18,7 +18,7 @@ class ChangeRequest < ActiveRecord::Base
   has_paper_trail class_name: 'ChangeRequestVersion', meta: { author_username: :user_name }
   SCOPE = %w(Major Minor)
   PRIORITY = %w(High Medium Low)
-  
+
   validates :scope,
             inclusion: { in: SCOPE, message: '%{value} is not a valid scope' }
   validates :priority,
@@ -103,7 +103,7 @@ class ChangeRequest < ActiveRecord::Base
 
   comma do
     id 'Request id'
-    __use__:entity_source
+    entity_source 'Entity source'
     change_summary 'Change summary'
     all_category 'Category'
     all_type 'Type'
