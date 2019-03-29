@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190320123757) do
+ActiveRecord::Schema.define(version: 20190330111416) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -99,21 +99,20 @@ ActiveRecord::Schema.define(version: 20190320123757) do
     t.string   "business_justification"
     t.boolean  "metabase",                        default: false
     t.boolean  "solutions_dashboard",             default: false
-    t.string   "entity_source",                   default: "Midtrans", null: false
     t.boolean  "vision_access",                   default: false
+    t.string   "entity_source",                   default: "Midtrans", null: false
   end
 
   add_index "access_requests", ["user_id"], name: "index_access_requests_on_user_id", using: :btree
 
   create_table "approvals", force: :cascade do |t|
     t.integer  "change_request_id"
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
     t.integer  "user_id"
     t.boolean  "approve"
     t.text     "notes"
     t.datetime "approval_date"
-    t.string   "approval_type",     default: "Mandatory"
   end
 
   add_index "approvals", ["change_request_id"], name: "index_approvals_on_change_request_id", using: :btree
@@ -210,7 +209,6 @@ ActiveRecord::Schema.define(version: 20190320123757) do
     t.string   "google_event_id"
     t.boolean  "downtime_expected"
     t.integer  "expected_downtime_in_minutes"
-    t.text     "testing_notes"
     t.string   "entity_source",                 default: "Midtrans", null: false
   end
 
