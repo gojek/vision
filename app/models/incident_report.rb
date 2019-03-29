@@ -2,7 +2,7 @@
 class IncidentReport < ActiveRecord::Base
   include ActiveModel::Dirty
   include EntitySourceModule
-  
+
   belongs_to :user
   has_and_belongs_to_many :collaborators, join_table: :incident_report_collaborators, class_name: 'User'
   has_many :logs, join_table: :access_request_logs, dependent: :destroy, class_name: 'IncidentReportLog'
@@ -67,20 +67,20 @@ class IncidentReport < ActiveRecord::Base
   end
 
   comma do
-    id     
-    __use__:entity_source
-    service_impact 'service impact'     
+    id
+    entity_source 'Entity source'
+    service_impact 'service impact'
     problem_details 'problem details' do |problem_details| Sanitize.fragment(problem_details) end
-    current_status 'current status' 
-    rank     
-    measurer_status 'measurer status'     
-    recurrence_concern 'recurrence concern'     
-    occurrence_time to_s: 'occurrence time'     
-    detection_time to_s: 'detection time'     
-    acknowledge_time to_s: 'acknowledge time'     
-    recovery_duration to_s: 'recovery duration'     
-    resolved_time 'resolved time'     
-    how_detected 'how was problem detected'     
+    current_status 'current status'
+    rank
+    measurer_status 'measurer status'
+    recurrence_concern 'recurrence concern'
+    occurrence_time to_s: 'occurrence time'
+    detection_time to_s: 'detection time'
+    acknowledge_time to_s: 'acknowledge time'
+    recovery_duration to_s: 'recovery duration'
+    resolved_time 'resolved time'
+    how_detected 'how was problem detected'
     loss_related 'loss related issue'
     source 'source'
   end
