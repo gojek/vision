@@ -63,8 +63,8 @@
             <div class="box-header">
               <b>Quick filters:</b>
               <%= link_to "All", incident_reports_path, class: 'btn-sm btn-primary' %>
-              <% IncidentReport::ENTITY_SOURCES.each do |entity_source| %>
-                <%= link_to entity_source, incident_reports_path(q: { entity_source_eq: entity_source}), 
+              <% EntitySourceModule::ENTITY_SOURCES.each do |entity_source| %>
+                <%= link_to entity_source, incident_reports_path(q: { entity_source_eq: entity_source}),
                   class: 'btn-sm btn-primary' %>
               <% end %>
             </div>
@@ -83,7 +83,7 @@
                     <th><%= sort_link(@q, :rank) %></th>
                     <th>Final Status</th>
                     <th colspan="3">Actions</th>
-                    
+
               </tr>
               <% @incident_reports.each do |incident_report| %>
                   <tr>
@@ -95,9 +95,9 @@
                       <td><%= incident_report.current_status %></td>
                       <td><%= incident_report.occurrence_time.to_s(:long) %></td>
                       <td><%= incident_report.acknowledge_time.blank? ? "-" : incident_report.acknowledge_time.to_s(:long)  %></td>
-                      <td><%= incident_report.time_to_acknowledge_duration.blank? ? "-" : 
+                      <td><%= incident_report.time_to_acknowledge_duration.blank? ? "-" :
                         pluralize(incident_report.time_to_acknowledge_duration, "minute") %></td>
-                      <td><%= incident_report.recovery_duration.blank? ? "-" : 
+                      <td><%= incident_report.recovery_duration.blank? ? "-" :
                         pluralize(incident_report.recovery_duration.to_i, "minute") %> </td>
                       <td><%= incident_report.source %></td>
                       <td><%= incident_report.rank %></td>
@@ -151,7 +151,7 @@
             </div>
             <div class="form-group">
               <%= f.label :entity_source %>
-              <%= f.select :entity_source_eq, options_for_select([['Any','']] + IncidentReport::ENTITY_SOURCES ), {}, {class: 'form-control select2'} %>
+              <%= f.select :entity_source_eq, options_for_select([['Any','']] + EntitySourceModule::ENTITY_SOURCES ), {}, {class: 'form-control select2'} %>
             </div>
             <div class="form-group">
               <%= f.label :problem_details %>
