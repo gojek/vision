@@ -27,6 +27,7 @@ module SlackHelpers
                     }
                   }
                 }', headers: {})
+
     stub_request(:post, 'https://slack.com/api/users.lookupByEmail')
       .with(body: { 'email' => 'patrick@veritrans.co.id', 'token' => /\w*/ })
       .to_return(status: 200,

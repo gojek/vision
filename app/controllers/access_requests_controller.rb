@@ -41,7 +41,6 @@ class AccessRequestsController < ApplicationController
   end
 
   def create
-    
     AccessRequest.transaction do
       @access_request = current_user.AccessRequests.build(access_request_params)
       if @access_request.save
@@ -218,6 +217,7 @@ class AccessRequestsController < ApplicationController
         :employee_department,
         :employee_phone,
         :employee_access,
+        :entity_source,
         :fingerprint_business_area,
         :fingerprint_business_operations,
         :fingerprint_it_operations,

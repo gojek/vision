@@ -12,6 +12,7 @@ FactoryGirl.define do
     access_type 'Permanent'
     start_date nil
     end_date nil
+    entity_source 'Midtrans'
 
     employee_name 'Employee Name'
     business_justification 'Business Justification'

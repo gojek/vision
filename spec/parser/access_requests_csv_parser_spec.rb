@@ -17,7 +17,7 @@ describe AccessRequestsCsvParser do
     it "can upload not validated data csv file" do
       @file = fixture_file_upload('files/invalid.csv', 'text/csv')
       valid, invalid = AccessRequestsCsvParser.process_csv(@file, user)
-      expect(invalid.count).to match (11)
+      expect(invalid.count).to match (12)
       expect(valid.count).to match (0)
     end 
 
