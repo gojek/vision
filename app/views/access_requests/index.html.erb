@@ -77,11 +77,15 @@
             <% if current_user.is_approver? %>
               <%= link_to "Need my approvals", access_requests_path(type: 'approval'), class: 'btn-sm btn-primary' %>
             <% end %>
+            <% EntitySourceModule::ENTITY_SOURCES.each do |item| %>
+              <%= link_to item, access_requests_path(q: { entity_source_eq: item }), class: 'btn-sm btn-primary' %>
+            <% end %>
           </div>
         </div>
         <div class="box-body table-responsive" style="overflow-x: auto;">
           <table class="table table-hover">
             <tr>
+                <th>Entity</th>
                 <th>Request ID</th>
                 <th>Employee Name</th>
                 <th>Request Type</th>
@@ -94,6 +98,7 @@
             </tr>
             <% @access_requests.each do |access_request| %>
               <tr>
+                <td><%= access_request.entity_source %></td>
                 <td><%= link_to access_request.id, access_request %></td>
                 <td><%= access_request.employee_name %></td>
                 <td><%= access_request.request_type %></td>
@@ -193,6 +198,10 @@
             <%= f.label :access_type %>
             <%= f.select :access_type_eq, options_for_select([['Any','']] + AccessRequest::ACCESS_TYPES, params[:q]? params[:q][:access_type_eq] : 'Any' ), {}, {class: 'form-control select2'} %>
           </div>
+          <div class="form-group">
+            <%= f.label :entity_source %>
+            <%= f.select :entity_source_eq, options_for_select([['Any','']] + EntitySourceModule::ENTITY_SOURCES, params[:q]? params[:q][:scope_eq] : 'Any' ), {}, {class: 'form-control select2'} %>
+          </div>
           <h4>Employee Details</h4>
           <div class="form-group">
             <%= f.label :employee_name %>
@@ -231,7 +240,7 @@
      immediately after the control sidebar -->
 <div class='control-sidebar-bg'></div>
 <script>
-  var _validFileExtensions = [".csv"];    
+  var _validFileExtensions = [".csv"];
   function ValidateFileExtension(file) {
       var arrInputs = file.getElementsByTagName("input");
       for (var i = 0; i < arrInputs.length; i++) {
@@ -247,14 +256,14 @@
                           break;
                       }
                   }
-                  
+
                   if (!blnValid) {
                       alert("Sorry, file extensions is invalid, allowed extensions are: " + _validFileExtensions.join(", "));
                       return false;
                   }
               }
           }
-      } 
+      }
       return true;
   }
 

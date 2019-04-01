@@ -6,6 +6,7 @@ class AccessRequest < ActiveRecord::Base
   attr_accessor :approver_ids
 
   include AASM
+  include EntitySourceModule
   belongs_to :user
   has_and_belongs_to_many :collaborators, join_table: :access_request_collaborators, class_name: 'User'
   has_many :approvals, join_table: :access_request_approvals, dependent: :destroy, class_name: 'AccessRequestApproval'
@@ -165,6 +166,7 @@ class AccessRequest < ActiveRecord::Base
 
   comma do
     id
+    entity_source 'Entity source'
     user_id "User ID"
     request_type "Request Type"
     access_type "Access Type"
@@ -215,7 +217,7 @@ class AccessRequest < ActiveRecord::Base
         user.collaborate_access_requests.select(:access_request_id).to_sql})").distinct
   end
 
-  def self.create_for_new_registration_user(new_user, params, approver_user) 
+  def self.create_for_new_registration_user(new_user, params, approver_user)
     AccessRequest.transaction do
       access_request = new_user.AccessRequests.build(
         params.merge({

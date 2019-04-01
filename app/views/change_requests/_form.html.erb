@@ -36,6 +36,16 @@
             <div class="box-header with border"></div>
             <div class="box-body">
               <div class="col-md-6">
+
+                <% if @change_request.errors.messages[:entity_source] %>
+                  <div class="field form-group has-error">
+                <% else %>
+                  <div class="field form-group required">
+                <% end %>
+                  <%= f.label :entity_source, class: 'control-label' %>
+                  <%= f.select :entity_source ,options_for_select(EntitySourceModule::ENTITY_SOURCES, @change_request.entity_source), {include_blank: true}, {class: 'form-control select2'}%>
+                </div><!--/field-->
+
                 <% if @change_request.errors.messages[:change_summary] %>
                   <div class="field form-group has-error">
                 <% else %>
@@ -278,7 +288,7 @@
                     <label class="control-label">Testing in Test/Development Environment Available?</label>
                     <%= f.check_box :testing_environment_available, checked: @change_request.testing_environment_available, data: {toggle: :toggle, on: "YES", off: "NO", onstyle: 'success', offstyle: 'danger'}%>
                   </div><!--/field-->
-              </div> 
+              </div>
               <div class='col-md-6'>
                 <% if @change_request.errors.messages[:testing_procedure] %>
                   <div class="field form-group has-error">
