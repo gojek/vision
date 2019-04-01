@@ -3,6 +3,7 @@ require 'capybara-screenshot/rspec'
 require 'simplecov'
 SimpleCov.start 'rails'
 ENV["RAILS_ENV"] ||= 'test'
+ENV["ENTITY_SOURCES"] ||= 'midtrans,spots,gojek'
 ENV["CONTACT_EMAIL"] ||= 'contact@vision.com'
 ENV["VALID_EMAIL"] ||= 'midtrans.com,veritrans.co.id,go-jek.com'
 ENV["APPROVER_EMAIL"] ||= 'ika.muiz@midtrans.com'
@@ -12,7 +13,7 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'webmock/rspec'
 require 'sunspot/rails/spec_helper'
-require 'capybara/rspec'  
+require 'capybara/rspec'
 require 'capybara/rails'
 require 'sucker_punch/testing/inline'
 
@@ -25,6 +26,8 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 # Checks for pending migrations before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
 ActiveRecord::Migration.maintain_test_schema!
+
+ENV['ENTITY_SOURCES']='midtrans,spots,gojek'
 
 RSpec.configure do |config|
   config.before(:each) do

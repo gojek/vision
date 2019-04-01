@@ -21,14 +21,20 @@
         <h3 class='box-title'>Incident Report</h3>
     </div>
     <div class='box-body table-responsive'>
+
+        <div class="field form-group required">
+          <label class="control-label">Entity Sources</label><br>
+          <%= f.select :entity_source, options_for_select(EntitySourceModule::ENTITY_SOURCES, @incident_report.entity_source), {:include_blank => true}, { class: 'select2 form-control'} %>
+        </div><!--/field-->
+
         <div class="field form-group">
           <label>Collaborators</label><br>
-          <%= select_tag "collaborators_list" ,options_for_select(@users), class: 'select2-collaborate form-control', multiple:true %>
+          <%= f.select :collaborator_ids ,options_for_select(@users), {}, { class: 'select2-collaborate form-control', multiple:true }%>
         </div><!--/field-->
 
         <div class="field form-group">
           <label>Tag</label><br>
-            <%= f.select :tag_list, options_for_select(@tags), {}, {class: 'select2-tag form-control', multiple:'multiple'} %>
+            <%= f.select :tag_list, options_for_select(@tags), {}, { class: 'select2-tag form-control', multiple:'multiple'} %>
         </div><!--/field-->
         <div class="form-group">
           <% if @incident_report.errors.messages[:service_impact] %>
