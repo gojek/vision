@@ -10,7 +10,6 @@ class AccessRequestCsvParser
   OTHER_ACCESS_CONST = %w[internet_access slack_access admin_tools vpn_access github_gitlab
                           exit_interview access_card parking_cards id_card
                           name_card insurance_card cash_advance metabase solutions_dashboard].freeze
-  ENTITY_SOURCE_CONST = (ENV['ENTITY_SOURCES'] || 'midtrans').split(',').each(&:capitalize!)
 
   attr_reader :data, :error, :user
 
@@ -48,7 +47,7 @@ class AccessRequestCsvParser
 
   def extract_entity
     item = @raw_data['entity_source'].capitalize
-    unless ENTITY_SOURCE_CONST.include?(item)
+    unless EntitySourceModule::ENTITY_SOURCES.include?(item)
       @error ||= true
       return
     end
