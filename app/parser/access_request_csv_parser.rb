@@ -31,6 +31,7 @@ class AccessRequestCsvParser
     extract_access_type
     extract_approvers
     extract_collaborators
+    extract_entity
     self
   end
 
@@ -43,6 +44,15 @@ class AccessRequestCsvParser
   end
 
   private
+
+  def extract_entity
+    item = @raw_data['entity_source'].capitalize
+    unless EntitySourceModule::ENTITY_SOURCES.include?(item)
+      @error ||= true
+      return
+    end
+    @data['entity_source'] = item
+  end
 
   def extract_fingerprint
     return if @raw_data['fingerprint'].blank?

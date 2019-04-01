@@ -67,10 +67,19 @@
             <div class="box-header with-border">
               <h3 class="box-title">Incident Report List</h3>
             </div><!-- /.box-header -->
+            <div class="box-header">
+              <b>Quick filters:</b>
+              <%= link_to "All", incident_reports_path, class: 'btn-sm btn-primary' %>
+              <% EntitySourceModule::ENTITY_SOURCES.each do |entity_source| %>
+                <%= link_to entity_source, incident_reports_path(q: { entity_source_eq: entity_source}),
+                  class: 'btn-sm btn-primary' %>
+              <% end %>
+            </div>
           <div class="box-body table-responsive table-autoheight" style="overflow-x: auto;">
             <table class="table table-hover">
               <tr>
                    <th>Report ID</th>
+                   <th>Entity Source</th>
                     <th>Service impacted</th>
                     <th>Problem details</th>
                     <th><%= sort_link(@q, :occurrence_time) %></th>
@@ -81,18 +90,19 @@
                     <th><%= sort_link(@q, :rank) %></th>
                     <th>Final Status</th>
                     <th colspan="3">Actions</th>
-                    
+
               </tr>
               <% @incident_reports.each do |incident_report| %>
                   <tr>
                       <td><%= link_to incident_report.id, incident_report, target: :_blank %></td>
+                      <td><%= incident_report.entity_source %></td>
                       <td><%= link_to incident_report.service_impact, incident_report, target: :_blank %></td>
                       <td><%= link_to (raw incident_report.problem_details), incident_report, class: 'black-color', target: :_blank %></td>
                       <td><%= incident_report.occurrence_time.to_s(:long) %></td>
                       <td><%= incident_report.acknowledge_time.blank? ? "-" : incident_report.acknowledge_time.to_s(:long)  %></td>
-                      <td><%= incident_report.time_to_acknowledge_duration.blank? ? "-" : 
+                      <td><%= incident_report.time_to_acknowledge_duration.blank? ? "-" :
                         pluralize(incident_report.time_to_acknowledge_duration, "minute") %></td>
-                      <td><%= incident_report.recovery_duration.blank? ? "-" : 
+                      <td><%= incident_report.recovery_duration.blank? ? "-" :
                         pluralize(incident_report.recovery_duration.to_i, "minute") %> </td>
                       <td><%= incident_report.source %></td>
                       <td><%= incident_report.rank %></td>
@@ -140,9 +150,13 @@
         <h3 class="control-sidebar-heading">Filter</h3>
          <%= search_form_for @q do |f| %>
           <div id="overflow" style="display: block; height: 80vh; overflow-y: auto">
-              <div class="form-group">
+            <div class="form-group">
               <%= f.label :service_impact %>
               <%= f.search_field :service_impact_cont, class: 'form-control'%>
+            </div>
+            <div class="form-group">
+              <%= f.label :entity_source %>
+              <%= f.select :entity_source_eq, options_for_select([['Any','']] + EntitySourceModule::ENTITY_SOURCES ), {}, {class: 'form-control select2'} %>
             </div>
             <div class="form-group">
               <%= f.label :problem_details %>
