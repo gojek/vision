@@ -221,6 +221,7 @@ class AccessRequest < ActiveRecord::Base
     AccessRequest.transaction do
       access_request = new_user.AccessRequests.build(
         params.merge({
+          entity_source: 'Registration',
           request_type: CREATE,
           access_type: PERMANENT,
           employee_email_address: new_user.email,
