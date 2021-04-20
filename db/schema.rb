@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210420083027) do
+ActiveRecord::Schema.define(version: 20210420130758) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -94,13 +94,13 @@ ActiveRecord::Schema.define(version: 20210420083027) do
     t.string   "production_asset"
     t.string   "aasm_state"
     t.datetime "request_date"
-    t.datetime "created_at",                                           null: false
-    t.datetime "updated_at",                                           null: false
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
     t.string   "business_justification"
     t.boolean  "metabase",                        default: false
     t.boolean  "solutions_dashboard",             default: false
     t.boolean  "vision_access",                   default: false
-    t.string   "entity_source",                   default: "Midtrans", null: false
+    t.string   "entity_source",                                   null: false
   end
 
   add_index "access_requests", ["user_id"], name: "index_access_requests_on_user_id", using: :btree
@@ -177,8 +177,8 @@ ActiveRecord::Schema.define(version: 20210420083027) do
     t.text     "implementation_notes"
     t.text     "grace_period_notes"
     t.integer  "user_id"
-    t.datetime "created_at",                                         null: false
-    t.datetime "updated_at",                                         null: false
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
     t.text     "net"
     t.text     "db"
     t.text     "os"
@@ -209,7 +209,7 @@ ActiveRecord::Schema.define(version: 20210420083027) do
     t.string   "google_event_id"
     t.boolean  "downtime_expected"
     t.integer  "expected_downtime_in_minutes"
-    t.string   "entity_source",                 default: "Midtrans", null: false
+    t.string   "entity_source",                                null: false
   end
 
   add_index "change_requests", ["cab_id"], name: "index_change_requests_on_cab_id", using: :btree
@@ -318,7 +318,7 @@ ActiveRecord::Schema.define(version: 20210420083027) do
     t.string   "action_item_status"
     t.datetime "action_item_done_time"
     t.integer  "time_to_acknowledge_duration"
-    t.string   "entity_source",                default: "Midtrans", null: false
+    t.string   "entity_source",                                null: false
     t.datetime "postmortem_time"
     t.string   "postmortem_docs"
   end
