@@ -1,12 +1,13 @@
 image: ruby:2.4.5-stretch
 
 services:
-  - postgres:alpine
+  - postgres:11.1-alpine
 
 variables:
   POSTGRES_DB: vision_test
   POSTGRES_USER: root
   POSTGRES_PASSWORD: ""
+  POSTGRES_HOST_AUTH_METHOD: "trust"
   DATABASE_URL: postgresql://root@postgres/vision_test
   BUNDLE_PATH: /cache/vision/gems
 
