@@ -10,7 +10,7 @@ class SlackNotif
   def initialize
     @slack_client = SlackClient.new
     @attachment_builder = SlackAttachmentBuilder.new
-    @incident_report_slack_channel = ENV['SLACK_IR_CHANNEL']
+    @incident_channels = incident_channels
     @change_request_slack_channel = ENV['SLACK_CR_CHANNEL']
   end
 
@@ -100,7 +100,7 @@ class SlackNotif
     attachment = @attachment_builder.generate_incident_report_attachment(incident_report)
     link = incident_report_url(incident_report)
     general_message = "<#{link}|Incident report> has been #{type}"
-    @slack_client.message_channel(@incident_report_slack_channel, general_message, attachment)
+    @slack_client.message_channel(@incident_channels[incident_report.entity_source], general_message, attachment)
   end
 
   def notify_new_access_request(access_request)
@@ -116,5 +116,9 @@ class SlackNotif
   def notify_approvers(users, message, attachment)
     actionable_attachment = @attachment_builder.wrap_approver_actions(attachment)
     @slack_client.message_users(users, message, actionable_attachment)
+  end
+
+  def incident_channels
+    EntitySourceModule::ENTITY_SOURCES.zip(ENV['SLACK_IR_CHANNEL'].split(',')).to_h
   end
 end
