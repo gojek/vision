@@ -11,14 +11,12 @@ describe SlackNotif do
   let(:user) {FactoryGirl.create(:approver, email: 'dwiyan@veritrans.co.id', slack_username: 'dwiyan')}
   let(:other_user) {FactoryGirl.create(:approver, email: 'kevin@veritrans.co.id', slack_username: 'kevin')}
   let(:change_request) {FactoryGirl.create(:change_request)}
-  let(:incident_report) {FactoryGirl.create(:incident_report)}
   let(:access_request) {FactoryGirl.create(:access_request)}
   let(:slack_notifier) {SlackNotif.new}
   let(:attachment_builder) {SlackAttachmentBuilder.new}
   let(:slack_client) {slack_notifier.instance_variable_get(:@slack_client)}
   let(:routes) {Rails.application.routes.url_helpers}
   let(:change_request_link){routes.change_request_url(change_request)}
-  let(:incident_report_link){routes.incident_report_url(incident_report)}
   let(:access_request_link){routes.access_request_url(access_request)}
   let(:change_request_channel) { ENV['SLACK_CR_CHANNEL'] }
   let(:incident_report_channel) { ENV['SLACK_IR_CHANNEL'] }
@@ -27,7 +25,7 @@ describe SlackNotif do
     let(:change_request_attachment){attachment_builder.generate_change_request_attachment(change_request)}
 
     describe 'Sending notification about approval status CR' do
-      let(:change_request_approval_status_attachment){attachment_builder.generate_approval_status_cr_attachment(change_request, change_request.approvals.first)}      
+      let(:change_request_approval_status_attachment){attachment_builder.generate_approval_status_cr_attachment(change_request, change_request.approvals.first)}
       let(:general_message) {"New update on <#{change_request_link}|Change request>"}
       it 'Send message to associated_users' do
         associated_users = change_request.associated_users
@@ -52,7 +50,7 @@ describe SlackNotif do
         change_request.reload
         associated_users = change_request.associated_users.to_a
         approvers.each {|approver| associated_users.delete(approver)}
-        expect(slack_client).to receive(:message_users).with(approvers, approver_message, 
+        expect(slack_client).to receive(:message_users).with(approvers, approver_message,
           attachment_builder.wrap_approver_actions(change_request_attachment))
         expect(slack_client).to receive(:message_users).with(associated_users, new_cr_message, change_request_attachment)
         slack_notifier.notify_new_cr(change_request)
@@ -64,7 +62,7 @@ describe SlackNotif do
       end
 
       it 'Send attachment from attachment builder' do
-        expect(slack_client).to receive(:message_users).with(anything(), approver_message, 
+        expect(slack_client).to receive(:message_users).with(anything(), approver_message,
           attachment_builder.wrap_approver_actions(change_request_attachment))
         expect(slack_client).to receive(:message_users).with(anything(), anything(), change_request_attachment)
         expect(slack_client).to receive(:message_channel).with(anything(), anything(), change_request_attachment)
@@ -74,7 +72,7 @@ describe SlackNotif do
       it 'Failed send general message to cab channel' do
         error_not_found_stub('channel')
         error_not_found_stub('users')
-          
+
         expect do
           slack_notifier.notify_new_cr(change_request)
         end.to raise_error(Slack::Web::Api::Error)
@@ -97,7 +95,7 @@ describe SlackNotif do
         change_request.reload
         associated_users = change_request.associated_users.to_a
         approvers.each {|approver| associated_users.delete(approver)}
-        expect(slack_client).to receive(:message_users).with(approvers, approver_message, 
+        expect(slack_client).to receive(:message_users).with(approvers, approver_message,
           attachment_builder.wrap_approver_actions(change_request_attachment))
         expect(slack_client).to receive(:message_users).with(associated_users, modified_cr_message, anything())
         slack_notifier.notify_update_cr(change_request)
@@ -110,7 +108,7 @@ describe SlackNotif do
       end
 
       it 'Send attachment from attachment builder' do
-        expect(slack_client).to receive(:message_users).with(anything(), approver_message, 
+        expect(slack_client).to receive(:message_users).with(anything(), approver_message,
           attachment_builder.wrap_approver_actions(change_request_attachment))
         expect(slack_client).to receive(:message_users).with(anything(), anything(), change_request_attachment)
         expect(slack_client).to receive(:message_channel).with(anything(), anything(), change_request_attachment)
@@ -156,7 +154,6 @@ describe SlackNotif do
     let(:mentioned_message) {"You are mentioned in #{comment.user.name} comment's on a <#{access_request_link}|access request>"}
     let(:general_message) {"A new comment from #{comment.user.name} on a <#{access_request_link}|access request>"}
 
-  
     it 'Send message from attachment builder and mentionees that mentioned' do
       expect(slack_client).to receive(:message_users)
       expect(slack_client).to receive(:message_users).with(anything(), anything(), comment_attachment)
@@ -165,10 +162,18 @@ describe SlackNotif do
   end
 
   describe 'Sending notification about new Incident Report to sepesified incident report slack channel' do
-    it 'Send message to incident report slack channel' do
-      general_message = "<#{incident_report_link}|Incident report> has been created"
-      expect(slack_client).to receive(:message_channel).with(incident_report_channel, general_message, anything())
-      slack_notifier.notify_new_ir(incident_report)
+    it 'Send message to correct incident report slack channel' do
+      entity_channel = {
+        'Midtrans' => 'midtrans-test',
+        'Spots' => 'spots-test',
+        'Gojek' => 'gojek-test'
+      }
+      entity_channel.each do |entity, channel|
+        ir = FactoryGirl.create(:incident_report, entity_source: entity)
+        general_message = "<#{routes.incident_report_url(ir)}|Incident report> has been created"
+        expect(slack_client).to receive(:message_channel).with(channel, general_message, anything()).ordered
+        slack_notifier.notify_new_ir(ir)
+      end
     end
   end
 
