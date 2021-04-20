@@ -24,7 +24,7 @@
 
         <div class="field form-group required">
           <label class="control-label">Entity Sources</label><br>
-          <%= f.select :entity_source, options_for_select(EntitySourceModule::ENTITY_SOURCES, @incident_report.entity_source), {:include_blank => true}, { class: 'select2 form-control'} %>
+          <%= f.select :entity_source, options_for_select((EntitySourceModule::ENTITY_SOURCES + [@incident_report.entity_source]).uniq.compact, @incident_report.entity_source), {:include_blank => true}, { class: 'select2 form-control'} %>
         </div><!--/field-->
 
         <div class="field form-group">

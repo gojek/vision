@@ -149,7 +149,7 @@ class ChangeRequestsController < ApplicationController
           @change_request.save
           @status = @change_request.change_request_statuses.new(:status => 'submitted')
           @status.save
-        end 
+        end
         Notifier.cr_notify(current_user, @change_request, 'update_cr')
         UpdateChangeRequestSlackNotificationJob.perform_async(@change_request)
 
@@ -241,6 +241,7 @@ class ChangeRequestsController < ApplicationController
     @change_request = @old_change_request.dup
     @approvers = User.approvers.active.collect{|u| [u.name, u.id] if u.id != current_user.id }
     # Clear certain fields
+    @change_request.entity_source = nil
     @change_request.user = current_user
     @change_request.schedule_change_date = nil
     @change_request.planned_completion = nil
@@ -336,8 +337,8 @@ class ChangeRequestsController < ApplicationController
             :type_configuration_change, :type_emergency_change, :type_other,
             implementers_attributes: [:id, :name, :position, :_destroy],
             testers_attributes: [:id, :name, :position, :_destroy],
-            :tag_list => [], :implementer_ids => [], :tester_ids => [], 
-            :collaborator_ids => [], :approver_ids => []).tap do |params| 
+            :tag_list => [], :implementer_ids => [], :tester_ids => [],
+            :collaborator_ids => [], :approver_ids => []).tap do |params|
               normalized_array_fields = [:approver_ids, :implementer_ids, :tester_ids, :collaborator_ids]
               normalized_array_fields.each do |field|
                 params[field].select!{ |id| id.present? }.map!{ |id| id.to_i} if params[field].present?
