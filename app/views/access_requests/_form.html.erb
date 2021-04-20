@@ -25,7 +25,7 @@
           <div class="col-md-6">
             <div class="field form-group required">
               <%= f.label :entity_source, class: 'control-label' %>
-              <%= f.select :entity_source ,options_for_select(EntitySourceModule::ENTITY_SOURCES, @access_request.entity_source), {include_blank: true}, {class: 'form-control select2'}%>
+              <%= f.select :entity_source ,options_for_select((EntitySourceModule::ENTITY_SOURCES + [@access_request.entity_source]).uniq.compact, @access_request.entity_source), {include_blank: true}, {class: 'form-control select2'}%>
             </div><!--/field-->
             <div class="field form-group required">
               <%= f.label :request_type, {class: 'control-label'} %><br>
@@ -82,7 +82,11 @@
               <%= f.select :collaborator_ids, options_for_select(@users), {}, { class: 'select2-collaborate form-control', multiple:true } %>
             </div><!--/field-->
             <div class="field form-group required">
-              <label class="control-label">Approvers</label><br>
+              <%= link_to(ENV['ACCESS_APPROVERS_GUIDELINE']) do %>
+                <%= f.label :approvers_ids, "Approvers", class: 'control-label' %>
+                <i class="glyphicon glyphicon-question-sign"></i>
+                <br>
+              <% end %>
               <%= f.select :approver_ids, options_for_select(@approvers), {}, { class: 'select2-approve form-control', multiple:true } %>
             </div><!--/field-->
 

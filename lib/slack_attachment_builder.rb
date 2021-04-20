@@ -164,7 +164,7 @@ class SlackAttachmentBuilder
           value: sanitize(incident_report.problem_details, tags: []),
           short: false
         }, {
-          title: 'Occurence Time',
+          title: 'Occurrence Time',
           value: incident_report.occurrence_time,
           short: false
         }, {
