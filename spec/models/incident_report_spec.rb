@@ -5,7 +5,26 @@ describe IncidentReport, type: :model do
   #shoulda matchers test
   it { should belong_to(:user)}
   it { should have_many(:notifications).dependent(:destroy) }
-  
+
+  describe '#resolve_to_postmortem_work_days' do
+    it 'return valid business day difference' do
+      ir = FactoryGirl.build(:incident_report)
+      postmortem_and_resolved = [
+        [Time.zone.parse('2021-04-09T12:00'), Time.zone.parse('2021-04-05T11:00'), 4],
+        [Time.zone.parse('2021-04-16T12:00'), Time.zone.parse('2021-04-05T11:00'), 9],
+        [Time.zone.parse('2021-04-12T12:00'), Time.zone.parse('2021-04-08T11:00'), 2],
+        [Time.zone.parse('2021-04-12T12:00'), Time.zone.parse('2021-04-09T11:00'), 1],
+        [Time.zone.parse('2021-04-13T12:00'), Time.zone.parse('2021-04-10T11:00'), 2],
+        [Time.zone.parse('2021-04-17T12:00'), Time.zone.parse('2021-04-11T11:00'), 5],
+      ]
+      postmortem_and_resolved.each do |postmortem, resolved, expected|
+        ir.postmortem_time = postmortem
+        ir.resolved_time = resolved
+        expect(ir.resolve_to_postmortem_work_days).to eq(expected)
+      end
+    end
+  end
+
   it "is valid with all attribute filled" do
     expect(FactoryGirl.build(:incident_report)).to be_valid
   end
@@ -42,7 +61,7 @@ describe IncidentReport, type: :model do
 
   it "is valid with defined entity source" do
     allowed_entity_sources = %w(Midtrans Gojek)
-    allowed_entity_sources.each do |entity_source| 
+    allowed_entity_sources.each do |entity_source|
       ir = FactoryGirl.build(:incident_report, entity_source: entity_source)
       expect(ir).to be_valid
     end
