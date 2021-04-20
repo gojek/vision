@@ -83,6 +83,9 @@ class IncidentReport < ActiveRecord::Base
     how_detected 'how was problem detected'
     loss_related 'loss related issue'
     source 'source'
+    postmortem_time 'postmortem time'
+    postmortem_docs 'postmortem docs'
+    resolve_to_postmortem_work_days 'incident to postmortem time (days)'
   end
 
   def user_name
@@ -185,4 +188,19 @@ class IncidentReport < ActiveRecord::Base
     end
   end
 
+  def resolve_to_postmortem_work_days
+    if resolved_time && postmortem_time
+      days_between = ((postmortem_time - resolved_time) / 1.day).floor
+      return 0 unless days_between > 0
+      whole_weeks, extra_days = days_between.divmod(7)
+      unless extra_days.zero?
+        extra_days -= if resolved_time.tomorrow.wday > postmortem_time.wday
+                        2
+                      else
+                        [resolved_time.tomorrow.sunday?, postmortem_time.saturday?].count(true)
+                      end
+      end
+      (whole_weeks * 5) + extra_days
+    end
+  end
 end
