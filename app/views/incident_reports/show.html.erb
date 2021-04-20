@@ -56,7 +56,7 @@
     <div class="col-sm-4 invoice-col">
       <b>Incident Report #<%= @incident_report.id %></b><br/>
       <br/>
-      <b>Occurance Time:</b> <%= @incident_report.occurrence_time.to_s(:long) %><br/>
+      <b>Occurrence Time:</b> <%= @incident_report.occurrence_time.to_s(:long) %><br/>
       <b>Detection Time:</b>  <%= @incident_report.detection_time.to_s(:long) %><br/>
       <% if @incident_report.acknowledge_time.present? %>
         <b>Acknowledge Time:</b>  <%= @incident_report.acknowledge_time.to_s(:long) %><br>
@@ -69,7 +69,7 @@
       <% if @incident_report.resolved_time.present? %>
         <b>Resolve Time:</b>  <%= @incident_report.resolved_time.to_s(:long) %><br>
       <% end %>
-      
+
 
     </div><!-- /.col -->
   </div><!-- /.row -->

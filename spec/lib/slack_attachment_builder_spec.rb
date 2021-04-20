@@ -45,7 +45,7 @@ describe SlackAttachmentBuilder do
         title: "change summary",
         title_link: "http://localhost:3000/change_requests/#{change_request.id}",
         footer: "VT-Vision",
-        ts: 1452445200 
+        ts: 1452445200
       )
     end
   end
@@ -66,7 +66,7 @@ describe SlackAttachmentBuilder do
           { title: "Note", value: "Ok", short: false }
         ],
         footer: "VT-Vision",
-        ts: 1452445200 
+        ts: 1452445200
       )
     end
   end
@@ -85,12 +85,12 @@ describe SlackAttachmentBuilder do
           { title: "Source", value: "Internal", short: true },
           { title: "Level", value: 1, short: true },
           { title: "Details", value: "Problem details", short: false },
-          { title: "Occurence Time", value: Time.new("2011"), short: false },
+          { title: "Occurrence Time", value: Time.new("2011"), short: false },
           { title: "Acknowledge Time", value: "2016-01-10 00:00:00 +0700 (1440 minutes)", short: false },
           { title: "Reporter", value: "patrick star", short: false }
         ],
         footer: "VT-Vision",
-        ts: 1452445200 
+        ts: 1452445200
       )
     end
   end
