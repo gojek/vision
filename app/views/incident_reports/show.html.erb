@@ -109,6 +109,27 @@
       </div>
     </div><!-- /.col -->
     <div class="col-xs-12 col-lg-6">
+      <label>  <strong>Postmortem Time</strong></label>
+       <div class="well well-sm no-shadow" style="margin-top: 10px;">
+         <%= @incident_report.postmortem_time && @incident_report.postmortem_time.to_s(:long) %><br/>
+      </div>
+      <% if @incident_report.resolve_to_postmortem_work_days && @incident_report.resolve_to_postmortem_work_days > 5%>
+        <div class="alert alert-danger">This incidents postmortem time is more than 5 days from resolve time.</div>
+      <% end %>
+      <% if @incident_report.postmortem_time %>
+        <label> <strong>Incident to Postmortem Days</strong></label>
+         <div class="well well-sm no-shadow" style="margin-top: 10px;">
+           <%= @incident_report.resolve_to_postmortem_work_days %><br/>
+        </div>
+      <% end %>
+      <label> <strong>Postmortem Docs</strong></label>
+      <div class="well well-sm no-shadow"  style="margin-top: 10px;">
+         <%=raw @incident_report.postmortem_docs %>
+      </div>
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+  <div class="row">
+    <div class="col-xs-12 col-lg-6">
       <label>  <strong>Action for Recovery:</strong></label>
        <div class="well well-sm no-shadow" style="margin-top: 10px;">
          <%=raw @incident_report.recovery_action %>
