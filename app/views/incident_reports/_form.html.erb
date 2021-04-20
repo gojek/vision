@@ -212,6 +212,27 @@
     <div class='box-header with-border'>
         <h3 class='box-title'>Further Action</h3>
     </div>
+    <div class='box-body'>
+      <div class="form-group">
+       <% if @incident_report.errors.messages[:postmortem_time] %>
+          <div class="field form-group has-error">
+          <%else %>
+          <div class="field form-group">
+          <% end %>
+        <%= f.label :postmortem_time %><br>
+        <%= f.datetime_select :postmortem_time, :include_blank => true,class: 'form-control' %>
+      </div>
+      <div class="form-group">
+        <% if @incident_report.errors.messages[:postmortem_docs] %>
+          <div class="field form-group has-error">
+          <%else %>
+          <div class="field form-group">
+          <% end %>
+        <%= f.label :postmortem_docs %><br>
+        <%= f.text_area :postmortem_docs, class: 'form-control'%>
+        </div>
+      </div>
+    </div>
     <div class='box-body table-responsive'>
       <div class="form-group">
         <div class="field form-group <%= @incident_report.errors.messages[:has_further_action] ? 'has-error' : '' %>">

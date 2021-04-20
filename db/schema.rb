@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190330111416) do
+ActiveRecord::Schema.define(version: 20210420083027) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -316,7 +316,8 @@ ActiveRecord::Schema.define(version: 20190330111416) do
     t.datetime "action_item_done_time"
     t.integer  "time_to_acknowledge_duration"
     t.string   "entity_source",                default: "Midtrans", null: false
-    t.string   "visibility_type"
+    t.datetime "postmortem_time"
+    t.string   "postmortem_docs"
   end
 
   add_index "incident_reports", ["user_id"], name: "index_incident_reports_on_user_id", using: :btree
