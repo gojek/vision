@@ -51,3 +51,5 @@ solr/development/*
 !solr/test
 solr/test/*
 !solr/test/core.properties
+
+node_modules
