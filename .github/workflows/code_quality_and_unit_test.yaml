@@ -79,8 +79,8 @@ jobs:
         APPROVER_EMAIL: ika.muiz@midtrans.com
         ENTITY_SOURCES: midtrans,spots,gojek
         JIRA_URL: https://veritrans.atlassian.net/
-        JIRA_USERNAME: ${{ secrets.JIRA_USERNAME }}
-        JIRA_PASSWORD: ${{ secrets.JIRA_PASSWORD }}
+        JIRA_USERNAME: agile.tool@midtrans.com
+        JIRA_PASSWORD: Testing12
         SLACK_IR_CHANNEL: midtrans-test,spots-test,gojek-test,anything
         SLACK_CR_CHANNEL: midtrans-test,spots-test,gojek-test,anything
         SOLR_HOSTNAME: localhost
