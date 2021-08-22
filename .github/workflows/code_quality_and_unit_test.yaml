@@ -1,0 +1,88 @@
+name: Code Quality and Unit Test
+
+on:
+  pull_request:
+    branches: [ development ]
+
+jobs:
+  code_quality:
+    name: Run Code Quality
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@477b21f02be01bcb8030d50f37cfec92bfa615b6
+      with:
+        ruby-version: 2.4.5
+    
+    - name: Install dependencies
+      run: bundle install
+
+    - name: Rubycritic (Static Analysis)
+      run: rubycritic -s 80.00 --no-browser app lib
+
+    - name: Rubocop (Code Quality)
+      run: bundle exec rubocop
+
+    # - name: Brakeman (Code Security) # TODO: ENABLED WHEN MIGRATE TO RAILS 5.2
+    #   run: brakeman LANG="C" LC_ALL="en_US.UTF-8" .
+
+  unit_test:
+    name: Run Unit Test
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+      solr:
+        image: solr
+        ports:
+          - 8983:8983
+      mailcatcher:
+        image: tophfr/mailcatcher
+        ports:
+          - 1025:1025
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@477b21f02be01bcb8030d50f37cfec92bfa615b6
+      with:
+        ruby-version: 2.4.5
+    
+    - name: Setup node 12
+      uses: actions/setup-node@v2
+      with:
+        node-version: 12.x
+    
+    - name: Install dependencies
+      run: |
+        bundle install
+        npm install
+    - name: Rspec (Unit Test)
+      run: |-
+        mv config/database.test.yml config/database.yml
+        # ./solr create_core -c test
+        RAILS_ENV=test bundle exec rake db:create
+        RAILS_ENV=test bundle exec rake db:migrate
+        RAILS_ENV=test bundle exec rspec --tty
+      env:
+        APPROVER_EMAIL: ika.muiz@midtrans.com
+        ENTITY_SOURCES: midtrans,spots,gojek
+        JIRA_URL: https://veritrans.atlassian.net/
+        JIRA_USERNAME: ${{ secrets.JIRA_USERNAME }}
+        JIRA_PASSWORD: ${{ secrets.JIRA_PASSWORD }}
+        SLACK_IR_CHANNEL: midtrans-test,spots-test,gojek-test,anything
+        SLACK_CR_CHANNEL: midtrans-test,spots-test,gojek-test,anything
+        SOLR_HOSTNAME: localhost
+        SOLR_PORT: 8983
+        VALID_EMAIL: midtrans.com,veritrans.co.id,associate.midtrans.com,spots.co.id,go-jek.com,gmail.com
