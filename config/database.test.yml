@@ -5,5 +5,5 @@
   host: <%= ENV.fetch("DB_HOST") { 'localhost' } %>
   port: <%= ENV.fetch("DB_PORT") { "5432" } %>
   database: vision_test
-  username: postgres
-  password: postgres
+  username: <%= ENV["DB_USERNAME"] %>
+  password: <%= ENV["DB_PASSWORD"] %>
