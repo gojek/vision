@@ -81,6 +81,7 @@ jobs:
         JIRA_URL: https://veritrans.atlassian.net/
         JIRA_USERNAME: agile.tool@midtrans.com
         JIRA_PASSWORD: Testing12
+        DB_PASSWORD: postgres
         SLACK_IR_CHANNEL: midtrans-test,spots-test,gojek-test,anything
         SLACK_CR_CHANNEL: midtrans-test,spots-test,gojek-test,anything
         SOLR_HOSTNAME: localhost
