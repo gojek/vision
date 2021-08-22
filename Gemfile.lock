@@ -132,6 +132,9 @@ GEM
     diffy (3.3.0)
     docile (1.3.1)
     dotenv (2.7.6)
+    dotenv-rails (2.7.6)
+      dotenv (= 2.7.6)
+      railties (>= 3.2)
     equalizer (0.0.11)
     erubis (2.7.0)
     exception_notification (4.3.0)
@@ -530,6 +533,7 @@ DEPENDENCIES
   devise (~> 4.2.0)
   diffy
   dotenv (~> 2.7)
+  dotenv-rails
   exception_notification
   factory_girl_rails (~> 4.2.1)
   faker
