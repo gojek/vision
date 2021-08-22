@@ -21,10 +21,62 @@ module Helpers
   end
 
   def save_event_success_stub
-    stub_request(:post, 'https://www.googleapis.com/calendar/v3/calendars/midtrans.com_7v5rlhrr73t6mj12ifubmst1m0@group.calendar.google.com/events?sendNotifications=true')
-      .to_return(status: 200, body: '{\n \"kind\": \"calendar#event\",\n \"etag\": \"\\\"3102184802480000\\\"\",\n \"id\": \"mupnql7hnt12t73sgvv1n3gfo4\",\n \"status\": \"confirmed\",\n \"htmlLink\": \"https://www.google.com/calendar/event?eid=bXVwbnFsN2hudDEydDczc2d2djFuM2dmbzQgbWlkdHJhbnMuY29tXzd2NXJsaHJyNzN0Nm1qMTJpZnVibXN0MW0wQGc\",\n \"created\": \"2019-02-25T11:00:01.000Z\",\n \"updated\": \"2019-02-25T11:00:01.240Z\",\n \"summary\": \"Change 1\",\n \"description\": \"CR: http://localhost:3003/change_requests/23\\nPIC: Rizqy Faishal Tanjung\",\n \"creator\": {\n  \"email\": \"rizqy.tanjung@midtrans.com\"\n },\n \"organizer\": {\n  \"email\": \"midtrans.com_7v5rlhrr73t6mj12ifubmst1m0@group.calendar.google.com\",\n  \"displayName\": \"staging vision\",\n  \"self\": true\n },\n \"start\": {\n  \"dateTime\": \"2019-01-10T10:58:00+07:00\"\n },\n \"end\": {\n  \"dateTime\": \"2019-01-24T15:17:00+07:00\"\n },\n \"iCalUID\": \"mupnql7hnt12t73sgvv1n3gfo4@google.com\",\n \"sequence\": 0,\n \"attendees\": [\n  {\n   \"email\": \"14@veritrans.co.id\",\n   \"responseStatus\": \"needsAction\"\n  },\n  {\n   \"email\": \"rizqy.tanjung@midtrans.com\",\n   \"responseStatus\": \"needsAction\"\n  },\n  {\n   \"email\": \"1@veritrans.co.id\",\n   \"responseStatus\": \"needsAction\"\n  }\n ],\n \"hangoutLink\": \"https://meet.google.com/qgq-ojki-sjx\",\n \"conferenceData\": {\n  \"createRequest\": {\n   \"requestId\": \"lh5kg98263e09dhasrc99m128k\",\n   \"conferenceSolutionKey\": {\n    \"type\": \"hangoutsMeet\"\n   },\n   \"status\": {\n    \"statusCode\": \"success\"\n   }\n  },\n  \"entryPoints\": [\n   {\n    \"entryPointType\": \"video\",\n    \"uri\": \"https://meet.google.com/qgq-ojki-sjx\",\n    \"label\": \"meet.google.com/qgq-ojki-sjx\"\n   },\n   {\n    \"regionCode\": \"US\",\n    \"entryPointType\": \"phone\",\n    \"uri\": \"tel:+1-304-609-2562\",\n    \"label\": \"+1 304-609-2562\",\n    \"pin\": \"710705355\"\n   }\n  ],\n  \"conferenceSolution\": {\n   \"key\": {\n    \"type\": \"hangoutsMeet\"\n   },\n   \"name\": \"Hangouts Meet\",\n   \"iconUri\": \"https://lh5.googleusercontent.com/proxy/bWvYBOb7O03a7HK5iKNEAPoUNPEXH1CHZjuOkiqxHx8OtyVn9sZ6Ktl8hfqBNQUUbCDg6T2unnsHx7RSkCyhrKgHcdoosAW8POQJm_ZEvZU9ZfAE7mZIBGr_tDlF8Z_rSzXcjTffVXg3M46v\"\n  },\n  \"conferenceId\": \"qgq-ojki-sjx\",\n  \"signature\": \"AGLIgUpxpCqN/e9Yb3Bq7lsDLQFD\"\n },\n \"reminders\": {\n  \"useDefault\": true\n }\n}\n"', headers: {
+    stub_request(:post, 'https://www.googleapis.com/calendar/v3/calendars/veritrans.co.id_u8h6tgnhgedrt0c2ognpe7q3q0@group.calendar.google.com/events?sendNotifications=true')
+      .to_return(status: 200, body: JSON.dump({
+        kind: "calendar#event",
+        etag: "3102184802480000",
+        id: "mupnql7hnt12t73sgvv1n3gfo4",
+        status: "confirmed",
+        htmlLink: "https://www.google.com/calendar/event?eid=bXVwbnFsN2hudDEydDczc2d2djFuM2dmbzQgbWlkdHJhbnMuY29tXzd2NXJsaHJyNzN0Nm1qMTJpZnVibXN0MW0wQGc",
+        created: "2019-02-25T11:00:01.000Z",
+        updated: "2019-02-25T11:00:01.240Z",
+        summary: "Change 1",
+        description: "CR: http://localhost:3000/change_requests/23, PIC: Rizqy Faishal Tanjung",
+        creator: {
+          email: "rizqy.tanjung@midtrans.com"
+        },
+        organizer: {
+          email: "midtrans.com_7v5rlhrr73t6mj12ifubmst1m0@group.calendar.google.com"
+        },
+        displayName: "staging vision",
+        self: true,
+        start: {
+          dateTime: "2019-01-10T10:58:00+07:00"
+        },
+        end: {
+          dateTime: "2019-01-24T15:17:00+07:00"
+        },
+        iCalUID: "mupnql7hnt12t73sgvv1n3gfo4@google.com",
+        sequence: 0,
+        attendees: [
+          {
+            email: "14@veritrans.co.id",
+            responseStatus: "needsAction"
+          },
+          {
+            email: "rizqy.tanjung@midtrans.com",
+            responseStatus: "needsAction"
+          },
+          {
+            email: "1@veritrans.co.id",
+            responseStatus: "needsAction"
+          },
+        ],
+        hangoutLink: "https://meet.google.com/qgq-ojki-sjx",
+        conferenceData: {
+          createRequest: {
+            requestId: "lh5kg98263e09dhasrc99m128k",
+            conferenceSolutionKey: {
+              type: "hangoutsMeet"
+            },
+            status: {
+              statusCode: "success"
+            }
+          }
+        }
+      }), headers: {
         content_type: 'application/json'
-      });
+      })
   end
 
   def google_oauth_login_mock(user)
