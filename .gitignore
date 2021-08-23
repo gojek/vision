@@ -55,3 +55,5 @@ solr/test/*
 !solr/test/core.properties
 
 node_modules
+
+.env
