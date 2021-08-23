@@ -45,7 +45,7 @@ user[20].name = "Tuhan Takur"
   user[i].save
 end
 
-cr = ChangeRequest.new(user: user[3])
+cr = ChangeRequest.new(user: user[3], entity_source: 'midtrans')
 cr.save(validate: false)
 
 Tester.create(name: "Mohamad Dwiyan Rahmanianto", change_request: cr)
@@ -94,7 +94,7 @@ user[15].name = "Aragorn Arathorn"
   user[i].save
 end
 
-cr = ChangeRequest.new(user: user[1])
+cr = ChangeRequest.new(user: user[1], entity_source: 'midtrans')
 cr.save(validate: false)
 Approval.create(user: user[1], change_request: cr)
 
