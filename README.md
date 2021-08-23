@@ -55,8 +55,13 @@ cp .env.example .env.test # for test environment
 cp config/database.example.yml config/database.yml
 ```
 
-In .env
+In .env make sure you've check and configured:
 ```
+DB_HOST=
+DB_USERNAME=
+DB_PASSWORD=
+SOLR_HOST=
+SOLR_PORT=
 SLACK_IR_CHANNEL=<incident_report_slack_channel>
 SLACK_CR_CHANNEL=<change_request_slack_channel>
 ```
@@ -67,16 +72,16 @@ SLACK_CR_CHANNEL=<change_request_slack_channel>
 bundle exec rake db:seed
 ```
 
-5. Run rails
-```
-bundle exec rails s
-```
-
-6. Visit vision in `localhost:3000`
-
-7. For mail interaction in Development environment, install and run Mailcatcher by running
+5. For mail interaction in Development environment, install and run Mailcatcher by running
 ```
 gem install mailcatcher
 
 mailcatcher
 ```
+
+6. Run rails
+```
+bundle exec rails s
+```
+
+7. Visit vision in `http://localhost:3000`
