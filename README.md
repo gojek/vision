@@ -104,7 +104,7 @@ You can run Vision under docker, if you have problem with version compability
 
 ```
 docker-compose build
-docker-compose run -d
+docker-compose up -d
 
 ```
 
