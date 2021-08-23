@@ -11,10 +11,22 @@ To accomplish this, every environment variables are set at `.env` file.
 Therefore, for running server use `bundle exec rails s` as that will read the environment variables and
 run the app with it.
 
-For testing, you can just use `bundle exec rspec` since environment variables are simply ignored,
-as outside API call is mocked through `webmock`.
+### Static Analysis
+we're using Rubycritic with score 80, you can run `rubycritic -s 80.00 --no-browser app lib`
 
+### Code Quality
+we're using Rubocop, you can run `bundle exec rubocop`
+
+### Code Security
+we're using brakeman, but there're still some issue we can't solved due to current Rails version,
+you can run with `brakeman LANG="C" LC_ALL="en_US.UTF-8" .`
+
+### Testing
+you can just use `bundle exec rspec` since environment variables are simply ignored,
+as outside API call is mocked through `webmock`.
 I wish it clear. Feel free to reach out for further questions.
+
+We set code coverage minimum is 73%
 
 ## Getting Started
 
