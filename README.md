@@ -97,3 +97,15 @@ bundle exec rails s
 ```
 
 7. Visit vision in `http://localhost:3000`
+
+## Docker Container
+
+You can run Vision under docker, if you have problem with version compability
+
+```
+docker-compose build
+docker-compose run -d
+
+```
+
+Visit http://localhost:3000
