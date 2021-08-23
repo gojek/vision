@@ -2,13 +2,13 @@ staging:
   disabled: true
 development:
   solr:
-    hostname: localhost
-    port: 8982
+    hostname: <%= ENV.fetch("SOLR_HOST") { localhost } %>
+    port: <%= ENV.fetch("SOLR_PORT") { 8983 } %>
     log_level: INFO
     path: /solr/development
 test:
   solr:
-    hostname: localhost
-    port: 8981
+    hostname: <%= ENV.fetch("SOLR_HOST") { localhost } %>
+    port: <%= ENV.fetch("SOLR_PORT") { 8983 } %>
     log_level: WARNING
     path: /solr/test
