@@ -84,6 +84,6 @@ jobs:
         DB_PASSWORD: postgres
         SLACK_IR_CHANNEL: midtrans-test,spots-test,gojek-test,anything
         SLACK_CR_CHANNEL: midtrans-test,spots-test,gojek-test,anything
-        SOLR_HOSTNAME: localhost
+        SOLR_HOST: localhost
         SOLR_PORT: 8983
         VALID_EMAIL: midtrans.com,veritrans.co.id,associate.midtrans.com,spots.co.id,go-jek.com,gmail.com
