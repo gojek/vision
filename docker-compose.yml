@@ -8,7 +8,7 @@ services:
       - POSTGRES_PASSWORD=postgres
     restart: always
     ports:
-      - "5432:5432"
+      - "5433:5433"
 
   solr:
     image: solr:5.5.5-alpine
@@ -18,7 +18,7 @@ services:
     #   - solr create_core -c development
     restart: always
     ports:
-      - "8983:8983"
+      - "8984:8984"
 
   web:
     build: .
@@ -26,7 +26,7 @@ services:
       - db
       - solr
     env_file:
-    - .env.example
+    - .env.docker
     volumes:
       - app_data:/app
     restart: always
