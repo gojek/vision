@@ -38,7 +38,7 @@ class AccessRequest < ActiveRecord::Base
     text :employee_email_address, stored: true
     text :employee_department, stored: true
     text :employee_phone, stored: true
-    time :created_at, stored: true
+    time :created_at, stored: true, trie: true
   end
 
   aasm do
