@@ -63,7 +63,7 @@ class IncidentReport < ActiveRecord::Base
     text :overlooked_reason, stored: true
     text :recovery_action, stored: true
     text :prevent_action, stored: true
-    time :created_at, stored: true
+    time :created_at, stored: true, trie: true
   end
 
   comma do
