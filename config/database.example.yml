@@ -9,8 +9,6 @@ defaults: &defaults
 
 development:
   <<: *defaults
-  test:
-  <<: *defaults
   host: <%= ENV.fetch("DB_HOST") { 'localhost' } %>
   port: <%= ENV.fetch("DB_PORT") { "5432" } %>
   username: <%= ENV["DB_USERNAME"] %>
