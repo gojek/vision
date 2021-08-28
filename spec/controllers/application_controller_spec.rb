@@ -1,6 +1,6 @@
-require 'spec_helper'
+require 'rails_helper'
 
-describe ApplicationController, type: :controller do
+RSpec.describe ApplicationController, type: :controller do
   context 'user access' do
     let(:user) {FactoryGirl.create(:user)}
     let(:waiting_user) {FactoryGirl.create(:waiting_user)}

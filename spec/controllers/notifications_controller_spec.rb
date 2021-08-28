@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 RSpec.describe NotificationsController, type: :controller do
   let(:user) { FactoryGirl.create(:user) }
@@ -15,7 +15,6 @@ RSpec.describe NotificationsController, type: :controller do
       notification = FactoryGirl.create(:notification, user: user, change_request: cr)
       get :clear_notifications
       expect(user.notifications.cr.count).to eq 0
-
     end
 
     it 'should redirect to request.referer' do
