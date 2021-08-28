@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Notification, type: :model do
   it { should belong_to(:change_request)}

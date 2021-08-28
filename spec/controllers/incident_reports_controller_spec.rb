@@ -1,6 +1,6 @@
-require 'spec_helper'
+require 'rails_helper'
 
-describe IncidentReportsController, type: :controller do
+RSpec.describe IncidentReportsController, type: :controller do
   context 'user access' do
     let(:user) {FactoryGirl.create(:user)}
     let(:incident_report) {incident_report = FactoryGirl.create(:incident_report, user: user)}

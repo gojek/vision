@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'slack_notif'
 require 'slack_attachment_builder.rb'
 require 'slack_helpers.rb'

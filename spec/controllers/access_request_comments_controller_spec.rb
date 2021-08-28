@@ -1,8 +1,8 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'slack_notif'
 require 'mentioner.rb'
 
-describe AccessRequestCommentsController, type:  :controller do
+RSpec.describe AccessRequestCommentsController, type: :controller do
   let(:access_request) {FactoryGirl.create(:access_request)}
   let(:ar_comment) {FactoryGirl.build(:access_request_comment, body: 'comment')}
   before :each do

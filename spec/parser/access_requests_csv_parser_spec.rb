@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'access_requests_csv_parser.rb'
 
 include ActionDispatch::TestProcess

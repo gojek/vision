@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'slack_helpers.rb'
 
 RSpec.configure do |c|
