@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'google_client'
 require 'webmock/rspec'
 require 'json'

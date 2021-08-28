@@ -1,7 +1,7 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'slack_notif'
 
-describe ChangeRequestsController, type: :controller do
+RSpec.describe ChangeRequestsController, type: :controller do
   before :all do
     SolrResultStub = Struct.new("SolrResultStub", :results)
   end

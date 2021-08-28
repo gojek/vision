@@ -1,6 +1,6 @@
-require 'spec_helper'
+require 'rails_helper'
 
-describe AccessRequestsController, type: :controller do
+RSpec.describe AccessRequestsController, type: :controller do
   context 'user access' do
     let(:user) {FactoryGirl.create(:user)}
     let(:approver_ar) {FactoryGirl.create(:approver_ar, email:'patrick.star@midtrans.com')}

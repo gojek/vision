@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe ChangeRequest, type: :model do
   let (:change_request) {FactoryGirl.create(:change_request)}
