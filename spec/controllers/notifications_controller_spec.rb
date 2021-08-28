@@ -1,14 +1,15 @@
-require 'spec_helper.rb'
+require 'spec_helper'
 
-describe NotificationsController, type: :controller do
-  let(:user) {FactoryGirl.create(:user)}
+RSpec.describe NotificationsController, type: :controller do
+  let(:user) { FactoryGirl.create(:user) }
+
   before(:each) do
     controller.request.env["devise.mapping"] = Devise.mappings[:user]
     sign_in user
     request.env["HTTP_REFERER"] = "vt-vision.com"
   end
-  describe "GET #clear_notifications" do
 
+  describe "GET #clear_notifications" do
     it 'should clear all notifications of the user' do
       cr = FactoryGirl.create(:change_request)
       notification = FactoryGirl.create(:notification, user: user, change_request: cr)
