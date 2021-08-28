@@ -1,6 +1,6 @@
-require 'spec_helper'
+require 'rails_helper'
 
-describe UsersController, type: :controller do
+RSpec.describe UsersController, type: :controller do
 
   describe 'pending user access vision' do
     let(:user) { FactoryGirl.create(:pending_user)}
