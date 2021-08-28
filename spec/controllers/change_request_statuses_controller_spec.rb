@@ -1,6 +1,6 @@
-require 'spec_helper'
+require 'rails_helper'
 
-describe ChangeRequestStatusesController, type: :controller do
+RSpec.describe ChangeRequestStatusesController, type: :controller do
   let(:user) { FactoryGirl.create(:user) }
   before :each do
     controller.request.env['devise.mapping'] = Devise.mappings[:user]

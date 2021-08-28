@@ -1,8 +1,8 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'slack_notif'
 require 'mentioner.rb'
 
-describe CommentsController, type:  :controller do
+RSpec.describe CommentsController, type:  :controller do
   let(:change_request) {FactoryGirl.create(:change_request)}
   let(:cr_comment) {FactoryGirl.build(:comment, body: 'comment')}
   before :each do

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe AccessRequest, type: :model do
 	let (:access_request) {FactoryGirl.create(:access_request)}
