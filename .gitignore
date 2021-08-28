@@ -34,7 +34,6 @@ coverage
 # Ignore bower components
 /vendor
 
-.ruby-version
 lib/tasks/approval.rb
 vision.dump
 
