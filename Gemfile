@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 # Bundle edge Rails insteadhttps://developers.google.com/oauthplayground: gem 'rails', github: 'rails/rails'
 gem 'puma', '~> 3.12.0'
-gem 'rails', '4.2.10'
+gem 'rails', '5.0.7'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 # resource-related
