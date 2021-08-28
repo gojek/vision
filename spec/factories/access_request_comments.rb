@@ -2,6 +2,6 @@
 
 FactoryGirl.define do
   factory :access_request_comment do
-    body Faker::Lorem.sentence(5)
+    body Faker::Lorem.sentence(word_count: 5)
   end
 end

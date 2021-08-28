@@ -2,8 +2,6 @@
 
 source 'https://rubygems.org'
 
-ruby '~> 2.4.5'
-
 # Bundle edge Rails insteadhttps://developers.google.com/oauthplayground: gem 'rails', github: 'rails/rails'
 gem 'puma', '~> 3.12.0'
 gem 'rails', '4.2.10'
@@ -30,7 +28,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'jbuilder', '~> 2.0'
 
 # user-related
-gem 'devise', '~> 4.2.0'
+gem 'devise'
 
 # file managment
 gem 'paper_trail', '~> 4.1'
