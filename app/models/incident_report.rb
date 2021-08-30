@@ -1,5 +1,5 @@
 # a model representating incident report document
-class IncidentReport < ActiveRecord::Base
+class IncidentReport < ApplicationRecord
   include ActiveModel::Dirty
   include EntitySourceModule
 
