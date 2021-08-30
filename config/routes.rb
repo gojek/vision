@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
-
-
+  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   get 'cobas/new'
 
   resources :comments
@@ -110,8 +109,6 @@ Rails.application.routes.draw do
   post 'reject/:id' => 'change_requests#reject', :as =>'reject'
   get 'notifications/clear_notifications' => 'notifications#clear_notifications'
   get 'duplicate/:id' => 'change_requests#duplicate', :as => 'duplicate'
-  get 'search/:q' => 'change_requests#search', :as => 'search'
-
   get 'notifications/index' => 'notifications#index'
   get 'create_hotfix/:id' => 'change_requests#create_hotfix', :as => 'create_hotfix'
 
@@ -138,5 +135,4 @@ Rails.application.routes.draw do
   namespace :api do
     post 'change_requests/action'
   end
-
 end

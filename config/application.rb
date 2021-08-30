@@ -11,8 +11,9 @@ module Vision
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
+    ActiveSupport.halt_callback_chains_on_return_false = false
 
-    # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
+     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
     config.time_zone = 'Jakarta'
     config.generators do |g|
@@ -39,9 +40,6 @@ module Vision
     # add bower components to it
     config.assets.paths << Rails.root.join("vendor", "assets", "bower_components")
 
-    # For queing backend process
-    config.active_job.queue_adapter = :sucker_punch
-
     # add fonts
     config.assets.paths << Rails.root.join("app", "assets", "fonts")
 
@@ -50,5 +48,4 @@ module Vision
   end
 end
 
-# sucker punch logging
-# SuckerPunch.logger = Logger.new("#{Rails.root}/log/sucker_punch.log")
+SuckerPunch.logger = Rails.logger

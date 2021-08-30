@@ -1,6 +1,8 @@
-require 'slack_client.rb'
-require 'mentioner.rb'
-require 'slack_attachment_builder.rb'
+# frozen_string_literal: true
+
+require 'mentioner'
+require 'slack_attachment_builder'
+require 'slack_client'
 
 class SlackNotif
   include Rails.application.routes.url_helpers

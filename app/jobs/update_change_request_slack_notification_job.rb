@@ -1,7 +1,7 @@
 require 'slack_notif.rb'
 
 # class ChangeRequestSlackUpdateJob < ActiveJob::Base
-class UpdateChangeRequestSlackNotificationJob < ActiveJob::Base
+class UpdateChangeRequestSlackNotificationJob < ApplicationJob
   include SuckerPunch::Job 
 
   def perform(change_request)

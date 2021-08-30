@@ -1,5 +1,6 @@
 class SlackClient
   attr_accessor :client
+
   def initialize
     @client = Slack::Web::Client.new
   end
