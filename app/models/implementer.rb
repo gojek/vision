@@ -1,3 +1,3 @@
-class Implementer < ActiveRecord::Base
+class Implementer < ApplicationRecord
   belongs_to :change_request
 end

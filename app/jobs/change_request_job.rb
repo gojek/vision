@@ -6,7 +6,7 @@ class ChangeRequestJob
 
 
   def perform(cr_ids, email)
-    ActiveRecord::Base.connection_pool.with_connection do
+    ApplicationRecord.connection_pool.with_connection do
       csv_string = CSV.generate do |csv|
         csv << ChangeRequest.attribute_names
         ChangeRequest.where(id: cr_ids).where.not(aasm_state: 'draft').order("created_at DESC").each do |cr|
