@@ -1,11 +1,16 @@
 require 'rails_helper'
 
+
 RSpec.describe IncidentReportsController, type: :controller do
+  include Devise::Test::IntegrationHelpers
+  include Devise::Test::ControllerHelpers
+  include Warden::Test::Helpers
+  
   context 'user access' do
     let(:user) {FactoryGirl.create(:user)}
     let(:incident_report) {incident_report = FactoryGirl.create(:incident_report, user: user)}
     before :each do
-      controller.request.env['devise.mapping'] = Devise.mappings[:user]
+      @request.env['devise.mapping'] = Devise.mappings[:user]
       sign_in incident_report.user
     end
     describe 'GET #show' do

@@ -68,7 +68,9 @@ RSpec.configure do |config|
   config.order = "random"
 
   config.include Warden::Test::Helpers
-  config.include Devise::Test::ControllerHelpers, :type => :controller
+  config.include Devise::Test::ControllerHelpers, type: :controller
+  config.include Devise::Test::ControllerHelpers, type: :view
+  config.include Devise::Test::IntegrationHelpers, type: :feature
   config.infer_spec_type_from_file_location!
 
 
