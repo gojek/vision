@@ -1,6 +1,6 @@
 require 'slack_notif.rb'
 
-class IncidentReportNewSlackNotifJob < ActiveJob::Base
+class IncidentReportNewSlackNotifJob < ApplicationJob
 
   include SuckerPunch::Job
 
