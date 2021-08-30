@@ -22,7 +22,7 @@ class Mentioner
   end
 
   def self.username_extract_regex
-    /(?<!\w)#{mention_prefix}[\w\.]+/
+    /(?<!\w)#{mention_prefix}[\w.]+/
   end
 
   def self.mention_prefix
