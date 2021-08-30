@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'google/apis/calendar_v3'
-require 'user_credential.rb'
+require 'user_credential'
 
 class GoogleClient
   def initialize(user)
@@ -18,8 +18,8 @@ class GoogleClient
     event.id = returned_event.id
     event.saved = true
     event
-  rescue StandardError => error
-    event.error_messages = error.to_s
+  rescue StandardError => e
+    event.error_messages = e.to_s
     event
   end
 

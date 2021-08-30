@@ -1,6 +1,6 @@
 require 'slack_notif.rb'
 
-class NewAccessRequestSlackNotificationJob < ActiveJob::Base
+class NewAccessRequestSlackNotificationJob < ApplicationJob
 
   include SuckerPunch::Job
 
