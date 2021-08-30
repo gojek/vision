@@ -1,4 +1,4 @@
-class ChangeRequest < ActiveRecord::Base
+class ChangeRequest < ApplicationRecord
   include AASM
   include EntitySourceModule
 

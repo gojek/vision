@@ -1,4 +1,4 @@
-class AccessRequestApproval < ActiveRecord::Base
+class AccessRequestApproval < ApplicationRecord
   belongs_to :access_request
   belongs_to :user
 
