@@ -4,8 +4,8 @@ require 'rails_helper'
 RSpec.describe IncidentReportsController, type: :controller do
   
   context 'user access' do
-    let(:user) {FactoryGirl.create(:user)}
-    let(:incident_report) {incident_report = FactoryGirl.create(:incident_report, user: user)}
+    let(:user) {FactoryBot.create(:user)}
+    let(:incident_report) {incident_report = FactoryBot.create(:incident_report, user: user)}
     before :each do
       @request.env['devise.mapping'] = Devise.mappings[:user]
       sign_in incident_report.user
@@ -56,7 +56,7 @@ RSpec.describe IncidentReportsController, type: :controller do
       end
 
       it 'returns total of active user' do
-        user_locked = FactoryGirl.create(:user)
+        user_locked = FactoryBot.create(:user)
         user_locked.update_attribute(:locked_at, Time.current)
         get :new
 
@@ -76,7 +76,7 @@ RSpec.describe IncidentReportsController, type: :controller do
       end
 
       it 'returns total of active user' do
-        user_locked = FactoryGirl.create(:user)
+        user_locked = FactoryBot.create(:user)
         user_locked.update_attribute(:locked_at, Time.current)
         get :edit, id: incident_report
 
@@ -88,7 +88,7 @@ RSpec.describe IncidentReportsController, type: :controller do
       context "with valid attributes" do
         it 'saves the new incident report in the database' do
           expect{
-            post :create, incident_report: FactoryGirl.attributes_for(:incident_report)
+            post :create, incident_report: FactoryBot.attributes_for(:incident_report)
           }.to change(IncidentReport, :count).by(1)
         end
       end
@@ -96,7 +96,7 @@ RSpec.describe IncidentReportsController, type: :controller do
       context "with invalid attributes" do
         it 'doesnt save the new incident report in the database' do
           expect{
-            post :create, incident_report: FactoryGirl.attributes_for(:invalid_incident_report, source: 'source')
+            post :create, incident_report: FactoryBot.attributes_for(:invalid_incident_report, source: 'source')
           }.to_not change(IncidentReport, :count)
         end
       end
@@ -107,7 +107,7 @@ RSpec.describe IncidentReportsController, type: :controller do
         it "changes @incident_report's attributes" do
           source = 'External'
           patch :update, id: incident_report,
-            incident_report: FactoryGirl.attributes_for(:incident_report_with_reason_update, source: source).except(:user)
+            incident_report: FactoryBot.attributes_for(:incident_report_with_reason_update, source: source).except(:user)
           incident_report.reload
           expect(incident_report.source).to eq(source)
         end
@@ -117,19 +117,19 @@ RSpec.describe IncidentReportsController, type: :controller do
         it "doesnt change the @incidnet report's attributes" do
           source = 'source'
           patch :update, id: incident_report,
-            incident_report: FactoryGirl.attributes_for(:incident_report_with_reason_update, source: source).except(:user)
+            incident_report: FactoryBot.attributes_for(:incident_report_with_reason_update, source: source).except(:user)
           incident_report.reload
           expect(incident_report.source).to_not eq(source)
         end
       end
       context 'unauthorized user' do
         before :each do
-          @other_incident_report = FactoryGirl.create(:incident_report, user:FactoryGirl.create(:user))
+          @other_incident_report = FactoryBot.create(:incident_report, user:FactoryBot.create(:user))
         end
         it "won't save in the database" do
           source = 'External'
           patch :update, id: @other_incident_report,
-            incident_report: FactoryGirl.attributes_for(:incident_report, source: source)
+            incident_report: FactoryBot.attributes_for(:incident_report, source: source)
           @other_incident_report.reload
           expect(@other_incident_report.source).to_not eq(source)
         end
@@ -137,7 +137,7 @@ RSpec.describe IncidentReportsController, type: :controller do
     end
     describe 'DELETE #destroy' do
       before :each do
-        @incident_report = FactoryGirl.create(:incident_report, user: user)
+        @incident_report = FactoryBot.create(:incident_report, user: user)
       end
       it "deletes the incident report" do
         expect{
@@ -148,11 +148,11 @@ RSpec.describe IncidentReportsController, type: :controller do
   end
 
   context 'admin access' do
-    let(:user) {FactoryGirl.create(:user)}
-    let(:incident_report) {FactoryGirl.create(:incident_report, user:user)}
+    let(:user) {FactoryBot.create(:user)}
+    let(:incident_report) {FactoryBot.create(:incident_report, user:user)}
     before :each do
       @request.env['devise.mapping'] = Devise.mappings[:admin]
-      @admin = FactoryGirl.create(:admin)
+      @admin = FactoryBot.create(:admin)
       sign_in @admin
     end
 
@@ -170,7 +170,7 @@ RSpec.describe IncidentReportsController, type: :controller do
 
     describe 'DELETE #destroy' do
       before :each do
-        @incident_report = FactoryGirl.create(:incident_report, user:user)
+        @incident_report = FactoryBot.create(:incident_report, user:user)
       end
       it "deletes the incident report" do
         expect{
@@ -196,7 +196,7 @@ RSpec.describe IncidentReportsController, type: :controller do
         it "changes @incident_report's attributes" do
           source = 'External'
           patch :update, id: incident_report,
-            incident_report: FactoryGirl.attributes_for(:incident_report_with_reason_update, source: source).except(:user)
+            incident_report: FactoryBot.attributes_for(:incident_report_with_reason_update, source: source).except(:user)
           incident_report.reload
           expect(incident_report.source).to eq(source)
         end
@@ -206,7 +206,7 @@ RSpec.describe IncidentReportsController, type: :controller do
         it "doesnt change the @incident_report's attributes" do
           source = 'source'
           patch :update, id: incident_report,
-            incident_report: FactoryGirl.attributes_for(:incident_report_with_reason_update, source: source).except(:user)
+            incident_report: FactoryBot.attributes_for(:incident_report_with_reason_update, source: source).except(:user)
           incident_report.reload          
           expect(incident_report.source).to_not eq(source)
         end

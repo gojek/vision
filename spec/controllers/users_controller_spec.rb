@@ -3,16 +3,16 @@ require 'rails_helper'
 RSpec.describe UsersController, type: :controller do
 
   describe 'pending user access vision' do
-    let(:user) { FactoryGirl.create(:pending_user)}
-    let(:attributes) {FactoryGirl.attributes_for(:access_request)}
-    let(:approver) {FactoryGirl.create(:approver)}
-    let(:waiting_user) {FactoryGirl.create(:waiting_user)}
-    let(:pending_user) {FactoryGirl.create(:pending_user)}
+    let(:user) { FactoryBot.create(:pending_user)}
+    let(:attributes) {FactoryBot.attributes_for(:access_request)}
+    let(:approver) {FactoryBot.create(:approver)}
+    let(:waiting_user) {FactoryBot.create(:waiting_user)}
+    let(:pending_user) {FactoryBot.create(:pending_user)}
 
     before :each do
-      FactoryGirl.create(:user).email
-      FactoryGirl.create(:master_approver).email
-      FactoryGirl.create(:user, email: 'vision@veritrans.co.id')
+      FactoryBot.create(:user).email
+      FactoryBot.create(:master_approver).email
+      FactoryBot.create(:user, email: 'vision@veritrans.co.id')
       controller.request.env['devise.mapping'] = Devise.mappings[:pending_user]
       sign_in pending_user
     end
@@ -70,11 +70,11 @@ RSpec.describe UsersController, type: :controller do
 
 
   describe 'user access' do
-    let(:user) {FactoryGirl.create(:user)}
-    let(:waiting) {FactoryGirl.create(:waiting_user)}
-    let(:reject) {FactoryGirl.create(:rejected_user)}
-    let(:admin) {FactoryGirl.create(:admin)}
-    let(:pending_user) {FactoryGirl.create(:pending_user)}
+    let(:user) {FactoryBot.create(:user)}
+    let(:waiting) {FactoryBot.create(:waiting_user)}
+    let(:reject) {FactoryBot.create(:rejected_user)}
+    let(:admin) {FactoryBot.create(:admin)}
+    let(:pending_user) {FactoryBot.create(:pending_user)}
 
     describe 'put #approving and #rejecting user' do
       it 'approving user' do
@@ -85,7 +85,7 @@ RSpec.describe UsersController, type: :controller do
       end
 
       it 'rejecting user' do
-        admin = FactoryGirl.create(:admin)
+        admin = FactoryBot.create(:admin)
         sign_in admin
 
         put :reject_user, :id => waiting.id
@@ -109,7 +109,7 @@ RSpec.describe UsersController, type: :controller do
       end
 
       it 'is admin accessing filter index page' do
-        FactoryGirl.create(:waiting_user)
+        FactoryBot.create(:waiting_user)
         sign_in admin
         get :index, q: {is_approved_eq: 3}
         expect(assigns(:users).size).to eq 1
@@ -132,7 +132,7 @@ RSpec.describe UsersController, type: :controller do
   end
 
   describe "admin access" do
-    let(:admin) {FactoryGirl.create(:admin, is_approved: 3)}
+    let(:admin) {FactoryBot.create(:admin, is_approved: 3)}
     render_views
 
     before :each do
@@ -146,7 +146,7 @@ RSpec.describe UsersController, type: :controller do
     end
 
     it 'is admin accessing filter index page' do
-      FactoryGirl.create(:user, is_approved: 3) # example user 1 instance
+      FactoryBot.create(:user, is_approved: 3) # example user 1 instance
       get :index, q: {is_approved_eq: 3}
       expect(response.body).to include 'Approved'
     end

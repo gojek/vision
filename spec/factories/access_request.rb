@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :access_request do
     ignore do
       temporary false
@@ -81,20 +81,20 @@ FactoryGirl.define do
         ar.end_date = 4.days.from_now
       end
 
-      ar.user = FactoryGirl.create(:user)
+      ar.user = FactoryBot.create(:user)
 
       evaluator.collaborators_num.times do |i|
-        ar.collaborators << FactoryGirl.create(:user)
+        ar.collaborators << FactoryBot.create(:user)
       end
       
       evaluator.approvals_accept.times do |i|
-        ar.approvals << FactoryGirl.create(:access_request_approval, approved: true)
+        ar.approvals << FactoryBot.create(:access_request_approval, approved: true)
       end
       evaluator.approvals_reject.times do |i|
-        ar.approvals << FactoryGirl.create(:access_request_approval, approved: false)
+        ar.approvals << FactoryBot.create(:access_request_approval, approved: false)
       end
       evaluator.approvals_alpha.times do |i|
-        ar.approvals << FactoryGirl.create(:access_request_approval, approved: nil)
+        ar.approvals << FactoryBot.create(:access_request_approval, approved: nil)
       end
     end
   end

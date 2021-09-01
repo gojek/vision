@@ -3,11 +3,11 @@ require 'slack_notif'
 require 'mentioner.rb'
 
 RSpec.describe CommentsController, type:  :controller do
-  let(:change_request) {FactoryGirl.create(:change_request)}
-  let(:cr_comment) {FactoryGirl.build(:comment, body: 'comment')}
+  let(:change_request) {FactoryBot.create(:change_request)}
+  let(:cr_comment) {FactoryBot.build(:comment, body: 'comment')}
   before :each do
     controller.request.env['devise.mapping'] = Devise.mappings[:user]
-    release_manager = FactoryGirl.create(:release_manager)
+    release_manager = FactoryBot.create(:release_manager)
     sign_in release_manager
   end
   describe 'POST #create' do
@@ -19,7 +19,7 @@ RSpec.describe CommentsController, type:  :controller do
       end
 
       it 'call slack notification library to notify to the mentionees that they have been mentioned' do
-        comment = FactoryGirl.build(:comment, body: 'comment @metionee')
+        comment = FactoryBot.build(:comment, body: 'comment @metionee')
         expect_any_instance_of(SlackNotif).to receive(:notify_new_comment).with(an_instance_of(Comment))
         post :create, change_request_id: change_request.id, comment: {body: comment.body}
       end
@@ -27,7 +27,7 @@ RSpec.describe CommentsController, type:  :controller do
     context 'with invalid attributes' do
       it 'doesnt save the new comment in the databse' do
         expect{
-          post :create, change_request_id: change_request.id, comment: {body: ''}
+          post :create, params: { change_request_id: change_request.id, comment: {body: ''} }
         }.to_not change(Comment, :count)
       end
     end
