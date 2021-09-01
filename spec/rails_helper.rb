@@ -77,7 +77,7 @@ RSpec.configure do |config|
 
   config.render_views = true
   config.mock_with :rspec
-  config.include FactoryGirl::Syntax::Methods
+  config.include FactoryBot::Syntax::Methods
   config.filter_run_when_matching :focus
 
   config.before(:each) do

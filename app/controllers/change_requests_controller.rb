@@ -27,6 +27,7 @@ class ChangeRequestsController < ApplicationController
       @change_requests = @q.result(distinct: true).order(id: :desc)
       @change_requests = @change_requests.tagged_with(params[:tag_list]) if params[:tag_list]
     end
+    byebug
     respond_to do |format|
       format.html do
         @change_requests = @change_requests.page(params[:page]).per(params[:per_page])

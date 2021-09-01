@@ -4,7 +4,7 @@ require 'webmock/rspec'
 
 
 RSpec.describe IncidentReportNewSlackNotifJob, type: :job do
-  let(:incident_report) {FactoryGirl.create(:incident_report) }
+  let(:incident_report) {FactoryBot.create(:incident_report) }
   describe "perform async" do
     it "send notification to slack immediately" do
       stub = stub_request(:post, "https://slack.com/api/chat.postMessage")
