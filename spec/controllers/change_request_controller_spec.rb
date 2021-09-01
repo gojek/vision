@@ -61,7 +61,7 @@ RSpec.describe ChangeRequestsController, type: :controller do
 
         it "should return current page when downloading an attachment" do
           cr = FactoryGirl.create(:change_request)
-          get :index, params: {}
+          get :index
           #expect(@controller).to receive(:send_data).with(csv_string, csv_options) {
           #  @controller.render nothing: true # to prevent a 'missing template' error
           #}
