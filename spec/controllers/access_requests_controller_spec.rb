@@ -158,7 +158,6 @@ RSpec.describe AccessRequestsController, type: :controller do
 
       it 'get all the username from active user' do
         get :show, params: { id: access_request }
-        byebug
         expect(assigns(:usernames)).to include user.email.split('@')[0]
       end
     end

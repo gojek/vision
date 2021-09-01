@@ -10,6 +10,7 @@ class ChangeRequestsController < ApplicationController
   require 'slack_notif.rb'
   require 'csv_exporter.rb'
   require 'calendar_service.rb'
+  require 'jira'
 
   def index
     if params[:type]
