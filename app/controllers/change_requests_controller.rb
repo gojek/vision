@@ -334,7 +334,7 @@ class ChangeRequestsController < ApplicationController
             implementers_attributes: [:id, :name, :position, :_destroy],
             testers_attributes: [:id, :name, :position, :_destroy],
             :tag_list => [], :implementer_ids => [], :tester_ids => [],
-            :collaborator_ids => [], :approver_ids => []).to_h.tap do |params|
+            :collaborator_ids => [], :approver_ids => []).tap do |params|
               normalized_array_fields = [:approver_ids, :implementer_ids, :tester_ids, :collaborator_ids]
               normalized_array_fields.each do |field|
                 params[field].select!{ |id| id.present? }.map!{ |id| id.to_i} if params[field].present?
