@@ -30,7 +30,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'devise'
 
 # file managment
-gem 'paper_trail', '~> 4.1'
+gem 'paper_trail'
 gem 'sucker_punch', '~> 2.0'
 
 # oauth
@@ -85,6 +85,8 @@ gem 'sunspot_solr'
 
 # sanitizer
 gem 'sanitize'
+
+gem 'record_tag_helper'
 
 group :production do
   gem 'rails_12factor'
