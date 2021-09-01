@@ -4,14 +4,16 @@ source 'https://rubygems.org'
 
 # Bundle edge Rails insteadhttps://developers.google.com/oauthplayground: gem 'rails', github: 'rails/rails'
 gem 'puma', '~> 3.12.0'
-gem 'rails', '5.0.7'
+gem 'rails', '5.2.6'
 gem 'sdoc', '~> 0.4.0', group: :doc
+
+gem 'bootsnap', require: false
 
 # resource-related
 gem 'bootstrap-kaminari-views'
 gem 'bootstrap-toggle-rails'
 gem 'bootstrap-wysihtml5-rails'
-gem 'coffee-rails', '~> 4.1.0'
+gem 'coffee-rails', '>= 4.1.0'
 gem 'fullcalendar-rails'
 gem 'jquery-rails'
 gem 'jquery-turbolinks'
@@ -92,6 +94,7 @@ end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
+  gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'web-console', '~> 2.0'
 
   # mail catcher is being used for email in development
@@ -118,6 +121,8 @@ group :development, :test do
   gem 'rubocop', require: false
   gem 'rubycritic', require: false
   gem 'spring'
+  gem 'spring-commands-rspec'
+  gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
 group :test do
