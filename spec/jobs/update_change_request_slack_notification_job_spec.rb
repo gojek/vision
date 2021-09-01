@@ -2,7 +2,7 @@ require 'rails_helper'
 require 'sucker_punch/testing/inline'
 
 RSpec.describe UpdateChangeRequestSlackNotificationJob, type: :job do
-  let(:change_request) {FactoryGirl.create(:change_request) }
+  let(:change_request) {FactoryBot.create(:change_request) }
   describe "perform async" do
     it "enqueued send notification to slack" do
       ActiveJob::Base.queue_adapter = :test

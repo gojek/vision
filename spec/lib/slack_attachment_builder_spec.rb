@@ -2,10 +2,10 @@ require 'rails_helper'
 require 'slack_attachment_builder.rb'
 
 describe SlackAttachmentBuilder do
-  let(:user) {FactoryGirl.create(:approver, slack_username: "dwiyan")}
-  let(:change_request) {FactoryGirl.create(:change_request, change_summary: 'change summary')}
-  let(:incident_report) {FactoryGirl.create(:incident_report, occurrence_time: Time.new("2011"))}
-  let(:comment) {FactoryGirl.create(:comment, user: user, change_request: change_request, body: 'a comment')}
+  let(:user) {FactoryBot.create(:approver, slack_username: "dwiyan")}
+  let(:change_request) {FactoryBot.create(:change_request, change_summary: 'change summary')}
+  let(:incident_report) {FactoryBot.create(:incident_report, occurrence_time: Time.new("2011"))}
+  let(:comment) {FactoryBot.create(:comment, user: user, change_request: change_request, body: 'a comment')}
   let(:attachment_builder) {SlackAttachmentBuilder.new}
 
   before { Timecop.freeze(Time.new(2016, 1, 11, 0, 0, 0, "+07:00"))}
@@ -51,7 +51,7 @@ describe SlackAttachmentBuilder do
   end
 
   describe 'generate approved cr attachment' do
-    let(:approval) {FactoryGirl.create(:approval, change_request_id: change_request.id, approve: true, notes: 'Ok')}
+    let(:approval) {FactoryBot.create(:approval, change_request_id: change_request.id, approve: true, notes: 'Ok')}
 
     it 'put change summary in fallback' do
       attachment_generated = attachment_builder.generate_approval_status_cr_attachment(change_request, approval)
