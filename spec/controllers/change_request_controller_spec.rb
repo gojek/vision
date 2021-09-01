@@ -7,9 +7,9 @@ RSpec.describe ChangeRequestsController, type: :controller do
   end
 
   describe 'requestor access' do
-    let(:user) {FactoryGirl.create(:user)}
-    let(:approver) {FactoryGirl.create(:approver)}
-    let(:change_request) {FactoryGirl.create(:submitted_change_request, user: user)}
+    let(:user) {FactoryBot.create(:user)}
+    let(:approver) {FactoryBot.create(:approver)}
+    let(:change_request) {FactoryBot.create(:submitted_change_request, user: user)}
 
     before :each do
       @request.env['devise.mapping'] = Devise.mappings[:user]
@@ -36,14 +36,14 @@ RSpec.describe ChangeRequestsController, type: :controller do
 
     describe 'GET #index' do
       it "populate all current user's Change Request if no param is passed" do
-        other_cr = FactoryGirl.create(:change_request)
+        other_cr = FactoryBot.create(:change_request)
         get :index
         expect(assigns(:change_requests)).to match_array([change_request, other_cr])
       end
 
       it "populate current user's Change Request based on tag that selected" do
         change_request.update(tag_list: 'tag')
-        other_cr = FactoryGirl.create(:change_request, user: user)
+        other_cr = FactoryBot.create(:change_request, user: user)
         get :index, params: { tag_list: 'tag' }
         expect(assigns(:change_requests)).to match_array([change_request])
       end
@@ -60,7 +60,7 @@ RSpec.describe ChangeRequestsController, type: :controller do
         let(:params) { {format: "csv", page: 1, per_page: 20}  }
 
         it "should return current page when downloading an attachment" do
-          cr = FactoryGirl.create(:change_request)
+          cr = FactoryBot.create(:change_request)
           get :index
           #expect(@controller).to receive(:send_data).with(csv_string, csv_options) {
           #  @controller.render nothing: true # to prevent a 'missing template' error
@@ -71,9 +71,9 @@ RSpec.describe ChangeRequestsController, type: :controller do
       end
 
       context 'when sending get index with relevant params' do
-        let(:other_user) {FactoryGirl.create(:user)}
-        let(:new_change_request) {FactoryGirl.create(:submitted_change_request, user: user)}
-        let(:other_change_request) {FactoryGirl.create(:submitted_change_request, user: other_user)}
+        let(:other_user) {FactoryBot.create(:user)}
+        let(:new_change_request) {FactoryBot.create(:submitted_change_request, user: user)}
+        let(:other_change_request) {FactoryBot.create(:submitted_change_request, user: other_user)}
         it 'should not populate change requests that have no relevancy to me' do
           change_request.reload
           new_change_request.reload
@@ -93,9 +93,9 @@ RSpec.describe ChangeRequestsController, type: :controller do
       end
 
       context 'when exporting fulltext search results' do
-        let(:change_request) {FactoryGirl.create(:submitted_change_request, business_justification: 'asdasd')}
+        let(:change_request) {FactoryBot.create(:submitted_change_request, business_justification: 'asdasd')}
         # ^ this change request is draft
-        let(:other_cr) {FactoryGirl.create(:change_request, business_justification: 'asdasd')}
+        let(:other_cr) {FactoryBot.create(:change_request, business_justification: 'asdasd')}
         before :each do
           allow(ChangeRequest).to receive(:solr_search).and_return(SolrResultStub.new([change_request, other_cr]))
         end
@@ -119,7 +119,7 @@ RSpec.describe ChangeRequestsController, type: :controller do
       end
 
       it 'returns total of active user' do
-        user_locked = FactoryGirl.create(:user)
+        user_locked = FactoryBot.create(:user)
         user_locked.update_attribute(:locked_at, Time.current)
         get :new
 
@@ -127,7 +127,7 @@ RSpec.describe ChangeRequestsController, type: :controller do
       end
 
       it 'returns total of approver user' do
-        approver = FactoryGirl.create(:approver)
+        approver = FactoryBot.create(:approver)
         get :new
         puts
 
@@ -157,7 +157,7 @@ RSpec.describe ChangeRequestsController, type: :controller do
       end
 
       it 'returns total of active user' do
-        user_locked = FactoryGirl.create(:user)
+        user_locked = FactoryBot.create(:user)
         user_locked.update_attribute(:locked_at, Time.current)
         get :edit, params: { id: change_request }
 
@@ -165,7 +165,7 @@ RSpec.describe ChangeRequestsController, type: :controller do
       end
 
       it 'returns total of approver user' do
-        approver = FactoryGirl.create(:approver)
+        approver = FactoryBot.create(:approver)
         get :edit, params: { id: change_request }
 
         expect(assigns(:approvers).count).to match 3
@@ -186,7 +186,7 @@ RSpec.describe ChangeRequestsController, type: :controller do
     end
 
     describe 'GET #create_hotfix' do
-      let(:cr) {FactoryGirl.create(:rollbacked_change_request)}
+      let(:cr) {FactoryBot.create(:rollbacked_change_request)}
       it 'redirects to change request index if specified CR is not rollbacked' do
         get :create_hotfix, params: { id: change_request }
         expect(response).to redirect_to(change_requests_url)
@@ -207,7 +207,7 @@ RSpec.describe ChangeRequestsController, type: :controller do
 
     describe 'POST #create' do
       context 'with valid attributes' do
-        let(:attributes) {FactoryGirl.attributes_for(:change_request, implementer_ids: [user.id, ""], tester_ids: [user.id, ""] , approver_ids: [approver.id, ""])}
+        let(:attributes) {FactoryBot.attributes_for(:change_request, implementer_ids: [user.id, ""], tester_ids: [user.id, ""] , approver_ids: [approver.id, ""])}
         
 
         it 'saves the new CR in the database' do
@@ -233,7 +233,7 @@ RSpec.describe ChangeRequestsController, type: :controller do
       end
 
       context 'with invalid attributes' do
-        let(:attributes) {FactoryGirl.attributes_for(:change_request, :invalid_change_request)}
+        let(:attributes) {FactoryBot.attributes_for(:change_request, :invalid_change_request)}
         it 'saves the new CR in the database as draft' do
           expect{
             post :create, params: { change_request: attributes }
@@ -244,7 +244,7 @@ RSpec.describe ChangeRequestsController, type: :controller do
       end
 
       context 'requestor change position' do
-        let(:attributes) {FactoryGirl.attributes_for(:change_request)}
+        let(:attributes) {FactoryBot.attributes_for(:change_request)}
         it 'when requestor change position' do
           expect{
             post :create, params: { change_request: attributes }
@@ -264,7 +264,7 @@ RSpec.describe ChangeRequestsController, type: :controller do
       context 'valid attributes' do
         it "change @cr attributes" do
           note = "Note 1"
-          update_attributes = FactoryGirl.attributes_for(:change_request, note: note)
+          update_attributes = FactoryBot.attributes_for(:change_request, note: note)
           expect(update_attributes[:note]).to eq(note)
           patch :update , params: { id: change_request.id, change_request: update_attributes }
           change_request.reload
@@ -273,7 +273,7 @@ RSpec.describe ChangeRequestsController, type: :controller do
 
         it 'call slack notification library to send notification to slack veritrans about modified cr' do
           expect_any_instance_of(SlackNotif).to receive(:notify_update_cr).with(an_instance_of(ChangeRequest))
-          update_attributes = FactoryGirl.attributes_for(:change_request, implementer_ids: [user.id, ""], tester_ids: [user.id, ""] , approver_ids: [approver.id, ""])
+          update_attributes = FactoryBot.attributes_for(:change_request, implementer_ids: [user.id, ""], tester_ids: [user.id, ""] , approver_ids: [approver.id, ""])
           patch :update, params: { id: change_request.id, change_request: update_attributes }
         end
       end
@@ -281,7 +281,7 @@ RSpec.describe ChangeRequestsController, type: :controller do
         it "doesnt change the @cr attribute" do
           scope = 'scope'
           patch :update, params: { id: change_request },
-          change_request: FactoryGirl.attributes_for(:change_request, scope: scope)
+          change_request: FactoryBot.attributes_for(:change_request, scope: scope)
           change_request.reload
           expect(change_request.scope).not_to eq(scope)
         end
@@ -289,7 +289,7 @@ RSpec.describe ChangeRequestsController, type: :controller do
     end
     describe 'DELETE # destroy' do
       before :each do
-        @cr = FactoryGirl.create(:change_request,user:user)
+        @cr = FactoryBot.create(:change_request,user:user)
       end
       it 'delete the change request' do
         expect{
@@ -312,11 +312,11 @@ RSpec.describe ChangeRequestsController, type: :controller do
   end
 
   describe 'approver access' do
-    let(:user) {FactoryGirl.create(:approver)}
+    let(:user) {FactoryBot.create(:approver)}
     before :each do
       @request.env['devise.mapping'] = Devise.mappings[:user]
       sign_in user
-      @cr = FactoryGirl.create(:submitted_change_request, user: user)
+      @cr = FactoryBot.create(:submitted_change_request, user: user)
       @approval = Approval.create(user: user, change_request: @cr)
     end
      describe 'GET #index' do
@@ -326,7 +326,7 @@ RSpec.describe ChangeRequestsController, type: :controller do
       end
 
       it 'populate the list with change requests that you need to approve when submitted with approval params' do
-        cr_other = FactoryGirl.create(:submitted_change_request)
+        cr_other = FactoryBot.create(:submitted_change_request)
         get :index, params: { type: 'approval' }
         expect(assigns(:change_requests)).to match_array([@cr])
       end
@@ -351,10 +351,10 @@ RSpec.describe ChangeRequestsController, type: :controller do
   end
 
   describe 'release manager access' do
-    let(:user) {FactoryGirl.create(:release_manager)}
+    let(:user) {FactoryBot.create(:release_manager)}
     before :each do
       @request.env['devise.mapping'] = Devise.mappings[:user]
-      @cr = FactoryGirl.create(:change_request, user: user)
+      @cr = FactoryBot.create(:change_request, user: user)
       @approval = Approval.create(user_id: user.id, change_request_id: @cr.id)
       sign_in user
     end

@@ -8,10 +8,10 @@ RSpec.configure do |c|
 end
 
 describe SlackNotif do
-  let(:user) {FactoryGirl.create(:approver, email: 'dwiyan@veritrans.co.id', slack_username: 'dwiyan')}
-  let(:other_user) {FactoryGirl.create(:approver, email: 'kevin@veritrans.co.id', slack_username: 'kevin')}
-  let(:change_request) {FactoryGirl.create(:change_request)}
-  let(:access_request) {FactoryGirl.create(:access_request)}
+  let(:user) {FactoryBot.create(:approver, email: 'dwiyan@veritrans.co.id', slack_username: 'dwiyan')}
+  let(:other_user) {FactoryBot.create(:approver, email: 'kevin@veritrans.co.id', slack_username: 'kevin')}
+  let(:change_request) {FactoryBot.create(:change_request)}
+  let(:access_request) {FactoryBot.create(:access_request)}
   let(:slack_notifier) {SlackNotif.new}
   let(:attachment_builder) {SlackAttachmentBuilder.new}
   let(:slack_client) {slack_notifier.instance_variable_get(:@slack_client)}
@@ -118,8 +118,8 @@ describe SlackNotif do
   end
 
   describe 'Sending notification about new comment' do
-    let(:another_user) {FactoryGirl.create(:user)}
-    let(:comment) {FactoryGirl.create(:comment, body: 'comment @dwiyan and @kevin', user: user, change_request: change_request)}
+    let(:another_user) {FactoryBot.create(:user)}
+    let(:comment) {FactoryBot.create(:comment, body: 'comment @dwiyan and @kevin', user: user, change_request: change_request)}
     let(:mentionees){[user, other_user]}
     let(:comment_attachment){attachment_builder.generate_comment_attachment(comment)}
     let(:mentioned_message) {"You are mentioned in #{comment.user.name} comment's on a <#{change_request_link}|change request>"}
@@ -147,8 +147,8 @@ describe SlackNotif do
   end
 
   describe 'Sending notification about new comment AR' do
-    let(:another_user) {FactoryGirl.create(:user)}
-    let(:comment) {FactoryGirl.create(:access_request_comment, body: 'comment @dwiyan and @kevin', user: user, access_request: access_request)}
+    let(:another_user) {FactoryBot.create(:user)}
+    let(:comment) {FactoryBot.create(:access_request_comment, body: 'comment @dwiyan and @kevin', user: user, access_request: access_request)}
     let(:mentionees){[user, other_user]}
     let(:comment_attachment){attachment_builder.generate_ar_comment_attachment(comment)}
     let(:mentioned_message) {"You are mentioned in #{comment.user.name} comment's on a <#{access_request_link}|access request>"}
@@ -169,7 +169,7 @@ describe SlackNotif do
         'Gojek' => 'gojek-test'
       }
       entity_channel.each do |entity, channel|
-        ir = FactoryGirl.create(:incident_report, entity_source: entity)
+        ir = FactoryBot.create(:incident_report, entity_source: entity)
         general_message = "<#{routes.incident_report_url(ir)}|Incident report> has been created"
         expect(slack_client).to receive(:message_channel).with(channel, general_message, anything()).ordered
         slack_notifier.notify_new_ir(ir)

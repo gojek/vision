@@ -7,7 +7,7 @@ end
 
 describe User, type: :model do
 
-  let(:user) {FactoryGirl.create(:user)}
+  let(:user) {FactoryBot.create(:user)}
   before :all do
     UserList = Struct.new("UserList", :members)
     Profile = Struct.new("Profile", :email)
@@ -26,8 +26,8 @@ describe User, type: :model do
 
 
   it "is valid with one of these role : approver, requestor, release_manager" do
-    other_user = FactoryGirl.build(:user, role: 'approver')
-    another_user = FactoryGirl.build(:user, role: 'release_manager')
+    other_user = FactoryBot.build(:user, role: 'approver')
+    another_user = FactoryBot.build(:user, role: 'release_manager')
     expect(user).to be_valid
     expect(other_user).to be_valid
     expect(another_user).to be_valid
@@ -44,7 +44,7 @@ describe User, type: :model do
   end
 
   it "is valid with a gojek email" do
-    gojek = FactoryGirl.create(:gojek_email)
+    gojek = FactoryBot.create(:gojek_email)
     expect(gojek).to be_valid
   end
 
@@ -57,7 +57,7 @@ describe User, type: :model do
   it "is invalid with a duplicate email address" do
     user.email = 'patrick@veritrans.co.id'
     user.save
-    other_user = FactoryGirl.build(:user, email: 'patrick@veritrans.co.id')
+    other_user = FactoryBot.build(:user, email: 'patrick@veritrans.co.id')
     other_user.valid?
     expect(other_user.errors[:email].size).to eq(1)
   end
@@ -101,7 +101,7 @@ describe User, type: :model do
     end
 
     it "will find the user based on the auth from omniauth if user already registered" do
-      user = FactoryGirl.create(:user)
+      user = FactoryBot.create(:user)
       auth = {:provider => 'google_oauth2', :uid => user.uid, :info => {:email => user.email}}
       expect(User.from_omniauth(auth)).to eq user
     end
@@ -129,21 +129,21 @@ describe User, type: :model do
   end
 
   it "expired? method will return true if user token has been expired" do
-    user = FactoryGirl.create(:user, :expired_at => Time.now - 1.hour)
+    user = FactoryBot.create(:user, :expired_at => Time.now - 1.hour)
     expect(user.expired?).to eq true
   end
 
   it "expired? method will return false if user token has not been expired" do
-    user = FactoryGirl.create(:user, :expired_at => Time.now + 1.hour)
+    user = FactoryBot.create(:user, :expired_at => Time.now + 1.hour)
     expect(user.expired?).to eq false
   end
 
   
   it "should return list of all approvers if User.approvers is called" do
-    approver1 = FactoryGirl.create(:approver)
-    approver2 = FactoryGirl.create(:approver)
-    user = FactoryGirl.create(:user)
-    release_manager = FactoryGirl.create(:release_manager)
+    approver1 = FactoryBot.create(:approver)
+    approver2 = FactoryBot.create(:approver)
+    user = FactoryBot.create(:user)
+    release_manager = FactoryBot.create(:release_manager)
     approvers = User.approvers
     approvers.each do |approver|
       expect(approver.role).to eq 'approver'
@@ -155,27 +155,27 @@ describe User, type: :model do
   end
   describe "User.have_notifications?" do
     it "should return true if the user have any notifications" do
-      user = FactoryGirl.create(:user)
-      notification = FactoryGirl.create(:notification, user: user)
+      user = FactoryBot.create(:user)
+      notification = FactoryBot.create(:notification, user: user)
       expect(user.have_notifications?).to eq true
     end
     it "should return false if the user does not have any notifications" do
-      user = FactoryGirl.create(:user)
+      user = FactoryBot.create(:user)
       expect(user.have_notifications?).to eq false
     end
   end
 
   describe "User.is_associated?" do
     it "should return true if the user is associated to a change request" do 
-      user = FactoryGirl.create(:user)
-      cr = FactoryGirl.create(:change_request, user: user)
+      user = FactoryBot.create(:user)
+      cr = FactoryBot.create(:change_request, user: user)
       user.reload
       expect(user.is_associated?(cr)).to eq true
     end
     it "should return false if the user is not associated to a change request" do
-      user = FactoryGirl.create(:user)
-      other_user = FactoryGirl.create(:user)
-      cr = FactoryGirl.create(:change_request, user: other_user)
+      user = FactoryBot.create(:user)
+      other_user = FactoryBot.create(:user)
+      cr = FactoryBot.create(:change_request, user: other_user)
       user.reload
       expect(user.is_associated?(cr)).to eq false
     end

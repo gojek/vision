@@ -4,8 +4,8 @@ require 'csv_exporter'
 describe CSVExporter do
   
   before :each do
-    FactoryGirl.create(:access_request, employee_name: 'Employee 1')
-    FactoryGirl.create(:access_request, employee_name: 'Employee 2')
+    FactoryBot.create(:access_request, employee_name: 'Employee 1')
+    FactoryBot.create(:access_request, employee_name: 'Employee 2')
   end
 
   it 'should return valid csv' do

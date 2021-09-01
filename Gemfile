@@ -86,8 +86,6 @@ gem 'sunspot_solr'
 # sanitizer
 gem 'sanitize'
 
-gem 'record_tag_helper'
-
 group :production do
   gem 'rails_12factor'
 end
@@ -108,10 +106,10 @@ group :development, :test do
   gem 'byebug'
   gem 'cucumber-rails', require: false
   gem 'dotenv-rails'
-  gem 'factory_girl_rails', '~> 4.2.1'
+  gem 'factory_bot_rails', '4.8.2'
   gem 'faker'
   gem 'rails-controller-testing'
-  gem 'rspec-rails', '~> 3.5.2'
+  gem 'rspec-rails', '3.7.2'
   gem 'sunspot_test'
   # Access an IRB console on exception pages or by using <%= console %> in views
   #
