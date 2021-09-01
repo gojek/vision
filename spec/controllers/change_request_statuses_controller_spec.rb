@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe ChangeRequestStatusesController, type: :controller do
   let(:user) { FactoryBot.create(:user) }
   before :each do
-    controller.request.env['devise.mapping'] = Devise.mappings[:user]
+    @request.env['devise.mapping'] = Devise.mappings[:user]
     
     release_manager = FactoryBot.create(:release_manager)
     sign_in release_manager
@@ -14,7 +14,7 @@ RSpec.describe ChangeRequestStatusesController, type: :controller do
 
     it 'will able to change the state to deployed if current state is scheduled' do
       cr.approvals.update_all(approve: true)
-      post :deploy , id: cr, change_request_status:{:status => 'deployed'}
+      post :deploy , params: { id: cr, change_request_status:{:status => 'deployed'}}
       cr.reload
       expect(cr.aasm_state).to eq 'deployed'
     end
@@ -23,21 +23,21 @@ RSpec.describe ChangeRequestStatusesController, type: :controller do
   describe 'POST #rollback' do
     it 'will able to change the state to rollback if current state is scheduled and reason is filled' do
       cr = FactoryBot.create(:scheduled_change_request, user: user)
-      post :rollback , id: cr, change_request_status: {:status => 'rollbacked', :reason =>'reason'}
+      post :rollback , params: { id: cr, change_request_status: {:status => 'rollbacked', :reason =>'reason'} }
       cr.reload
       expect(cr.aasm_state).to eq 'rollbacked'
     end
 
     it 'will able to change the state to rollback if current state is deployed and reason is filled' do
       cr = FactoryBot.create(:deployed_change_request,user: user)
-      post :rollback , id: cr, change_request_status:{:status => 'rollbacked', :reason =>'reason'}
+      post :rollback , params: { id: cr, change_request_status:{:status => 'rollbacked', :reason =>'reason'}}
       cr.reload
       expect(cr.aasm_state).to eq 'rollbacked'
     end
 
     it 'wont able to change the state to rollbacked if reason is not filled' do
       cr = FactoryBot.create(:deployed_change_request,user: user)
-      post :rollback , id: cr, change_request_status:{:status => 'rollbacked'}
+      post :rollback , params: { id: cr, change_request_status:{:status => 'rollbacked'}}
       cr.reload
       expect(cr.aasm_state).to eq 'deployed'
     end
@@ -48,7 +48,7 @@ RSpec.describe ChangeRequestStatusesController, type: :controller do
     let(:cr) { FactoryBot.create(:change_request, user: user, aasm_state: 'submitted') }
 
     it 'able to change the state to cancelled' do
-      post :cancel , id: cr, change_request_status:{:status => 'cancelled', reason: 'reason'}
+      post :cancel , params: {id: cr, change_request_status:{:status => 'cancelled', reason: 'reason'}}
       cr.reload
       expect(cr.aasm_state).to eq 'cancelled'
     end
@@ -57,7 +57,7 @@ RSpec.describe ChangeRequestStatusesController, type: :controller do
   describe 'POST #close' do
     let(:cr) { FactoryBot.create(:change_request, user: user, aasm_state: 'deployed') }
     it 'will able to change the state to succeeded ' do
-      post :close , id: cr, change_request_status:{:status => 'closed'}
+      post :close , params: { id: cr, change_request_status:{:status => 'closed'}}
       cr.reload
       expect(cr.aasm_state).to eq 'succeeded'
     end
@@ -66,7 +66,7 @@ RSpec.describe ChangeRequestStatusesController, type: :controller do
   describe 'POST #submit' do
      it 'will able to change the state to submitted if current state is cancelled' do
       cr = FactoryBot.create(:change_request, user: user, aasm_state: 'draft')
-      post :submit , id: cr, change_request_status:{:status => 'submitted'}
+      post :submit , params: { id: cr, change_request_status:{:status => 'submitted'} }
       cr.reload
       expect(cr.aasm_state).to eq 'submitted'
     end
