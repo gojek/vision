@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'event'
 require 'google_client'
 
 class CalendarService

@@ -8,9 +8,9 @@ class ChangeRequestsController < ApplicationController
   before_action :role_not_approver_required, only: :edit
   require 'notifier.rb'
   require 'slack_notif.rb'
-  require 'calendar.rb'
-  require 'csv_exporter'
-
+  require 'csv_exporter.rb'
+  require 'calendar_service.rb'
+  require 'jira'
 
   def index
     if params[:type]
