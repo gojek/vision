@@ -299,9 +299,8 @@ GEM
       omniauth (>= 1.9, < 3)
     orm_adapter (0.5.0)
     os (1.1.1)
-    paper_trail (4.2.0)
-      activerecord (>= 3.0, < 6.0)
-      activesupport (>= 3.0, < 6.0)
+    paper_trail (10.3.1)
+      activerecord (>= 4.2)
       request_store (~> 1.1)
     parallel (1.20.1)
     parser (3.0.2.0)
@@ -369,6 +368,8 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     rdoc (4.3.0)
+    record_tag_helper (1.0.1)
+      actionview (>= 5)
     reek (6.0.6)
       kwalify (~> 0.7.0)
       parser (~> 3.0.0)
@@ -593,7 +594,7 @@ DEPENDENCIES
   nprogress-rails
   omniauth
   omniauth-google-oauth2
-  paper_trail (~> 4.1)
+  paper_trail
   pg (~> 0.19)
   pry-byebug
   puma (~> 3.12.0)
@@ -602,6 +603,7 @@ DEPENDENCIES
   rails_12factor
   rake (= 10.0.0)
   ransack
+  record_tag_helper
   rspec-rails (~> 3.5.2)
   rubocop
   rubycritic
