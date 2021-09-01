@@ -3,11 +3,11 @@ require 'slack_notif'
 require 'mentioner.rb'
 
 RSpec.describe AccessRequestCommentsController, type: :controller do
-  let(:access_request) {FactoryGirl.create(:access_request)}
-  let(:ar_comment) {FactoryGirl.build(:access_request_comment, body: 'comment')}
+  let(:access_request) {FactoryBot.create(:access_request)}
+  let(:ar_comment) {FactoryBot.build(:access_request_comment, body: 'comment')}
   before :each do
     controller.request.env['devise.mapping'] = Devise.mappings[:user]
-    release_manager = FactoryGirl.create(:release_manager)
+    release_manager = FactoryBot.create(:release_manager)
     sign_in release_manager
   end
   describe 'POST #create' do
@@ -19,7 +19,7 @@ RSpec.describe AccessRequestCommentsController, type: :controller do
       end
 
       it 'call slack notification library to notify to the mentionees that they have been mentioned' do
-        comment = FactoryGirl.build(:access_request_comment, body: 'comment @metionee')
+        comment = FactoryBot.build(:access_request_comment, body: 'comment @metionee')
         expect_any_instance_of(SlackNotif).to receive(:notify_new_ar_comment).with(an_instance_of(AccessRequestComment))
         post :create, access_request_id: access_request.id, access_request_comment: {body: comment.body}
       end

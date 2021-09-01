@@ -1,12 +1,12 @@
 require 'rails_helper'
 
 describe AccessRequest, type: :model do
-	let (:access_request) {FactoryGirl.create(:access_request)}
-	let (:draft_access_request) {FactoryGirl.create(:draft_access_request)}
-	let (:submitted_access_request) {FactoryGirl.create(:submitted_access_request)}
-	let (:closed_access_request) {FactoryGirl.create(:closed_access_request)}
-	let (:user) {FactoryGirl.create(:user)}
-	let (:admin) {FactoryGirl.create(:admin)}
+	let (:access_request) {FactoryBot.create(:access_request)}
+	let (:draft_access_request) {FactoryBot.create(:draft_access_request)}
+	let (:submitted_access_request) {FactoryBot.create(:submitted_access_request)}
+	let (:closed_access_request) {FactoryBot.create(:closed_access_request)}
+	let (:user) {FactoryBot.create(:user)}
+	let (:admin) {FactoryBot.create(:admin)}
 
 	#shoulda matchers test
 	it { should belong_to(:user)}
@@ -24,13 +24,13 @@ describe AccessRequest, type: :model do
   end
 
   describe 'approved / rejected count' do
-    let (:access_request_app) {FactoryGirl.create(:access_request, approvals_accept: 2, approvals_alpha: 0)}
+    let (:access_request_app) {FactoryBot.create(:access_request, approvals_accept: 2, approvals_alpha: 0)}
     it "approved_count will return the count of approved approvals" do
       expect(access_request.approved_count).to eq 0
       expect(access_request_app.approved_count).to eq 2
     end
 
-    let (:access_request_rej) {FactoryGirl.create(:access_request, approvals_reject: 2,  approvals_alpha: 0)}
+    let (:access_request_rej) {FactoryBot.create(:access_request, approvals_reject: 2,  approvals_alpha: 0)}
     it "rejected_count will return the count of rejected approvals" do
       expect(access_request.rejected_count).to eq 0
       expect(access_request_rej.rejected_count).to eq 2
@@ -42,17 +42,17 @@ describe AccessRequest, type: :model do
       expect(draft_access_request.approval_status).to eq 'none'
     end
 
-    let (:access_request_rej) {FactoryGirl.create(:submitted_access_request, approvals_reject: 1,  approvals_alpha: 0)}
+    let (:access_request_rej) {FactoryBot.create(:submitted_access_request, approvals_reject: 1,  approvals_alpha: 0)}
     it 'returns failed for submitted ar with rejected count > 0' do
       expect(access_request_rej.approval_status).to eq 'failed'
     end
 
-    let (:access_request_prog) {FactoryGirl.create(:submitted_access_request, approvals_alpha: 1)}
+    let (:access_request_prog) {FactoryBot.create(:submitted_access_request, approvals_alpha: 1)}
     it 'returns in progress for submitted ar with approved count < approvals' do
       expect(access_request_prog.approval_status).to eq 'on progress'
     end
 
-    let (:access_request_acc) {FactoryGirl.create(:submitted_access_request, approvals_accept: 1,  approvals_alpha: 0)}
+    let (:access_request_acc) {FactoryBot.create(:submitted_access_request, approvals_accept: 1,  approvals_alpha: 0)}
     it 'returns success for submitted ar with approved count = approvals' do
       expect(access_request_acc.approval_status).to eq 'success'
     end
@@ -78,7 +78,7 @@ describe AccessRequest, type: :model do
       expect(submitted_access_request.editable?(approver)).to eq false
     end
     
-    let (:random_user) {FactoryGirl.create(:user)}
+    let (:random_user) {FactoryBot.create(:user)}
     it 'doesn\'t allow random user to edit' do
       expect(submitted_access_request.editable?(random_user)).to eq false
     end
@@ -89,12 +89,12 @@ describe AccessRequest, type: :model do
   end
 
   describe 'closeable?' do
-    let (:access_request_clos) {FactoryGirl.create(:submitted_access_request, approvals_accept: 1,  approvals_alpha: 0)}
+    let (:access_request_clos) {FactoryBot.create(:submitted_access_request, approvals_accept: 1,  approvals_alpha: 0)}
     it 'closeable if approver count = approval count and approval > 0' do
       expect(access_request_clos.closeable?).to eq true
     end
 
-    let (:access_request_unclos) {FactoryGirl.create(:submitted_access_request, approvals_accept: 1,  approvals_alpha: 1)}
+    let (:access_request_unclos) {FactoryBot.create(:submitted_access_request, approvals_accept: 1,  approvals_alpha: 1)}
     it 'not closeable if approver count = 0' do
       expect(access_request_unclos.closeable?).to eq false
     end
@@ -117,14 +117,14 @@ describe AccessRequest, type: :model do
       expect(submitted_access_request.actionable?(approver)).to eq true
     end
     
-    let (:random_user) {FactoryGirl.create(:user)}
+    let (:random_user) {FactoryBot.create(:user)}
     it 'doesn\'t allow random user to take action' do
       expect(submitted_access_request.actionable?(random_user)).to eq false
     end
   end
 
   describe 'approver_ids' do
-    let (:access_request_approv) {FactoryGirl.create(:access_request, approvals_alpha: 1)}
+    let (:access_request_approv) {FactoryBot.create(:access_request, approvals_alpha: 1)}
     it 'set access request approvers' do
       access_request_approv.approver_ids = [user.id]
       access_request_approv.reload
@@ -133,7 +133,7 @@ describe AccessRequest, type: :model do
   end
 
   describe 'colloborator_ids' do
-    let (:access_request_collab) {FactoryGirl.create(:access_request, collaborators_num: 0)}
+    let (:access_request_collab) {FactoryBot.create(:access_request, collaborators_num: 0)}
     it 'set access request collaborators' do
       access_request_collab.collaborator_ids=([user.id])
       access_request.reload

@@ -6,11 +6,11 @@ RSpec.configure do |c|
 end
 
 describe "Google oauth2 request for logn", type: :request do
-  let(:user) {FactoryGirl.create(:user)}
-  let(:waiting) {FactoryGirl.create(:waiting_user)}
-  let(:reject) {FactoryGirl.create(:rejected_user)}
-  let(:admin) {FactoryGirl.create(:admin)}
-  let(:pending_user) {FactoryGirl.create(:pending_user)}
+  let(:user) {FactoryBot.create(:user)}
+  let(:waiting) {FactoryBot.create(:waiting_user)}
+  let(:reject) {FactoryBot.create(:rejected_user)}
+  let(:admin) {FactoryBot.create(:admin)}
+  let(:pending_user) {FactoryBot.create(:pending_user)}
 
     
   describe 'user try to sign in' do
