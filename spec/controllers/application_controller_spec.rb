@@ -6,7 +6,7 @@ RSpec.describe ApplicationController, type: :controller do
     let(:waiting_user) {FactoryBot.create(:waiting_user)}
     let(:rejected_user) {FactoryBot.create(:rejected_user)}
     before :each do
-      controller.request.env['devise.mapping'] = Devise.mappings[:user]
+      @request.env['devise.mapping'] = Devise.mappings[:user]
     end
 
     it 'is sign_in rejected user' do
