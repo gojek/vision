@@ -1,4 +1,4 @@
-class CreateChangeRequests < ActiveRecord::Migration
+class CreateChangeRequests < ActiveRecord::Migration[5.2]
   def change
     create_table :change_requests do |t|
       t.string :requestor_desc

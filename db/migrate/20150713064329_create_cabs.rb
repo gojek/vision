@@ -1,4 +1,4 @@
-class CreateCabs < ActiveRecord::Migration
+class CreateCabs < ActiveRecord::Migration[5.2]
   def change
     create_table :cabs do |t|
       t.datetime :meet_date
