@@ -59,7 +59,7 @@ gem 'html_truncator', '~>0.2'
 gem 'jquery-atwho-rails'
 gem 'kaminari'
 gem 'omniauth'
-gem "omniauth-rails_csrf_protection"
+gem 'omniauth-rails_csrf_protection'
 gem 'pry-byebug'
 gem 'ransack'
 gem 'tinymce-rails', '4.3.8'
@@ -107,6 +107,7 @@ end
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'brakeman'
   gem 'byebug'
   gem 'cucumber-rails', require: false
   gem 'dotenv-rails'
