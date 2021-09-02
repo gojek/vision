@@ -1,4 +1,4 @@
-class CreateChangeRequestVersions < ActiveRecord::Migration
+class CreateChangeRequestVersions < ActiveRecord::Migration[5.2]
   def change
     create_table :change_request_versions do |t|
     	t.string   :item_type, :null => false
