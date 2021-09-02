@@ -1,4 +1,4 @@
-class AddFurtherActionToIncidentReport < ActiveRecord::Migration
+class AddFurtherActionToIncidentReport < ActiveRecord::Migration[5.2]
   def change
     add_column :incident_reports, :has_further_action, :boolean, default: false
     add_column :incident_reports, :action_item, :text
