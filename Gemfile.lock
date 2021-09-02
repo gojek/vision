@@ -66,6 +66,7 @@ GEM
     bootstrap-toggle-rails (2.2.1.0)
     bootstrap-wysihtml5-rails (0.3.3.8)
       railties (>= 3.0)
+    brakeman (5.1.1)
     builder (3.2.4)
     byebug (11.1.3)
     capybara (3.35.3)
@@ -573,6 +574,7 @@ DEPENDENCIES
   bootstrap-kaminari-views
   bootstrap-toggle-rails
   bootstrap-wysihtml5-rails
+  brakeman
   byebug
   capybara
   capybara-screenshot
