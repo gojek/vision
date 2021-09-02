@@ -7,6 +7,7 @@ class Event < Google::Apis::CalendarV3::Event
   attr_accessor :error_messages
 
   def initialize
+    super
     @saved = false
     @error_messages = nil
   end
