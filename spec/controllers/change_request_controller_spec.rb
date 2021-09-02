@@ -61,7 +61,7 @@ RSpec.describe ChangeRequestsController, type: :controller do
 
         it "should return current page when downloading an attachment" do
           cr = FactoryBot.create(:change_request)
-          get :index
+          get :index, params: params
           #expect(@controller).to receive(:send_data).with(csv_string, csv_options) {
           #  @controller.render nothing: true # to prevent a 'missing template' error
           #}
@@ -207,11 +207,12 @@ RSpec.describe ChangeRequestsController, type: :controller do
 
     describe 'POST #create' do
       context 'with valid attributes' do
-        let(:attributes) {FactoryBot.attributes_for(:change_request, implementer_ids: [user.id, ""], tester_ids: [user.id, ""] , approver_ids: [approver.id, ""])}
-        
+        let(:attributes) { 
+          FactoryBot.attributes_for(:change_request, implementer_ids: [user.id, ""], tester_ids: [user.id, ""], approver_ids: [approver.id, ""])
+        }
 
         it 'saves the new CR in the database' do
-          expect{
+          expect {
             post :create, params: { change_request: attributes }
           }.to change(ChangeRequest, :count).by(1)
           cr = ChangeRequest.first
@@ -280,8 +281,8 @@ RSpec.describe ChangeRequestsController, type: :controller do
       context 'invalid attributes' do
         it "doesnt change the @cr attribute" do
           scope = 'scope'
-          patch :update, params: { id: change_request },
-          change_request: FactoryBot.attributes_for(:change_request, scope: scope)
+          patch :update, params: { id: change_request ,
+            change_request: FactoryBot.attributes_for(:change_request, scope: scope) }
           change_request.reload
           expect(change_request.scope).not_to eq(scope)
         end
