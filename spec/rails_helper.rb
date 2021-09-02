@@ -1,6 +1,6 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV['RAILS_ENV'] ||= 'test'
-require File.expand_path('../../config/environment', __FILE__)
+require File.expand_path('../config/environment', __dir__)
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rails_helper'
@@ -12,6 +12,7 @@ require 'capybara/rails'
 require 'capybara-screenshot/rspec'
 require 'sucker_punch/testing/inline'
 require 'paper_trail/frameworks/rspec'
+require 'database_cleaner'
 
 WebMock.disable_net_connect!(allow_localhost: true)
 # Add additional requires below this line. Rails is not loaded until this point!
@@ -42,7 +43,7 @@ RSpec.configure do |config|
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
-  config.use_transactional_fixtures = true
+  config.use_transactional_fixtures = false
 
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and
@@ -72,13 +73,34 @@ RSpec.configure do |config|
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include Devise::Test::ControllerHelpers, type: :view
   config.include Devise::Test::IntegrationHelpers, type: :feature
+  config.include FactoryBot::Syntax::Methods
+  config.include ActiveSupport::Testing::TimeHelpers
+  config.include ActiveJob::TestHelper
+  config.include Shoulda::Matchers::ActiveModel, type: :form
+  config.include Shoulda::Matchers::ActiveModel, type: :concern
+  config.include Shoulda::Matchers::ActiveRecord, type: :concern
+
   config.infer_spec_type_from_file_location!
 
+  # DatabaseCleaner
+  config.before(:suite) do
+    # Clean the database before specs, clean with truncation
+    DatabaseCleaner.strategy = :truncation
+  end
 
-  config.render_views = true
-  config.mock_with :rspec
-  config.include FactoryBot::Syntax::Methods
-  config.filter_run_when_matching :focus
+  config.before(:each) do
+    # Make default strategy transaction. Transaction is faster than truncation.
+    DatabaseCleaner.strategy = :transaction
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
+
 
   config.before(:each) do
     ::Sunspot.session = ::Sunspot::Rails::StubSessionProxy.new(::Sunspot.session)
@@ -156,6 +178,7 @@ RSpec.configure do |config|
     ::Sunspot.session = ::Sunspot.session.original_session
   end
 end
+
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|
     with.test_framework :rspec
