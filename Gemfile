@@ -49,7 +49,7 @@ gem 'thor', '0.19.1'
 gem 'aasm'
 gem 'acts-as-taggable-on'
 gem 'cocoon'
-gem 'comma', '~> 3.2.1'
+gem 'comma', '~> 4.5.0'
 gem 'data-confirm-modal'
 gem 'diffy'
 gem 'exception_notification'
@@ -59,6 +59,7 @@ gem 'html_truncator', '~>0.2'
 gem 'jquery-atwho-rails'
 gem 'kaminari'
 gem 'omniauth'
+gem "omniauth-rails_csrf_protection"
 gem 'pry-byebug'
 gem 'ransack'
 gem 'tinymce-rails', '4.3.8'
@@ -95,7 +96,7 @@ end
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'listen', '>= 3.0.5', '< 3.2'
-  gem 'web-console', '~> 2.0'
+  gem 'web-console', '~> 3.6.2'
 
   # mail catcher is being used for email in development
   # based on the https://mailcatcher.me/

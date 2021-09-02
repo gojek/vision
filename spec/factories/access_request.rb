@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :access_request do
-    ignore do
+    transient do
       temporary false
       collaborators_num 5
       approvals_alpha 5
