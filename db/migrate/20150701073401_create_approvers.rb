@@ -1,4 +1,4 @@
-class CreateApprovers < ActiveRecord::Migration
+class CreateApprovers < ActiveRecord::Migration[5.2]
   def change
     create_table :approvers do |t|
       t.string :name

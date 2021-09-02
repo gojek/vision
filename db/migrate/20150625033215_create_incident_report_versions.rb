@@ -1,4 +1,4 @@
-class CreateIncidentReportVersions < ActiveRecord::Migration
+class CreateIncidentReportVersions < ActiveRecord::Migration[5.2]
   def change
     create_table :incident_report_versions do |t|
       t.string   :item_type, :null => false
