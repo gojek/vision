@@ -13,7 +13,9 @@ User.create(email: "13@veritrans.co.id", role: "requestor", name: "Ya Keu Leus")
 User.create(email: "14@veritrans.co.id", role: "requestor", name: "Thisis Aseed")
 User.create(email: "15@veritrans.co.id", role: "requestor", name: "Thisisal Soseed")
 User.create(email: "16@veritrans.co.id", role: "requestor", name: "Lutfi K P di Veritrans")
-User.create(email: "17@veritrans.co.id", role: "requestor", name: "Seorang Requestor")
+user_requester = User.find_or_create_by(email: "17@veritrans.co.id", role: "requestor", name: "Seorang Requestor")
+user_approver = User.find_or_create_by(email: "18@veritrans.co.id", role: "approver", name: "Seorang Approver")
+
 
 user_requesters = []
 (1..20).each do |i|
@@ -45,7 +47,7 @@ user_requesters[20].name = "Tuhan Takur"
   user_requesters[i].save
 end
 
-change_request = ChangeRequest.new(user: user_requesters[3], entity_source: 'midtrans')
+change_request = ChangeRequest.new(user: user_requester, entity_source: 'midtrans')
 change_request.save(validate: false)
 
 Tester.create(name: "Mohamad Dwiyan Rahmanianto", change_request: change_request)
@@ -70,9 +72,7 @@ Tester.create(name: "Pert Deb", change_request: change_request)
 Tester.create(name: "Azhari v d wick", change_request: change_request)
 Tester.create(name: "John China", change_request: change_request)
 
-change_request_version = change_request.versions.last
-change_request_version.whodunnit = user_requesters[3].id
-change_request_version.save
+
 
 user_approvers = []
 (1..15).each do |i|
@@ -98,10 +98,10 @@ user_approvers[15].name = "Aragorn Arathorn"
   user_approvers[i].save
 end
 
-change_request_with_approval = ChangeRequest.new(user: user_approvers[1], entity_source: 'midtrans')
+change_request_with_approval = ChangeRequest.new(user: user_requester, entity_source: 'midtrans')
 change_request_with_approval.save(validate: false)
 
-Approval.create(user: user_approvers[1], change_request: change_request_with_approval)
+Approval.create(user: user_approver, change_request: change_request_with_approval)
 
 Implementer.create(name: "Tatang Nyamuk", change_request: change_request_with_approval)
 Implementer.create(name: "Budi Santoso", change_request: change_request_with_approval)
@@ -119,6 +119,10 @@ Implementer.create(name: "R Dawney", change_request: change_request_with_approva
 Implementer.create(name: "Harry Poter", change_request: change_request_with_approval)
 Implementer.create(name: "Aragorn Arathorn Anton", change_request: change_request_with_approval)
 
+change_request_version = change_request.versions.last
+change_request_version.whodunnit = user_requester.id
+change_request_version.save
+
 change_request_with_approval_version = change_request_with_approval.versions.last
-change_request_with_approval_version.whodunnit = user_approvers[1].id
+change_request_with_approval_version.whodunnit = user_requester.id
 change_request_with_approval_version.save
