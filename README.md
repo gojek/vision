@@ -128,7 +128,6 @@ $ bundle exec rake db:migrate
 $ bundle exec rake db:seed
 ```
 
-
 ### Sign Up
 
 Visit http://localhost:3000 and Signup using your gmail
