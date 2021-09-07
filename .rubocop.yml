@@ -40,7 +40,7 @@ Metrics/LineLength:
   Max: 120
 
 # special configuration for vision
-Naming/UncommunicativeMethodParamName:
+Naming/MethodParameterName:
   AllowedNames:
     - ir
     - cr
@@ -48,7 +48,7 @@ Naming/UncommunicativeMethodParamName:
 Naming/PredicateName:
   NamePrefix:
     - is_
-  NamePrefixBlacklist:
+  ForbiddenPrefixes:
     - is_
 
 Naming/MemoizedInstanceVariableName:
@@ -56,4 +56,3 @@ Naming/MemoizedInstanceVariableName:
 
 Layout/EmptyLineAfterGuardClause:
   Enabled: false
-

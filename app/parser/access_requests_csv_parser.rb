@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'access_request_csv_parser.rb'
+require 'access_request_csv_parser'
 
 class AccessRequestsCsvParser
   def self.process_csv(file, current_user)

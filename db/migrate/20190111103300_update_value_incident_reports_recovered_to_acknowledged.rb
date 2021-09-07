@@ -1,4 +1,4 @@
-class UpdateValueIncidentReportsRecoveredToAcknowledged < ActiveRecord::Migration
+class UpdateValueIncidentReportsRecoveredToAcknowledged < ActiveRecord::Migration[5.2]
   def up
     execute <<-SQL
       UPDATE incident_reports SET current_status = 'Acknowledged'

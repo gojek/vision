@@ -2,18 +2,18 @@
 
 source 'https://rubygems.org'
 
-ruby '~> 2.4.5'
-
 # Bundle edge Rails insteadhttps://developers.google.com/oauthplayground: gem 'rails', github: 'rails/rails'
 gem 'puma', '~> 3.12.0'
-gem 'rails', '4.2.10'
+gem 'rails', '5.2.6'
 gem 'sdoc', '~> 0.4.0', group: :doc
+
+gem 'bootsnap', require: false
 
 # resource-related
 gem 'bootstrap-kaminari-views'
 gem 'bootstrap-toggle-rails'
 gem 'bootstrap-wysihtml5-rails'
-gem 'coffee-rails', '~> 4.1.0'
+gem 'coffee-rails', '>= 4.1.0'
 gem 'fullcalendar-rails'
 gem 'jquery-rails'
 gem 'jquery-turbolinks'
@@ -29,10 +29,10 @@ gem 'uglifier', '>= 1.3.0'
 gem 'jbuilder', '~> 2.0'
 
 # user-related
-gem 'devise', '~> 4.2.0'
+gem 'devise'
 
 # file managment
-gem 'paper_trail', '~> 4.1'
+gem 'paper_trail'
 gem 'sucker_punch', '~> 2.0'
 
 # oauth
@@ -49,7 +49,7 @@ gem 'thor', '0.19.1'
 gem 'aasm'
 gem 'acts-as-taggable-on'
 gem 'cocoon'
-gem 'comma', '~> 3.2.1'
+gem 'comma', '~> 4.5.0'
 gem 'data-confirm-modal'
 gem 'diffy'
 gem 'exception_notification'
@@ -59,6 +59,7 @@ gem 'html_truncator', '~>0.2'
 gem 'jquery-atwho-rails'
 gem 'kaminari'
 gem 'omniauth'
+gem 'omniauth-rails_csrf_protection'
 gem 'pry-byebug'
 gem 'ransack'
 gem 'tinymce-rails', '4.3.8'
@@ -94,7 +95,8 @@ end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 2.0'
+  gem 'listen', '>= 3.0.5', '< 3.2'
+  gem 'web-console', '~> 3.6.2'
 
   # mail catcher is being used for email in development
   # based on the https://mailcatcher.me/
@@ -105,20 +107,24 @@ end
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'brakeman'
   gem 'byebug'
   gem 'cucumber-rails', require: false
   gem 'dotenv-rails'
-  gem 'factory_girl_rails', '~> 4.2.1'
+  gem 'factory_bot_rails', '4.8.2'
   gem 'faker'
-  gem 'rspec-rails', '~> 3.5.2'
+  gem 'rails-controller-testing'
+  gem 'rspec-rails', '3.7.2'
   gem 'sunspot_test'
   # Access an IRB console on exception pages or by using <%= console %> in views
   #
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'rubocop', '~> 0.63.1', require: false
+  gem 'rubocop', require: false
   gem 'rubycritic', require: false
   gem 'spring'
+  gem 'spring-commands-rspec'
+  gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
 group :test do

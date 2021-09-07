@@ -1,4 +1,4 @@
-class AddStatusToChangeRequest < ActiveRecord::Migration
+class AddStatusToChangeRequest < ActiveRecord::Migration[5.2]
   def change
     add_column :change_requests, :status, :string
   end

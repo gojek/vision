@@ -1,16 +1,15 @@
-require 'spec_helper'
+require 'rails_helper'
 
-describe AccessRequestsController, type: :controller do
+RSpec.describe AccessRequestsController, type: :controller do
   context 'user access' do
-    let(:user) {FactoryGirl.create(:user)}
-    let(:approver_ar) {FactoryGirl.create(:approver_ar, email:'patrick.star@midtrans.com')}
-    let(:access_request) {access_request = FactoryGirl.create(:access_request, user: user)}
+    let(:user) {FactoryBot.create(:user)}
+    let(:approver_ar) {FactoryBot.create(:approver_ar, email:'patrick.star@midtrans.com')}
+    let(:access_request) {access_request = FactoryBot.create(:access_request, user: user)}
 
     before :each do
-      controller.request.env['devise.mapping'] = Devise.mappings[:user]
+      @request.env['devise.mapping'] = Devise.mappings[:user]
       sign_in user
     end
-
 
     describe "GET #index" do
       it "populates all access requests if no params passed" do
@@ -19,7 +18,7 @@ describe AccessRequestsController, type: :controller do
       end
 
       it "populates all access requests if no params passed inluding new access request" do
-        other_ar = FactoryGirl.create(:access_request)
+        other_ar = FactoryBot.create(:access_request)
         get :index
         expect(assigns(:access_requests)).to match_array([access_request, other_ar])
       end
@@ -27,51 +26,51 @@ describe AccessRequestsController, type: :controller do
       describe "spesific access request filtered by params" do
         it "should be render list of access_request with matching attribute value -> filtered by request_type" do
           access_request.update(request_type: 'Create')
-          get :index, q: { request_type_eq: 'Create' }
+          get :index, params: { q: { request_type_eq: 'Create' } }
           expect(assigns(:access_requests)).to match_array([access_request])
           expect(assigns(:access_requests).count).to eq 1
         end
 
         it "should be render list of access_request with matching attribute value -> filtered by request_type (1 matches)" do
           access_request.update(request_type: 'Create')
-          other_ar = FactoryGirl.create(:access_request, request_type: 'Modify')
-          get :index, q: { request_type_eq: 'Create' }
+          other_ar = FactoryBot.create(:access_request, request_type: 'Modify')
+          get :index, params: { q: { request_type_eq: 'Create' }}
           expect(assigns(:access_requests)).to match_array([access_request])
           expect(assigns(:access_requests).count).to eq 1
         end
 
         it "should be render list of access_request with matching attribute value -> filtered by request_type (2 matches)" do
           access_request.update(request_type: 'Create')
-          other_ar = FactoryGirl.create(:access_request, request_type: 'Create')
-          get :index, q: { request_type_eq: 'Create' }
+          other_ar = FactoryBot.create(:access_request, request_type: 'Create')
+          get :index, params: { q: { request_type_eq: 'Create' } }
           expect(assigns(:access_requests)).to match_array([access_request, other_ar])
           expect(assigns(:access_requests).count).to eq 2
         end
 
         describe "should be render list of access_requests that relevant to current user " do
           it "user as a requester " do
-            get :index, q: { type: 'relevant' }
+            get :index, params: { q: { type: 'relevant' }}
             expect(assigns(:access_requests)).to match_array([access_request])
           end
 
           it "user as a collaborator" do 
-            access_request.update(user: FactoryGirl.create(:user), collaborators: [user])
-            get :index, q: { type: 'relevant' }
+            access_request.update(user: FactoryBot.create(:user), collaborators: [user])
+            get :index, params: { q: { type: 'relevant' }}
             expect(assigns(:access_requests)).to match_array([access_request])
           end
 
           it "user as a approver" do 
-            approver = FactoryGirl.create(:access_request_approval, user: user)
-            access_request.update(user: FactoryGirl.create(:user), approvals: [approver]  )
-            get :index, q: { type: 'relevant' }
+            approver = FactoryBot.create(:access_request_approval, user: user)
+            access_request.update(user: FactoryBot.create(:user), approvals: [approver]  )
+            get :index, params: { q: { type: 'relevant' }}
             expect(assigns(:access_requests)).to match_array([access_request])
           end
 
           describe "when user click need to approval" do
             it "should render list of access_requests that need approve from current user" do
-              approver = FactoryGirl.create(:access_request_approval, user: user)
-            access_request.update(user: FactoryGirl.create(:user), approvals: [approver]  )
-            get :index, q: { type: 'approval' }
+              approver = FactoryBot.create(:access_request_approval, user: user)
+            access_request.update(user: FactoryBot.create(:user), approvals: [approver]  )
+            get :index, params: { q: { type: 'approval' }}
             expect(assigns(:access_requests)).to match_array([access_request])
             end
           end
@@ -82,14 +81,14 @@ describe AccessRequestsController, type: :controller do
       describe "no match access request given spesific params" do
         it "should render empty list of access requests -> filtered by request type" do
           access_request.update(request_type: 'Delete')
-          get :index, q: { request_type_eq: 'Create'}
+          get :index, params: { q: { request_type_eq: 'Create'} }
           expect(assigns(:access_requests)).to match_array([])
           expect(assigns(:access_requests).count).to eq 0
         end
 
         it "should render empty list of access requests -> filtered by access type" do
           access_request.update(access_type: 'Permanent')
-          get :index, q: { access_type_eq: 'Temporary'}
+          get :index, params: { q: { access_type_eq: 'Temporary'} }
           expect(assigns(:access_requests)).to match_array([])
           expect(assigns(:access_requests).count).to eq 0
         end
@@ -98,7 +97,7 @@ describe AccessRequestsController, type: :controller do
 
     describe 'POST #import_from_csv' do
       before :each do
-        controller.request.env['devise.mapping'] = Devise.mappings[:approver_ar]
+        @request.env['devise.mapping'] = Devise.mappings[:approver_ar]
         sign_in approver_ar
       end
       describe "can upload csv" do
@@ -107,12 +106,12 @@ describe AccessRequestsController, type: :controller do
         end
 
         it "check the total of valid access_request from csv" do
-          post :import_from_csv, :csv => @file
+          post :import_from_csv, params: { :csv => @file }
           expect(assigns(:valid).count).to match(2)
         end
 
         it "check the total of invalid access_request from csv" do
-          post :import_from_csv, :csv => @file
+          post :import_from_csv, params: { :csv => @file }
           expect(assigns(:invalid).count).to match(2)
         end
       end
@@ -130,7 +129,7 @@ describe AccessRequestsController, type: :controller do
       end
 
       it 'returns total of active user' do
-        user_locked = FactoryGirl.create(:user)
+        user_locked = FactoryBot.create(:user)
         user_locked.update_attribute(:locked_at, Time.current)
         get :new
 
@@ -138,8 +137,8 @@ describe AccessRequestsController, type: :controller do
       end
 
       it 'returns total of approver_ar user' do
-        approver1 = FactoryGirl.create(:approver_ar)
-        approver2 = FactoryGirl.create(:approver_ar)
+        approver1 = FactoryBot.create(:approver_ar)
+        approver2 = FactoryBot.create(:approver_ar)
         get :new
 
         expect(assigns(:approvers).count).to match 2
@@ -148,18 +147,17 @@ describe AccessRequestsController, type: :controller do
 
     describe 'GET #show' do
       it 'assigns the requested access request to @access_request' do
-        get :show, id: access_request
+        get :show, params: { id: access_request }
         expect(assigns(:access_request)).to eq access_request
       end
 
       it 'renders the :show template' do
-        get :show, id: access_request
+        get :show, params: { id: access_request }
         expect(response).to render_template :show
       end
 
       it 'get all the username from active user' do
-        get :show, id: access_request
-
+        get :show, params: { id: access_request }
         expect(assigns(:usernames)).to include user.email.split('@')[0]
       end
     end

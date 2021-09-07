@@ -1,4 +1,4 @@
-class AddAttributesToChangeRequest < ActiveRecord::Migration
+class AddAttributesToChangeRequest < ActiveRecord::Migration[5.2]
   def change
     add_column :change_requests, :definition_of_success, :text
     add_column :change_requests, :definition_of_failed, :text

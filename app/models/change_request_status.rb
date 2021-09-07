@@ -1,4 +1,4 @@
-class ChangeRequestStatus < ActiveRecord::Base
+class ChangeRequestStatus < ApplicationRecord
   belongs_to :change_request
   validates :reason, presence: true, if: :reason_needed?
 
