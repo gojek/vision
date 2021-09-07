@@ -12,6 +12,20 @@ require 'capybara/rspec'
 require 'capybara/rails'
 require 'sucker_punch/testing/inline'
 
+SimpleCov.at_exit do
+  SimpleCov.result.format!
+  minimum_coverage = 73
+  actual_coverage = SimpleCov.result.covered_percent.round(2)
+  puts "MINIMUM COVERAGE: #{minimum_coverage}%"
+  print "ACTUAL COVERAGE: #{actual_coverage}% -"
+  if (actual_coverage >= minimum_coverage)
+    puts "\e[0;32m SUCCESS! \e[0m\n"
+  else
+    puts "\e[0;31m FAIL! \e[0m\n"
+    exit 1
+  end
+end
+
 WebMock.disable_net_connect!(allow_localhost: true)
 
 # Requires supporting ruby files with custom matchers and macros, etc,

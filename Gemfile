@@ -107,6 +107,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
   gem 'cucumber-rails', require: false
+  gem 'dotenv-rails'
   gem 'factory_girl_rails', '~> 4.2.1'
   gem 'faker'
   gem 'rspec-rails', '~> 3.5.2'
@@ -116,6 +117,7 @@ group :development, :test do
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'rubocop', '~> 0.63.1', require: false
+  gem 'rubycritic', require: false
   gem 'spring'
 end
 
