@@ -4,56 +4,156 @@ Vision was made with contributions from everyone found in git commit history.
 
 ## Architecture
 
-Vision built with Ruby on Rails, running on Heroku, requires Google Calendar API.
+Vision built with Ruby on Rails 5.2.6 and using Ruby 2.7.4, running on Heroku, requires Google Calendar API and Slack API.
 
 To accomplish this, every environment variables are set at `.env` file.
 
-Therefore, for running server use `foreman start` as that will read the environment variables and
+Therefore, for running server use `bundle exec rails s` as that will read the environment variables and
 run the app with it.
 
-For testing, you can just use `bundle exec rspec` since environment variables are simply ignored,
-as outside API call is mocked through `webmock`.
+### Static Analysis
+we're using Rubycritic with score 80, you can run `rubycritic -s 80.00 --no-browser app lib`
 
+### Code Quality
+we're using Rubocop, you can run `bundle exec rubocop`
+
+### Code Security
+we're using brakeman, but there're still some issue we can't solved due to current Rails version,
+you can run with `brakeman LANG="C" LC_ALL="en_US.UTF-8" .`
+
+### Testing
+you can just use `bundle exec rspec` since environment variables are simply ignored,
+as outside API call is mocked through `webmock`.
 I wish it clear. Feel free to reach out for further questions.
+
+We set code coverage minimum is 73%
 
 ## Getting Started
 
-1. Install ruby
+Vision are Change Request Management, Incident Report Management, and Access Request Management.
 
-2. Install bower through NPM. Our assets are managed by bower.
+## Installation
 
-3. Install project dependencies
+1. Install ruby 2.7.4 and Rails 5.2.6, make your system running under that version.
+
+```
+ruby --version #=> ruby 2.7.4
+bundle exec rails version # => Rails 5.2.6
+```
+
+2. Install project dependencies
+
+Install bundler
 ```
 bundle install
 ```
-Then install bower dependencies:
+
+Install bower through NPM. Our assets are managed by bower.
 ```
-bower install
+npm install
 ```
 
-4. Copy example config
+Install Apache Solr, make sure you can access under port 8983 (http://localhost:8983)
 ```
+brew install solr
+solr create_core -c development
+solr create_core -c test
+```
+
+3. Configuration
+```
+cp .env.example .env # for development environment
+cp .env.example .env.test # for test environment
 cp config/database.example.yml config/database.yml
 ```
 
-5. Run rails
+In .env make sure you've check and configured:
 ```
-foreman start
+DB_HOST=
+DB_USERNAME=
+DB_PASSWORD=
+SOLR_HOST=
+SOLR_PORT=
+SLACK_IR_CHANNEL=<incident_report_slack_channel>
+SLACK_CR_CHANNEL=<change_request_slack_channel>
 ```
 
-6. Visit vision in `localhost:3000`
+4. Seed Database
 
+```
+bundle exec rake db:seed
+```
 
-7. For mail interaction in Development environment, install and run Mailcatcher by running
+5. For mail interaction in Development environment, install and run Mailcatcher by running
 ```
 gem install mailcatcher
 
 mailcatcher
+```
+
+6. Run rails
+```
+bundle exec rails s
+```
+
+7. Visit vision in `http://localhost:3000`
+
+## Run with Docker
+
+You can run Vision under docker, if you have problem with version compability
+
+```
+docker-compose build
+docker-compose up -d
 
 ```
 
-8. Slack notification configuration. Set environment variable to:
+### Solr for Development
+
 ```
-SLACK_IR_CHANNEL=<incident_report_slack_channel>
-SLACK_CR_CHANNEL=<change_request_slack_channel>
+docker exec -ti vision_solr_1 bash
+
+$ solr create_core -c development
+$ solr create_core -c test
+
 ```
+
+### DB Migration and Seed
+
+```
+docker exec -ti vision_web_1 bash
+
+$ bundle exec rake db:create
+$ bundle exec rake db:migrate
+$ bundle exec rake db:seed
+```
+
+
+### Sign Up
+
+Visit http://localhost:3000 and Signup using your gmail
+
+### Approve User
+
+```
+docker exec -ti vision_web_1 bash
+
+$ rails c
+irb(main) > user = User.last
+irb(main) > user.approved!
+irb(main) > user.save
+```
+
+### Assign Admin
+
+```
+docker exec -ti vision_web_1 bash
+
+$ rails c
+irb(main) > user = User.last
+irb(main) > user.is_admin = true
+irb(main) > user.save
+```
+
+
+Visit http://localhost:3000

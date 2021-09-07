@@ -1,4 +1,4 @@
-class Approval < ActiveRecord::Base
+class Approval < ApplicationRecord
   belongs_to :change_request
   belongs_to :user
 

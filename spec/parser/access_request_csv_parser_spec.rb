@@ -1,9 +1,9 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'mentioner'
 
 describe AccessRequestCsvParser do
-  let!(:user) {FactoryGirl.create(:user)}
-  let!(:approver_ar) {FactoryGirl.create(:approver_ar, email:'patrick.star@midtrans.com')}
+  let!(:user) {FactoryBot.create(:user)}
+  let!(:approver_ar) {FactoryBot.create(:approver_ar, email:'patrick.star@midtrans.com')}
   let(:raw_data) {{"entity_source"=>"midtrans",
                    "request_type"=>"Create",
                    "access_type"=>"Permanent",

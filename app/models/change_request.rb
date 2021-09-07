@@ -1,4 +1,4 @@
-class ChangeRequest < ActiveRecord::Base
+class ChangeRequest < ApplicationRecord
   include AASM
   include EntitySourceModule
 
@@ -15,7 +15,7 @@ class ChangeRequest < ActiveRecord::Base
   has_many :comments, dependent: :destroy
   has_many :notifications, dependent: :destroy
   acts_as_taggable
-  has_paper_trail class_name: 'ChangeRequestVersion', meta: { author_username: :user_name }
+  has_paper_trail versions: { class_name: 'ChangeRequestVersion'}, meta: { author_username: :user_name }
   SCOPE = %w(Major Minor)
   PRIORITY = %w(High Medium Low)
 

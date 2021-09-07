@@ -32,7 +32,6 @@ coverage
 # Ignore bower components
 /vendor
 
-.ruby-version
 lib/tasks/approval.rb
 vision.dump
 
@@ -52,4 +51,6 @@ solr/development/*
 solr/test/*
 !solr/test/core.properties
 
-/node_modules
+node_modules
+
+.env

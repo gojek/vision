@@ -1,4 +1,4 @@
-class CreateImplementers < ActiveRecord::Migration
+class CreateImplementers < ActiveRecord::Migration[5.2]
   def change
     create_table :implementers do |t|
       t.string :name
