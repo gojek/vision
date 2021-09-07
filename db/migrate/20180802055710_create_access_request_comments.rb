@@ -1,4 +1,4 @@
-class CreateAccessRequestComments < ActiveRecord::Migration
+class CreateAccessRequestComments < ActiveRecord::Migration[5.2]
   def change
     create_table :access_request_comments do |t|
       t.text     :body

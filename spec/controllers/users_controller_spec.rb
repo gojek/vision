@@ -1,19 +1,19 @@
-require 'spec_helper'
+require 'rails_helper'
 
-describe UsersController, type: :controller do
+RSpec.describe UsersController, type: :controller do
 
   describe 'pending user access vision' do
-    let(:user) { FactoryGirl.create(:pending_user)}
-    let(:attributes) {FactoryGirl.attributes_for(:access_request)}
-    let(:approver) {FactoryGirl.create(:approver)}
-    let(:waiting_user) {FactoryGirl.create(:waiting_user)}
-    let(:pending_user) {FactoryGirl.create(:pending_user)}
+    let(:user) { FactoryBot.create(:pending_user)}
+    let(:attributes) {FactoryBot.attributes_for(:access_request)}
+    let(:approver) {FactoryBot.create(:approver)}
+    let(:waiting_user) {FactoryBot.create(:waiting_user)}
+    let(:pending_user) {FactoryBot.create(:pending_user)}
 
     before :each do
-      FactoryGirl.create(:user).email
-      FactoryGirl.create(:master_approver).email
-      FactoryGirl.create(:user, email: 'vision@veritrans.co.id')
-      controller.request.env['devise.mapping'] = Devise.mappings[:pending_user]
+      FactoryBot.create(:user).email
+      FactoryBot.create(:master_approver).email
+      FactoryBot.create(:user, email: 'vision@veritrans.co.id')
+      @request.env['devise.mapping'] = Devise.mappings[:pending_user]
       sign_in pending_user
     end
 
@@ -38,23 +38,23 @@ describe UsersController, type: :controller do
     describe 'POST #/register' do
       describe 'if success' do
         it 'should be redirect_to to sign in page' do
-          post :create, access_request: attributes, approver_ids: [approver], collaborator_ids: []
+          post :create, params: { access_request: attributes, approver_ids: [approver], collaborator_ids: [] }
           expect(response).to redirect_to signin_path
         end
 
         it 'should be redirect_to to sign in page and contains some success flash message' do
-          post :create, access_request: attributes, approver_ids: [approver], collaborator_ids: []
+          post :create, params: { access_request: attributes, approver_ids: [approver], collaborator_ids: [] }
           expect(flash[:success]).to eq('Request has been created and waiting for approval. You\'ll get notification once its approved')
         end
 
         it 'should be create a new access request' do
           expect {
-            post :create, access_request: attributes, approver_ids: [approver], collaborator_ids: []
+            post :create, params: { access_request: attributes, approver_ids: [approver], collaborator_ids: [] }
           }.to change(AccessRequest, :count).by 1
         end
 
         it 'should be update current_user\'s is_approved = 2' do
-          post :create, access_request: attributes
+          post :create, params: { access_request: attributes }
           pending_user.reload
           expect(pending_user.is_approved).to eq 'need_approvals'
         end 
@@ -70,25 +70,25 @@ describe UsersController, type: :controller do
 
 
   describe 'user access' do
-    let(:user) {FactoryGirl.create(:user)}
-    let(:waiting) {FactoryGirl.create(:waiting_user)}
-    let(:reject) {FactoryGirl.create(:rejected_user)}
-    let(:admin) {FactoryGirl.create(:admin)}
-    let(:pending_user) {FactoryGirl.create(:pending_user)}
+    let(:user) {FactoryBot.create(:user)}
+    let(:waiting) {FactoryBot.create(:waiting_user)}
+    let(:reject) {FactoryBot.create(:rejected_user)}
+    let(:admin) {FactoryBot.create(:admin)}
+    let(:pending_user) {FactoryBot.create(:pending_user)}
 
     describe 'put #approving and #rejecting user' do
       it 'approving user' do
         sign_in admin
 
-        put :approve_user, :id => waiting.id
+        put :approve_user, params: { :id => waiting.id }
         expect(response).to redirect_to(users_path)
       end
 
       it 'rejecting user' do
-        admin = FactoryGirl.create(:admin)
+        admin = FactoryBot.create(:admin)
         sign_in admin
 
-        put :reject_user, :id => waiting.id
+        put :reject_user, params: { :id => waiting.id }
         expect(response).to redirect_to(users_path)
       end
     end
@@ -109,9 +109,9 @@ describe UsersController, type: :controller do
       end
 
       it 'is admin accessing filter index page' do
-        FactoryGirl.create(:waiting_user)
+        FactoryBot.create(:waiting_user)
         sign_in admin
-        get :index, q: {is_approved_eq: 3}
+        get :index, params: { q: {is_approved_eq: 3} }
         expect(assigns(:users).size).to eq 1
       end
 
@@ -132,11 +132,11 @@ describe UsersController, type: :controller do
   end
 
   describe "admin access" do
-    let(:admin) {FactoryGirl.create(:admin, is_approved: 3)}
+    let(:admin) {FactoryBot.create(:admin, is_approved: 3)}
     render_views
 
     before :each do
-      controller.request.env['devise.mapping'] = Devise.mappings[:admin]
+      @request.env['devise.mapping'] = Devise.mappings[:admin]
       sign_in admin
     end
 
@@ -146,8 +146,8 @@ describe UsersController, type: :controller do
     end
 
     it 'is admin accessing filter index page' do
-      FactoryGirl.create(:user, is_approved: 3) # example user 1 instance
-      get :index, q: {is_approved_eq: 3}
+      FactoryBot.create(:user, is_approved: 3) # example user 1 instance
+      get :index, params: { q: {is_approved_eq: 3} }
       expect(response.body).to include 'Approved'
     end
   end

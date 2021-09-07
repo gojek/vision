@@ -1,33 +1,33 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'slack_notif'
 require 'mentioner.rb'
 
-describe CommentsController, type:  :controller do
-  let(:change_request) {FactoryGirl.create(:change_request)}
-  let(:cr_comment) {FactoryGirl.build(:comment, body: 'comment')}
+RSpec.describe CommentsController, type:  :controller do
+  let(:change_request) {FactoryBot.create(:change_request)}
+  let(:cr_comment) {FactoryBot.build(:comment, body: 'comment')}
   before :each do
-    controller.request.env['devise.mapping'] = Devise.mappings[:user]
-    release_manager = FactoryGirl.create(:release_manager)
+    @request.env['devise.mapping'] = Devise.mappings[:user]
+    release_manager = FactoryBot.create(:release_manager)
     sign_in release_manager
   end
   describe 'POST #create' do
     context "with valid attributes" do
       it 'saves the new comment in the databse' do
         expect{
-          post :create, change_request_id: change_request.id, comment: {body: 'comment'}
+          post :create, params: { change_request_id: change_request.id, comment: {body: 'comment'}}
         }.to change(Comment, :count).by(1)
       end
 
       it 'call slack notification library to notify to the mentionees that they have been mentioned' do
-        comment = FactoryGirl.build(:comment, body: 'comment @metionee')
+        comment = FactoryBot.build(:comment, body: 'comment @metionee')
         expect_any_instance_of(SlackNotif).to receive(:notify_new_comment).with(an_instance_of(Comment))
-        post :create, change_request_id: change_request.id, comment: {body: comment.body}
+        post :create, params: { change_request_id: change_request.id, comment: {body: comment.body} }
       end
     end
     context 'with invalid attributes' do
       it 'doesnt save the new comment in the databse' do
         expect{
-          post :create, change_request_id: change_request.id, comment: {body: ''}
+          post :create, params: { change_request_id: change_request.id, comment: {body: ''} }
         }.to_not change(Comment, :count)
       end
     end
@@ -37,7 +37,7 @@ describe CommentsController, type:  :controller do
     context 'hide' do
       it 'change the comment into hide state' do
         change_request.comments << cr_comment
-        post :hide_unhide, change_request_id: change_request.id, comment_id: cr_comment.id, type: 'hide'
+        post :hide_unhide, params: { change_request_id: change_request.id, comment_id: cr_comment.id, type: 'hide' }
         expect(Comment.find(cr_comment.id).hide).to eq(true) 
       end
     end
@@ -46,7 +46,7 @@ describe CommentsController, type:  :controller do
         change_request.comments << cr_comment
         cr_comment.hide = true
         cr_comment.save
-        post :hide_unhide, change_request_id: change_request.id, comment_id: cr_comment.id, type: 'unhide'
+        post :hide_unhide, params: { change_request_id: change_request.id, comment_id: cr_comment.id, type: 'unhide' }
         expect(Comment.find(cr_comment.id).hide).to eq(false) 
       end
     end

@@ -1,9 +1,9 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe ChangeRequest, type: :model do
-  let (:change_request) {FactoryGirl.create(:change_request)}
-  let (:user) {FactoryGirl.create(:approver)}
-  let (:user_2) {FactoryGirl.create(:approver)}
+  let (:change_request) {FactoryBot.create(:change_request)}
+  let (:user) {FactoryBot.create(:approver)}
+  let (:user_2) {FactoryBot.create(:approver)}
 
   #shoulda matchers test
   it { should belong_to(:user)}
@@ -35,12 +35,12 @@ describe ChangeRequest, type: :model do
   end
 
   it "at_least_one_category will return error if all categories not selected" do
-    change_request = FactoryGirl.build(:change_request, category_server: nil, category_application:nil)
+    change_request = FactoryBot.build(:change_request, category_server: nil, category_application:nil)
     expect(change_request.at_least_one_category).to match_array(["Please choose at least one category."])
   end
 
   it "at_least_one_type will return error if all types not selected" do
-    change_request = FactoryGirl.build(:change_request, type_install_uninstall:nil, type_other:nil)
+    change_request = FactoryBot.build(:change_request, type_install_uninstall:nil, type_other:nil)
     expect(change_request.at_least_one_type).to match_array(["Please choose at least one type."])
   end
 

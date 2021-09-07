@@ -15,14 +15,14 @@ class Mentioner
   def self.find_mentionees_from_username(usernames)
     emails = usernames.flat_map do |mention|
       valid_emails.map do |email|
-        mention + '@' + email
+        "#{mention}@#{email}"
       end
     end
     User.where(email: emails)
   end
 
   def self.username_extract_regex
-    /(?<!\w)#{mention_prefix}[\w\.]+/
+    /(?<!\w)#{mention_prefix}[\w.]+/
   end
 
   def self.mention_prefix

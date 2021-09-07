@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Approval, type: :model do
   #shoulda matchers test
