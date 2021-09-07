@@ -1,4 +1,4 @@
-class FixColumnTypeNameChangeRequest < ActiveRecord::Migration
+class FixColumnTypeNameChangeRequest < ActiveRecord::Migration[5.2]
   def self.up
     rename_column :change_requests, :type, :cr_type
   end

@@ -1,4 +1,4 @@
-class DeviseUpdateUsers < ActiveRecord::Migration
+class DeviseUpdateUsers < ActiveRecord::Migration[5.2]
   def change
     change_table(:users) do |t|
       ## Lockable

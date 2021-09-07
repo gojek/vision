@@ -1,10 +1,10 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'mentioner'
 
 describe Mentioner do
-  let(:user) {FactoryGirl.create(:user)}
-  let(:change_request) {FactoryGirl.create(:change_request, user: user)}
-  let(:comment_with_mention) {FactoryGirl.create(:comment_with_mention, user: user, change_request: change_request)}
+  let(:user) {FactoryBot.create(:user)}
+  let(:change_request) {FactoryBot.create(:change_request, user: user)}
+  let(:comment_with_mention) {FactoryBot.create(:comment_with_mention, user: user, change_request: change_request)}
 
   describe 'Mentioner.extract_handles_from_mentioner' do
     it 'should return array of usernames (email headers) from the comment body' do
@@ -19,7 +19,7 @@ describe Mentioner do
       usernames = Mentioner.extract_username(comment_with_mention)
       users = []
       usernames.each do |username|
-        users << FactoryGirl.create(:user, email: username + "@veritrans.co.id")
+        users << FactoryBot.create(:user, email: username + "@veritrans.co.id")
       end
       expect(Mentioner.find_mentionees_from_username(usernames)).to match_array(users)
     end

@@ -1,12 +1,12 @@
-require 'spec_helper'
+require 'rails_helper'
 
-describe ApplicationController, type: :controller do
+RSpec.describe ApplicationController, type: :controller do
   context 'user access' do
-    let(:user) {FactoryGirl.create(:user)}
-    let(:waiting_user) {FactoryGirl.create(:waiting_user)}
-    let(:rejected_user) {FactoryGirl.create(:rejected_user)}
+    let(:user) {FactoryBot.create(:user)}
+    let(:waiting_user) {FactoryBot.create(:waiting_user)}
+    let(:rejected_user) {FactoryBot.create(:rejected_user)}
     before :each do
-      controller.request.env['devise.mapping'] = Devise.mappings[:user]
+      @request.env['devise.mapping'] = Devise.mappings[:user]
     end
 
     it 'is sign_in rejected user' do

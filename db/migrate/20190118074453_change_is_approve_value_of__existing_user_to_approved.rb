@@ -1,4 +1,4 @@
-class ChangeIsApproveValueOfExistingUserToApproved < ActiveRecord::Migration
+class ChangeIsApproveValueOfExistingUserToApproved < ActiveRecord::Migration[5.2]
   def up
     execute <<-SQL
       UPDATE users SET is_approved = 3;

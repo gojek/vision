@@ -1,5 +1,5 @@
 # a model representating incident report document
-class IncidentReport < ActiveRecord::Base
+class IncidentReport < ApplicationRecord
   include ActiveModel::Dirty
   include EntitySourceModule
 
@@ -19,7 +19,7 @@ class IncidentReport < ActiveRecord::Base
   before_update :set_time_to_acknowledge_duration
 
   acts_as_readable :on => :updated_at
-  has_paper_trail class_name: 'IncidentReportVersion',
+  has_paper_trail versions: { class_name: 'IncidentReportVersion' },
                   meta: { author_username: :user_name }
   acts_as_taggable
   CURRENT_STATUS = %w(Ongoing Acknowledged Resolved)
