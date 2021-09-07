@@ -28,7 +28,7 @@ jobs:
       run: bundle exec rubocop
 
     - name: Brakeman (Code Security) # TODO: ENABLED WHEN MIGRATE TO RAILS 5.2
-      run: brakeman LANG="C" LC_ALL="en_US.UTF-8" .
+      run: brakeman LANG="C" LC_ALL="en_US.UTF-8" . --no-exit-on-warn
 
   unit_test:
     name: Run Unit Test
