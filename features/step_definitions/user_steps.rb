@@ -1,10 +1,10 @@
 Given /^I am logged in$/ do
-  @current_user = FactoryGirl.create(:user)
+  @current_user = FactoryBot.create(:user)
   login_as @current_user
 end
 
 Given /^a user named "(.*?)"$/ do |name|
-  FactoryGirl.create(:user, name: name)
+  FactoryBot.create(:user, name: name)
 end
 
 Given /^I am logged in as "(.*?)"$/ do |name|
@@ -12,6 +12,6 @@ Given /^I am logged in as "(.*?)"$/ do |name|
 end
 
 Given /^I am logged in as approver$/ do
-  @current_user = FactoryGirl.create(:approver)
+  @current_user = FactoryBot.create(:approver)
   login_as @current_user
 end

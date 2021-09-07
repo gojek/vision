@@ -1,8 +1,8 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'sucker_punch/testing/inline'
 
 RSpec.describe ApprovalChangeRequestSlackNotificationJob, type: :job do
-  let(:change_request) {FactoryGirl.create(:change_request) }
+  let(:change_request) {FactoryBot.create(:change_request) }
   describe "perform async" do
     it "send notification to slack immediately" do
     	approval = Approval.where(change_request_id: change_request.id, user_id: change_request.approvals.first.user_id).first

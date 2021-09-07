@@ -1,4 +1,4 @@
-class AccessRequestStatus < ActiveRecord::Base
+class AccessRequestStatus < ApplicationRecord
   belongs_to :access_request
   validates :reason, presence: true, if: :reason_needed?
 

@@ -10,6 +10,7 @@ class ChangeRequestsController < ApplicationController
   require 'slack_notif.rb'
   require 'csv_exporter.rb'
   require 'calendar_service.rb'
+  require 'jira'
 
   def index
     if params[:type]
@@ -119,7 +120,7 @@ class ChangeRequestsController < ApplicationController
         NewChangeRequestSlackNotificationJob.perform_async(@change_request)
         Thread.new do
           UserMailer.notif_email(@change_request.user, @change_request, @status).deliver_later
-          ActiveRecord::Base.connection.close
+          ApplicationRecord.connection.close
         end
         flash[:success] = 'Change request was successfully created.'
         flash[:success] += " Calendar event creation failed: #{event.error_messages}." unless event.success?

@@ -1,4 +1,4 @@
-class CreateAccessRequests < ActiveRecord::Migration
+class CreateAccessRequests < ActiveRecord::Migration[5.2]
   def change
     create_table :access_requests do |t|
       t.references :user, index: true, foreign_key: true
