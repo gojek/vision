@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'google_client'
 require 'webmock/rspec'
 require 'json'
@@ -10,9 +10,9 @@ RSpec.configure do |c|
 end
 
 describe GoogleClient do
-  let(:user) { FactoryGirl.create(:user) }
+  let(:user) { FactoryBot.create(:user) }
   let(:google_client) { GoogleClient.new user}
-  let(:change_request) { FactoryGirl.create(:change_request, user: user) }
+  let(:change_request) { FactoryBot.create(:change_request, user: user) }
 
   describe "case when event is created by google calendar API" do
     it "returned event object with is_success equals true" do

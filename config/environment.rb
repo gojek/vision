@@ -1,12 +1,8 @@
 # Load the Rails application.
-require File.expand_path('../application', __FILE__)
+require_relative 'application'
 
 # Initialize the Rails application.
 Rails.application.initialize!
-
-ActionView::Base.field_error_proc = Proc.new do |html_tag, instance|
-  html_tag.html_safe
-end
 
 Slack.configure do |config|
   config.token = ENV['SLACK_API_TOKEN']

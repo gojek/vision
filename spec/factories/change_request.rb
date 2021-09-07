@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :change_request do
     # change_summary "Change Summary"
     sequence(:change_summary) { |n| "Change Summary #{n}" }
@@ -79,27 +79,27 @@ FactoryGirl.define do
     end
 
     before(:create) do |cr|
-      collaborator = FactoryGirl.create(:user)
+      collaborator = FactoryBot.create(:user)
       cr.collaborators << collaborator
 
-      implementer = FactoryGirl.create(:user)
+      implementer = FactoryBot.create(:user)
       cr.implementers << implementer
 
-      tester = FactoryGirl.create(:user)
+      tester = FactoryBot.create(:user)
       cr.testers << tester
 
-      approval = FactoryGirl.create(:approval)
+      approval = FactoryBot.create(:approval)
       cr.approvals << approval
 
     end
 
     after(:create) do |cr|
-      status = FactoryGirl.create(:change_request_status, status: 'submitted')
+      status = FactoryBot.create(:change_request_status, status: 'submitted')
       cr.update(change_request_statuses: cr.change_request_statuses << status)
     end
 
     after(:build) do |cr|
-      approval = FactoryGirl.create(:approval)
+      approval = FactoryBot.create(:approval)
       cr.approvals << approval
     end
   end

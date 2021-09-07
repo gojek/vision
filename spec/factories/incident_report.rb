@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :incident_report do
     service_impact "Service impact"
     problem_details "Problem details"
@@ -17,7 +17,7 @@ FactoryGirl.define do
     recurrence_concern "Low"
     current_status "Acknowledged"
     measurer_status "Implemented"
-    user {FactoryGirl.create(:user)}
+    user {FactoryBot.create(:user)}
     entity_source "Midtrans"
 
     factory :invalid_incident_report do 
@@ -38,7 +38,7 @@ FactoryGirl.define do
       recurrence_concern "Low"
       current_status "curent"
       measurer_status "Implemented"
-      user {FactoryGirl.create(:user)}
+      user {FactoryBot.create(:user)}
     end
 
     factory :incident_report_with_reason_update do 
@@ -59,7 +59,7 @@ FactoryGirl.define do
       recurrence_concern "Low"
       current_status "curent"
       measurer_status "Implemented"
-      user {FactoryGirl.create(:user)}
+      user {FactoryBot.create(:user)}
       reason "reason"
     end
 

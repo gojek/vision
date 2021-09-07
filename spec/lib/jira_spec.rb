@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'jira'
 require 'jira_helpers.rb'
 
@@ -26,7 +26,7 @@ describe Jira do
 
     it 'mention jira in change_request' do
       generate_jira_jql_link(["TEST-123", "TEST-999"])
-      jira_change_request = FactoryGirl.create(:jira_change_request)
+      jira_change_request = FactoryBot.create(:jira_change_request)
       jira_change_request = jira.jiraize_cr(jira_change_request)
 
       expect(jira_change_request.net).to eq html
@@ -40,7 +40,7 @@ describe Jira do
     it 'mention jira in incident_report' do
       generate_jira_jql_link(["TEST-123"])
 
-      jira_incident_report = FactoryGirl.create(:jira_incident_report)
+      jira_incident_report = FactoryBot.create(:jira_incident_report)
       jira_incident_report = jira.jiraize_ir(jira_incident_report)
 
       expect(jira_incident_report.action_item).to eq html
@@ -50,7 +50,7 @@ describe Jira do
   describe 'not generate jira html object' do
     it 'mention jira in change_request' do
       WebMock.disable!
-      jira_change_request = FactoryGirl.create(:jira_change_request)
+      jira_change_request = FactoryBot.create(:jira_change_request)
       jira_change_request = jira.jiraize_cr(jira_change_request)
       WebMock.enable!
 
@@ -64,7 +64,7 @@ describe Jira do
 
     it 'mention jira in incident_report' do
       WebMock.disable!
-      jira_incident_report = FactoryGirl.create(:jira_incident_report)
+      jira_incident_report = FactoryBot.create(:jira_incident_report)
       jira_incident_report = jira.jiraize_ir(jira_incident_report)
       WebMock.enable!
       

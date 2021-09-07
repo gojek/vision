@@ -1,4 +1,4 @@
-class AccessRequest < ActiveRecord::Base
+class AccessRequest < ApplicationRecord
   has_paper_trail
 
   before_save :create_access_request_status
