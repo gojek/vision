@@ -98,7 +98,7 @@ bundle exec rails s
 
 7. Visit vision in `http://localhost:3000`
 
-## Docker Container
+## Run with Docker
 
 You can run Vision under docker, if you have problem with version compability
 
@@ -107,5 +107,53 @@ docker-compose build
 docker-compose up -d
 
 ```
+
+### Solr for Development
+
+```
+docker exec -ti vision_solr_1 bash
+
+$ solr create_core -c development
+$ solr create_core -c test
+
+```
+
+### DB Migration and Seed
+
+```
+docker exec -ti vision_web_1 bash
+
+$ bundle exec rake db:create
+$ bundle exec rake db:migrate
+$ bundle exec rake db:seed
+```
+
+
+### Sign Up
+
+Visit http://localhost:3000 and Signup using your gmail
+
+### Approve User
+
+```
+docker exec -ti vision_web_1 bash
+
+$ rails c
+irb(main) > user = User.last
+irb(main) > user.approved!
+irb(main) > user.save
+```
+
+### Assign Admin
+
+```
+docker exec -ti vision_web_1 bash
+
+$ rails c
+irb(main) > user = User.last
+irb(main) > user.is_admin = true
+irb(main) > user.save
+```
+
 
 Visit http://localhost:3000
