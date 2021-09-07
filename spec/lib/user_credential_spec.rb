@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'user_credential.rb'
 require 'googleauth'
 require 'webmock/rspec'
@@ -11,8 +11,8 @@ end
 
 describe UserCredential do
 
-  let(:expired_user) {FactoryGirl.create(:user, expired_at: Time.now - 1.minutes)}
-  let(:non_expired_user) {FactoryGirl.create(:user, expired_at: Time.now + 4.minutes)}
+  let(:expired_user) {FactoryBot.create(:user, expired_at: Time.now - 1.minutes)}
+  let(:non_expired_user) {FactoryBot.create(:user, expired_at: Time.now + 4.minutes)}
 
   before :each do
     # WebMock.allow_net_connect!

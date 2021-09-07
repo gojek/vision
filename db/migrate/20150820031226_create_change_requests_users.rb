@@ -1,4 +1,4 @@
-class CreateChangeRequestsUsers < ActiveRecord::Migration
+class CreateChangeRequestsUsers < ActiveRecord::Migration[5.2]
   def change
     create_table :change_requests_users, id: false do |t|
     	t.belongs_to :user, index: true

@@ -1,4 +1,4 @@
-class UpdateValueIncidentReportsTimeToAcknowledgeDuration < ActiveRecord::Migration
+class UpdateValueIncidentReportsTimeToAcknowledgeDuration < ActiveRecord::Migration[5.2]
   def change
     execute <<-SQL
       UPDATE incident_reports 

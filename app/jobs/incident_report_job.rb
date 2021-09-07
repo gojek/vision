@@ -22,7 +22,7 @@ class IncidentReportJob
   ]
 
   def perform(ir_ids, email)
-    ActiveRecord::Base.connection_pool.with_connection do
+    ApplicationRecord.connection_pool.with_connection do
       csv_string = CSV.generate do |csv|
         csv << CSV_COLUMNS
         IncidentReport.where(id: ir_ids).order('created_at DESC').find_in_batches do |group|

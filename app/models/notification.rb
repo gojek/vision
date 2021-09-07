@@ -1,4 +1,4 @@
-class Notification < ActiveRecord::Base
+class Notification < ApplicationRecord
   belongs_to :user
   belongs_to :access_request
   belongs_to :change_request
