@@ -1,5 +1,5 @@
 # Compile gems, and precompile assets
-FROM ruby:2.7-alpine3.14 AS application
+FROM ruby:2.7.3-alpine AS application
 
 RUN apk add --no-cache git bash libc6-compat build-base postgresql-dev postgresql-client linux-headers nodejs npm tzdata
 
