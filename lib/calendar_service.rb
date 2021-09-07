@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-require 'google_client.rb'
+require 'event'
+require 'google_client'
 
 class CalendarService
   def initialize(user)
