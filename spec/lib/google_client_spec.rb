@@ -18,8 +18,8 @@ describe GoogleClient do
     it "returned event object with is_success equals true" do
       save_event_success_stub
       event = Event.build_event_from_change_request(change_request)
-      event = google_client.upsert_event(event)
-      expect(event.success?).to eq true
+      google_event = google_client.upsert_event(event)
+      expect(google_event.success?).to eq true
     end
   end
 end

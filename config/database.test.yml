@@ -1,0 +1,9 @@
+<%= ENV['RAILS_ENV'] %>:
+  adapter: postgresql
+  encoding: utf8
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: <%= ENV.fetch("DB_HOST") { 'localhost' } %>
+  port: <%= ENV.fetch("DB_PORT") { "5432" } %>
+  database: vision_test
+  username: <%= ENV["DB_USERNAME"] %>
+  password: <%= ENV["DB_PASSWORD"] %>
