@@ -4,7 +4,7 @@ Vision was made with contributions from everyone found in git commit history.
 
 ## Architecture
 
-Vision built with Ruby on Rails 4.2.10 and using Ruby 2.4.5, running on Heroku, requires Google Calendar API and Slack API.
+Vision built with Ruby on Rails 5.2.6 and using Ruby 2.7.4, running on Heroku, requires Google Calendar API and Slack API.
 
 To accomplish this, every environment variables are set at `.env` file.
 
@@ -34,11 +34,11 @@ Vision are Change Request Management, Incident Report Management, and Access Req
 
 ## Installation
 
-1. Install ruby 2.4.5 and Rails 4.2.10, make your system running under that version.
+1. Install ruby 2.7.4 and Rails 5.2.6, make your system running under that version.
 
 ```
-ruby --version #=> ruby 2.4.5 
-bundle exec rails version # => Rails 4.2.10
+ruby --version #=> ruby 2.7.4
+bundle exec rails version # => Rails 5.2.6
 ```
 
 2. Install project dependencies
@@ -98,7 +98,7 @@ bundle exec rails s
 
 7. Visit vision in `http://localhost:3000`
 
-## Docker Container
+## Run with Docker
 
 You can run Vision under docker, if you have problem with version compability
 
@@ -107,5 +107,53 @@ docker-compose build
 docker-compose up -d
 
 ```
+
+### Solr for Development
+
+```
+docker exec -ti vision_solr_1 bash
+
+$ solr create_core -c development
+$ solr create_core -c test
+
+```
+
+### DB Migration and Seed
+
+```
+docker exec -ti vision_web_1 bash
+
+$ bundle exec rake db:create
+$ bundle exec rake db:migrate
+$ bundle exec rake db:seed
+```
+
+
+### Sign Up
+
+Visit http://localhost:3000 and Signup using your gmail
+
+### Approve User
+
+```
+docker exec -ti vision_web_1 bash
+
+$ rails c
+irb(main) > user = User.last
+irb(main) > user.approved!
+irb(main) > user.save
+```
+
+### Assign Admin
+
+```
+docker exec -ti vision_web_1 bash
+
+$ rails c
+irb(main) > user = User.last
+irb(main) > user.is_admin = true
+irb(main) > user.save
+```
+
 
 Visit http://localhost:3000
