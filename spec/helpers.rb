@@ -21,7 +21,7 @@ module Helpers
   end
 
   def save_event_success_stub
-    stub_request(:post, 'https://www.googleapis.com/calendar/v3/calendars/veritrans.co.id_u8h6tgnhgedrt0c2ognpe7q3q0@group.calendar.google.com/events?sendNotifications=true')
+    stub_request(:post, 'https://www.googleapis.com/calendar/v3/calendars/x@group.calendar.google.com/events?sendNotifications=true')
       .to_return(status: 200, body: JSON.dump({
         kind: "calendar#event",
         etag: "3102184802480000",
