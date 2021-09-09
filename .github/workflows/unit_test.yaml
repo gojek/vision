@@ -4,6 +4,9 @@ on:
   pull_request:
     branches: [ development ]
 
+env:
+  CODE_COVERAGE: ${{ secrets.X_CODE_COVERAGE }}
+
 jobs:
   unit_test:
     name: Run Unit Test
