@@ -14,11 +14,11 @@ services:
     image: solr:5.5.5-alpine
     volumes:
       - solr_data:/var/solr
-    # command:
-    #   - solr create_core -c development
+      - solr_init:/docker-entrypoint-initdb.d/
+      - solr_core_data:/opt/solr/server/solr/mycores
     restart: always
     ports:
-      - "8984:8984"
+      - "8983:8983"
 
   web:
     build: .
@@ -36,5 +36,7 @@ services:
 volumes:
   db_data: {}
   solr_data: {}
+  solr_core_data: {}
+  solr_init: {}
   app_data: {}
   search_data: {}
