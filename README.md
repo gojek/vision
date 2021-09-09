@@ -71,6 +71,7 @@ SLACK_IR_CHANNEL=<incident_report_slack_channel>
 SLACK_CR_CHANNEL=<change_request_slack_channel>
 SECRET_KEY_BASE=x
 ```
+4. Generate Secret
 
 ### DB Migration and Seed
 
