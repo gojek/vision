@@ -67,27 +67,33 @@ DB_USERNAME=
 DB_PASSWORD=
 SLACK_IR_CHANNEL=<incident_report_slack_channel>
 SLACK_CR_CHANNEL=<change_request_slack_channel>
+SECRET_KEY_BASE=x
+```
+4. Generate Secret
+
+```
+rails secret
 ```
 
-4. Seed Database
+5. Seed Database
 
 ```
 bundle exec rake db:seed
 ```
 
-5. For mail interaction in Development environment, install and run Mailcatcher by running
+6. For mail interaction in Development environment, install and run Mailcatcher by running
 ```
 gem install mailcatcher
 
 mailcatcher
 ```
 
-6. Run rails
+7. Run rails
 ```
 bundle exec rails s
 ```
 
-7. Visit vision in `http://localhost:3000`
+8. Visit vision in `http://localhost:3000`
 
 ## Run with Docker
 
