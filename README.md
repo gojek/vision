@@ -34,7 +34,9 @@ Vision are Change Request Management, Incident Report Management, and Access Req
 
 ## Installation
 
-### Install ruby 2.7.4 and Rails 5.2.6, make your system running under that version.
+### Install ruby 2.7.4 and Rails 5.2.6
+
+make your system running under that version.
 
 ```
 ruby --version #=> ruby 2.7.4
