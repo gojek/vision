@@ -34,14 +34,14 @@ Vision are Change Request Management, Incident Report Management, and Access Req
 
 ## Installation
 
-1. Install ruby 2.7.4 and Rails 5.2.6, make your system running under that version.
+### Install ruby 2.7.4 and Rails 5.2.6, make your system running under that version.
 
 ```
 ruby --version #=> ruby 2.7.4
 bundle exec rails version # => Rails 5.2.6
 ```
 
-2. Install project dependencies
+### Install project dependencies
 
 Install bundler
 ```
@@ -60,7 +60,7 @@ solr create_core -c development
 solr create_core -c test
 ```
 
-3. Configuration
+### Configuration
 ```
 cp .env.example .env # for development environment
 cp .env.example .env.test # for test environment
@@ -78,31 +78,32 @@ SLACK_IR_CHANNEL=<incident_report_slack_channel>
 SLACK_CR_CHANNEL=<change_request_slack_channel>
 SECRET_KEY_BASE=x
 ```
-4. Generate Secret
+### Generate Secret
 
 ```
 rails secret
 ```
 
-5. Seed Database
+### DB Migration and Seed
 
 ```
-bundle exec rake db:seed
+bundle exec rake db:setup
 ```
 
-6. For mail interaction in Development environment, install and run Mailcatcher by running
+### For mail interaction in Development environment, install and run Mailcatcher by running
 ```
 gem install mailcatcher
 
 mailcatcher
 ```
 
-7. Run rails
+### Run Application
 ```
 bundle exec rails s
 ```
 
-8. Visit vision in `http://localhost:3000`
+Visit vision in `http://localhost:3000`
+
 
 ## Run with Docker
 
@@ -129,9 +130,7 @@ $ solr create_core -c test
 ```
 docker exec -ti vision_web_1 bash
 
-$ bundle exec rake db:create
-$ bundle exec rake db:migrate
-$ bundle exec rake db:seed
+$ bundle exec rails db:setup
 ```
 
 
@@ -163,6 +162,12 @@ irb(main) > user.save
 
 
 Visit http://localhost:3000
+
+## Contributing
+
+Please see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+Administrate was originally written by Grace Youngblood and is now maintained by Nick Charlton. Many improvements and bugfixes were contributed by the open source community.
 
 ## LICENSE
 
