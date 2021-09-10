@@ -163,3 +163,7 @@ irb(main) > user.save
 
 
 Visit http://localhost:3000
+
+## LICENSE
+
+Released under the MIT [License](LICENSE). Copyright (c) Vision.
