@@ -34,14 +34,14 @@ Vision are Change Request Management, Incident Report Management, and Access Req
 
 ## Installation
 
-1. Install ruby 2.7.4 and Rails 5.2.6, make your system running under that version.
+### Install ruby 2.7.4 and Rails 5.2.6, make your system running under that version.
 
 ```
 ruby --version #=> ruby 2.7.4
 bundle exec rails version # => Rails 5.2.6
 ```
 
-2. Install project dependencies
+### Install project dependencies
 
 Install bundler
 ```
@@ -67,27 +67,34 @@ DB_USERNAME=
 DB_PASSWORD=
 SLACK_IR_CHANNEL=<incident_report_slack_channel>
 SLACK_CR_CHANNEL=<change_request_slack_channel>
+SECRET_KEY_BASE=x
+```
+### Generate Secret
+
+```
+rails secret
 ```
 
-4. Seed Database
+### DB Migration and Seed
 
 ```
-bundle exec rake db:seed
+bundle exec rake db:setup
 ```
 
-5. For mail interaction in Development environment, install and run Mailcatcher by running
+### For mail interaction in Development environment, install and run Mailcatcher by running
 ```
 gem install mailcatcher
 
 mailcatcher
 ```
 
-6. Run rails
+### Run Application
 ```
 bundle exec rails s
 ```
 
-7. Visit vision in `http://localhost:3000`
+Visit vision in `http://localhost:3000`
+
 
 ## Run with Docker
 
@@ -104,9 +111,7 @@ docker-compose up -d
 ```
 docker exec -ti vision_web_1 bash
 
-$ bundle exec rake db:create
-$ bundle exec rake db:migrate
-$ bundle exec rake db:seed
+$ bundle exec rails db:setup
 ```
 
 ### Sign Up
@@ -137,3 +142,13 @@ irb(main) > user.save
 
 
 Visit http://localhost:3000
+
+## Contributing
+
+Please see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+Administrate was originally written by Grace Youngblood and is now maintained by Nick Charlton. Many improvements and bugfixes were contributed by the open source community.
+
+## LICENSE
+
+Released under the MIT [License](LICENSE). Copyright (c) Vision.
