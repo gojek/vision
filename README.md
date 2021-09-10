@@ -2,6 +2,14 @@
 
 Vision was made with contributions from everyone found in git commit history.
 
+<a href="https://github.com/bootstrap-vue/bootstrap-vue/actions?workflow=CodeQuality">
+  <img src="https://flat.badgen.net/github/status/barockok/vision" alt="Build status">
+</a>
+
+<a href="https://github.com/bootstrap-vue/bootstrap-vue/actions?workflow=UnitTest">
+  <img src="https://flat.badgen.net/github/status/barockok/vision" alt="Build status">
+</a>
+
 ## Architecture
 
 Vision built with Ruby on Rails 5.2.6 and using Ruby 2.7.4, running on Heroku, requires Google Calendar API and Slack API.
@@ -162,7 +170,6 @@ irb(main) > user = User.last
 irb(main) > user.is_admin = true
 irb(main) > user.save
 ```
-
 
 Visit http://localhost:3000
 
