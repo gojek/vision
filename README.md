@@ -175,4 +175,4 @@ Vision was originally written by Midtrans Developer, contributions from everyone
 
 ## LICENSE
 
-Released under the MIT [License](LICENSE). Copyright (c) Vision.
+Released under the Apache 2.0 [License](LICENSE). Copyright (c) Vision.
