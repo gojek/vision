@@ -51,9 +51,18 @@ bundle install
 Install bower through NPM. Our assets are managed by bower.
 ```
 npm install
+bower install
 ```
 
-3. Configuration
+### Generate Secret
+
+```
+rails secret
+```
+
+and put in `.env.example` for key `SECRET_KEY_BASE`
+
+### Configuration
 ```
 cp .env.example .env # for development environment
 cp .env.example .env.test # for test environment
@@ -68,11 +77,6 @@ DB_PASSWORD=
 SLACK_IR_CHANNEL=<incident_report_slack_channel>
 SLACK_CR_CHANNEL=<change_request_slack_channel>
 SECRET_KEY_BASE=x
-```
-### Generate Secret
-
-```
-rails secret
 ```
 
 ### DB Migration and Seed
@@ -147,8 +151,4 @@ Visit http://localhost:3000
 
 Please see [CONTRIBUTING.md](CONTRIBUTING.md).
 
-Administrate was originally written by Grace Youngblood and is now maintained by Nick Charlton. Many improvements and bugfixes were contributed by the open source community.
-
-## LICENSE
-
-Released under the MIT [License](LICENSE). Copyright (c) Vision.
+Vision was originally written by Midtrans Developer and is now maintained by GO-JEK Tech. Many improvements and bugfixes were contributed by the open source community.
