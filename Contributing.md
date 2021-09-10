@@ -14,7 +14,7 @@ contribute and test new changes.
    database,
 3. Run the test suite: `bundle exec rspec`,
 4. Make your changes,
-5. Push your fork and open a pull request.
+5. Push your fork and open a pull request with [Pull Request Template](PULL_REQUEST_TEMPLATE.md).
 
 A good PR will solve the smallest problem it possibly can, have good test
 coverage and (where necessary) have internationalisation support.
