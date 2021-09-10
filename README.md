@@ -1,14 +1,6 @@
 # Vision
 
-Vision was made with contributions from everyone found in git commit history.
-
-<a href="https://github.com/bootstrap-vue/bootstrap-vue/actions?workflow=CodeQuality">
-  <img src="https://flat.badgen.net/github/status/barockok/vision" alt="Build status">
-</a>
-
-<a href="https://github.com/bootstrap-vue/bootstrap-vue/actions?workflow=UnitTest">
-  <img src="https://flat.badgen.net/github/status/barockok/vision" alt="Build status">
-</a>
+Vision is Changes Request, Access Request, and Incident Report Management. Integrate with Slack, Google Calendar, and JIRA.
 
 ## Architecture
 
@@ -177,7 +169,7 @@ Visit http://localhost:3000
 
 Please see [CONTRIBUTING.md](CONTRIBUTING.md).
 
-Vision was originally written by Midtrans Developer and is now maintained by Rori. Many improvements and bugfixes were contributed by the open source community.
+Vision was originally written by Midtrans Developer, contributions from everyone found in git commit history, and is now maintained by Rori. Many improvements and bugfixes were contributed by the open source community.
 
 ## LICENSE
 
