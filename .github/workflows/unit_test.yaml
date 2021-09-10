@@ -1,35 +1,10 @@
-name: Code Quality and Unit Test
+name: UnitTest
 
 on:
   pull_request:
-    branches: [ development, demo-app ]
+    branches: [ development ]
 
 jobs:
-  code_quality:
-    name: Run Code Quality
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@477b21f02be01bcb8030d50f37cfec92bfa615b6
-      with:
-        ruby-version: 2.7.3
-    
-    - name: Install dependencies
-      run: bundle install
-
-    - name: Rubycritic (Static Analysis)
-      run: rubycritic -s 80.00 --no-browser app lib
-
-    - name: Rubocop (Code Quality)
-      run: bundle exec rubocop
-
-    - name: Brakeman (Code Security) # TODO: ENABLED WHEN MIGRATE TO RAILS 5.2
-      run: brakeman -q LANG="C" LC_ALL="en_US.UTF-8" . --no-exit-on-warn
-
   unit_test:
     name: Run Unit Test
     runs-on: ubuntu-latest
@@ -80,16 +55,3 @@ jobs:
         SLACK_IR_CHANNEL: midtrans-test,spots-test,gojek-test,anything
         SLACK_CR_CHANNEL: midtrans-test,spots-test,gojek-test,anything
         VALID_EMAIL: midtrans.com,veritrans.co.id,associate.midtrans.com,spots.co.id,go-jek.com,gmail.com
-
-  deploy:
-    name: Deploy to Heroku
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
-        with:
-          heroku_api_key: ${{secrets.X_HEROKU_DEPLOY_KEY}}
-          heroku_app_name: "vision-demo-app" #Must be unique in Heroku
-          heroku_email: "rori.development@gmail.com"
-          usedocker: true
-          stack: "container"
