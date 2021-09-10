@@ -171,7 +171,7 @@ Visit http://localhost:3000
 
 Please see [CONTRIBUTING.md](CONTRIBUTING.md).
 
-Vision was originally written by Midtrans Developer, contributions from everyone found in git commit history, and is now maintained by Rori. Many improvements and bugfixes were contributed by the open source community.
+Vision was originally written by Midtrans Developer, contributions from everyone found in git commit history, and is now maintained by Gojek. Many improvements and bugfixes were contributed by the open source community.
 
 ## LICENSE
 
