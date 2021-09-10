@@ -135,5 +135,6 @@ irb(main) > user.is_admin = true
 irb(main) > user.save
 ```
 
+## LICENSE
 
-Visit http://localhost:3000
+Released under the Apache 2.0 [License](LICENSE). Copyright (c) 2021 Vision.
