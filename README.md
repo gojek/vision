@@ -60,6 +60,14 @@ solr create_core -c development
 solr create_core -c test
 ```
 
+### Generate Secret
+
+```
+rails secret
+```
+
+and put in `.env.example` for key `SECRET_KEY_BASE`
+
 ### Configuration
 ```
 cp .env.example .env # for development environment
@@ -77,11 +85,6 @@ SOLR_PORT=
 SLACK_IR_CHANNEL=<incident_report_slack_channel>
 SLACK_CR_CHANNEL=<change_request_slack_channel>
 SECRET_KEY_BASE=x
-```
-### Generate Secret
-
-```
-rails secret
 ```
 
 ### DB Migration and Seed
@@ -167,7 +170,7 @@ Visit http://localhost:3000
 
 Please see [CONTRIBUTING.md](CONTRIBUTING.md).
 
-Administrate was originally written by Grace Youngblood and is now maintained by Nick Charlton. Many improvements and bugfixes were contributed by the open source community.
+Vision was originally written by Midtrans Developer and is now maintained by Rori. Many improvements and bugfixes were contributed by the open source community.
 
 ## LICENSE
 
