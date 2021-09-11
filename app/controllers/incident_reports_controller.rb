@@ -104,19 +104,22 @@ class IncidentReportsController < ApplicationController
     if params[:search].blank?
       redirect_to incident_reports_path
     else
-      @search = IncidentReport.solr_search do
-        fulltext params[:search], highlight: true
-        order_by(:created_at, :desc)
-        paginate page: params[:page] || 1, per_page: params[:per_page] || 20
-      end
+      page = params[:page] || 1
+      per_page = params[:per_page] || 20
+
+      @search = IncidentReport
+        .search_full_text(params[:search])
+        .page(page)
+        .per(per_page)
+
       respond_to do |format|
         format.html
         format.csv do
           if params[:page].present?
             # download current page only
             ids = []
-            @search.hits.each do |hit|
-              ids << hit.primary_key
+            @search.each do |incident_report|
+              ids << incident_report.id
             end
             incident_reports = IncidentReport.where(id: ids)
             render csv: incident_reports, filename: 'incident_reports', force_quotes: true
