@@ -13,11 +13,13 @@ RSpec.describe AccessRequestsController, type: :controller do
 
     describe "GET #index" do
       it "populates all access requests if no params passed" do
+        access_request.reload
         get :index
         expect(assigns(:access_requests)).to match_array([access_request])
       end
 
       it "populates all access requests if no params passed inluding new access request" do
+        access_request.reload
         other_ar = FactoryBot.create(:access_request)
         get :index
         expect(assigns(:access_requests)).to match_array([access_request, other_ar])
@@ -49,6 +51,7 @@ RSpec.describe AccessRequestsController, type: :controller do
 
         describe "should be render list of access_requests that relevant to current user " do
           it "user as a requester " do
+            access_request.reload
             get :index, params: { q: { type: 'relevant' }}
             expect(assigns(:access_requests)).to match_array([access_request])
           end
@@ -159,6 +162,35 @@ RSpec.describe AccessRequestsController, type: :controller do
       it 'get all the username from active user' do
         get :show, params: { id: access_request }
         expect(assigns(:usernames)).to include user.email.split('@')[0]
+      end
+    end
+
+    describe 'GET #search' do
+      it 'render search view' do
+        get :search, params: { search: "asd" }
+
+        expect(response.body).to match /0 results found/im
+      end
+
+      it 'redirect to index if search a blank string' do
+        get :search, params: { search: "" }
+        expect(response).to redirect_to(access_requests_path)
+      end
+
+      it 'returns search result' do
+        access_request = FactoryBot.create(:access_request)
+        
+        get :search, params: { search: "Employee" }
+        
+        expect(assigns(:search)).to match_array(access_request)
+      end
+
+      it 'returns search pagination result' do
+        access_request = FactoryBot.create_list(:access_request, 10)
+        
+        get :search, params: { search: "Employee", per_page: 5 }
+
+        expect(assigns(:search).total_pages).to match 2
       end
     end
   end
