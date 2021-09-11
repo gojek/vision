@@ -71,6 +71,7 @@ gem 'nokogiri'
 
 # database
 gem 'pg', '~> 0.19'
+gem 'pg_search'
 
 # coloring std out
 gem 'colorize'
@@ -81,10 +82,6 @@ gem 'slack-ruby-client', '~> 0.13.1'
 
 # jira
 gem 'jira-ruby', require: 'jira-ruby'
-
-# full-text search
-gem 'sunspot_rails'
-gem 'sunspot_solr'
 
 # sanitizer
 gem 'sanitize'
@@ -115,7 +112,6 @@ group :development, :test do
   gem 'faker'
   gem 'rails-controller-testing'
   gem 'rspec-rails', '3.7.2'
-  gem 'sunspot_test'
   # Access an IRB console on exception pages or by using <%= console %> in views
   #
 
