@@ -40,7 +40,7 @@ RSpec.describe NotificationsController, type: :controller do
     end
 
     it 'should assign true to @have_cr_notif if user have any change request notification' do
-      cr = FactoryBot.create(:change_request)
+      cr = FactoryBot.create(:change_request, user: user)
       notification = FactoryBot.create(:notification, user: user, change_request: cr, message: 'new_cr')
       get :index, params: { type: 'cr' }
       expect(assigns(:notifications).count).to eq 1
