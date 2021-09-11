@@ -137,9 +137,9 @@ class ChangeRequestsController < ApplicationController
 
     page = params[:page] || 1
     per_page = 20
-    
+
     @search = ChangeRequest
-      .multisearch(params[:search])
+      .search_full_text(params[:search])
       .page(page)
       .per(per_page)
   end
