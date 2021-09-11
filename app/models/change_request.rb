@@ -1,6 +1,28 @@
 class ChangeRequest < ApplicationRecord
   include AASM
   include EntitySourceModule
+  include PgSearch::Model
+  multisearchable against: [
+    :change_summary
+    :change_requirement
+    :business_justification
+    :note
+    :os
+    :db
+    :net
+    :other_dependency
+    :analysis
+    :solution
+    :impact
+    :design
+    :backup
+    :definition_of_success
+    :definition_of_failed
+    :testing_procedure
+    :implementation_notes
+    :grace_period_notes
+    :created_at
+  ]
 
   belongs_to :user
   attr_accessor :approver_ids
@@ -48,28 +70,6 @@ class ChangeRequest < ApplicationRecord
     associated_users_array.concat(implementers.collect(&:id).to_a)
     associated_users_array.concat(approvals.collect(&:user_id).to_a)
     self.associated_user_ids = associated_users_array.uniq
-  end
-
-  searchable do
-    text :change_summary, stored: true
-    text :change_requirement, stored: true
-    text :business_justification, stored: true
-    text :note, stored: true
-    text :os, stored: true
-    text :db, stored: true
-    text :net, stored: true
-    text :other_dependency, stored: true
-    text :analysis, stored: true
-    text :solution, stored: true
-    text :impact, stored: true
-    text :design, stored: true
-    text :backup, stored: true
-    text :definition_of_success, stored: true
-    text :definition_of_failed, stored: true
-    text :testing_procedure, stored: true
-    text :implementation_notes, stored: true
-    text :grace_period_notes, stored: true
-    time :created_at, stored: true, trie: true
   end
 
   aasm do
