@@ -27,7 +27,7 @@
           <% end %>
         </div><!--/box-header-->
         <div class="box-body">
-          <span><%= "Page #{params[:page]} of " if params[:page] %><%= @search.count() %> results found</span>
+          <span><%= "Page #{params[:page]} of " if params[:page] %><%= @search.count %> results found</span>
           <ul class="products-list product-list-in-box">
             <% @search.each do |change_request| %>
             <li class="item">

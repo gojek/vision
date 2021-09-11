@@ -36,6 +36,7 @@ Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
+  config.render_views
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
@@ -84,7 +85,7 @@ RSpec.configure do |config|
   # DatabaseCleaner
   config.before(:suite) do
     # Clean the database before specs, clean with truncation
-    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.clean_with(:truncation)
   end
 
   config.before(:each) do
@@ -99,7 +100,6 @@ RSpec.configure do |config|
   config.after(:each) do
     DatabaseCleaner.clean
   end
-
 
   config.before(:each) do
     cal_response_json = File.read(File.expand_path("../webmocks/calendar_response.json", __FILE__))
