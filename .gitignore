@@ -40,16 +40,6 @@ coverage/*
 .byebug_history
 .keep
 
-# Ignore solr data
-solr/*
-!solr/configsets/
-!solr/solr.xml
-!solr/development
-solr/development/*
-!solr/development/core.properties
-!solr/test
-solr/test/*
-!solr/test/core.properties
 
 node_modules
 
