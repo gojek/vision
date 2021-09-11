@@ -31,18 +31,18 @@
           <% end %>
         </div><!--/box-header-->
         <div class="box-body">
-          <span><%= "Page #{params[:page]} of " if params[:page] %><%= @search.total %> results found</span>
+          <span><%= "Page #{params[:page]} of " if params[:page] %><%= @search.count %> results found</span>
           <ul class="products-list product-list-in-box">
-            <% @search.hits.each do |hit| %>
+            <% @search.each do |incident_report| %>
             <li class="item">
-                <%= link_to({controller: 'incident_reports', action: 'show', id: hit.primary_key}) do %>
+                <%= link_to({controller: 'incident_reports', action: 'show', id: incident_report.id}) do %>
                   <h4>
-                    <b><%=raw hit.stored(:service_impact).first %></b>
-                    <span class="pull-right"><%=raw hit.stored(:created_at).to_s(:long) %></span>
+                    <b><%=raw incident_report.service_impact.first %></b>
+                    <span class="pull-right"><%=raw incident_report.created_at.to_s(:long) %></span>
                   </h4>
                 <% end %>
                 <span>
-                  <%= sanitize(hit.highlight(nil).format{|match_words| content_tag(:b, match_words, class: "keywords-search")}, attributes: ['class']) %>
+                  <%= sanitize(@search.with_pg_search_highlight.first.pg_search_highlight, attributes: ['class']) %>
                 </span>
             </li>
             <% end %>
@@ -50,7 +50,7 @@
           </ul>
         </div><!-- /.box-body -->
         <div class="box-footer clearfix">
-             <%= paginate @search.hits, :theme => 'twitter-bootstrap-3' %>
+             <%= paginate @search, :theme => 'twitter-bootstrap-3' %>
         </div>
       </div>
     </div>
