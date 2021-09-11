@@ -1,2 +1,1 @@
-web: bundle exec unicorn -c ./config/unicorn.rb
-search: bundle exec rake sunspot:solr:run
+web: bundle exec puma -C ./config/puma.rb
