@@ -2,27 +2,42 @@ class ChangeRequest < ApplicationRecord
   include AASM
   include EntitySourceModule
   include PgSearch::Model
-  multisearchable against: [
-    :change_summary
-    :change_requirement
-    :business_justification
-    :note
-    :os
-    :db
-    :net
-    :other_dependency
-    :analysis
-    :solution
-    :impact
-    :design
-    :backup
-    :definition_of_success
-    :definition_of_failed
-    :testing_procedure
-    :implementation_notes
-    :grace_period_notes
+  pg_search_scope :search_full_text, against: [
+    :change_summary,
+    :change_requirement,
+    :business_justification,
+    :note,
+    :os,
+    :db,
+    :net,
+    :other_dependency,
+    :analysis,
+    :solution,
+    :impact,
+    :design,
+    :backup,
+    :definition_of_success,
+    :definition_of_failed,
+    :testing_procedure,
+    :implementation_notes,
+    :grace_period_notes,
     :created_at
-  ]
+  ],
+  using: {
+    tsearch: {
+      any_word: true,
+      highlight: {
+        StartSel: '<b>',
+        StopSel: '</b>',
+        MaxWords: 123,
+        MinWords: 456,
+        ShortWord: 3,
+        HighlightAll: true,
+        MaxFragments: 3,
+        FragmentDelimiter: '&hellip;'
+      }
+    }
+  }
 
   belongs_to :user
   attr_accessor :approver_ids

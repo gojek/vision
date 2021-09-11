@@ -3,7 +3,7 @@ require 'slack_notif'
 
 RSpec.describe ChangeRequestsController, type: :controller do
   before :all do
-    SolrResultStub = Struct.new("SolrResultStub", :results)
+    PgSearchResultStub = Struct.new("PgSearchResultStub", :results)
   end
 
   describe 'requestor access' do
@@ -97,7 +97,7 @@ RSpec.describe ChangeRequestsController, type: :controller do
         # ^ this change request is draft
         let(:other_cr) {FactoryBot.create(:change_request, business_justification: 'asdasd')}
         before :each do
-          allow(ChangeRequest).to receive(:solr_search).and_return(SolrResultStub.new([change_request, other_cr]))
+          allow(ChangeRequest).to receive_message_chain("search_full_text.page.per").and_return(PgSearchResultStub.new([change_request, other_cr]))
         end
 
         it 'exporting specific cr from fulltext results' do
@@ -105,8 +105,8 @@ RSpec.describe ChangeRequestsController, type: :controller do
           expect(assigns(:search)).to match_array([[change_request, other_cr]])
         end
 
-        it 'call fulltext search solr function' do
-          expect(ChangeRequest).to receive(:solr_search)
+        it 'call fulltext search search_full_text function' do
+          expect(ChangeRequest).to receive_message_chain("search_full_text.page.per")
           get :search, params: { search: "asdasd" }
         end
       end
@@ -300,8 +300,8 @@ RSpec.describe ChangeRequestsController, type: :controller do
     end
 
     describe 'GET #search' do
-      it 'search change request using solr_search' do
-        expect(ChangeRequest).to receive(:solr_search)
+      it 'search change request using pg_search full text' do
+        expect(ChangeRequest).to receive_message_chain("search_full_text.page.per")
         get :search, params: { search: "asd" }
       end
 
