@@ -10,21 +10,10 @@ services:
     ports:
       - "5432:5432"
 
-  solr:
-    image: solr:5.5.5-alpine
-    volumes:
-      - solr_data:/var/solr
-    # command:
-    #   - solr create_core -c development
-    restart: always
-    ports:
-      - "8984:8984"
-
   web:
     build: .
     depends_on:
       - db
-      - solr
     env_file:
     - .env.docker
     volumes:
@@ -35,6 +24,5 @@ services:
 
 volumes:
   db_data: {}
-  solr_data: {}
   app_data: {}
   search_data: {}
