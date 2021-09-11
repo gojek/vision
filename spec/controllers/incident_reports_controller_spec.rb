@@ -180,14 +180,31 @@ RSpec.describe IncidentReportsController, type: :controller do
     end
 
     describe 'GET #search' do
-      it 'search incident report using solr_search' do
-        expect(IncidentReport).to receive(:solr_search)
+      it 'render search view' do
         get :search, params: { search: "asd" }
+
+        expect(response.body).to match /0 results found/im
       end
 
       it 'redirect to index if search a blank string' do
         get :search, params: { search: "" }
         expect(response).to redirect_to(incident_reports_path)
+      end
+
+      it 'returns search result' do
+        incident_report = FactoryBot.create(:incident_report)
+        
+        get :search, params: { search: "Service" }
+        
+        expect(assigns(:search)).to match_array(incident_report)
+      end
+
+      it 'returns search pagination result' do
+        incident_report = FactoryBot.create_list(:incident_report, 10)
+
+        get :search, params: { search: "Service", per_page: 5 }
+
+        expect(assigns(:search).total_pages).to match 2
       end
     end
 
