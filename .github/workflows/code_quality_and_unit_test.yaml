@@ -92,3 +92,5 @@ jobs:
           heroku_app_name: "vision-demo-app" #Must be unique in Heroku
           heroku_email: "rori.development@gmail.com"
           usedocker: true
+          stack: "container"
+          env_file: ".env.docker"
