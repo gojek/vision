@@ -93,9 +93,3 @@ jobs:
           heroku_email: "rori.development@gmail.com"
           usedocker: true
           stack: "container"
-        env:
-          RAILS_ENV: production
-          ENTITY_SOURCES: midtrans,spots,gojek
-          SLACK_IR_CHANNEL: midtrans-test,spots-test,gojek-test,anything
-          SLACK_CR_CHANNEL: midtrans-test,spots-test,gojek-test,anything
-          VALID_EMAIL: midtrans.com,veritrans.co.id,associate.midtrans.com,spots.co.id,go-jek.com,gmail.com

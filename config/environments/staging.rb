@@ -1,7 +1,7 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
   #Setting for host domain for route
-  Rails.application.routes.default_url_options = { host: 'vt-vision-staging2.herokuapp.com'}
+  Rails.application.routes.default_url_options = { host: ENV['APP_HOST']}
 
   # Code is not reloaded between requests.
   config.cache_classes = true
@@ -79,7 +79,7 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
   config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.default_url_options = { host: 'vision-stg.herokuapp.com'}
+  config.action_mailer.default_url_options = { host: ENV['APP_HOST']}
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
     address: "smtp.gmail.com",
@@ -89,8 +89,6 @@ Rails.application.configure do
     enable_startttls_auto: true,
     user_name: ENV['GMAIL_USERNAME_DEV'],
     password: ENV['GMAIL_PASSWORD_DEV']
-    #user_name: ENV['GMAIL_USERNAME_DEV'],
-    #password: ENV['GMAIL_PASSWORD_DEV']
   }
   Rails.application.config.middleware.use ExceptionNotification::Rack,
   :email => {
