@@ -78,22 +78,15 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
-  config.action_mailer.default_url_options = { host: ENV['APP_HOST']}
+  
+  config.action_mailer.delivery_method = :smtp
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    address: "smtp.gmail.com",
-    port: "587",
-    domain: "gmail.com",
-    authentication: "plain",
-    enable_startttls_auto: true,
-    user_name: ENV['GMAIL_USERNAME_DEV'],
-    password: ENV['GMAIL_PASSWORD_DEV']
+    :user_name => 'f5700a135fa393',
+    :password => 'fe37c74369dc9a',
+    :address => 'smtp.mailtrap.io',
+    :domain => 'smtp.mailtrap.io',
+    :port => '2525',
+    :authentication => :cram_md5
   }
-  Rails.application.config.middleware.use ExceptionNotification::Rack,
-  :email => {
-    :email_prefix => "[VISION] ",
-    :sender_address => %{"vision-notifier" <vision@veritrans.co.id>},
-    :exception_recipients => %w{vision@veritrans.co.id}
-  }
-
 end
