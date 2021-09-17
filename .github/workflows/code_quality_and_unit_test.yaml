@@ -94,12 +94,8 @@ jobs:
           usedocker: true
           stack: "container"
         env:
-          APPROVER_EMAIL: ika.muiz@midtrans.com
-          ENTITY_SOURCES: midtrans,spots,gojek
-          JIRA_URL: https://veritrans.atlassian.net/
-          JIRA_USERNAME: agile.tool@midtrans.com
-          JIRA_PASSWORD: Testing12
           RAILS_ENV: production
+          ENTITY_SOURCES: midtrans,spots,gojek
           SLACK_IR_CHANNEL: midtrans-test,spots-test,gojek-test,anything
           SLACK_CR_CHANNEL: midtrans-test,spots-test,gojek-test,anything
           VALID_EMAIL: midtrans.com,veritrans.co.id,associate.midtrans.com,spots.co.id,go-jek.com,gmail.com
