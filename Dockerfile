@@ -8,6 +8,7 @@ WORKDIR /app
 
 COPY package.json package-lock.json .bowerrc bower.json ./
 RUN npm install
+RUN ./node_modules/bower/bin/bower install
 
 COPY config/database.example.yml config/database.yml
 
