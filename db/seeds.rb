@@ -47,7 +47,7 @@ user_requesters[20].name = "Tuhan Takur"
   user_requesters[i].save
 end
 
-change_request = ChangeRequest.new(user: user_requester, entity_source: 'midtrans')
+change_request = ChangeRequest.new(user: user_requester, entity_source: 'midtrans', change_summary: 'Change Summary 1')
 change_request.save(validate: false)
 
 Tester.create(name: "Mohamad Dwiyan Rahmanianto", change_request: change_request)
@@ -98,7 +98,7 @@ user_approvers[15].name = "Aragorn Arathorn"
   user_approvers[i].save
 end
 
-change_request_with_approval = ChangeRequest.new(user: user_requester, entity_source: 'midtrans')
+change_request_with_approval = ChangeRequest.new(user: user_requester, entity_source: 'midtrans', change_summary: 'Change Summary 2')
 change_request_with_approval.save(validate: false)
 
 Approval.create(user: user_approver, change_request: change_request_with_approval)
