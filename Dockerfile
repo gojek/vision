@@ -15,7 +15,8 @@ COPY config/database.example.yml config/database.yml
 COPY Gemfile* ./
 RUN gem install bundler:1.17.3
 
-RUN if [[ "$RAILS_ENV" == "production" ]]; then bundle install --without development test; else bundle install; fi
+RUN bundle install --without development test
+RUN rails assets:precompile
 
 COPY ./ ./
 
