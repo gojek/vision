@@ -77,26 +77,18 @@ Rails.application.configure do
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
 
-  if ENV['RAILS_LOG_TO_STDOUT'].present?
-    logger           = ActiveSupport::Logger.new(STDOUT)
-    logger.formatter = config.log_formatter
-    config.logger    = ActiveSupport::TaggedLogging.new(logger)
-  end
-
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
-  config.action_mailer.raise_delivery_errors = true
   
   config.action_mailer.delivery_method = :smtp
-
   config.action_mailer.smtp_settings = {
-    address: "smtp.gmail.com",
-    port: "587",
-    domain: "gmail.com",
-    authentication: "plain",
+    address: ENV.fetch("MAIL_ADDRESS") { "smtp.gmail.com" },
+    port: ENV.fetch("MAIL_PORT") { "587" },
+    domain: ENV.fetch("MAIL_DOMAIN") { "gmail.com" },
+    authentication: ENV.fetch("MAIL_AUTHENTICATION") { "plain" } ,
     enable_startttls_auto: true,
-    user_name: ENV['GMAIL_USERNAME_DEV'],
-    password: ENV['GMAIL_PASSWORD_DEV']
+    user_name: ENV['MAIL_USERNAME'],
+    password: ENV['MAIL_PASSWORD']
   }
 
   Rails.application.config.middleware.use ExceptionNotification::Rack,
