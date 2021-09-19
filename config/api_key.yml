@@ -1,7 +1,7 @@
 defaults: &defaults
   google:
-    api_key: "772021837446-vnbketkbvppb2o38lrnrjtdt4v2cfi2g.apps.googleusercontent.com"
-    api_secret: "dxIshXuB0zqC2enaPZZx4ooL"
+    api_key: ENV['GOOGLE_API_KEY']
+    api_secret: ENV['GOOGLE_API_SECRET']
 
 development:
   <<: *defaults
@@ -14,5 +14,5 @@ staging:
 
 production:
   google:
-    api_key: "772021837446-rmg7jpjr3lk3uruq3k7i466nidj707ln.apps.googleusercontent.com"
-    api_secret: "wOzkCxmldUG8M2S9xQ6WhPiY"
+    api_key: ENV['GOOGLE_API_KEY']
+    api_secret: ENV['GOOGLE_API_SECRET']
