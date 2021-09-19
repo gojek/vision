@@ -52,6 +52,7 @@ Rails.application.configure do
 
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]
+   config.log_tags = [:request_id]
 
   # Use a different logger for distributed setups.
   # config.logger = ActiveSupport::TaggedLogging.new(SyslogLogger.new)
@@ -78,8 +79,8 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+  config.action_mailer.raise_delivery_errors = true
   
-  config.action_mailer.delivery_method = :smtp
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
     :user_name => 'f5700a135fa393',
@@ -88,5 +89,22 @@ Rails.application.configure do
     :domain => 'smtp.mailtrap.io',
     :port => '2525',
     :authentication => :cram_md5
+  }
+
+  config.action_mailer.smtp_settings = {
+    address: "smtp.gmail.com",
+    port: "587",
+    domain: "gmail.com",
+    authentication: "plain",
+    enable_startttls_auto: true,
+    user_name: ENV['GMAIL_USERNAME_DEV'],
+    password: ENV['GMAIL_PASSWORD_DEV']
+  }
+
+  Rails.application.config.middleware.use ExceptionNotification::Rack,
+  :email => {
+    :email_prefix => "[VISION] ",
+    :sender_address => %{"vision-notifier" <vision@veritrans.co.id>},
+    :exception_recipients => %w{vision@veritrans.co.id}
   }
 end
