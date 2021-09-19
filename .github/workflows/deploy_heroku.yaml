@@ -23,6 +23,7 @@ jobs:
         stack: "container"
         healthcheck: "https://vision-demo-app.herokuapp.com/signin"
         rollbackonhealthcheckfailed: true
+        delay: 10
       env:
         HD_APP_HOST: "vision-demo-app.herokuapp.com"
         HD_APPROVER_EMAIL: "email.user1@veritrans.co.id"
