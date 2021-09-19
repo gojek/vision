@@ -74,11 +74,14 @@ class AccessRequestsController < ApplicationController
     if params[:search].blank?
       redirect_to access_requests_path
     end
-    @search = AccessRequest.solr_search do
-      fulltext params[:search], highlight: true
-      order_by(:created_at, :desc)
-      paginate page: params[:page] || 1, per_page: 20
-    end
+
+    page = params[:page] || 1
+    per_page = params[:per_page] || 20
+
+    @search = AccessRequest
+      .search_full_text(params[:search])
+      .page(page)
+      .per(per_page)
   end
 
   def update

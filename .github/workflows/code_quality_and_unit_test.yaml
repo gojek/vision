@@ -41,10 +41,6 @@ jobs:
           POSTGRES_PASSWORD: postgres
         ports:
           - 5432:5432
-      solr:
-        image: solr
-        ports:
-          - 8983:8983
       mailcatcher:
         image: tophfr/mailcatcher
         ports:
@@ -71,7 +67,6 @@ jobs:
     - name: Rspec (Unit Test)
       run: |-
         mv config/database.test.yml config/database.yml
-        # ./solr create_core -c test
         RAILS_ENV=test bundle exec rake db:create
         RAILS_ENV=test bundle exec rake db:migrate
         RAILS_ENV=test bundle exec rspec --tty
@@ -84,6 +79,4 @@ jobs:
         DB_PASSWORD: postgres
         SLACK_IR_CHANNEL: midtrans-test,spots-test,gojek-test,anything
         SLACK_CR_CHANNEL: midtrans-test,spots-test,gojek-test,anything
-        SOLR_HOST: localhost
-        SOLR_PORT: 8983
         VALID_EMAIL: midtrans.com,veritrans.co.id,associate.midtrans.com,spots.co.id,go-jek.com,gmail.com
