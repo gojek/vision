@@ -15,10 +15,10 @@ jobs:
 
     - name: Deploy
       uses: akhileshns/heroku-deploy@v3.12.12
-        with:
-          heroku_api_key: ${{secrets.X_HEROKU_DEPLOY_KEY}}
-          heroku_app_name: "vision-demo-app"
-          heroku_email: "rori.development@gmail.com"
-          usedocker: true
-          stack: "container"
+      with:
+        heroku_api_key: ${{secrets.X_HEROKU_DEPLOY_KEY}}
+        heroku_app_name: "vision-demo-app"
+        heroku_email: "rori.development@gmail.com"
+        usedocker: true
+        stack: "container"
     
