@@ -21,4 +21,6 @@ jobs:
         heroku_email: "rori.development@gmail.com"
         usedocker: true
         stack: "container"
+        healthcheck: "https://vision-demo-app.herokuapp.com/signin"
+        rollbackonhealthcheckfailed: true
     
