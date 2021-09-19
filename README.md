@@ -53,13 +53,6 @@ Install bower through NPM. Our assets are managed by bower.
 npm install
 ```
 
-Install Apache Solr, make sure you can access under port 8983 (http://localhost:8983)
-```
-brew install solr
-solr create_core -c development
-solr create_core -c test
-```
-
 3. Configuration
 ```
 cp .env.example .env # for development environment
@@ -72,8 +65,6 @@ In .env make sure you've check and configured:
 DB_HOST=
 DB_USERNAME=
 DB_PASSWORD=
-SOLR_HOST=
-SOLR_PORT=
 SLACK_IR_CHANNEL=<incident_report_slack_channel>
 SLACK_CR_CHANNEL=<change_request_slack_channel>
 ```
@@ -105,16 +96,6 @@ You can run Vision under docker, if you have problem with version compability
 ```
 docker-compose build
 docker-compose up -d
-
-```
-
-### Solr for Development
-
-```
-docker exec -ti vision_solr_1 bash
-
-$ solr create_core -c development
-$ solr create_core -c test
 
 ```
 

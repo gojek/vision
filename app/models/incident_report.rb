@@ -2,6 +2,33 @@
 class IncidentReport < ApplicationRecord
   include ActiveModel::Dirty
   include EntitySourceModule
+  include PgSearch::Model
+  pg_search_scope :search_full_text, against: [
+    :service_impact,
+    :problem_details,
+    :how_detected,
+    :loss_related,
+    :occurred_reason,
+    :overlooked_reason,
+    :recovery_action,
+    :prevent_action,
+    :created_at
+  ],
+  using: {
+    tsearch: {
+      any_word: true,
+      highlight: {
+        StartSel: '<b>',
+        StopSel: '</b>',
+        MaxWords: 123,
+        MinWords: 456,
+        ShortWord: 3,
+        HighlightAll: true,
+        MaxFragments: 3,
+        FragmentDelimiter: '&hellip;'
+      }
+    }
+  }
 
   belongs_to :user
   has_and_belongs_to_many :collaborators, join_table: :incident_report_collaborators, class_name: 'User'
@@ -53,18 +80,6 @@ class IncidentReport < ApplicationRecord
 
   attr_accessor :editor
   attr_accessor :reason
-
-  searchable do
-    text :service_impact, stored: true
-    text :problem_details, stored: true
-    text :how_detected, stored: true
-    text :loss_related, stored: true
-    text :occurred_reason, stored: true
-    text :overlooked_reason, stored: true
-    text :recovery_action, stored: true
-    text :prevent_action, stored: true
-    time :created_at, stored: true, trie: true
-  end
 
   comma do
     id
