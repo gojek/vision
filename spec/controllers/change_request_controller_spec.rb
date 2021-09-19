@@ -3,15 +3,15 @@ require 'slack_notif'
 
 RSpec.describe ChangeRequestsController, type: :controller do
   before :all do
-    SolrResultStub = Struct.new("SolrResultStub", :results)
+    PgSearchResultStub = Struct.new("PgSearchResultStub", :results)
   end
 
   describe 'requestor access' do
     let(:user) {FactoryBot.create(:user)}
     let(:approver) {FactoryBot.create(:approver)}
-    let(:change_request) {FactoryBot.create(:submitted_change_request, user: user)}
+    let(:change_request) { FactoryBot.create(:submitted_change_request, user: user) }
 
-    before :each do
+    before do
       @request.env['devise.mapping'] = Devise.mappings[:user]
       sign_in user
     end
@@ -36,6 +36,7 @@ RSpec.describe ChangeRequestsController, type: :controller do
 
     describe 'GET #index' do
       it "populate all current user's Change Request if no param is passed" do
+        change_request.reload
         other_cr = FactoryBot.create(:change_request)
         get :index
         expect(assigns(:change_requests)).to match_array([change_request, other_cr])
@@ -90,25 +91,6 @@ RSpec.describe ChangeRequestsController, type: :controller do
           expect(assigns(:change_requests)).to match_array([change_request, other_change_request, new_change_request])
         end
 
-      end
-
-      context 'when exporting fulltext search results' do
-        let(:change_request) {FactoryBot.create(:submitted_change_request, business_justification: 'asdasd')}
-        # ^ this change request is draft
-        let(:other_cr) {FactoryBot.create(:change_request, business_justification: 'asdasd')}
-        before :each do
-          allow(ChangeRequest).to receive(:solr_search).and_return(SolrResultStub.new([change_request, other_cr]))
-        end
-
-        it 'exporting specific cr from fulltext results' do
-          get :search, params: { search: "asdasd" }
-          expect(assigns(:search)).to match_array([[change_request, other_cr]])
-        end
-
-        it 'call fulltext search solr function' do
-          expect(ChangeRequest).to receive(:solr_search)
-          get :search, params: { search: "asdasd" }
-        end
       end
     end
 
@@ -300,14 +282,31 @@ RSpec.describe ChangeRequestsController, type: :controller do
     end
 
     describe 'GET #search' do
-      it 'search change request using solr_search' do
-        expect(ChangeRequest).to receive(:solr_search)
+      it 'render search view' do
         get :search, params: { search: "asd" }
+
+        expect(response.body).to match /0 results found/im
       end
 
       it 'redirect to index if search a blank string' do
         get :search, params: { search: "" }
         expect(response).to redirect_to(change_requests_path)
+      end
+
+      it 'returns search result' do
+        change_request = FactoryBot.create(:change_request)
+        
+        get :search, params: { search: "Change" }
+        
+        expect(assigns(:search)).to match_array(change_request)
+      end
+
+      it 'returns search pagination result' do
+        change_request = FactoryBot.create_list(:change_request, 10)
+        
+        get :search, params: { search: "Change", per_page: 5 }
+
+        expect(assigns(:search).total_pages).to match 2
       end
     end
   end

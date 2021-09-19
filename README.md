@@ -55,22 +55,7 @@ Install bower through NPM. Our assets are managed by bower.
 npm install
 ```
 
-Install Apache Solr, make sure you can access under port 8983 (http://localhost:8983)
-```
-brew install solr
-solr create_core -c development
-solr create_core -c test
-```
-
-### Generate Secret
-
-```
-rails secret
-```
-
-and put in `.env.example` for key `SECRET_KEY_BASE`
-
-### Configuration
+3. Configuration
 ```
 cp .env.example .env # for development environment
 cp .env.example .env.test # for test environment
@@ -82,8 +67,6 @@ In .env make sure you've check and configured:
 DB_HOST=
 DB_USERNAME=
 DB_PASSWORD=
-SOLR_HOST=
-SOLR_PORT=
 SLACK_IR_CHANNEL=<incident_report_slack_channel>
 SLACK_CR_CHANNEL=<change_request_slack_channel>
 SECRET_KEY_BASE=x
@@ -120,16 +103,6 @@ docker-compose up -d
 
 ```
 
-### Solr for Development
-
-```
-docker exec -ti vision_solr_1 bash
-
-$ solr create_core -c development
-$ solr create_core -c test
-
-```
-
 ### DB Migration and Seed
 
 ```
@@ -137,7 +110,6 @@ docker exec -ti vision_web_1 bash
 
 $ bundle exec rails db:setup
 ```
-
 
 ### Sign Up
 

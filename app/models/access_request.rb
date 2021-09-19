@@ -7,6 +7,31 @@ class AccessRequest < ApplicationRecord
 
   include AASM
   include EntitySourceModule
+  include PgSearch::Model
+  pg_search_scope :search_full_text, against: [
+    :employee_name,
+    :employee_position,
+    :employee_email_address,
+    :employee_department,
+    :employee_phone,
+    :created_at
+  ],
+  using: {
+    tsearch: {
+      any_word: true,
+      highlight: {
+        StartSel: '<b>',
+        StopSel: '</b>',
+        MaxWords: 123,
+        MinWords: 456,
+        ShortWord: 3,
+        HighlightAll: true,
+        MaxFragments: 3,
+        FragmentDelimiter: '&hellip;'
+      }
+    }
+  }
+
   belongs_to :user
   has_and_belongs_to_many :collaborators, join_table: :access_request_collaborators, class_name: 'User'
   has_many :approvals, join_table: :access_request_approvals, dependent: :destroy, class_name: 'AccessRequestApproval'
@@ -32,14 +57,9 @@ class AccessRequest < ApplicationRecord
 
   attr_accessor :reason
 
-  searchable do
-    text :employee_name, stored: true
-    text :employee_position, stored: true
-    text :employee_email_address, stored: true
-    text :employee_department, stored: true
-    text :employee_phone, stored: true
-    time :created_at, stored: true, trie: true
-  end
+  # searchable do
+    
+  # end
 
   aasm do
     state :draft, :initial => true

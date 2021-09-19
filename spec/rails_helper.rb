@@ -6,7 +6,6 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 require 'rails_helper'
 require 'rspec/rails'
 require 'webmock/rspec'
-require 'sunspot/rails/spec_helper'
 require 'capybara/rspec'
 require 'capybara/rails'
 require 'capybara-screenshot/rspec'
@@ -37,6 +36,7 @@ Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
+  config.render_views
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
@@ -85,7 +85,7 @@ RSpec.configure do |config|
   # DatabaseCleaner
   config.before(:suite) do
     # Clean the database before specs, clean with truncation
-    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.clean_with(:truncation)
   end
 
   config.before(:each) do
@@ -101,10 +101,7 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 
-
   config.before(:each) do
-    ::Sunspot.session = ::Sunspot::Rails::StubSessionProxy.new(::Sunspot.session)
-
     cal_response_json = File.read(File.expand_path("../webmocks/calendar_response.json", __FILE__))
     cal_add_response_json = File.read(File.expand_path("../webmocks/add_calendar.json", __FILE__))
     get_cal_response_json = File.read(File.expand_path("../webmocks/get_calendar.json", __FILE__))
@@ -172,10 +169,6 @@ RSpec.configure do |config|
     # clear action mailer
     ActionMailer::Base.deliveries = []
 
-  end
-
-  config.after(:each) do
-    ::Sunspot.session = ::Sunspot.session.original_session
   end
 end
 
