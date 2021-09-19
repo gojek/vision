@@ -32,26 +32,6 @@ We set code coverage minimum is 73%
 
 Vision are Change Request Management, Incident Report Management, and Access Request Management.
 
-## Prerequisites
-
-Vision application require some tools to run:
-
-1. Google Oauth 2.0
-
-Please create `OAuth 2.0 Client IDs`
-
-- Visit `https://console.cloud.google.com/apis/credentials`
-- Create Credentials -> OAuth client ID
-- Choose Web Application as Application Type
-- Fill `Authorized JavaScript origins` with your host url (e.g example.com)
-- Fill `Authorized redirect URIs` with your host and append `users/auth/google_oauth2/callback` (e.g example.com/users/auth/google_oauth2/callback)
-- Store your Client ID and Client Secret for next Vision setup in Environment Variable
-
-2. 2 Approvers Person
-
-3. Slack
-4. JIRA
-
 ## Installation
 
 1. Install ruby 2.7.4 and Rails 5.2.6, make your system running under that version.
