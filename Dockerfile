@@ -13,10 +13,13 @@ RUN ./node_modules/bower/bin/bower install
 COPY config/database.example.yml config/database.yml
 
 COPY Gemfile* ./
-COPY ./ ./
+
 RUN gem install bundler:1.17.3
 
 RUN if [[ "$RAILS_ENV" == "production" ]]; then bundle install --without development test; else bundle install; fi
+
+COPY ./ ./
+
 RUN RAILS_ENV=production rails assets:precompile
 
 EXPOSE 3000
