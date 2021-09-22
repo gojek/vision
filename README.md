@@ -40,12 +40,12 @@ Vision application require some tools to run:
 
 Please create `OAuth 2.0 Client IDs`
 
-- Visit `https://console.cloud.google.com/apis/credentials`
-- Create Credentials -> OAuth client ID
-- Choose Web Application as Application Type
-- Fill `Authorized JavaScript origins` with your host url (e.g example.com)
-- Fill `Authorized redirect URIs` with your host and append `users/auth/google_oauth2/callback` (e.g example.com/users/auth/google_oauth2/callback)
-- Store your Client ID and Client Secret for next Vision setup in Environment Variable
+  - Visit `https://console.cloud.google.com/apis/credentials`
+  - Create Credentials -> OAuth client ID
+  - Choose Web Application as Application Type
+  - Fill `Authorized JavaScript origins` with your host url (e.g example.com)
+  - Fill `Authorized redirect URIs` with your host and append `users/auth/google_oauth2/callback` (e.g example.com/users/auth/google_oauth2/callback)
+  - Store your Client ID and Client Secret for next Vision setup in Environment Variable
 
 
 2. Slack
@@ -165,13 +165,17 @@ Currently we provide deploy to [Heroku](heroku.com)
 
 1. Prepare [prerequisites](#Prerequisites) (Google API, Slack, and Jira)
 2. Create Heroku Application with stack `container`
-3. Create `Config Vars` in `Settings` menu
+3. Add adds-on `Heroku Postgres` in `Resources Menu`
+4. Create `Config Vars` in `Settings` menu
 
 Key | Value | Description
 --------- | ----------- | -------
-`APP_HOST` | http://heroku-app.herokuapp.com | You can fill with heroku app url
-`APPROVER_EMAIL` | | Approver email, you can get from prerequisites
-`DB_HOST` | localhost | Postgres Databse Host
+`APP_HOST` | http://heroku-app.herokuapp.com | Required, You can fill with heroku app url
+`APPROVER_EMAIL` | | Required, Approver email, you can get from prerequisites
+`DB_HOST` | localhost | Required, you can get from Heroku Postgres adds-on
+`DB_NAME` | vision | Required, you can get from Heroku Postgres adds-on
+`DB_USERNAME` | postgres | Required, you can get from Heroku Postgres adds-on
+`DB_PASSWORD` |  | Required, you can get from Heroku Postgres adds-on
 
 4. Push docker image to Heroku container registry
 ```
