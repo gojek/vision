@@ -176,6 +176,28 @@ Key | Value | Description
 `DB_NAME` | vision | Required, you can get from Heroku Postgres adds-on
 `DB_USERNAME` | postgres | Required, you can get from Heroku Postgres adds-on
 `DB_PASSWORD` |  | Required, you can get from Heroku Postgres adds-on
+`DEPLOY_CALENDAR_ID` | visiongojek@gmail.com | Required, You can get Google Calender ID [here](https://docs.simplecalendar.io/find-google-calendar-id/)
+`ENTITY_SOURCES` | | Required, you can have multiple source combine with comma. (e.g org1,org2)
+`GOOGLE_API_KEY` | | Required, you can get from prerequisites step
+`GOOGLE_API_SECRET` | | Required, you can get from prerequisites step
+`INCIDENT_LEVEL_GUIDELINE` | | 
+`JIRA_USERNAME` | | Required, you can get from prerequisites step
+`JIRA_PASSWORD` | | Required, you can get from prerequisites step
+`JIRA_URL` | | Required, you can get from prerequisites step
+`MAIL_ADDRESS` | | Required
+`MAIL_AUTHENTICATION` | | Required
+`MAIL_DOMAIN` | | Required
+`MAIL_USERNAME` | | Required
+`MAIL_PASSWORD` | | Required
+`MAIL_PORT` | | Required
+`RAILS_ENV` | staging | Required
+`SECRET_KEY_BASE` | xx | Required, you can generate with `rails secret`
+`SLACK_API_TOKEN` | | Required, you can get from prerequisites step
+`SLACK_VERIFICATION_TOKEN` | | Required, you can get from prerequisites step
+`SLACK_CR_CHANNEL` | | Slack channel Change Request
+`SLACK_IR_CHANNEL` | | Slack channel Incident Report
+`VALID_EMAIL` | gmail.com | you can fill with your domain google business suite
+
 
 4. Push docker image to Heroku container registry
 ```
