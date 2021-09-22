@@ -47,10 +47,11 @@ Please create `OAuth 2.0 Client IDs`
 - Fill `Authorized redirect URIs` with your host and append `users/auth/google_oauth2/callback` (e.g example.com/users/auth/google_oauth2/callback)
 - Store your Client ID and Client Secret for next Vision setup in Environment Variable
 
-2. 2 Approvers Person
 
-3. Slack
-4. JIRA
+2. Slack
+3. JIRA
+
+4. 2 Approvers Person
 
 ## Installation
 
@@ -157,3 +158,28 @@ irb(main) > user.save
 
 
 Visit http://localhost:3000
+
+## Deploy
+
+Currently we provide deploy to (heroku)[heroku.com]
+
+1. Prepare (prerequisites)[#Prerequisites] (Google API, Slack, and Jira)
+2. Create Heroku Application with stack `container`
+3. Create `Config Vars` in `Settings` menu
+
+Key | Value | Description
+--------- | ----------- | -------
+`APP_HOST` | http://heroku-app.herokuapp.com | You can fill with heroku app url
+`APPROVER_EMAIL` | | Approver email, you can get from prerequisites
+`DB_HOST` | localhost | Postgres Databse Host
+
+4. Push docker image to Heroku container registry
+```
+heroku container:login
+heroku container:push web -a {heroku-app}
+```
+
+5. Deploy
+```
+heroku container:release web -a {heroku-app}
+```
