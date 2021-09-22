@@ -161,9 +161,9 @@ Visit http://localhost:3000
 
 ## Deploy
 
-Currently we provide deploy to (heroku)[heroku.com]
+Currently we provide deploy to [Heroku](heroku.com)
 
-1. Prepare (prerequisites)[#Prerequisites] (Google API, Slack, and Jira)
+1. Prepare [prerequisites](#Prerequisites) (Google API, Slack, and Jira)
 2. Create Heroku Application with stack `container`
 3. Create `Config Vars` in `Settings` menu
 
