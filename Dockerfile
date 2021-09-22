@@ -19,6 +19,8 @@ RUN if [[ "$RAILS_ENV" == "production" ]]; then bundle install --without develop
 
 COPY ./ ./
 
+RUN rails assets:precompile
+
 EXPOSE 3000
 
 CMD bundle exec puma -C config/puma.rb
