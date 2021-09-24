@@ -4,6 +4,9 @@ on:
   pull_request:
     branches: [ development ]
 
+env:
+  CODE_COVERAGE: ${{ secrets.X_CODE_COVERAGE }}
+
 jobs:
   unit_test:
     name: Run Unit Test
@@ -46,11 +49,9 @@ jobs:
         RAILS_ENV=test bundle exec rake db:migrate
         RAILS_ENV=test bundle exec rspec --tty
       env:
-        APPROVER_EMAIL: ika.muiz@midtrans.com
+        APPROVER_EMAIL: approver@midtrans.com
         ENTITY_SOURCES: midtrans,spots,gojek
         JIRA_URL: https://veritrans.atlassian.net/
-        JIRA_USERNAME: agile.tool@midtrans.com
-        JIRA_PASSWORD: Testing12
         DB_PASSWORD: postgres
         SLACK_IR_CHANNEL: midtrans-test,spots-test,gojek-test,anything
         SLACK_CR_CHANNEL: midtrans-test,spots-test,gojek-test,anything
