@@ -185,17 +185,19 @@ Vision application require some tools to run:
 
 ### 4. Google Calendar
 
+- Enable Google Calendar API
 - Visit (https://calendar.google.com/calendar/u/0/r/settings)(https://calendar.google.com/calendar/u/0/r/settings)
 - Go to section `Settings for my calendars`
 - Go to menu `Integrate calendar`
 - Copy `Calendar ID` value for `DEPLOY_CALENDAR_ID` environment variable
+
 
 ### 4. Approvers
 
 Vision required 2 Approvers, you can create with the seed:
 
 ```sh
-rails vision:approver:seed --name="Approvers" --email="approver@gmail.com"
+rails vision:approver:seed name="Approver" email="approver@gmail.com"
 ```
 
 ## Deploy
