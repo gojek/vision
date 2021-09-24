@@ -32,26 +32,7 @@ We set code coverage minimum is 73%
 
 Vision are Change Request Management, Incident Report Management, and Access Request Management.
 
-## Prerequisites
 
-Vision application require some tools to run:
-
-1. Google Oauth 2.0
-
-Please create `OAuth 2.0 Client IDs`
-
-  - Visit `https://console.cloud.google.com/apis/credentials`
-  - Create Credentials -> OAuth client ID
-  - Choose Web Application as Application Type
-  - Fill `Authorized JavaScript origins` with your host url (e.g example.com)
-  - Fill `Authorized redirect URIs` with your host and append `users/auth/google_oauth2/callback` (e.g example.com/users/auth/google_oauth2/callback)
-  - Store your Client ID and Client Secret for next Vision setup in Environment Variable
-
-
-2. Slack
-3. JIRA
-
-4. 2 Approvers Person
 
 ## Installation
 
@@ -158,6 +139,48 @@ irb(main) > user.save
 
 
 Visit http://localhost:3000
+
+## Prerequisites
+
+Vision application require some tools to run:
+
+### 1. Google Oauth 2.0
+
+  - Visit `https://console.cloud.google.com/apis/credentials`
+  - Create Credentials -> OAuth client ID
+  - Choose Web Application as Application Type
+  - Fill `Authorized JavaScript origins` with your host url (e.g example.com)
+  - Fill `Authorized redirect URIs` with your host and append `users/auth/google_oauth2/callback` (e.g example.com/users/auth/google_oauth2/callback)
+  - Store your Client ID and Client Secret for next Vision setup in Environment Variable
+
+
+### 2. Slack
+
+- Visit `https://api.slack.com/apps`
+- Create New App if you don't have app
+- Go to menu `OAuth & Permissions`
+- Copy `Bot User OAuth Token` value for `SLACK_API_TOKEN` environment variable
+- Go to menu `Basic Information`
+- Go to `App Credentials`
+- Copy `Verification Token` value for `SLACK_VERIFICATION_TOKEN` environment variable
+- Create channel for change request for `SLACK_CR_CHANNEL` environment variable
+- Create channel for incident report `SLACK_IR_CHANNEL` environment variable
+
+### 3. JIRA
+
+- Create your JIRA account if you don't have [here](https://www.atlassian.com/try/cloud/signup?bundle=jira-software)
+- Put your Jira site url as value of `JIRA_URL` for environment variable
+- Put your email as value of `JIRA_USERNAME` for environment variable
+- Put your password as value of `JIRA_PASSWORD` for environment variable
+
+### 4. Google Calendar
+
+- Visit (https://calendar.google.com/calendar/u/0/r/settings)(https://calendar.google.com/calendar/u/0/r/settings)
+- Go to section `Settings for my calendars`
+- Go to menu `Integrate calendar`
+- Copy `Calendar ID` value for `DEPLOY_CALENDAR_ID` environment variable
+
+### 4. Approvers
 
 ## Deploy
 
