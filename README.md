@@ -182,6 +182,12 @@ Vision application require some tools to run:
 
 ### 4. Approvers
 
+Vision required 2 Approvers, you can create with the seed:
+
+```sh
+rails vision:approver:seed --name="Approvers" --email="approver@gmail.com"
+```
+
 ## Deploy
 
 Currently we provide deploy to [Heroku](heroku.com)
