@@ -163,13 +163,17 @@ Vision application require some tools to run:
   - Fill `Authorized redirect URIs` with your host and append `users/auth/google_oauth2/callback` (e.g example.com/users/auth/google_oauth2/callback)
   - Store your Client ID and Client Secret for next Vision setup in Environment Variable
 
-
 ### 2. Slack
 
 - Visit `https://api.slack.com/apps`
 - Create New App if you don't have app
 - Go to menu `OAuth & Permissions`
-- Copy `Bot User OAuth Token` value for `SLACK_API_TOKEN` environment variable
+- Go to section `Scopes` and Add an OAuth Scope
+- Add `channels:history` scope for `User Token Scopes`
+- Add `channels:write` scope for `User Token Scopes`
+- Add `chat:write` scope for `User Token Scopes`
+- Add `users:read` scope for `User Token Scopes`
+- Copy `User OAuth Token` value for `SLACK_API_TOKEN` environment variable
 - Go to menu `Basic Information`
 - Go to `App Credentials`
 - Copy `Verification Token` value for `SLACK_VERIFICATION_TOKEN` environment variable
@@ -188,9 +192,11 @@ Vision application require some tools to run:
 - Enable Google Calendar API
 - Visit (https://calendar.google.com/calendar/u/0/r/settings)(https://calendar.google.com/calendar/u/0/r/settings)
 - Go to section `Settings for my calendars`
+- Go to menu `Share with specific people` and invite the users with permission `Make changes to events`
 - Go to menu `Integrate calendar`
 - Copy `Calendar ID` value for `DEPLOY_CALENDAR_ID` environment variable
 
+for more info follow [here](https://developers.google.com/calendar/api/guides/auth)
 
 ### 4. Approvers
 
