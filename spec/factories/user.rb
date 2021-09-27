@@ -33,7 +33,7 @@ FactoryBot.define do
     factory :master_approver do
       role 'approver_all'
       is_approved 3
-      email 'ika.muiz@midtrans.com'
+      email 'approver@midtrans.com'
     end
     
     factory :approver_ar do

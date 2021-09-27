@@ -80,27 +80,48 @@ SLACK_IR_CHANNEL=<incident_report_slack_channel>
 SLACK_CR_CHANNEL=<change_request_slack_channel>
 SECRET_KEY_BASE=x
 ```
+4. Generate Secret
 
+<<<<<<< HEAD
 ### DB Migration and Seed
+=======
+```
+rails secret
+```
+
+5. Seed Database
+>>>>>>> development
 
 ```
 bundle exec rake db:setup
 ```
 
+<<<<<<< HEAD
 ### For mail interaction in Development environment, install and run Mailcatcher by running
+=======
+6. For mail interaction in Development environment, install and run Mailcatcher by running
+>>>>>>> development
 ```
 gem install mailcatcher
 
 mailcatcher
 ```
 
+<<<<<<< HEAD
 ### Run Application
+=======
+7. Run rails
+>>>>>>> development
 ```
 bundle exec rails s
 ```
 
+<<<<<<< HEAD
 Visit vision in `http://localhost:3000`
 
+=======
+8. Visit vision in `http://localhost:3000`
+>>>>>>> development
 
 ## Run with Docker
 
@@ -146,8 +167,11 @@ irb(main) > user.is_admin = true
 irb(main) > user.save
 ```
 
-
 Visit http://localhost:3000
+
+## LICENSE
+
+Released under the Apache 2.0 [License](LICENSE). Copyright (c) 2021 Vision.
 
 ## Contributing
 
