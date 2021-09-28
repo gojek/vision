@@ -1,0 +1,31 @@
+name: CodeQuality
+
+on:
+  pull_request:
+    branches: [ development ]
+
+jobs:
+  code_quality:
+    name: Run Code Quality
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@477b21f02be01bcb8030d50f37cfec92bfa615b6
+      with:
+        ruby-version: 2.7.3
+    
+    - name: Install dependencies
+      run: bundle install
+
+    - name: Rubycritic (Static Analysis)
+      run: rubycritic -s 80.00 --no-browser app lib
+
+    - name: Rubocop (Code Quality)
+      run: bundle exec rubocop
+
+    - name: Brakeman (Code Security)
+      run: brakeman -q LANG="C" LC_ALL="en_US.UTF-8" . --no-exit-on-warn
