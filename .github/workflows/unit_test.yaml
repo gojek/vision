@@ -1,4 +1,4 @@
-name: Code Quality and Unit Test
+name: UnitTest
 
 on:
   pull_request:
@@ -8,31 +8,6 @@ env:
   CODE_COVERAGE: ${{ secrets.X_CODE_COVERAGE }}
 
 jobs:
-  code_quality:
-    name: Run Code Quality
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@477b21f02be01bcb8030d50f37cfec92bfa615b6
-      with:
-        ruby-version: 2.7.3
-    
-    - name: Install dependencies
-      run: bundle install
-
-    - name: Rubycritic (Static Analysis)
-      run: rubycritic -s 80.00 --no-browser app lib
-
-    - name: Rubocop (Code Quality)
-      run: bundle exec rubocop
-
-    - name: Brakeman (Code Security) # TODO: ENABLED WHEN MIGRATE TO RAILS 5.2
-      run: brakeman -q LANG="C" LC_ALL="en_US.UTF-8" . --no-exit-on-warn
-
   unit_test:
     name: Run Unit Test
     runs-on: ubuntu-latest
