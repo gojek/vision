@@ -7,6 +7,22 @@ defaults: &defaults
   username: postgres
   password: postgres
 
+production:
+  <<: *defaults
+  host: <%= ENV.fetch("DB_HOST") { 'localhost' } %>
+  port: <%= ENV.fetch("DB_PORT") { "5432" } %>
+  username: <%= ENV["DB_USERNAME"] %>
+  password: <%= ENV["DB_PASSWORD"] %>
+  database: <%= ENV["DB_NAME"] %>
+
+staging:
+  <<: *defaults
+  host: <%= ENV.fetch("DB_HOST") { 'localhost' } %>
+  port: <%= ENV.fetch("DB_PORT") { "5432" } %>
+  username: <%= ENV["DB_USERNAME"] %>
+  password: <%= ENV["DB_PASSWORD"] %>
+  database: <%= ENV["DB_NAME"] %>
+
 development:
   <<: *defaults
   host: <%= ENV.fetch("DB_HOST") { 'localhost' } %>

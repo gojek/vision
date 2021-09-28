@@ -33,6 +33,7 @@ coverage
 
 # Ignore bower components
 /vendor
+/public/assets
 
 lib/tasks/approval.rb
 vision.dump
