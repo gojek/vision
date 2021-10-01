@@ -168,15 +168,19 @@ Vision application require some tools to run:
 - Go to menu `OAuth & Permissions`
 - Go to section `Scopes` and Add an OAuth Scope
 - Add `channels:history` scope for `User Token Scopes`
+- Add `channels:read` scope for `User Token Scopes`
 - Add `channels:write` scope for `User Token Scopes`
 - Add `chat:write` scope for `User Token Scopes`
 - Add `users:read` scope for `User Token Scopes`
+- Add `users:read.email` scope for `User Token Scopes`
 - Copy `User OAuth Token` value for `SLACK_API_TOKEN` environment variable
 - Go to menu `Basic Information`
 - Go to `App Credentials`
 - Copy `Verification Token` value for `SLACK_VERIFICATION_TOKEN` environment variable
 - Create channel for change request for `SLACK_CR_CHANNEL` environment variable
 - Create channel for incident report `SLACK_IR_CHANNEL` environment variable
+- Go to menu `Interactivity & Shortcuts`
+- Fill Request URL with format `{APP_HOST}/api/change_requests/action`
 
 ### 3. JIRA
 
