@@ -1,6 +1,8 @@
 class Api::ChangeRequestsController < Api::ApiController
   require 'notifier.rb'
 
+  skip_before_action :verify_authenticity_token
+
   def action
     payload = JSON.parse params[:payload]
     logger.info "Payload for the cr is #{payload}"
