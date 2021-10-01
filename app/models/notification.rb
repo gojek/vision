@@ -1,8 +1,9 @@
 class Notification < ApplicationRecord
   belongs_to :user
-  belongs_to :access_request
-  belongs_to :change_request
-  belongs_to :incident_report
+  belongs_to :access_request, optional: true
+  belongs_to :change_request, optional: true
+  belongs_to :incident_report, optional: true
+  
   scope :cr, -> { where(:incident_report_id => nil, :access_request_id => nil) }
   scope :new_cr, -> {where(:message => 'new_cr')}
   scope :update_cr, -> {where(:message => 'update_cr')}

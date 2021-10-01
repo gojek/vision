@@ -130,7 +130,7 @@ group :test do
   gem 'dotenv', '~> 2.7'
   gem 'launchy'
   gem 'selenium-webdriver', '~> 2.53.1'
-  gem 'shoulda-matchers', '~> 3.1'
+  gem 'shoulda-matchers', '~> 4.1'
   gem 'simplecov'
   gem 'simplecov-rcov'
   gem 'timecop'
