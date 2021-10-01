@@ -175,7 +175,7 @@ class IncidentReportsController < ApplicationController
         }
       ]
     final_result = [{title: title}, pieData]
-    render :text => final_result.to_json
+    render plain: final_result.to_json
   end
 
 
@@ -212,7 +212,7 @@ class IncidentReportsController < ApplicationController
     end
 
     final_result = [{title: title}, result]
-    render :text => final_result.to_json
+    render plain: final_result.to_json
   end
 
 
@@ -235,7 +235,7 @@ class IncidentReportsController < ApplicationController
       .map { |k,x| { label: k, total_internal: internals[k], total_external: x  } }
 
     final_result = [{title: title}, results]
-    render :text => final_result.to_json
+    render plain: final_result.to_json
   end
 
   respond_to :json
@@ -275,7 +275,7 @@ class IncidentReportsController < ApplicationController
     end
 
     final_result = [{title: title}, result]
-    render :text => final_result.to_json
+    render plain: final_result.to_json
   end
 
   def total_incident_per_level
@@ -298,7 +298,7 @@ class IncidentReportsController < ApplicationController
     end
 
     final_result = [{title: "Total #{@source} Incident Per Level"}, results]
-    render :text => final_result.to_json
+    render plain: final_result.to_json
   end
 
   def average_recovery_time_incident
@@ -317,7 +317,7 @@ class IncidentReportsController < ApplicationController
     end
 
     final_result = [{title: "Average Recovery Time Duration for #{@source} Incident"}, results]
-    render :text => final_result.to_json
+    render plain: final_result.to_json
   end
 
 
