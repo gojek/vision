@@ -308,7 +308,7 @@ class ChangeRequestsController < ApplicationController
     end
 
     final_result = [{title: status.humanize}, results]
-    render :text => final_result.to_json
+    render plain: final_result.to_json
   end
 
   private
