@@ -6,8 +6,10 @@ require 'slack_client.rb'
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :trackable, :lockable, :timeoutable,
+  devise :trackable, :lockable, :timeoutable, :masqueradable,
          :omniauthable, omniauth_providers: [:google_oauth2]
+         
+
   acts_as_reader
 
   ROLES = %w(requestor approver release_manager approver_ar approver_all)

@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   before_action :check_user
   before_action :check_pending_user
   before_action :set_paper_trail_whodunnit
+  before_action :masquerade!
   require 'notifier.rb' # Omg
 
   def check_user

@@ -75,6 +75,7 @@
                                     <i class="fa fa-unlock fa-fw"></i>Unlock
                                 <%end%>
                             <% end %>
+                            <%= link_to 'impersonate', masquerade_path(user) %>
                         <%end%>
                         <%= link_to edit_path(user), class: 'btn btn-primary' do %>
                             <i class="fa fa-pencil-square-o fa-fw"></i> Edit

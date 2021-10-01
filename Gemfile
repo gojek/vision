@@ -30,13 +30,14 @@ gem 'jbuilder', '~> 2.0'
 
 # user-related
 gem 'devise'
+gem 'devise_masquerade'
 
 # file managment
 gem 'paper_trail'
 gem 'sucker_punch', '~> 2.0'
 
 # oauth
-gem 'google-api-client', '~> 0.20.0'
+gem 'google-api-client', '~> 0.40.0'
 gem 'httpclient'
 gem 'omniauth-google-oauth2'
 
@@ -78,7 +79,7 @@ gem 'colorize'
 
 # slack notification
 gem 'slack-notifier'
-gem 'slack-ruby-client', '~> 0.13.1'
+gem 'slack-ruby-client', '~> 0.17.0'
 
 # jira
 gem 'jira-ruby', require: 'jira-ruby'
