@@ -300,7 +300,7 @@ class ChangeRequestsController < ApplicationController
 
     results = succeeded.map do |k,x|
       {
-        label: "#{(k - 1.week).strftime("%d/%m")} - #{k.strftime("%d/%m")}",
+        label: "#{(k.to_date - 1.week).strftime("%d/%m")} - #{k.to_date.strftime("%d/%m")}",
         succeeded: x,
         failed: failed[k],
         rollbacked: rollbacked[k]
