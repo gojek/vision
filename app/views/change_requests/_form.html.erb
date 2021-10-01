@@ -36,24 +36,16 @@
             <div class="box-header with border"></div>
             <div class="box-body">
               <div class="col-md-6">
-
-                <% if @change_request.errors.messages[:entity_source] %>
-                  <div class="field form-group has-error">
-                <% else %>
-                  <div class="field form-group required">
-                <% end %>
+                <div class="field form-group required">
                   <%= f.label :entity_source, class: 'control-label' %>
                   <%= f.select :entity_source ,options_for_select((EntitySourceModule::ENTITY_SOURCES + [@change_request.entity_source]).uniq.compact, @change_request.entity_source), {include_blank: true}, {class: 'form-control select2'}%>
                 </div><!--/field-->
+                
+                <div class="field form-group required">
+                  <%= f.label :change_summary, class: 'control-label'%><br>
+                  <%= f.text_field :change_summary, class: 'form-control' %>
+                </div><!--/field-->
 
-                <% if @change_request.errors.messages[:change_summary] %>
-                  <div class="field form-group has-error">
-                <% else %>
-                  <div class="field form-group required">
-                <% end %>
-                    <%= f.label :change_summary, class: 'control-label'%><br>
-                    <%= f.text_field :change_summary, class: 'form-control' %>
-                  </div><!--/field-->
                 <div class='col-md-6 form-group required' style='padding-left:0 ; border-right: 1px solid #d9d9d9'>
                   <%= f.label :category, class: 'control-label'%><br>
                   <%= f.check_box :category_application %>
@@ -84,14 +76,11 @@
                     <%= f.text_field :type_other, class: 'form-control'%>
                   </div><!--/input-group-->
                 </div><!--/col-->
-                <% if @change_request.errors.messages[:priority] %>
-                  <div class="field form-group has-error">
-                <%else %>
-                  <div class="field form-group required">
-                <% end %>
-                    <%= f.label :priority, class: 'control-label' %>
-                    <%= f.select :priority, options_for_select(ChangeRequest::PRIORITY, @change_request.priority), {include_blank: true}, {class: 'form-control select2'} %>
-                  </div><!--/field-->
+               
+                <div class="field form-group required">
+                  <%= f.label :priority, class: 'control-label' %>
+                  <%= f.select :priority, options_for_select(ChangeRequest::PRIORITY, @change_request.priority), {include_blank: true}, {class: 'form-control select2'} %>
+                </div><!--/field-->
               </div><!--/col-->
               <div class="col-md-6">
                 <div class="field form-group">
@@ -107,11 +96,8 @@
                   <label>Collaborators</label><br>
                     <%= f.select :collaborator_ids ,options_for_select(@users), {  }, { class: 'select2-collaborate form-control', multiple:true } %>
                 </div><!--/field-->
-                <% if @change_request.errors.messages[:approvals] %>
-                  <div class="field form-group has-error">
-                <% else %>
+                
                   <div class="field form-group required">
-                <% end %>
                   <label class="control-label">Approvers</label><br>
                     <%= f.select :approver_ids, options_for_select(@approvers), { }, { class: 'select2-approve form-control', multiple:true } %>
                 </div><!--/field-->
@@ -139,22 +125,16 @@
                   <h3 class="box-title">Request's Detail</h3>
                 </div><!--/box-header-->
                 <div class="box-body">
-                  <% if @change_request.errors.messages[:change_requirement] %>
-                    <div class="field form-group has-error">
-                  <%else %>
-                    <div class="field form-group required">
-                  <% end %>
-                      <%= f.label :change_requirement, class: 'control-label' %><br>
-                      <%= f.text_area :change_requirement, :class => "form-control tinymce" %>
-                    </div><!--field-->
-                  <% if @change_request.errors.messages[:business_justification] %>
-                    <div class="field form-group has-error">
-                  <%else %>
-                    <div class="field form-group required">
-                  <% end %>
-                      <%= f.label :business_justification, class: 'control-label' %><br>
-                      <%= f.text_area :business_justification, class: "form-control tinymce" %>
-                    </div><!--/field-->
+                  
+                  <div class="field form-group required">
+                    <%= f.label :change_requirement, class: 'control-label' %><br>
+                    <%= f.text_area :change_requirement, :class => "form-control tinymce" %>
+                  </div><!--field-->
+                  
+                  <div class="field form-group required">
+                    <%= f.label :business_justification, class: 'control-label' %><br>
+                    <%= f.text_area :business_justification, class: "form-control tinymce" %>
+                  </div><!--/field-->
                   <div class="field form-group">
                     <%= f.label :note %><br>
                     <%= f.text_area :note, class: "form-control tinymce"%>
@@ -194,37 +174,21 @@
             <div class="box-header with border"></div>
             <div class="box-body">
               <div class="col-md-6">
-                <% if @change_request.errors.messages[:analysis] %>
-                  <div class="field form-group has-error">
-                <%else %>
                   <div class="field form-group required">
-                <% end %>
                     <%= f.label :analysis, class: 'control-label' %><br>
                     <%= f.text_area :analysis, class: "form-control tinymce",style:"height:250px;"%>
                   </div><!--/field-->
-                <% if @change_request.errors.messages[:solution] %>
-                  <div class="field form-group has-error">
-                <%else %>
                   <div class="field form-group required">
-                <% end %>
                     <%= f.label :solution, class: 'control-label' %><br>
                     <%= f.text_area :solution, class: "form-control tinymce" %>
                   </div><!--/field-->
               </div><!--/col-->
               <div class="col-md-6">
-                <% if @change_request.errors.messages[:impact] %>
-                  <div class="field form-group has-error">
-                <%else %>
                   <div class="field form-group required">
-                <% end %>
                     <%= f.label :impact, class: 'control-label' %><br>
                     <%= f.text_area :impact, class: "form-control tinymce"%>
                   </div>
-                <% if @change_request.errors.messages[:scope] %>
-                  <div class="field form-group has-error">
-                <%else %>
                   <div class="field form-group required">
-                <% end %>
                     <%= f.label :scope, class: 'control-label' %><br>
                      <%=f.select :scope, options_for_select(ChangeRequest::SCOPE, @change_request.scope), {:include_blank => true}, {class: 'form-control select2'} %>
                   </div><!--/field-->
@@ -237,37 +201,21 @@
             <div class="box-header with border"></div>
             <div class="box-body">
               <div class="col-md-6">
-                <% if @change_request.errors.messages[:design] %>
-                  <div class="field form-group has-error">
-                <%else %>
                   <div class="field form-group required">
-                <% end %>
                     <%= f.label :design, class: 'control-label' %><br>
                     <%= f.text_area :design, class: "form-control tinymce",style:"height:250px;"  %>
                   </div><!--/field-->
-                <% if @change_request.errors.messages[:backup] %>
-                  <div class="field form-group has-error">
-                <%else %>
                   <div class="field form-group required">
-                <% end %>
                     <%= f.label :backup, class: 'control-label'%><br>
                     <%= f.text_area :backup, class: "form-control tinymce" %>
                   </div><!--/field-->
               </div><!--/col-->
               <div class="col-md-6">
-                <% if @change_request.errors.messages[:definition_of_success] %>
-                  <div class="field form-group has-error">
-                <%else %>
                   <div class="field form-group required">
-                <% end %>
                     <%= f.label :definition_of_success, class: 'control-label' %><br>
                     <%= f.text_area :definition_of_success, class: "form-control tinymce" %>
                   </div><!--/field-->
-                <% if @change_request.errors.messages[:definition_of_failed] %>
-                  <div class="field form-group has-error">
-                <%else %>
                   <div class="field form-group required">
-                <% end %>
                     <%= f.label :definition_of_failure, class: 'control-label' %><br>
                     <%= f.text_area :definition_of_failed, class: "form-control tinymce" %>
                   </div><!--/filed-->
@@ -280,21 +228,13 @@
             <div class="box-header with border"></div>
             <div class="box-body">
               <div class="col-md-12">
-                <% if @change_request.errors.messages[:testing_environment_available] %>
-                  <div class="field form-group has-error">
-                <%else %>
                   <div class="field form-group required">
-                <% end %>
                     <label class="control-label">Testing in Test/Development Environment Available?</label>
                     <%= f.check_box :testing_environment_available, checked: @change_request.testing_environment_available, data: {toggle: :toggle, on: "YES", off: "NO", onstyle: 'success', offstyle: 'danger'}%>
                   </div><!--/field-->
               </div>
               <div class='col-md-6'>
-                <% if @change_request.errors.messages[:testing_procedure] %>
-                  <div class="field form-group has-error">
-                <%else %>
                   <div class="field form-group required">
-                <% end %>
                     <%= f.label :testing_procedure , class: 'control-label'%><br>
                     <%= f.text_area :testing_procedure, class: "form-control tinymce" %>
                   </div>
@@ -302,14 +242,10 @@
               <div class='col-md-6'>
                 <div id="testers">
                   <h3>Tester</h3>
-                  <% if @change_request.errors.messages[:testers] %>
-                    <div class="field form-group has-error">
-                  <% else %>
                     <div class="field form-group">
-                  <% end %>
                   <!-- <div class="field form-group"> -->
                     <label class= "control-label">Testers</label><br>
-                      <%= f.select :tester_ids, options_for_select(@users), {  }, { class: 'select2-tester form-control', style: 'width: 100%' , multiple:true } %>
+                    <%= f.select :tester_ids, options_for_select(@users), {  }, { class: 'select2-tester form-control', style: 'width: 100%' , multiple:true } %>
                   </div><!--/field-->
                 </div><!--/nested form for testers-->
               </div><!--/col-->
@@ -322,19 +258,11 @@
               <div class="box box-default">
                 <div class="box-header with border"></div>
                 <div class="box-body">
-                    <% if @change_request.errors.messages[:schedule_change_date] %>
-                      <div class="field form-group has-error">
-                    <%else %>
                       <div class="field form-group required">
-                    <% end %>
                         <%= f.label :schedule_change_date , class: 'control-label'%><br>
                         <%= f.datetime_select :schedule_change_date %>
                       </div><!--/field-->
-                    <% if @change_request.errors.messages[:planned_completion] %>
-                      <div class="field form-group has-error">
-                    <%else %>
                       <div class="field form-group required">
-                    <% end %>
                         <%= f.label :planned_completion , class: 'control-label'%><br>
                         <%= f.datetime_select :planned_completion, :default => Time.now %>
                       </div><!--/field-->
@@ -372,11 +300,7 @@
             <div class='box-body'>
               <div id="implementers">
                 <!-- <div class="field form-group"> -->
-                <% if @change_request.errors.messages[:implementers] %>
-                  <div class="field form-group has-error">
-                <% else %>
                   <div class="field form-group required">
-                <% end %>
                   <label class="control-label">Implementers</label><br>
                     <%= f.select :implementer_ids, options_for_select(@users), { }, { class: 'select2-implementer form-control', style: 'width: 100%;', multiple:true } %>
                 </div><!--/field-->
