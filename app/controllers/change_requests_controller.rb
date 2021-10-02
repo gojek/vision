@@ -300,7 +300,7 @@ class ChangeRequestsController < ApplicationController
 
     results = succeeded.map do |k,x|
       {
-        label: "#{(k - 1.week).strftime("%d/%m")} - #{k.strftime("%d/%m")}",
+        label: "#{(k.to_date - 1.week).strftime("%d/%m")} - #{k.to_date.strftime("%d/%m")}",
         succeeded: x,
         failed: failed[k],
         rollbacked: rollbacked[k]
@@ -308,7 +308,7 @@ class ChangeRequestsController < ApplicationController
     end
 
     final_result = [{title: status.humanize}, results]
-    render :text => final_result.to_json
+    render plain: final_result.to_json
   end
 
   private
