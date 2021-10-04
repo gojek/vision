@@ -187,7 +187,8 @@ Vision application require some tools to run:
 - Create your JIRA account if you don't have [here](https://www.atlassian.com/try/cloud/signup?bundle=jira-software)
 - Put your Jira site url as value of `JIRA_URL` for environment variable
 - Put your email as value of `JIRA_USERNAME` for environment variable
-- Put your password as value of `JIRA_PASSWORD` for environment variable
+- Create API Token on Security Atlassian (`https://id.atlassian.com/manage-profile/security/api-tokens`)
+- Put API Token as `JIRA_PASSWORD` for environment variable
 
 ### 4. Google Calendar
 
