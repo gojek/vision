@@ -33,7 +33,7 @@ class User < ApplicationRecord
   has_many :Approvals, :dependent => :destroy
 
   validates :email, format: { with: VALID_EMAIL,
-                  message: "must be a veritrans account" }
+                  message: "must be a valid email domain account" }
   validates :email, uniqueness: true
   scope :approvers, -> {where('role = ? OR role = ?', 'approver', 'approver_all')}
   scope :approvers_ar, -> {where('role = ? OR role = ?', 'approver_ar', 'approver_all')}
