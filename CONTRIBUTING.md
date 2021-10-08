@@ -37,7 +37,7 @@ We set code coverage minimum is 73%
 4. Run the test suite: `bundle exec rspec`,
 5. Run the code quality: `bundle exec rubocop`
 6. Run the code security: `brakeman LANG="C" LC_ALL="en_US.UTF-8" .`
-5. Push your fork and open a pull request.
+5. Push your fork and open a pull request with (PR Template)[PULL_REQUEST_TEMPLATE.md].
 
 A good PR will solve the smallest problem it possibly can, have good test
 coverage and (where necessary) have internationalisation support.
