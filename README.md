@@ -4,7 +4,7 @@ Vision was made with contributions from everyone found in git commit history.
 
 ## Getting Started
 
-Vision is a tool that will help yout to manage change request, incident report and access/resource request in your organization.
+Vision is a tool that will help you to manage change request, incident report, and access/resource request in your organization.
 
 ## Installation
 
