@@ -2,46 +2,22 @@
 
 Vision was made with contributions from everyone found in git commit history.
 
-## Architecture
-
-Vision built with Ruby on Rails 5.2.6 and using Ruby 2.7.4, running on Heroku, requires Google Calendar API and Slack API.
-
-To accomplish this, every environment variables are set at `.env` file.
-
-Therefore, for running server use `bundle exec rails s` as that will read the environment variables and run the app with it.
-
-### Static Analysis
-we're using Rubycritic with score 80, you can run `rubycritic -s 80.00 --no-browser app lib`
-
-### Code Quality
-we're using Rubocop, you can run `bundle exec rubocop`
-
-### Code Security
-we're using brakeman, but there're still some issue we can't solved due to current Rails version,
-you can run with `brakeman LANG="C" LC_ALL="en_US.UTF-8" .`
-
-### Testing
-you can just use `bundle exec rspec` since environment variables are simply ignored,
-as outside API call is mocked through `webmock`.
-I wish it clear. Feel free to reach out for further questions.
-
-We set code coverage minimum is 73%
-
 ## Getting Started
 
-Vision is a tool that will help yout to manage change request, incident report and access/resource request in your organization.
-
+Vision is a tool that will help you to manage change request, incident report, and access/resource request in your organization.
 
 ## Installation
 
-1. Install ruby 2.7.4 and Rails 5.2.6, make your system running under that version.
+### Install ruby 2.7.4 and Rails 5.2.6
+
+make your system running under that version.
 
 ```
 ruby --version #=> ruby 2.7.4
 bundle exec rails version # => Rails 5.2.6
 ```
 
-2. Install project dependencies
+### Install project dependencies
 
 Install bundler
 ```
@@ -51,49 +27,42 @@ bundle install
 Install bower through NPM. Our assets are managed by bower.
 ```
 npm install
+bower install
 ```
 
-3. Configuration
+### Configuration
 ```
 cp .env.example .env # for development environment
 cp .env.example .env.test # for test environment
 cp config/database.example.yml config/database.yml
 ```
 
-In .env make sure you've check and configured:
-```
-DB_HOST=
-DB_USERNAME=
-DB_PASSWORD=
-SLACK_IR_CHANNEL=<incident_report_slack_channel>
-SLACK_CR_CHANNEL=<change_request_slack_channel>
-SECRET_KEY_BASE=x
-```
-4. Generate Secret
+Follow prerequisites step [here](#prerequisites) for fill `.env`
+
+### DB Migration and Seed
 
 ```
-rails secret
+bundle exec rake db:setup
 ```
 
-5. Seed Database
-
-```
-bundle exec rake db:seed
-```
-
-6. For mail interaction in Development environment, install and run Mailcatcher by running
+### For mail interaction in Development environment, install and run Mailcatcher by running
 ```
 gem install mailcatcher
 
 mailcatcher
 ```
 
-7. Run rails
+### Approvers
+
+Follow set Approver [here](#5-approvers)
+
+### Run Application
 ```
 bundle exec rails s
 ```
 
-8. Visit vision in `http://localhost:3000`
+Visit vision in `http://localhost:3000`
+
 
 ## Run with Docker
 
@@ -110,43 +79,17 @@ docker-compose up -d
 ```
 docker exec -ti vision_web_1 bash
 
-$ bundle exec rake db:create
-$ bundle exec rake db:migrate
-$ bundle exec rake db:seed
+$ bundle exec rails db:setup
 ```
 
-### Sign Up
+### Approvers
 
-Visit http://localhost:3000 and Signup using your gmail
+Follow set Approver (here)[#5-approvers]
 
-### Approve User
-
-```
-docker exec -ti vision_web_1 bash
-
-$ rails c
-irb(main) > user = User.last
-irb(main) > user.approved!
-irb(main) > user.save
-```
-
-### Assign Admin
-
-```
-docker exec -ti vision_web_1 bash
-
-$ rails c
-irb(main) > user = User.last
-irb(main) > user.is_admin = true
-irb(main) > user.save
-```
+### Run Application
 
 Visit http://localhost:3000
 
-
-## LICENSE
-
-Released under the Apache 2.0 [License](LICENSE). Copyright (c) 2021 Vision.
 
 ## Prerequisites
 
@@ -201,7 +144,7 @@ Vision application require some tools to run:
 
 for more info follow [here](https://developers.google.com/calendar/api/guides/auth)
 
-### 4. Approvers
+### 5. Approvers
 
 Vision required 2 Approvers, you can create with the seed:
 
@@ -259,3 +202,13 @@ heroku container:push web -a {heroku-app}
 ```
 heroku container:release web -a {heroku-app}
 ```
+
+## LICENSE
+
+Released under the Apache 2.0 [License](LICENSE). Copyright (c) 2021 Vision.
+
+## Contributing
+
+Please see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+Vision was originally written by Midtrans Developer and is now maintained by GO-JEK Tech. Many improvements and bugfixes were contributed by the open source community.
