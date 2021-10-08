@@ -37,7 +37,7 @@ cp .env.example .env.test # for test environment
 cp config/database.example.yml config/database.yml
 ```
 
-Follow prerequisites step (here)[#prerequisites] for fill `.env`
+Follow prerequisites step [here](#prerequisites) for fill `.env`
 
 ### DB Migration and Seed
 
