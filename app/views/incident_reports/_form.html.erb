@@ -51,8 +51,8 @@
         </div>
 
         <div class="form-group">
-          <div class="field">
-            <%= f.label :problem_details %><br>
+          <div class="field form-group required">
+            <%= f.label :problem_details, class: 'control-label' %><br>
             <%= f.text_area :problem_details, class: 'form-control tinymce' %>
           </div>
         </div>
@@ -79,14 +79,14 @@
         </div>
 
         <div class="form-group">
-          <div class="field form-group required">
+          <div class="field">
             <%= f.label :acknowledge_time, class: 'control-label' %><br>
             <%= f.datetime_select :acknowledge_time, :include_blank => true, class: 'form-control' %>
           </div>
         </div>
 
         <div class="form-group">
-          <div class="field form-group required">
+          <div class="field">
             <%= f.label :resolved_time, class: 'control-label' %><br>
             <%= f.datetime_select :resolved_time, :include_blank => true, class: 'form-control' %>
           </div>
@@ -99,8 +99,8 @@
           </div>
         </div>
       
-        <div class="form-group">
-          <div class="field form-group required">
+        <div class="form-group form-group required">
+          <div class="field">
             <a style="cursor: pointer;" id="rank-button">
               <%= f.label :rank, class: 'control-label' %> <i class="glyphicon glyphicon-question-sign"></i>
             </a>
@@ -171,12 +171,12 @@
     </div>
     <div class='box-body'>
       <div class="form-group">
-        <div class="field form-group required">
+        <div class="field">
           <%= f.label :postmortem_time, class: 'control-label' %><br>
           <%= f.datetime_select :postmortem_time, :include_blank => true,class: 'form-control' %>
         </div>
       <div class="form-group">
-        <div class="field form-group required">
+        <div class="field">
           <%= f.label :postmortem_docs, class: 'control-label' %><br>
           <%= f.text_area :postmortem_docs, class: 'form-control'%>
         </div>
