@@ -55,6 +55,7 @@
           <table class="table table-hover">
             <tr>
                 <th><%= sort_link(@q, :name) %></th>
+                <th>Email</th>
                 <th>Role</th>
                 <th>Action</th>
                 <th>Account Status</th>
@@ -62,6 +63,7 @@
             <% @users.each do |user| %> 
             <tr>
                 <td><%= user.name %></td>
+                <td><%= user.email %></td>
                 <td><%= user.role%></td>
                 <td>
                     <% if user.approved? %>
