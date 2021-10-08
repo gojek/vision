@@ -31,31 +31,12 @@ npm install
 bower install
 ```
 
-### Generate Secret
-
-```
-rails secret
-```
-
-and put in `.env` for key `SECRET_KEY_BASE`
-
 ### Configuration
 ```
 cp .env.example .env # for development environment
 cp .env.example .env.test # for test environment
 cp config/database.example.yml config/database.yml
 ```
-
-In .env make sure you've check and configured:
-```
-DB_HOST=
-DB_USERNAME=
-DB_PASSWORD=
-SLACK_IR_CHANNEL=<incident_report_slack_channel>
-SLACK_CR_CHANNEL=<change_request_slack_channel>
-SECRET_KEY_BASE=x
-```
-4. Generate Secret
 
 ### DB Migration and Seed
 
