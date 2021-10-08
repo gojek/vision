@@ -50,19 +50,6 @@ Vision's application can be run like any Rails application:
 bundle exec rails s
 ```
 
-## Repository Structure
-
-* The gem's source code lives in the `app` and `lib` subdirectories.
-* The demo app is nested within `spec/example_app`.
-
-Rails configuration files have been changed
-to recognize the app in the new location,
-so running the server or deploying to Heroku works normally.
-
-With this structure, developing a typical feature looks like:
-
-* Add tests in `spec/`
-
 ## Labels
 
 Issues and PRs are split into two levels of labels, at the higher level:
