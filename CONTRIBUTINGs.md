@@ -2,18 +2,41 @@
 
 ## Getting Started
 
-Vision is a [Rails Engine][], but ships with everything needed to
+Vision is a Ruby on Rails 5.2.6 and using Ruby 2.7.4, but ships with everything needed to
 contribute and test new changes.
 
 [Rails Engine]: https://guides.rubyonrails.org/engines.html
+
+To accomplish this, every environment variables are set at `.env` file.
+
+Therefore, for running server use `bundle exec rails s` as that will read the environment variables and run the app with it.
+
+### Static Analysis
+we're using Rubycritic with score 80, you can run `rubycritic -s 80.00 --no-browser app lib`
+
+### Code Quality
+we're using Rubocop, you can run `bundle exec rubocop`
+
+### Code Security
+we're using brakeman, but there're still some issue we can't solved due to current Rails version,
+you can run with `brakeman LANG="C" LC_ALL="en_US.UTF-8" .`
+
+### Testing
+you can just use `bundle exec rspec` since environment variables are simply ignored,
+as outside API call is mocked through `webmock`.
+I wish it clear. Feel free to reach out for further questions.
+
+We set code coverage minimum is 73%
 
 ### Opening a PR
 
 1. Fork the repo,
 2. Run `./bin/setup` to install the base dependencies and setup a local
    database,
-3. Run the test suite: `bundle exec rspec`,
-4. Make your changes,
+3. Make your changes,
+4. Run the test suite: `bundle exec rspec`,
+5. Run the code quality: `bundle exec rubocop`
+6. Run the code security: `brakeman LANG="C" LC_ALL="en_US.UTF-8" .`
 5. Push your fork and open a pull request.
 
 A good PR will solve the smallest problem it possibly can, have good test
