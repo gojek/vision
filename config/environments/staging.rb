@@ -1,7 +1,7 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
   #Setting for host domain for route
-  Rails.application.routes.default_url_options = { host: 'vt-vision-staging2.herokuapp.com'}
+  Rails.application.routes.default_url_options = { host: ENV['APP_HOST']}
 
   # Code is not reloaded between requests.
   config.cache_classes = true
@@ -13,7 +13,7 @@ Rails.application.configure do
   config.eager_load = true
 
   # Full error reports are disabled and caching is turned on.
-  config.consider_all_requests_local       = true
+  config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
 
   # Enable Rack::Cache to put a simple HTTP cache in front of your application
@@ -48,10 +48,11 @@ Rails.application.configure do
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
-  config.log_level = :debug
+  config.log_level = :warn
 
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]
+   config.log_tags = [:request_id]
 
   # Use a different logger for distributed setups.
   # config.logger = ActiveSupport::TaggedLogging.new(SyslogLogger.new)
@@ -76,27 +77,30 @@ Rails.application.configure do
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
 
+  if ENV['RAILS_LOG_TO_STDOUT'].present?
+    logger           = ActiveSupport::Logger.new(STDOUT)
+    logger.formatter = config.log_formatter
+    config.logger    = ActiveSupport::TaggedLogging.new(logger)
+  end
+
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
-  config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.default_url_options = { host: 'vision-stg.herokuapp.com'}
+  
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    address: "smtp.gmail.com",
-    port: "587",
-    domain: "gmail.com",
-    authentication: "plain",
+    address: ENV.fetch("MAIL_ADDRESS") { "smtp.gmail.com" },
+    port: ENV.fetch("MAIL_PORT") { "587" },
+    domain: ENV.fetch("MAIL_DOMAIN") { "gmail.com" },
+    authentication: ENV.fetch("MAIL_AUTHENTICATION") { "plain" } ,
     enable_startttls_auto: true,
-    user_name: ENV['GMAIL_USERNAME_DEV'],
-    password: ENV['GMAIL_PASSWORD_DEV']
-    #user_name: ENV['GMAIL_USERNAME_DEV'],
-    #password: ENV['GMAIL_PASSWORD_DEV']
+    user_name: ENV['MAIL_USERNAME'],
+    password: ENV['MAIL_PASSWORD']
   }
+
   Rails.application.config.middleware.use ExceptionNotification::Rack,
   :email => {
     :email_prefix => "[VISION] ",
     :sender_address => %{"vision-notifier" <vision@veritrans.co.id>},
     :exception_recipients => %w{vision@veritrans.co.id}
   }
-
 end

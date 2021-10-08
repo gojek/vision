@@ -8,8 +8,7 @@ Vision built with Ruby on Rails 5.2.6 and using Ruby 2.7.4, running on Heroku, r
 
 To accomplish this, every environment variables are set at `.env` file.
 
-Therefore, for running server use `bundle exec rails s` as that will read the environment variables and
-run the app with it.
+Therefore, for running server use `bundle exec rails s` as that will read the environment variables and run the app with it.
 
 ### Static Analysis
 we're using Rubycritic with score 80, you can run `rubycritic -s 80.00 --no-browser app lib`
@@ -30,7 +29,8 @@ We set code coverage minimum is 73%
 
 ## Getting Started
 
-Vision are Change Request Management, Incident Report Management, and Access Request Management.
+Vision is a tool that will help yout to manage change request, incident report and access/resource request in your organization.
+
 
 ## Installation
 
@@ -82,46 +82,26 @@ SECRET_KEY_BASE=x
 ```
 4. Generate Secret
 
-<<<<<<< HEAD
 ### DB Migration and Seed
-=======
-```
-rails secret
-```
-
-5. Seed Database
->>>>>>> development
 
 ```
 bundle exec rake db:setup
 ```
 
-<<<<<<< HEAD
 ### For mail interaction in Development environment, install and run Mailcatcher by running
-=======
-6. For mail interaction in Development environment, install and run Mailcatcher by running
->>>>>>> development
 ```
 gem install mailcatcher
 
 mailcatcher
 ```
 
-<<<<<<< HEAD
 ### Run Application
-=======
-7. Run rails
->>>>>>> development
 ```
 bundle exec rails s
 ```
 
-<<<<<<< HEAD
 Visit vision in `http://localhost:3000`
 
-=======
-8. Visit vision in `http://localhost:3000`
->>>>>>> development
 
 ## Run with Docker
 
