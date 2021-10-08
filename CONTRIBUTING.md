@@ -31,8 +31,8 @@ We set code coverage minimum is 73%
 ### Opening a PR
 
 1. Fork the repo,
-2. Run `./bin/setup` to install the base dependencies and setup a local
-   database,
+2. Run `./bin/setup` to install the base dependencies and setup a local database
+3. Follow Installation in [README.md](README.md#installation)
 3. Make your changes,
 4. Run the test suite: `bundle exec rspec`,
 5. Run the code quality: `bundle exec rubocop`

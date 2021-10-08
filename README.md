@@ -72,7 +72,7 @@ mailcatcher
 
 ### Approvers
 
-Follow set Approver (here)[#5-approvers]
+Follow set Approver [here](#5-approvers)
 
 ### Run Application
 ```
