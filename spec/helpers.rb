@@ -14,7 +14,7 @@ module Helpers
   end
 
   def save_event_error_stub
-    stub_request(:post, 'https://www.googleapis.com/calendar/v3/calendars/midtrans.com_7v5rlhrr73t6mj12ifubmst1m0@group.calendar.google.com/events?sendNotifications=true')
+    stub_request(:post, 'https://www.googleapis.com/calendar/v3/calendars/x0@group.calendar.google.com/events?sendNotifications=true')
       .to_return(status: 403, body: '{\n \"error\": {\n  \"errors\": [\n   {\n    \"domain\": \"calendar\",\n    \"reason\": \"requiredAccessLevel\",\n    \"message\": \"You need to have writer access to this calendar.\"\n   }\n  ],\n  \"code\": 403,\n  \"message\": \"You need to have writer access to this calendar.\"\n }\n}', headers: {
         content_type: 'application/json'
       })
@@ -33,10 +33,10 @@ module Helpers
         summary: "Change 1",
         description: "CR: http://localhost:3000/change_requests/23, PIC: Rizqy Faishal Tanjung",
         creator: {
-          email: "rizqy.tanjung@midtrans.com"
+          email: "rizqy.tanjung@gmail.com"
         },
         organizer: {
-          email: "midtrans.com_7v5rlhrr73t6mj12ifubmst1m0@group.calendar.google.com"
+          email: "x@group.calendar.google.com"
         },
         displayName: "staging vision",
         self: true,
@@ -50,15 +50,15 @@ module Helpers
         sequence: 0,
         attendees: [
           {
-            email: "14@veritrans.co.id",
+            email: "14@gmail.co.id",
             responseStatus: "needsAction"
           },
           {
-            email: "rizqy.tanjung@midtrans.com",
+            email: "rizqy.tanjung@gmail.com",
             responseStatus: "needsAction"
           },
           {
-            email: "1@veritrans.co.id",
+            email: "1@gmail.co.id",
             responseStatus: "needsAction"
           },
         ],

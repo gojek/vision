@@ -12,7 +12,7 @@ FactoryBot.define do
     access_type 'Permanent'
     start_date nil
     end_date nil
-    entity_source 'Midtrans'
+    entity_source 'engineering'
 
     employee_name 'Employee Name'
     business_justification 'Business Justification'

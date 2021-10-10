@@ -12,7 +12,7 @@ User.create(email: "12@gmail.com", role: "requestor", name: "Ariq")
 User.create(email: "13@gmail.com", role: "requestor", name: "Ya Keu Leus")
 User.create(email: "14@gmail.com", role: "requestor", name: "Thisis Aseed")
 User.create(email: "15@gmail.com", role: "requestor", name: "Thisisal Soseed")
-User.create(email: "16@gmail.com", role: "requestor", name: "Lutfi K P di Veritrans")
+User.create(email: "16@gmail.com", role: "requestor", name: "Lutfi K P")
 user_requester = User.find_or_create_by(email: "requestor@gmail.com", role: "requestor", name: "Seorang Requestor")
 user_approver = User.find_or_create_by(email: "approver@gmail.com", role: "approver", name: "Seorang Approver")
 

@@ -169,7 +169,7 @@ Key | Value | Description
 `DB_NAME` | vision | Required, you can get from Heroku Postgres adds-on
 `DB_USERNAME` | postgres | Required, you can get from Heroku Postgres adds-on
 `DB_PASSWORD` |  | Required, you can get from Heroku Postgres adds-on
-`DEPLOY_CALENDAR_ID` | visiongojek@gmail.com | Required, You can get Google Calender ID [here](https://docs.simplecalendar.io/find-google-calendar-id/)
+`DEPLOY_CALENDAR_ID` | visionopensource2021@gmail.com | Required, You can get Google Calender ID [here](https://docs.simplecalendar.io/find-google-calendar-id/)
 `ENTITY_SOURCES` | | Required, you can have multiple source combine with comma. (e.g org1,org2)
 `GOOGLE_API_KEY` | | Required, you can get from prerequisites step
 `GOOGLE_API_SECRET` | | Required, you can get from prerequisites step
@@ -209,6 +209,4 @@ Released under the Apache 2.0 [License](LICENSE). Copyright (c) 2021 Vision.
 
 ## Contributing
 
-Please see [CONTRIBUTING.md](CONTRIBUTING.md).
-
-Vision was originally written by Midtrans Developer and is now maintained by GO-JEK Tech. Many improvements and bugfixes were contributed by the open source community.
+Please make sure to read the [Contributing Guide](CONTRIBUTING.md) before making a pull request. Many improvements and bugfixes were contributed by the open source community.

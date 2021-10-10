@@ -1,5 +1,5 @@
 class UserMailer < ApplicationMailer
-  default from: "narendra.hanif@veritrans.co.id"
+  default from: "visionopensource2021@gmail.com"
 
   def notif_email(user, change_request, status)
     @user = user

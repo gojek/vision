@@ -19,7 +19,7 @@
     "dateTime": "2015-10-27T15:43:21+07:00"
   },
   "etag": "\"2891871120380000\"",
-  "location": "Veritrans",
+  "location": "Vision",
   "attendees": [
     {
       "displayName": "Adam Pahlevi",
@@ -34,12 +34,12 @@
   ],
   "organizer": {
     "self": true,
-    "email": "adam.pahlevi@veritrans.co.id"
+    "email": "adam.pahlevi@gmail.com"
   },
   "creator": {
     "self": true,
-    "email": "adam.pahlevi@veritrans.co.id"
+    "email": "adam.pahlevi@gmail.com"
   },
   "id": "13387ck0g9e3o5u4a458hk0alg",
-  "hangoutLink": "https://plus.google.com/hangouts/_/veritrans.co.id/adam-pahlevi-iz?hceid=YWRhbS5wYWhsZXZpQHZlcml0cmFucy5jby5pZA.13387ck0g9e3o5u4a458hk0alg"
+  "hangoutLink": "https://plus.google.com/hangouts/_/gmail.com/adam-pahlevi-iz?hceid=YWRhbS5wYWhsZXZpQHZlcml0cmFucy5jby5pZA.13387ck0g9e3o5u4a458hk0alg"
 }

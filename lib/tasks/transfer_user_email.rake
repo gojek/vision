@@ -1,5 +1,5 @@
 namespace :transfer_user_email do
-  desc "Transfer all user from domain @midtrans.com into gojek domain @go-jek.com"
+  desc "Transfer all user"
   task transfer: :environment do
     CSV.foreach("transfer_email.csv",headers: true, col_sep: ',') do |row|
       data = row.to_h
