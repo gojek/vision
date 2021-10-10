@@ -7,19 +7,19 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 
-User.create(email: "1@veritrans.co.id", role: "requestor", name: "Rani Utami")
-User.create(email: "12@veritrans.co.id", role: "requestor", name: "Ariq")
-User.create(email: "13@veritrans.co.id", role: "requestor", name: "Ya Keu Leus")
-User.create(email: "14@veritrans.co.id", role: "requestor", name: "Thisis Aseed")
-User.create(email: "15@veritrans.co.id", role: "requestor", name: "Thisisal Soseed")
-User.create(email: "16@veritrans.co.id", role: "requestor", name: "Lutfi K P di Veritrans")
-user_requester = User.find_or_create_by(email: "17@veritrans.co.id", role: "requestor", name: "Seorang Requestor")
-user_approver = User.find_or_create_by(email: "18@veritrans.co.id", role: "approver", name: "Seorang Approver")
+User.create(email: "1@gmail.com", role: "requestor", name: "Rani Utami")
+User.create(email: "12@gmail.com", role: "requestor", name: "Ariq")
+User.create(email: "13@gmail.com", role: "requestor", name: "Ya Keu Leus")
+User.create(email: "14@gmail.com", role: "requestor", name: "Thisis Aseed")
+User.create(email: "15@gmail.com", role: "requestor", name: "Thisisal Soseed")
+User.create(email: "16@gmail.com", role: "requestor", name: "Lutfi K P di Veritrans")
+user_requester = User.find_or_create_by(email: "requestor@gmail.com", role: "requestor", name: "Seorang Requestor")
+user_approver = User.find_or_create_by(email: "approver@gmail.com", role: "approver", name: "Seorang Approver")
 
 
 user_requesters = []
 (1..20).each do |i|
-  user_requesters[i] = User.new(email: "email#{i}@veritrans.co.id", role: "requestor")
+  user_requesters[i] = User.new(email: "email#{i}@gmail.com", role: "requestor")
 end
 
 user_requesters[1].name = "Nayana Tara Reng Kyu"
@@ -76,7 +76,7 @@ Tester.create(name: "John China", change_request: change_request)
 
 user_approvers = []
 (1..15).each do |i|
-  user_approvers[i] = User.new(email: "email.user#{i}@veritrans.co.id", role: "approver")
+  user_approvers[i] = User.new(email: "email.user#{i}@gmail.com", role: "approver")
 end
 user_approvers[1].name = "Tatang Seekor Nyamuk"
 user_approvers[2].name = "Budi Santoso"
