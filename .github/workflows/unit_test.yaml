@@ -49,10 +49,10 @@ jobs:
         RAILS_ENV=test bundle exec rake db:migrate
         RAILS_ENV=test bundle exec rspec --tty
       env:
-        APPROVER_EMAIL: approver@midtrans.com
-        ENTITY_SOURCES: midtrans,spots,gojek
-        JIRA_URL: https://veritrans.atlassian.net/
+        APPROVER_EMAIL: approver@gmail.com
+        ENTITY_SOURCES: engineering,qa,devops
+        JIRA_URL: https://visiondemo.atlassian.net/
         DB_PASSWORD: postgres
-        SLACK_IR_CHANNEL: midtrans-test,spots-test,gojek-test,anything
-        SLACK_CR_CHANNEL: midtrans-test,spots-test,gojek-test,anything
-        VALID_EMAIL: midtrans.com,veritrans.co.id,associate.midtrans.com,spots.co.id,go-jek.com,gmail.com
+        SLACK_IR_CHANNEL: incident-report,incident-report2
+        SLACK_CR_CHANNEL: change-requests
+        VALID_EMAIL: gmail.com

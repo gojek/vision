@@ -31,7 +31,7 @@ FactoryBot.define do
     definition_of_failed " Failed"
     category_application true
     type_other "other type"
-    entity_source "midtrans"
+    entity_source "engineering"
 
     factory :submitted_change_request do
       aasm_state 'submitted'

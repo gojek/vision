@@ -19,7 +19,7 @@ describe Mentioner do
       usernames = Mentioner.extract_username(comment_with_mention)
       users = []
       usernames.each do |username|
-        users << FactoryBot.create(:user, email: username + "@veritrans.co.id")
+        users << FactoryBot.create(:user, email: username + "@gmail.com")
       end
       expect(Mentioner.find_mentionees_from_username(usernames)).to match_array(users)
     end

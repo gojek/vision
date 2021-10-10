@@ -2,10 +2,6 @@
   "name": "vision",
   "description": "Dependencies manager for VT-Vision",
   "version": "0.0.0",
-  "authors": [
-    "Muhammad Idham Ramadhan <muhammad.idham@veritrans.co.id>",
-    "Adam Pahlevi Baihaqi <adam.pahlevi@veritrans.co.id>"
-  ],
   "license": "MIT",
   "ignore": [
     "**/.*",

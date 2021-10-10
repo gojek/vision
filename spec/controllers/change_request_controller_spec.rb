@@ -209,7 +209,7 @@ RSpec.describe ChangeRequestsController, type: :controller do
           }.to change(Approval, :count).by(1)
         end
 
-        it 'call slack notification library to send notification to slack veritrans about new cr' do
+        it 'call slack notification library to send notification to slack about new cr' do
           expect_any_instance_of(SlackNotif).to receive(:notify_new_cr).with(an_instance_of(ChangeRequest))
           post :create, params: { change_request: attributes, implementers_list: [approver.id], testers_list: [approver.id], approver_ids: [approver.id] }
         end
@@ -254,7 +254,7 @@ RSpec.describe ChangeRequestsController, type: :controller do
           expect(change_request.note).to eq(note)
         end
 
-        it 'call slack notification library to send notification to slack veritrans about modified cr' do
+        it 'call slack notification library to send notification to slack about modified cr' do
           expect_any_instance_of(SlackNotif).to receive(:notify_update_cr).with(an_instance_of(ChangeRequest))
           update_attributes = FactoryBot.attributes_for(:change_request, implementer_ids: [user.id, ""], tester_ids: [user.id, ""] , approver_ids: [approver.id, ""])
           patch :update, params: { id: change_request.id, change_request: update_attributes }

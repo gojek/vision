@@ -39,13 +39,8 @@ describe User, type: :model do
     expect(user.errors[:role].size).to eq(1)
   end
 
-  it "is valid with a veritrans email" do
+  it "is valid with a registered domain email" do
     expect(user).to be_valid
-  end
-
-  it "is valid with a gojek email" do
-    gojek = FactoryBot.create(:gojek_email)
-    expect(gojek).to be_valid
   end
 
   it "is invalid without an email address" do
@@ -55,14 +50,14 @@ describe User, type: :model do
   end
 
   it "is invalid with a duplicate email address" do
-    user.email = 'patrick@veritrans.co.id'
+    user.email = 'patrick@gmail.com'
     user.save
-    other_user = FactoryBot.build(:user, email: 'patrick@veritrans.co.id')
+    other_user = FactoryBot.build(:user, email: 'patrick@gmail.com')
     other_user.valid?
     expect(other_user.errors[:email].size).to eq(1)
   end
 
-  it "is invalid with a non-veritrans email" do
+  it "is invalid with a non registered domain email" do
     user.email = 'squidward@hotmail.com'
     user.valid?
     expect(user.errors[:email].size).to eq(1)
@@ -90,7 +85,7 @@ describe User, type: :model do
   describe 'omniauth authentication user' do
     before :all do
       @slack_username = 'patrick.star'
-      user_slack = UserSlack.new(@slack_username, Profile.new('patrick@veritrans.co.id'))
+      user_slack = UserSlack.new(@slack_username, Profile.new('patrick@gmail.com'))
       @users_list = UserList.new([user_slack])
     end
 
@@ -108,7 +103,7 @@ describe User, type: :model do
 
     it "will register new user based on the auth from omniauth if user not registered" do
       user_lookup_success_stub
-      auth = {:provider => 'google_oauth2', :uid => '123456', :info => {:email => 'patrick@veritrans.co.id', :name => 'patrick star'}}
+      auth = {:provider => 'google_oauth2', :uid => '123456', :info => {:email => 'patrick@gmail.com', :name => 'patrick star'}}
       user = User.from_omniauth(auth)
       expect(user.provider).to eq auth[:provider]
       expect(user.uid).to eq auth[:uid]
