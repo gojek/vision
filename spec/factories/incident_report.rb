@@ -18,7 +18,7 @@ FactoryBot.define do
     current_status "Acknowledged"
     measurer_status "Implemented"
     user {FactoryBot.create(:user)}
-    entity_source "Midtrans"
+    entity_source "engineering"
 
     factory :invalid_incident_report do 
       service_impact "Service impact"

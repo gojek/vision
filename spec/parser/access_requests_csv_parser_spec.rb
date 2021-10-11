@@ -4,7 +4,7 @@ require 'access_requests_csv_parser.rb'
 include ActionDispatch::TestProcess
 describe AccessRequestsCsvParser do
 	let!(:user) {FactoryBot.create(:user)}
-	let!(:approver_ar) {FactoryBot.create(:approver_ar, email:'patrick.star@midtrans.com')}
+	let!(:approver_ar) {FactoryBot.create(:approver_ar, email:'patrick.star@gmail.com')}
 
   describe 'process csv' do
     it "can upload validated data csv file" do
