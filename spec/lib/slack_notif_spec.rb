@@ -8,8 +8,8 @@ RSpec.configure do |c|
 end
 
 describe SlackNotif do
-  let(:user) {FactoryBot.create(:approver, email: 'dwiyan@veritrans.co.id', slack_username: 'dwiyan')}
-  let(:other_user) {FactoryBot.create(:approver, email: 'kevin@veritrans.co.id', slack_username: 'kevin')}
+  let(:user) {FactoryBot.create(:approver, email: 'approver@gmail.com', slack_username: 'approver')}
+  let(:other_user) {FactoryBot.create(:approver, email: 'approver2@gmail.com', slack_username: 'approver2')}
   let(:change_request) {FactoryBot.create(:change_request)}
   let(:access_request) {FactoryBot.create(:access_request)}
   let(:slack_notifier) {SlackNotif.new}
@@ -119,7 +119,7 @@ describe SlackNotif do
 
   describe 'Sending notification about new comment' do
     let(:another_user) {FactoryBot.create(:user)}
-    let(:comment) {FactoryBot.create(:comment, body: 'comment @dwiyan and @kevin', user: user, change_request: change_request)}
+    let(:comment) {FactoryBot.create(:comment, body: 'comment @approver and @approver2', user: user, change_request: change_request)}
     let(:mentionees){[user, other_user]}
     let(:comment_attachment){attachment_builder.generate_comment_attachment(comment)}
     let(:mentioned_message) {"You are mentioned in #{comment.user.name} comment's on a <#{change_request_link}|change request>"}
@@ -148,7 +148,7 @@ describe SlackNotif do
 
   describe 'Sending notification about new comment AR' do
     let(:another_user) {FactoryBot.create(:user)}
-    let(:comment) {FactoryBot.create(:access_request_comment, body: 'comment @dwiyan and @kevin', user: user, access_request: access_request)}
+    let(:comment) {FactoryBot.create(:access_request_comment, body: 'comment @approver and @approver2', user: user, access_request: access_request)}
     let(:mentionees){[user, other_user]}
     let(:comment_attachment){attachment_builder.generate_ar_comment_attachment(comment)}
     let(:mentioned_message) {"You are mentioned in #{comment.user.name} comment's on a <#{access_request_link}|access request>"}
@@ -164,9 +164,8 @@ describe SlackNotif do
   describe 'Sending notification about new Incident Report to sepesified incident report slack channel' do
     it 'Send message to correct incident report slack channel' do
       entity_channel = {
-        'Midtrans' => 'midtrans-test',
-        'Spots' => 'spots-test',
-        'Gojek' => 'gojek-test'
+        'Engineering' => 'incident-report',
+        'Qa' => 'incident-report2'
       }
       entity_channel.each do |entity, channel|
         ir = FactoryBot.create(:incident_report, entity_source: entity)

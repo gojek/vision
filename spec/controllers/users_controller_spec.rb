@@ -12,7 +12,7 @@ RSpec.describe UsersController, type: :controller do
     before :each do
       FactoryBot.create(:user).email
       FactoryBot.create(:master_approver).email
-      FactoryBot.create(:user, email: 'vision@veritrans.co.id')
+      FactoryBot.create(:user, email: 'vision@gmail.com')
       @request.env['devise.mapping'] = Devise.mappings[:pending_user]
       sign_in pending_user
     end

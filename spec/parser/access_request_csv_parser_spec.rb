@@ -3,19 +3,19 @@ require 'mentioner'
 
 describe AccessRequestCsvParser do
   let!(:user) {FactoryBot.create(:user)}
-  let!(:approver_ar) {FactoryBot.create(:approver_ar, email:'patrick.star@midtrans.com')}
-  let(:raw_data) {{"entity_source"=>"midtrans",
+  let!(:approver_ar) {FactoryBot.create(:approver_ar, email:'patrick.star@gmail.com')}
+  let(:raw_data) {{"entity_source"=>"engineering",
                    "request_type"=>"Create",
                    "access_type"=>"Permanent",
                    "start_date"=>"",
                    "end_date"=>"",
                    "business_justification"=>"Lorem ipsum",
-                   "collaborators"=>"patrick.star@midtrans.com",
-                   "approvers"=>"patrick.star@midtrans.com",
+                   "collaborators"=>"patrick.star@gmail.com",
+                   "approvers"=>"patrick.star@gmail.com",
                    "employee_name"=>"Budi",
                    "employee_position"=>"SE",
                    "employee_department"=>"Engineer",
-                   "employee_email_address"=>"Budi@midtrans.com",
+                   "employee_email_address"=>"Budi@gmail.com",
                    "employee_phone"=>"14045",
                    "employee_access"=>"1",
                    "fingerprint"=>"business area,business operations",
@@ -35,7 +35,7 @@ describe AccessRequestCsvParser do
       item_parser = AccessRequestCsvParser.new(raw_data, user)
       item_parser.send(:extract_entity)
       expect(item_parser.data).to have_key("entity_source")
-      expect(item_parser.data['entity_source']).to eq("Midtrans")
+      expect(item_parser.data['entity_source']).to eq("Engineering")
     end
 
     it 'test extract_fingerprint' do
@@ -119,14 +119,14 @@ describe AccessRequestCsvParser do
     end
 
     it 'test extract_approvers' do
-      raw_data["approvers"] = "johndoe@midtrans.com"
+      raw_data["approvers"] = "johndoe@gmail.com"
       item_parser = AccessRequestCsvParser.new(raw_data, user)
       item_parser.send(:extract_approvers)
       expect(item_parser.data["approver_ids"]).to be_empty
     end
 
     it 'test extract_collaborators' do
-      raw_data["collaborators"] = "johndoe@midtrans.com"
+      raw_data["collaborators"] = "johndoe@gmail.com"
       item_parser = AccessRequestCsvParser.new(raw_data, user)
       item_parser.send(:extract_collaborators)
       expect(item_parser.data["collaborator_ids"]).to be_empty

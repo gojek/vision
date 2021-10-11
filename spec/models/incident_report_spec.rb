@@ -60,7 +60,7 @@ describe IncidentReport, type: :model do
   end
 
   it "is valid with defined entity source" do
-    allowed_entity_sources = %w(Midtrans Gojek)
+    allowed_entity_sources = %w(engineering qa)
     allowed_entity_sources.each do |entity_source|
       ir = FactoryBot.build(:incident_report, entity_source: entity_source)
       expect(ir).to be_valid

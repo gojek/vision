@@ -29,55 +29,55 @@
       "attendees": [
         {
           "displayName": "Fauzan Sasmita",
-          "email": "fauzan.sasmita@veritrans.co.id",
+          "email": "fauzan.sasmita@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "self": true,
-          "email": "adam.pahlevi@veritrans.co.id",
+          "email": "adam.pahlevi@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "displayName": "Riza Maryudi",
-          "email": "riza.maryudi@veritrans.co.id",
+          "email": "riza.maryudi@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "displayName": "Wendy Kurniawan Soesanto",
-          "email": "wendy.kurniawan@veritrans.co.id",
+          "email": "wendy.kurniawan@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "displayName": "Brian Iswara",
-          "email": "brian.iswara@veritrans.co.id",
+          "email": "brian.iswara@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "displayName": "Fauzan Ahsan",
-          "email": "fauzan.ahsan@veritrans.co.id",
+          "email": "fauzan.ahsan@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "displayName": "Pavel Evstigneev",
-          "email": "pavel.evstigneev@veritrans.co.id",
+          "email": "pavel.evstigneev@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "displayName": "Change Management",
-          "email": "cr@veritrans.co.id",
+          "email": "cr@gmail.com",
           "responseStatus": "needsAction"
         }
       ],
       "organizer": {
         "displayName": "Change Management Schedule",
-        "email": "veritrans.co.id_l7tgfrrnor43r4bpv2nv1hkbg0@group.calendar.google.com"
+        "email": "gmail.com_l7tgfrrnor43r4bpv2nv1hkbg0@group.calendar.google.com"
       },
       "creator": {
         "displayName": "Krisna Parahita",
-        "email": "krisna.parahita@veritrans.co.id"
+        "email": "krisna.parahita@gmail.com"
       },
       "id": "hahgcmd7sl6rsct016os1ve6u0",
-      "hangoutLink": "https://plus.google.com/hangouts/_/veritrans.co.id/veritrans-co-id?hceid=dmVyaXRyYW5zLmNvLmlkX2w3dGdmcnJub3I0M3I0YnB2Mm52MWhrYmcwQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20.hahgcmd7sl6rsct016os1ve6u0"
+      "hangoutLink": "https://plus.google.com/hangouts/_/gmail.com/gmail-com?hceid=dmVyaXRyYW5zLmNvLmlkX2w3dGdmcnJub3I0M3I0YnB2Mm52MWhrYmcwQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20.hahgcmd7sl6rsct016os1ve6u0"
     },
     {
       "status": "confirmed",
@@ -101,40 +101,40 @@
       "attendees": [
         {
           "displayName": "Wendy Kurniawan Soesanto",
-          "email": "wendy.kurniawan@veritrans.co.id",
+          "email": "wendy.kurniawan@gmail.com",
           "responseStatus": "needsAction"
         },
         {
-          "email": "fauzan.ahsan@veritrans.co.id",
+          "email": "fauzan.ahsan@gmail.com",
           "responseStatus": "accepted"
         },
         {
           "displayName": "Pavel Evstigneev",
-          "email": "pavel.evstigneev@veritrans.co.id",
+          "email": "pavel.evstigneev@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "organizer": true,
           "displayName": "Ludwi Prakosa Samoen",
-          "email": "ludwi.samoen@veritrans.co.id",
+          "email": "ludwi.samoen@gmail.com",
           "responseStatus": "accepted"
         },
         {
           "self": true,
-          "email": "adam.pahlevi@veritrans.co.id",
+          "email": "adam.pahlevi@gmail.com",
           "responseStatus": "needsAction"
         }
       ],
       "organizer": {
         "displayName": "Ludwi Prakosa Samoen",
-        "email": "ludwi.samoen@veritrans.co.id"
+        "email": "ludwi.samoen@gmail.com"
       },
       "creator": {
         "displayName": "Ludwi Prakosa Samoen",
-        "email": "ludwi.samoen@veritrans.co.id"
+        "email": "ludwi.samoen@gmail.com"
       },
       "id": "oe98a1vn9d8gbphn2fjc6cr7k8",
-      "hangoutLink": "https://plus.google.com/hangouts/_/veritrans.co.id/sprint-planning?hceid=bHVkd2kuc2Ftb2VuQHZlcml0cmFucy5jby5pZA.oe98a1vn9d8gbphn2fjc6cr7k8"
+      "hangoutLink": "https://plus.google.com/hangouts/_/gmail.com/sprint-planning?hceid=bHVkd2kuc2Ftb2VuQHZlcml0cmFucy5jby5pZA.oe98a1vn9d8gbphn2fjc6cr7k8"
     },
     {
       "status": "confirmed",
@@ -158,32 +158,32 @@
       "location": "Escape Hunt Jakarta, No./, Jalan Kemang Raya No.15/1E, Mampang Prapatan, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12720, Indonesia",
       "attendees": [
         {
-          "displayName": "veritrans all",
-          "email": "all@veritrans.co.id",
+          "displayName": "all",
+          "email": "all@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "self": true,
-          "email": "adam.pahlevi@veritrans.co.id",
+          "email": "adam.pahlevi@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "organizer": true,
           "displayName": "Nadia Arviana Djauhari",
-          "email": "nadia.djauhari@veritrans.co.id",
+          "email": "nadia.djauhari@gmail.com",
           "responseStatus": "accepted"
         }
       ],
       "organizer": {
         "displayName": "Nadia Arviana Djauhari",
-        "email": "nadia.djauhari@veritrans.co.id"
+        "email": "nadia.djauhari@gmail.com"
       },
       "creator": {
         "displayName": "Nadia Arviana Djauhari",
-        "email": "nadia.djauhari@veritrans.co.id"
+        "email": "nadia.djauhari@gmail.com"
       },
       "id": "nrenib9cg0akg5mi8jtq1s2bv4",
-      "hangoutLink": "https://plus.google.com/hangouts/_/veritrans.co.id/vt-outing-at?hceid=bmFkaWEuZGphdWhhcmlAdmVyaXRyYW5zLmNvLmlk.nrenib9cg0akg5mi8jtq1s2bv4"
+      "hangoutLink": "https://plus.google.com/hangouts/_/gmail.com/vt-outing-at?hceid=bmFkaWEuZGphdWhhcmlAdmVyaXRyYW5zLmNvLmlk.nrenib9cg0akg5mi8jtq1s2bv4"
     },
     {
       "status": "confirmed",
@@ -207,28 +207,28 @@
       "attendees": [
         {
           "self": true,
-          "email": "adam.pahlevi@veritrans.co.id",
+          "email": "adam.pahlevi@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "displayName": "Turbo",
-          "email": "turbo@veritrans.co.id",
+          "email": "turbo@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "organizer": true,
           "displayName": "Ludwi Prakosa Samoen",
-          "email": "ludwi.samoen@veritrans.co.id",
+          "email": "ludwi.samoen@gmail.com",
           "responseStatus": "accepted"
         }
       ],
       "organizer": {
         "displayName": "Ludwi Prakosa Samoen",
-        "email": "ludwi.samoen@veritrans.co.id"
+        "email": "ludwi.samoen@gmail.com"
       },
       "creator": {
         "displayName": "Ludwi Prakosa Samoen",
-        "email": "ludwi.samoen@veritrans.co.id"
+        "email": "ludwi.samoen@gmail.com"
       },
       "id": "4evv67s5mul3e5lqr3g4u1uejg"
     },
@@ -251,44 +251,44 @@
         "dateTime": "2015-08-18T10:00:00+07:00"
       },
       "etag": "\"2882211972616000\"",
-      "location": "Veritrans Indonesia, MidPlaza 2, Lantai 24, Jalan Jenderal Sudirman Kav. 10-11, Daerah Khusus Ibukota Jakarta 10220, Indonesia",
+      "location": "Vision",
       "attendees": [
         {
-          "email": "riana.agunawan@veritrans.co.id",
+          "email": "riana.agunawan@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "organizer": true,
           "displayName": "Ryu Kawano Suliawan",
-          "email": "ryu.kawano@veritrans.co.id",
+          "email": "ryu.kawano@gmail.com",
           "responseStatus": "accepted"
         },
         {
-          "displayName": "veritrans all",
-          "email": "all@veritrans.co.id",
+          "displayName": "all",
+          "email": "all@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "optional": true,
           "displayName": "Ridwan Bagawi",
-          "email": "ridwan.bagawi@veritrans.co.id",
+          "email": "ridwan.bagawi@gmail.com",
           "responseStatus": "accepted"
         },
         {
           "self": true,
-          "email": "adam.pahlevi@veritrans.co.id",
+          "email": "adam.pahlevi@gmail.com",
           "responseStatus": "needsAction"
         }
       ],
       "organizer": {
         "displayName": "Ryu Kawano Suliawan",
-        "email": "ryu.kawano@veritrans.co.id"
+        "email": "ryu.kawano@gmail.com"
       },
       "creator": {
-        "email": "riana.agunawan@veritrans.co.id"
+        "email": "riana.agunawan@gmail.com"
       },
       "id": "s56iab2regjpef1e0ghr7fc2t8",
-      "hangoutLink": "https://plus.google.com/hangouts/_/veritrans.co.id/weekly-team?hceid=cnl1Lmthd2Fub0B2ZXJpdHJhbnMuY28uaWQ.s56iab2regjpef1e0ghr7fc2t8"
+      "hangoutLink": "https://plus.google.com/hangouts/_/gmail.com/weekly-team?hceid=cnl1Lmthd2Fub0B2ZXJpdHJhbnMuY28uaWQ.s56iab2regjpef1e0ghr7fc2t8"
     },
     {
       "status": "confirmed",
@@ -311,32 +311,32 @@
       "etag": "\"2882212011940000\"",
       "attendees": [
         {
-          "displayName": "veritrans all",
-          "email": "all@veritrans.co.id",
+          "displayName": "all",
+          "email": "all@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "self": true,
-          "email": "adam.pahlevi@veritrans.co.id",
+          "email": "adam.pahlevi@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "organizer": true,
           "displayName": "Asri Anggrayni",
-          "email": "asri.anggrayni@veritrans.co.id",
+          "email": "asri.anggrayni@gmail.com",
           "responseStatus": "accepted"
         }
       ],
       "organizer": {
         "displayName": "Asri Anggrayni",
-        "email": "asri.anggrayni@veritrans.co.id"
+        "email": "asri.anggrayni@gmail.com"
       },
       "creator": {
         "displayName": "Asri Anggrayni",
-        "email": "asri.anggrayni@veritrans.co.id"
+        "email": "asri.anggrayni@gmail.com"
       },
       "id": "g12vo1s1ekqb0cmf4h4lkngneo",
-      "hangoutLink": "https://plus.google.com/hangouts/_/veritrans.co.id/grand-demo?hceid=YXNyaS5hbmdncmF5bmlAdmVyaXRyYW5zLmNvLmlk.g12vo1s1ekqb0cmf4h4lkngneo"
+      "hangoutLink": "https://plus.google.com/hangouts/_/gmail.com/grand-demo?hceid=YXNyaS5hbmdncmF5bmlAdmVyaXRyYW5zLmNvLmlk.g12vo1s1ekqb0cmf4h4lkngneo"
     },
     {
       "status": "confirmed",
@@ -359,32 +359,32 @@
       "etag": "\"2883756473022000\"",
       "attendees": [
         {
-          "displayName": "veritrans all",
-          "email": "all@veritrans.co.id",
+          "displayName": "all",
+          "email": "all@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "self": true,
-          "email": "adam.pahlevi@veritrans.co.id",
+          "email": "adam.pahlevi@gmail.com",
           "responseStatus": "accepted"
         },
         {
           "organizer": true,
           "displayName": "Ryu Kawano Suliawan",
-          "email": "ryu.kawano@veritrans.co.id",
+          "email": "ryu.kawano@gmail.com",
           "responseStatus": "accepted"
         }
       ],
       "organizer": {
         "displayName": "Ryu Kawano Suliawan",
-        "email": "ryu.kawano@veritrans.co.id"
+        "email": "ryu.kawano@gmail.com"
       },
       "creator": {
         "displayName": "Novie Christine",
-        "email": "novie.christine@veritrans.co.id"
+        "email": "novie.christine@gmail.com"
       },
       "id": "kmhpt7n0ki4sqr4mmn21t3evig",
-      "hangoutLink": "https://plus.google.com/hangouts/_/veritrans.co.id/clean-up-your?hceid=cnl1Lmthd2Fub0B2ZXJpdHJhbnMuY28uaWQ.kmhpt7n0ki4sqr4mmn21t3evig"
+      "hangoutLink": "https://plus.google.com/hangouts/_/gmail.com/clean-up-your?hceid=cnl1Lmthd2Fub0B2ZXJpdHJhbnMuY28uaWQ.kmhpt7n0ki4sqr4mmn21t3evig"
     },
     {
       "status": "confirmed",
@@ -408,52 +408,52 @@
       "attendees": [
         {
           "self": true,
-          "email": "adam.pahlevi@veritrans.co.id",
+          "email": "adam.pahlevi@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "displayName": "Emil Soman",
-          "email": "emil@codemancers.com",
+          "email": "emil@gmail.com",
           "responseStatus": "accepted"
         },
         {
           "displayName": "Wendy Kurniawan Soesanto",
-          "email": "wendy.kurniawan@veritrans.co.id",
+          "email": "wendy.kurniawan@gmail.com",
           "responseStatus": "needsAction"
         },
         {
-          "email": "fauzan.ahsan@veritrans.co.id",
+          "email": "fauzan.ahsan@gmail.com",
           "responseStatus": "accepted"
         },
         {
           "displayName": "Rafeequl Rahman",
-          "email": "rafeequl@veritrans.co.id",
+          "email": "rafeequl@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "displayName": "Pavel Evstigneev",
-          "email": "pavel.evstigneev@veritrans.co.id",
+          "email": "pavel.evstigneev@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "displayName": "Zidni Mubarock",
-          "email": "zidni.mubarock@veritrans.co.id",
+          "email": "zidni.mubarock@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "organizer": true,
           "displayName": "Ludwi Prakosa Samoen",
-          "email": "ludwi.samoen@veritrans.co.id",
+          "email": "ludwi.samoen@gmail.com",
           "responseStatus": "accepted"
         }
       ],
       "organizer": {
         "displayName": "Ludwi Prakosa Samoen",
-        "email": "ludwi.samoen@veritrans.co.id"
+        "email": "ludwi.samoen@gmail.com"
       },
       "creator": {
         "displayName": "Ludwi Prakosa Samoen",
-        "email": "ludwi.samoen@veritrans.co.id"
+        "email": "ludwi.samoen@gmail.com"
       },
       "id": "7vqlgr61ahatdh45906v2kvego"
     },
@@ -479,57 +479,57 @@
       "attendees": [
         {
           "displayName": "Idris Khanafi",
-          "email": "idris.khanafi@veritrans.co.id",
+          "email": "idris.khanafi@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "organizer": true,
           "displayName": "Ludwi Prakosa Samoen",
-          "email": "ludwi.samoen@veritrans.co.id",
+          "email": "ludwi.samoen@gmail.com",
           "responseStatus": "accepted"
         },
         {
-          "email": "alvin.aditya@veritrans.co.id",
+          "email": "alvin.aditya@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "displayName": "Zidni Mubarock",
-          "email": "zidni.mubarock@veritrans.co.id",
+          "email": "zidni.mubarock@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "displayName": "Pavel Evstigneev",
-          "email": "pavel.evstigneev@veritrans.co.id",
+          "email": "pavel.evstigneev@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "displayName": "Wendy Kurniawan Soesanto",
-          "email": "wendy.kurniawan@veritrans.co.id",
+          "email": "wendy.kurniawan@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "self": true,
-          "email": "adam.pahlevi@veritrans.co.id",
+          "email": "adam.pahlevi@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "displayName": "Brian Iswara",
-          "email": "brian.iswara@veritrans.co.id",
+          "email": "brian.iswara@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "optional": true,
-          "email": "fauzan.ahsan@veritrans.co.id",
+          "email": "fauzan.ahsan@gmail.com",
           "responseStatus": "needsAction"
         }
       ],
       "organizer": {
         "displayName": "Ludwi Prakosa Samoen",
-        "email": "ludwi.samoen@veritrans.co.id"
+        "email": "ludwi.samoen@gmail.com"
       },
       "creator": {
         "displayName": "Ludwi Prakosa Samoen",
-        "email": "ludwi.samoen@veritrans.co.id"
+        "email": "ludwi.samoen@gmail.com"
       },
       "id": "p4f6pfpc7liog2d2gffhpq58fk"
     },
@@ -555,63 +555,63 @@
       "attendees": [
         {
           "displayName": "Wendy Kurniawan Soesanto",
-          "email": "wendy.kurniawan@veritrans.co.id",
+          "email": "wendy.kurniawan@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "displayName": "Emil Soman",
-          "email": "emil@codemancers.com",
+          "email": "emil@gmail.com",
           "responseStatus": "accepted"
         },
         {
-          "email": "fauzan.ahsan@veritrans.co.id",
+          "email": "fauzan.ahsan@gmail.com",
           "responseStatus": "accepted"
         },
         {
           "displayName": "Yuva Kumar",
-          "email": "yuva@codemancers.com",
+          "email": "yuva@gmail.com",
           "responseStatus": "accepted"
         },
         {
           "displayName": "Kashyap Kondamudi",
-          "email": "kashyap@codemancers.com",
+          "email": "kashyap@gmail.com",
           "responseStatus": "declined"
         },
         {
           "organizer": true,
           "displayName": "Ludwi Prakosa Samoen",
-          "email": "ludwi.samoen@veritrans.co.id",
+          "email": "ludwi.samoen@gmail.com",
           "responseStatus": "accepted"
         },
         {
           "optional": true,
           "displayName": "Zidni Mubarock",
-          "email": "zidni.mubarock@veritrans.co.id",
+          "email": "zidni.mubarock@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "self": true,
-          "email": "adam.pahlevi@veritrans.co.id",
+          "email": "adam.pahlevi@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "displayName": "Rafeequl Rahman",
-          "email": "rafeequl@veritrans.co.id",
+          "email": "rafeequl@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "displayName": "Pavel Evstigneev",
-          "email": "pavel.evstigneev@veritrans.co.id",
+          "email": "pavel.evstigneev@gmail.com",
           "responseStatus": "needsAction"
         }
       ],
       "organizer": {
         "displayName": "Ludwi Prakosa Samoen",
-        "email": "ludwi.samoen@veritrans.co.id"
+        "email": "ludwi.samoen@gmail.com"
       },
       "creator": {
         "displayName": "Ludwi Prakosa Samoen",
-        "email": "ludwi.samoen@veritrans.co.id"
+        "email": "ludwi.samoen@gmail.com"
       },
       "id": "qrv381g2l7av9lvgmfm99hiojc"
     },
@@ -634,11 +634,11 @@
         "dateTime": "2015-10-01T18:30:00+07:00"
       },
       "etag": "\"2887347111624000\"",
-      "location": "Jimbaran Outdoor Lounge, Intercontinental Jakarta Midplaza Hotel, Jl. Jendral Sudirman Kav10-11, Daerah Khusus Ibukota Jakarta, Indonesia",
+      "location": "Vision",
       "attendees": [
         {
           "self": true,
-          "email": "adam.pahlevi@veritrans.co.id",
+          "email": "adam.pahlevi@gmail.com",
           "responseStatus": "needsAction"
         },
         {
@@ -648,31 +648,31 @@
         },
         {
           "displayName": "Community Management",
-          "email": "community.management@veritrans.co.id",
+          "email": "community.management@gmail.com",
           "responseStatus": "needsAction"
         },
         {
-          "displayName": "veritrans all",
-          "email": "all@veritrans.co.id",
+          "displayName": "all",
+          "email": "all@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "organizer": true,
           "displayName": "Nadia Arviana Djauhari",
-          "email": "nadia.djauhari@veritrans.co.id",
+          "email": "nadia.djauhari@gmail.com",
           "responseStatus": "accepted"
         }
       ],
       "organizer": {
         "displayName": "Nadia Arviana Djauhari",
-        "email": "nadia.djauhari@veritrans.co.id"
+        "email": "nadia.djauhari@gmail.com"
       },
       "creator": {
         "displayName": "Nadia Arviana Djauhari",
-        "email": "nadia.djauhari@veritrans.co.id"
+        "email": "nadia.djauhari@gmail.com"
       },
       "id": "cr5bmrir2q79enr5e76f7k0m7g",
-      "hangoutLink": "https://plus.google.com/hangouts/_/veritrans.co.id/3rd-anniversary?hceid=bmFkaWEuZGphdWhhcmlAdmVyaXRyYW5zLmNvLmlk.cr5bmrir2q79enr5e76f7k0m7g"
+      "hangoutLink": "https://plus.google.com/hangouts/_/gmail.com/3rd-anniversary?hceid=bmFkaWEuZGphdWhhcmlAdmVyaXRyYW5zLmNvLmlk.cr5bmrir2q79enr5e76f7k0m7g"
     },
     {
       "status": "confirmed",
@@ -698,32 +698,32 @@
         "dateTime": "2015-08-21T16:00:00+07:00"
       },
       "etag": "\"2890869757662000\"",
-      "location": "Veritrans Indonesia, MidPlaza 2, Lantai 24, Jalan Jenderal Sudirman Kav. 10-11, Daerah Khusus Ibukota Jakarta 10220, Indonesia",
+      "location": "Vision",
       "attendees": [
         {
           "self": true,
-          "email": "adam.pahlevi@veritrans.co.id",
+          "email": "adam.pahlevi@gmail.com",
           "responseStatus": "needsAction"
         },
         {
-          "displayName": "veritrans all",
-          "email": "all@veritrans.co.id",
+          "displayName": "all",
+          "email": "all@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "organizer": true,
-          "email": "riana.agunawan@veritrans.co.id",
+          "email": "riana.agunawan@gmail.com",
           "responseStatus": "accepted"
         }
       ],
       "organizer": {
-        "email": "riana.agunawan@veritrans.co.id"
+        "email": "riana.agunawan@gmail.com"
       },
       "creator": {
-        "email": "riana.agunawan@veritrans.co.id"
+        "email": "riana.agunawan@gmail.com"
       },
       "id": "smc8l730ct45jst20ctl32195c",
-      "hangoutLink": "https://plus.google.com/hangouts/_/veritrans.co.id/clean-up-your?hceid=cmlhbmEuYWd1bmF3YW5AdmVyaXRyYW5zLmNvLmlk.smc8l730ct45jst20ctl32195c"
+      "hangoutLink": "https://plus.google.com/hangouts/_/gmail.com/clean-up-your?hceid=cmlhbmEuYWd1bmF3YW5AdmVyaXRyYW5zLmNvLmlk.smc8l730ct45jst20ctl32195c"
     },
     {
       "status": "confirmed",
@@ -747,33 +747,33 @@
       "originalStartTime": {
         "dateTime": "2015-09-21T16:00:00+07:00"
       },
-      "location": "Veritrans Indonesia, MidPlaza 2, Lantai 24, Jalan Jenderal Sudirman Kav. 10-11, Daerah Khusus Ibukota Jakarta 10220, Indonesia",
+      "location": "Vision",
       "recurringEventId": "smc8l730ct45jst20ctl32195c",
       "attendees": [
         {
           "self": true,
-          "email": "adam.pahlevi@veritrans.co.id",
+          "email": "adam.pahlevi@gmail.com",
           "responseStatus": "needsAction"
         },
         {
-          "displayName": "veritrans all",
-          "email": "all@veritrans.co.id",
+          "displayName": "all",
+          "email": "all@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "organizer": true,
-          "email": "riana.agunawan@veritrans.co.id",
+          "email": "riana.agunawan@gmail.com",
           "responseStatus": "accepted"
         }
       ],
       "organizer": {
-        "email": "riana.agunawan@veritrans.co.id"
+        "email": "riana.agunawan@gmail.com"
       },
       "creator": {
-        "email": "riana.agunawan@veritrans.co.id"
+        "email": "riana.agunawan@gmail.com"
       },
       "id": "smc8l730ct45jst20ctl32195c_20150921T090000Z",
-      "hangoutLink": "https://plus.google.com/hangouts/_/veritrans.co.id/clean-up-your?hceid=cmlhbmEuYWd1bmF3YW5AdmVyaXRyYW5zLmNvLmlk.smc8l730ct45jst20ctl32195c"
+      "hangoutLink": "https://plus.google.com/hangouts/_/gmail.com/clean-up-your?hceid=cmlhbmEuYWd1bmF3YW5AdmVyaXRyYW5zLmNvLmlk.smc8l730ct45jst20ctl32195c"
     },
     {
       "status": "confirmed",
@@ -797,33 +797,33 @@
       "originalStartTime": {
         "dateTime": "2015-10-21T16:00:00+07:00"
       },
-      "location": "Veritrans Indonesia, MidPlaza 2, Lantai 24, Jalan Jenderal Sudirman Kav. 10-11, Daerah Khusus Ibukota Jakarta 10220, Indonesia",
+      "location": "Vision",
       "recurringEventId": "smc8l730ct45jst20ctl32195c",
       "attendees": [
         {
           "organizer": true,
-          "email": "riana.agunawan@veritrans.co.id",
+          "email": "riana.agunawan@gmail.com",
           "responseStatus": "accepted"
         },
         {
           "self": true,
-          "email": "adam.pahlevi@veritrans.co.id",
+          "email": "adam.pahlevi@gmail.com",
           "responseStatus": "needsAction"
         },
         {
-          "displayName": "veritrans all",
-          "email": "all@veritrans.co.id",
+          "displayName": "all",
+          "email": "all@gmail.com",
           "responseStatus": "needsAction"
         }
       ],
       "organizer": {
-        "email": "riana.agunawan@veritrans.co.id"
+        "email": "riana.agunawan@gmail.com"
       },
       "creator": {
-        "email": "riana.agunawan@veritrans.co.id"
+        "email": "riana.agunawan@gmail.com"
       },
       "id": "smc8l730ct45jst20ctl32195c_20151021T090000Z",
-      "hangoutLink": "https://plus.google.com/hangouts/_/veritrans.co.id/clean-up-your?hceid=cmlhbmEuYWd1bmF3YW5AdmVyaXRyYW5zLmNvLmlk.smc8l730ct45jst20ctl32195c"
+      "hangoutLink": "https://plus.google.com/hangouts/_/gmail.com/clean-up-your?hceid=cmlhbmEuYWd1bmF3YW5AdmVyaXRyYW5zLmNvLmlk.smc8l730ct45jst20ctl32195c"
     },
     {
       "status": "confirmed",
@@ -847,33 +847,33 @@
       "originalStartTime": {
         "dateTime": "2016-06-21T16:00:00+07:00"
       },
-      "location": "Veritrans Indonesia, MidPlaza 2, Lantai 24, Jalan Jenderal Sudirman Kav. 10-11, Daerah Khusus Ibukota Jakarta 10220, Indonesia",
+      "location": "Vision",
       "recurringEventId": "smc8l730ct45jst20ctl32195c",
       "attendees": [
         {
           "self": true,
-          "email": "adam.pahlevi@veritrans.co.id",
+          "email": "adam.pahlevi@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "organizer": true,
-          "email": "riana.agunawan@veritrans.co.id",
+          "email": "riana.agunawan@gmail.com",
           "responseStatus": "accepted"
         },
         {
-          "displayName": "veritrans all",
-          "email": "all@veritrans.co.id",
+          "displayName": "all",
+          "email": "all@gmail.com",
           "responseStatus": "needsAction"
         }
       ],
       "organizer": {
-        "email": "riana.agunawan@veritrans.co.id"
+        "email": "riana.agunawan@gmail.com"
       },
       "creator": {
-        "email": "riana.agunawan@veritrans.co.id"
+        "email": "riana.agunawan@gmail.com"
       },
       "id": "smc8l730ct45jst20ctl32195c_20160621T090000Z",
-      "hangoutLink": "https://plus.google.com/hangouts/_/veritrans.co.id/clean-up-your?hceid=cmlhbmEuYWd1bmF3YW5AdmVyaXRyYW5zLmNvLmlk.smc8l730ct45jst20ctl32195c"
+      "hangoutLink": "https://plus.google.com/hangouts/_/gmail.com/clean-up-your?hceid=cmlhbmEuYWd1bmF3YW5AdmVyaXRyYW5zLmNvLmlk.smc8l730ct45jst20ctl32195c"
     },
     {
       "status": "confirmed",
@@ -897,33 +897,33 @@
       "originalStartTime": {
         "dateTime": "2017-02-21T16:00:00+07:00"
       },
-      "location": "Veritrans Indonesia, MidPlaza 2, Lantai 24, Jalan Jenderal Sudirman Kav. 10-11, Daerah Khusus Ibukota Jakarta 10220, Indonesia",
+      "location": "Vision",
       "recurringEventId": "smc8l730ct45jst20ctl32195c",
       "attendees": [
         {
-          "displayName": "veritrans all",
-          "email": "all@veritrans.co.id",
+          "displayName": "all",
+          "email": "all@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "organizer": true,
-          "email": "riana.agunawan@veritrans.co.id",
+          "email": "riana.agunawan@gmail.com",
           "responseStatus": "accepted"
         },
         {
           "self": true,
-          "email": "adam.pahlevi@veritrans.co.id",
+          "email": "adam.pahlevi@gmail.com",
           "responseStatus": "needsAction"
         }
       ],
       "organizer": {
-        "email": "riana.agunawan@veritrans.co.id"
+        "email": "riana.agunawan@gmail.com"
       },
       "creator": {
-        "email": "riana.agunawan@veritrans.co.id"
+        "email": "riana.agunawan@gmail.com"
       },
       "id": "smc8l730ct45jst20ctl32195c_20170221T090000Z",
-      "hangoutLink": "https://plus.google.com/hangouts/_/veritrans.co.id/clean-up-your?hceid=cmlhbmEuYWd1bmF3YW5AdmVyaXRyYW5zLmNvLmlk.smc8l730ct45jst20ctl32195c"
+      "hangoutLink": "https://plus.google.com/hangouts/_/gmail.com/clean-up-your?hceid=cmlhbmEuYWd1bmF3YW5AdmVyaXRyYW5zLmNvLmlk.smc8l730ct45jst20ctl32195c"
     },
     {
       "status": "confirmed",
@@ -947,33 +947,33 @@
       "originalStartTime": {
         "dateTime": "2017-03-21T16:00:00+07:00"
       },
-      "location": "Veritrans Indonesia, MidPlaza 2, Lantai 24, Jalan Jenderal Sudirman Kav. 10-11, Daerah Khusus Ibukota Jakarta 10220, Indonesia",
+      "location": "Vision",
       "recurringEventId": "smc8l730ct45jst20ctl32195c",
       "attendees": [
         {
           "self": true,
-          "email": "adam.pahlevi@veritrans.co.id",
+          "email": "adam.pahlevi@gmail.com",
           "responseStatus": "needsAction"
         },
         {
-          "displayName": "veritrans all",
-          "email": "all@veritrans.co.id",
+          "displayName": "all",
+          "email": "all@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "organizer": true,
-          "email": "riana.agunawan@veritrans.co.id",
+          "email": "riana.agunawan@gmail.com",
           "responseStatus": "accepted"
         }
       ],
       "organizer": {
-        "email": "riana.agunawan@veritrans.co.id"
+        "email": "riana.agunawan@gmail.com"
       },
       "creator": {
-        "email": "riana.agunawan@veritrans.co.id"
+        "email": "riana.agunawan@gmail.com"
       },
       "id": "smc8l730ct45jst20ctl32195c_20170321T090000Z",
-      "hangoutLink": "https://plus.google.com/hangouts/_/veritrans.co.id/clean-up-your?hceid=cmlhbmEuYWd1bmF3YW5AdmVyaXRyYW5zLmNvLmlk.smc8l730ct45jst20ctl32195c"
+      "hangoutLink": "https://plus.google.com/hangouts/_/gmail.com/clean-up-your?hceid=cmlhbmEuYWd1bmF3YW5AdmVyaXRyYW5zLmNvLmlk.smc8l730ct45jst20ctl32195c"
     },
     {
       "status": "confirmed",
@@ -981,7 +981,7 @@
       "end": {
         "dateTime": "2015-10-23T15:00:00+07:00"
       },
-      "description": "Hi All,\nOur friend Emil, from Codemancers, would like to do a sharing session on Docker and the Docker ecosystem.",
+      "description": "Hi All,\nOur friend Emil, would like to do a sharing session on Docker and the Docker ecosystem.",
       "created": "2015-10-22T10:27:43.000Z",
       "iCalUID": "pn4bavu2fopinfn34p6ij4i4k0@google.com",
       "reminders": {
@@ -995,57 +995,57 @@
         "dateTime": "2015-10-23T14:00:00+07:00"
       },
       "etag": "\"2891141717372000\"",
-      "location": "Veritrans Indonesia 2nd Floor",
+      "location": "Vision",
       "attendees": [
         {
           "displayName": "Emil Soman",
-          "email": "emil@codemancers.com",
+          "email": "emil@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "displayName": "Rubicon",
-          "email": "rubicon@veritrans.co.id",
+          "email": "rubicon@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "displayName": "Engineering Team",
-          "email": "engineering@veritrans.co.id",
+          "email": "engineering@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "displayName": "Jarvis",
-          "email": "jarvis@veritrans.co.id",
+          "email": "jarvis@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "self": true,
-          "email": "adam.pahlevi@veritrans.co.id",
+          "email": "adam.pahlevi@gmail.com",
           "responseStatus": "accepted"
         },
         {
           "displayName": "Turbo",
-          "email": "turbo@veritrans.co.id",
+          "email": "turbo@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "displayName": "Rafeequl Rahman",
-          "email": "rafeequl@veritrans.co.id",
+          "email": "rafeequl@gmail.com",
           "responseStatus": "accepted"
         },
         {
           "organizer": true,
           "displayName": "Ludwi Prakosa Samoen",
-          "email": "ludwi.samoen@veritrans.co.id",
+          "email": "ludwi.samoen@gmail.com",
           "responseStatus": "accepted"
         }
       ],
       "organizer": {
         "displayName": "Ludwi Prakosa Samoen",
-        "email": "ludwi.samoen@veritrans.co.id"
+        "email": "ludwi.samoen@gmail.com"
       },
       "creator": {
         "displayName": "Ludwi Prakosa Samoen",
-        "email": "ludwi.samoen@veritrans.co.id"
+        "email": "ludwi.samoen@gmail.com"
       },
       "id": "pn4bavu2fopinfn34p6ij4i4k0"
     },
@@ -1076,31 +1076,31 @@
       "attendees": [
         {
           "displayName": "Turbo",
-          "email": "turbo@veritrans.co.id",
+          "email": "turbo@gmail.com",
           "responseStatus": "needsAction"
         },
         {
           "organizer": true,
           "displayName": "Ludwi Prakosa Samoen",
-          "email": "ludwi.samoen@veritrans.co.id",
+          "email": "ludwi.samoen@gmail.com",
           "responseStatus": "accepted"
         },
         {
           "self": true,
-          "email": "adam.pahlevi@veritrans.co.id",
+          "email": "adam.pahlevi@gmail.com",
           "responseStatus": "accepted"
         }
       ],
       "organizer": {
         "displayName": "Ludwi Prakosa Samoen",
-        "email": "ludwi.samoen@veritrans.co.id"
+        "email": "ludwi.samoen@gmail.com"
       },
       "creator": {
         "displayName": "Ludwi Prakosa Samoen",
-        "email": "ludwi.samoen@veritrans.co.id"
+        "email": "ludwi.samoen@gmail.com"
       },
       "id": "748ei1n6cccop0dm39s4lithpg",
-      "hangoutLink": "https://plus.google.com/hangouts/_/veritrans.co.id/ludwi-samoen?hceid=bHVkd2kuc2Ftb2VuQHZlcml0cmFucy5jby5pZA.748ei1n6cccop0dm39s4lithpg"
+      "hangoutLink": "https://plus.google.com/hangouts/_/gmail.com/ludwi-samoen?hceid=bHVkd2kuc2Ftb2VuQHZlcml0cmFucy5jby5pZA.748ei1n6cccop0dm39s4lithpg"
     },
     {
       "status": "confirmed",
@@ -1123,7 +1123,7 @@
         "dateTime": "2015-10-27T15:43:21+07:00"
       },
       "etag": "\"2891871120380000\"",
-      "location": "Veritrans",
+      "location": "Vision",
       "attendees": [
         {
           "displayName": "Adam Pahlevi",
@@ -1138,18 +1138,18 @@
       ],
       "organizer": {
         "self": true,
-        "email": "adam.pahlevi@veritrans.co.id"
+        "email": "adam.pahlevi@gmail.com"
       },
       "creator": {
         "self": true,
-        "email": "adam.pahlevi@veritrans.co.id"
+        "email": "adam.pahlevi@gmail.com"
       },
       "id": "13387ck0g9e3o5u4a458hk0alg",
-      "hangoutLink": "https://plus.google.com/hangouts/_/veritrans.co.id/adam-pahlevi-iz?hceid=YWRhbS5wYWhsZXZpQHZlcml0cmFucy5jby5pZA.13387ck0g9e3o5u4a458hk0alg"
+      "hangoutLink": "https://plus.google.com/hangouts/_/gmail.com/adam-pahlevi-iz?hceid=YWRhbS5wYWhsZXZpQHZlcml0cmFucy5jby5pZA.13387ck0g9e3o5u4a458hk0alg"
     }
   ],
   "updated": "2015-10-27T08:53:12.629Z",
-  "summary": "adam.pahlevi@veritrans.co.id",
+  "summary": "adam.pahlevi@gmail.com",
   "etag": "\"1445935992629000\"",
   "nextSyncToken": "CIjO1amj4sgCEIjO1amj4sgCGAU=",
   "timeZone": "Asia/Jakarta",

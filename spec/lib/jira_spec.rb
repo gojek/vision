@@ -11,15 +11,15 @@ describe Jira do
   describe 'generate jira html object' do
     let(:html) {
                 "<span class='jira-button'>" \
-                "  <a href='https://veritrans.atlassian.net/browse/TEST-123' target='_blank' data-toggle='popover' title='Summary' data-content='summary'>" \
-                "    <img class='icon' src='https://veritrans.atlassian.net/images/icons/statuses/generic.png'> TEST-123 </a>" \
+                "  <a href='https://visiondemo.atlassian.net/browse/TEST-123' target='_blank' data-toggle='popover' title='Summary' data-content='summary'>" \
+                "    <img class='icon' src='https://visiondemo.atlassian.net/images/icons/statuses/generic.png'> TEST-123 </a>" \
                 "  <span class='jira-yellow'>In Progress</span>" \
                 "</span>" \
                 }
     let(:html_other) {
                 "<span class='jira-button'>" \
-                "  <a href='https://veritrans.atlassian.net/browse/TEST-999' target='_blank' data-toggle='popover' title='Summary' data-content='summary'>" \
-                "    <img class='icon' src='https://veritrans.atlassian.net/images/icons/statuses/generic.png'> TEST-999 </a>" \
+                "  <a href='https://visiondemo.atlassian.net/browse/TEST-999' target='_blank' data-toggle='popover' title='Summary' data-content='summary'>" \
+                "    <img class='icon' src='https://visiondemo.atlassian.net/images/icons/statuses/generic.png'> TEST-999 </a>" \
                 "  <span class='jira-yellow'>In Progress</span>" \
                 "</span>" \
                 }

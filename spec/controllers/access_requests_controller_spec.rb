@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe AccessRequestsController, type: :controller do
   context 'user access' do
     let(:user) {FactoryBot.create(:user)}
-    let(:approver_ar) {FactoryBot.create(:approver_ar, email:'patrick.star@midtrans.com')}
+    let(:approver_ar) {FactoryBot.create(:approver_ar, email:'patrick.star@gmail.com')}
     let(:access_request) {access_request = FactoryBot.create(:access_request, user: user)}
 
     before :each do
