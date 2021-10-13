@@ -1,0 +1,45 @@
+{
+  "status": "confirmed",
+  "kind": "calendar#event",
+  "end": {
+    "timeZone": "Asia/Jakarta",
+    "dateTime": "2015-10-27T16:43:21+07:00"
+  },
+  "created": "2015-10-27T08:46:00.000Z",
+  "iCalUID": "13387ck0g9e3o5u4a458hk0alg@google.com",
+  "reminders": {
+    "useDefault": true
+  },
+  "htmlLink": "https://www.google.com/calendar/event?eid=MTMzODdjazBnOWUzbzV1NGE0NThoazBhbGcgYWRhbS5wYWhsZXZpQHZlcml0cmFucy5jby5pZA",
+  "sequence": 0,
+  "updated": "2015-10-27T08:46:00.190Z",
+  "summary": "Change Summary",
+  "start": {
+    "timeZone": "Asia/Jakarta",
+    "dateTime": "2015-10-27T15:43:21+07:00"
+  },
+  "etag": "\"2891871120380000\"",
+  "location": "Vision",
+  "attendees": [
+    {
+      "displayName": "Adam Pahlevi",
+      "email": "adam.pahlevi@gmail.com",
+      "responseStatus": "needsAction"
+    },
+    {
+      "displayName": "Izumi Haneda",
+      "email": "izumi.haneda@gmail.com",
+      "responseStatus": "needsAction"
+    }
+  ],
+  "organizer": {
+    "self": true,
+    "email": "adam.pahlevi@gmail.com"
+  },
+  "creator": {
+    "self": true,
+    "email": "adam.pahlevi@gmail.com"
+  },
+  "id": "13387ck0g9e3o5u4a458hk0alg",
+  "hangoutLink": "https://plus.google.com/hangouts/_/gmail.com/adam-pahlevi-iz?hceid=YWRhbS5wYWhsZXZpQHZlcml0cmFucy5jby5pZA.13387ck0g9e3o5u4a458hk0alg"
+}
