@@ -1,0 +1,58 @@
+name: UnitTest
+
+on:
+  pull_request:
+    branches: [ development ]
+
+env:
+  CODE_COVERAGE: ${{ secrets.X_CODE_COVERAGE }}
+
+jobs:
+  unit_test:
+    name: Run Unit Test
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+      mailcatcher:
+        image: tophfr/mailcatcher
+        ports:
+          - 1025:1025
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@477b21f02be01bcb8030d50f37cfec92bfa615b6
+      with:
+        ruby-version: 2.7.3
+    
+    - name: Setup node 12
+      uses: actions/setup-node@v2
+      with:
+        node-version: 12.x
+    
+    - name: Install dependencies
+      run: |
+        bundle install
+        npm install
+    - name: Rspec (Unit Test)
+      run: |-
+        mv config/database.test.yml config/database.yml
+        RAILS_ENV=test bundle exec rake db:create
+        RAILS_ENV=test bundle exec rake db:migrate
+        RAILS_ENV=test bundle exec rspec --tty
+      env:
+        APPROVER_EMAIL: approver@gmail.com
+        ENTITY_SOURCES: engineering,qa,devops
+        JIRA_URL: https://visiondemo.atlassian.net/
+        DB_PASSWORD: postgres
+        SLACK_IR_CHANNEL: incident-report,incident-report2
+        SLACK_CR_CHANNEL: change-requests
+        VALID_EMAIL: gmail.com
