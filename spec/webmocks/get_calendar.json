@@ -1,0 +1,1157 @@
+{
+  "kind": "calendar#events",
+  "defaultReminders": [
+    {
+      "minutes": 10,
+      "method": "popup"
+    }
+  ],
+  "items": [
+    {
+      "status": "confirmed",
+      "kind": "calendar#event",
+      "end": {
+        "dateTime": "2015-07-30T14:00:00+07:00"
+      },
+      "created": "2015-07-30T03:01:27.000Z",
+      "iCalUID": "hahgcmd7sl6rsct016os1ve6u0@google.com",
+      "reminders": {
+        "useDefault": true
+      },
+      "htmlLink": "https://www.google.com/calendar/event?eid=aGFoZ2NtZDdzbDZyc2N0MDE2b3MxdmU2dTAgYWRhbS5wYWhsZXZpQHZlcml0cmFucy5jby5pZA",
+      "sequence": 0,
+      "updated": "2015-07-30T03:58:29.378Z",
+      "summary": "Turbo Deployment 2.8.1",
+      "start": {
+        "dateTime": "2015-07-30T13:00:00+07:00"
+      },
+      "etag": "\"2876457418756000\"",
+      "attendees": [
+        {
+          "displayName": "Fauzan Sasmita",
+          "email": "fauzan.sasmita@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "self": true,
+          "email": "adam.pahlevi@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "displayName": "Riza Maryudi",
+          "email": "riza.maryudi@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "displayName": "Wendy Kurniawan Soesanto",
+          "email": "wendy.kurniawan@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "displayName": "Brian Iswara",
+          "email": "brian.iswara@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "displayName": "Fauzan Ahsan",
+          "email": "fauzan.ahsan@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "displayName": "Pavel Evstigneev",
+          "email": "pavel.evstigneev@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "displayName": "Change Management",
+          "email": "cr@gmail.com",
+          "responseStatus": "needsAction"
+        }
+      ],
+      "organizer": {
+        "displayName": "Change Management Schedule",
+        "email": "gmail.com_l7tgfrrnor43r4bpv2nv1hkbg0@group.calendar.google.com"
+      },
+      "creator": {
+        "displayName": "Krisna Parahita",
+        "email": "krisna.parahita@gmail.com"
+      },
+      "id": "hahgcmd7sl6rsct016os1ve6u0",
+      "hangoutLink": "https://plus.google.com/hangouts/_/gmail.com/gmail-com?hceid=dmVyaXRyYW5zLmNvLmlkX2w3dGdmcnJub3I0M3I0YnB2Mm52MWhrYmcwQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20.hahgcmd7sl6rsct016os1ve6u0"
+    },
+    {
+      "status": "confirmed",
+      "kind": "calendar#event",
+      "end": {
+        "dateTime": "2015-08-12T16:00:00+07:00"
+      },
+      "created": "2015-08-11T04:20:13.000Z",
+      "iCalUID": "oe98a1vn9d8gbphn2fjc6cr7k8@google.com",
+      "reminders": {
+        "useDefault": true
+      },
+      "htmlLink": "https://www.google.com/calendar/event?eid=b2U5OGExdm45ZDhnYnBobjJmamM2Y3I3azggYWRhbS5wYWhsZXZpQHZlcml0cmFucy5jby5pZA",
+      "sequence": 2,
+      "updated": "2015-08-12T03:16:00.819Z",
+      "summary": "Sprint Planning Turbo",
+      "start": {
+        "dateTime": "2015-08-12T14:00:00+07:00"
+      },
+      "etag": "\"2878698721638000\"",
+      "attendees": [
+        {
+          "displayName": "Wendy Kurniawan Soesanto",
+          "email": "wendy.kurniawan@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "email": "fauzan.ahsan@gmail.com",
+          "responseStatus": "accepted"
+        },
+        {
+          "displayName": "Pavel Evstigneev",
+          "email": "pavel.evstigneev@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "organizer": true,
+          "displayName": "Ludwi Prakosa Samoen",
+          "email": "ludwi.samoen@gmail.com",
+          "responseStatus": "accepted"
+        },
+        {
+          "self": true,
+          "email": "adam.pahlevi@gmail.com",
+          "responseStatus": "needsAction"
+        }
+      ],
+      "organizer": {
+        "displayName": "Ludwi Prakosa Samoen",
+        "email": "ludwi.samoen@gmail.com"
+      },
+      "creator": {
+        "displayName": "Ludwi Prakosa Samoen",
+        "email": "ludwi.samoen@gmail.com"
+      },
+      "id": "oe98a1vn9d8gbphn2fjc6cr7k8",
+      "hangoutLink": "https://plus.google.com/hangouts/_/gmail.com/sprint-planning?hceid=bHVkd2kuc2Ftb2VuQHZlcml0cmFucy5jby5pZA.oe98a1vn9d8gbphn2fjc6cr7k8"
+    },
+    {
+      "status": "confirmed",
+      "kind": "calendar#event",
+      "end": {
+        "dateTime": "2015-08-22T17:00:00+07:00"
+      },
+      "created": "2015-08-11T12:01:56.000Z",
+      "iCalUID": "nrenib9cg0akg5mi8jtq1s2bv4@google.com",
+      "reminders": {
+        "useDefault": true
+      },
+      "htmlLink": "https://www.google.com/calendar/event?eid=bnJlbmliOWNnMGFrZzVtaThqdHExczJidjQgYWRhbS5wYWhsZXZpQHZlcml0cmFucy5jby5pZA",
+      "sequence": 0,
+      "updated": "2015-08-22T04:44:34.505Z",
+      "summary": "VT-Outing at Escape Hunt Jakarta",
+      "start": {
+        "dateTime": "2015-08-22T08:00:00+07:00"
+      },
+      "etag": "\"2880437349010000\"",
+      "location": "Escape Hunt Jakarta, No./, Jalan Kemang Raya No.15/1E, Mampang Prapatan, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12720, Indonesia",
+      "attendees": [
+        {
+          "displayName": "all",
+          "email": "all@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "self": true,
+          "email": "adam.pahlevi@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "organizer": true,
+          "displayName": "Nadia Arviana Djauhari",
+          "email": "nadia.djauhari@gmail.com",
+          "responseStatus": "accepted"
+        }
+      ],
+      "organizer": {
+        "displayName": "Nadia Arviana Djauhari",
+        "email": "nadia.djauhari@gmail.com"
+      },
+      "creator": {
+        "displayName": "Nadia Arviana Djauhari",
+        "email": "nadia.djauhari@gmail.com"
+      },
+      "id": "nrenib9cg0akg5mi8jtq1s2bv4",
+      "hangoutLink": "https://plus.google.com/hangouts/_/gmail.com/vt-outing-at?hceid=bmFkaWEuZGphdWhhcmlAdmVyaXRyYW5zLmNvLmlk.nrenib9cg0akg5mi8jtq1s2bv4"
+    },
+    {
+      "status": "confirmed",
+      "kind": "calendar#event",
+      "end": {
+        "dateTime": "2015-08-26T12:00:00+07:00"
+      },
+      "created": "2015-08-25T04:50:50.000Z",
+      "iCalUID": "4evv67s5mul3e5lqr3g4u1uejg@google.com",
+      "reminders": {
+        "useDefault": true
+      },
+      "htmlLink": "https://www.google.com/calendar/event?eid=NGV2djY3czVtdWwzZTVscXIzZzR1MXVlamcgYWRhbS5wYWhsZXZpQHZlcml0cmFucy5jby5pZA",
+      "sequence": 0,
+      "updated": "2015-08-25T09:28:16.887Z",
+      "summary": "Sprint Planning Turbo",
+      "start": {
+        "dateTime": "2015-08-26T11:00:00+07:00"
+      },
+      "etag": "\"2880989793774000\"",
+      "attendees": [
+        {
+          "self": true,
+          "email": "adam.pahlevi@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "displayName": "Turbo",
+          "email": "turbo@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "organizer": true,
+          "displayName": "Ludwi Prakosa Samoen",
+          "email": "ludwi.samoen@gmail.com",
+          "responseStatus": "accepted"
+        }
+      ],
+      "organizer": {
+        "displayName": "Ludwi Prakosa Samoen",
+        "email": "ludwi.samoen@gmail.com"
+      },
+      "creator": {
+        "displayName": "Ludwi Prakosa Samoen",
+        "email": "ludwi.samoen@gmail.com"
+      },
+      "id": "4evv67s5mul3e5lqr3g4u1uejg"
+    },
+    {
+      "status": "confirmed",
+      "kind": "calendar#event",
+      "end": {
+        "dateTime": "2015-08-18T10:30:00+07:00"
+      },
+      "created": "2015-08-13T06:02:04.000Z",
+      "iCalUID": "s56iab2regjpef1e0ghr7fc2t8@google.com",
+      "reminders": {
+        "useDefault": true
+      },
+      "htmlLink": "https://www.google.com/calendar/event?eid=czU2aWFiMnJlZ2pwZWYxZTBnaHI3ZmMydDggYWRhbS5wYWhsZXZpQHZlcml0cmFucy5jby5pZA",
+      "sequence": 0,
+      "updated": "2015-09-01T11:13:06.308Z",
+      "summary": "Weekly Team Meeting",
+      "start": {
+        "dateTime": "2015-08-18T10:00:00+07:00"
+      },
+      "etag": "\"2882211972616000\"",
+      "location": "Vision",
+      "attendees": [
+        {
+          "email": "riana.agunawan@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "organizer": true,
+          "displayName": "Ryu Kawano Suliawan",
+          "email": "ryu.kawano@gmail.com",
+          "responseStatus": "accepted"
+        },
+        {
+          "displayName": "all",
+          "email": "all@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "optional": true,
+          "displayName": "Ridwan Bagawi",
+          "email": "ridwan.bagawi@gmail.com",
+          "responseStatus": "accepted"
+        },
+        {
+          "self": true,
+          "email": "adam.pahlevi@gmail.com",
+          "responseStatus": "needsAction"
+        }
+      ],
+      "organizer": {
+        "displayName": "Ryu Kawano Suliawan",
+        "email": "ryu.kawano@gmail.com"
+      },
+      "creator": {
+        "email": "riana.agunawan@gmail.com"
+      },
+      "id": "s56iab2regjpef1e0ghr7fc2t8",
+      "hangoutLink": "https://plus.google.com/hangouts/_/gmail.com/weekly-team?hceid=cnl1Lmthd2Fub0B2ZXJpdHJhbnMuY28uaWQ.s56iab2regjpef1e0ghr7fc2t8"
+    },
+    {
+      "status": "confirmed",
+      "kind": "calendar#event",
+      "end": {
+        "dateTime": "2015-08-27T17:00:00+07:00"
+      },
+      "created": "2015-08-27T06:03:03.000Z",
+      "iCalUID": "g12vo1s1ekqb0cmf4h4lkngneo@google.com",
+      "reminders": {
+        "useDefault": true
+      },
+      "htmlLink": "https://www.google.com/calendar/event?eid=ZzEydm8xczFla3FiMGNtZjRoNGxrbmduZW8gYWRhbS5wYWhsZXZpQHZlcml0cmFucy5jby5pZA",
+      "sequence": 0,
+      "updated": "2015-09-01T11:13:25.970Z",
+      "summary": "Grand Demo - Intern",
+      "start": {
+        "dateTime": "2015-08-27T16:30:00+07:00"
+      },
+      "etag": "\"2882212011940000\"",
+      "attendees": [
+        {
+          "displayName": "all",
+          "email": "all@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "self": true,
+          "email": "adam.pahlevi@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "organizer": true,
+          "displayName": "Asri Anggrayni",
+          "email": "asri.anggrayni@gmail.com",
+          "responseStatus": "accepted"
+        }
+      ],
+      "organizer": {
+        "displayName": "Asri Anggrayni",
+        "email": "asri.anggrayni@gmail.com"
+      },
+      "creator": {
+        "displayName": "Asri Anggrayni",
+        "email": "asri.anggrayni@gmail.com"
+      },
+      "id": "g12vo1s1ekqb0cmf4h4lkngneo",
+      "hangoutLink": "https://plus.google.com/hangouts/_/gmail.com/grand-demo?hceid=YXNyaS5hbmdncmF5bmlAdmVyaXRyYW5zLmNvLmlk.g12vo1s1ekqb0cmf4h4lkngneo"
+    },
+    {
+      "status": "confirmed",
+      "kind": "calendar#event",
+      "end": {
+        "dateTime": "2015-07-15T17:00:00+07:00"
+      },
+      "created": "2015-07-06T06:43:21.000Z",
+      "iCalUID": "kmhpt7n0ki4sqr4mmn21t3evig@google.com",
+      "reminders": {
+        "useDefault": true
+      },
+      "htmlLink": "https://www.google.com/calendar/event?eid=a21ocHQ3bjBraTRzcXI0bW1uMjF0M2V2aWcgYWRhbS5wYWhsZXZpQHZlcml0cmFucy5jby5pZA",
+      "sequence": 0,
+      "updated": "2015-09-10T09:43:56.511Z",
+      "summary": "Clean up your own desk",
+      "start": {
+        "dateTime": "2015-07-15T16:00:00+07:00"
+      },
+      "etag": "\"2883756473022000\"",
+      "attendees": [
+        {
+          "displayName": "all",
+          "email": "all@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "self": true,
+          "email": "adam.pahlevi@gmail.com",
+          "responseStatus": "accepted"
+        },
+        {
+          "organizer": true,
+          "displayName": "Ryu Kawano Suliawan",
+          "email": "ryu.kawano@gmail.com",
+          "responseStatus": "accepted"
+        }
+      ],
+      "organizer": {
+        "displayName": "Ryu Kawano Suliawan",
+        "email": "ryu.kawano@gmail.com"
+      },
+      "creator": {
+        "displayName": "Novie Christine",
+        "email": "novie.christine@gmail.com"
+      },
+      "id": "kmhpt7n0ki4sqr4mmn21t3evig",
+      "hangoutLink": "https://plus.google.com/hangouts/_/gmail.com/clean-up-your?hceid=cnl1Lmthd2Fub0B2ZXJpdHJhbnMuY28uaWQ.kmhpt7n0ki4sqr4mmn21t3evig"
+    },
+    {
+      "status": "confirmed",
+      "kind": "calendar#event",
+      "end": {
+        "dateTime": "2015-09-15T15:00:00+07:00"
+      },
+      "created": "2015-09-14T05:44:47.000Z",
+      "iCalUID": "7vqlgr61ahatdh45906v2kvego@google.com",
+      "reminders": {
+        "useDefault": true
+      },
+      "htmlLink": "https://www.google.com/calendar/event?eid=N3ZxbGdyNjFhaGF0ZGg0NTkwNnYya3ZlZ28gYWRhbS5wYWhsZXZpQHZlcml0cmFucy5jby5pZA",
+      "sequence": 1,
+      "updated": "2015-09-14T07:41:18.395Z",
+      "summary": "Sprint Planning Turbo",
+      "start": {
+        "dateTime": "2015-09-15T13:30:00+07:00"
+      },
+      "etag": "\"2884432956790000\"",
+      "attendees": [
+        {
+          "self": true,
+          "email": "adam.pahlevi@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "displayName": "Emil Soman",
+          "email": "emil@gmail.com",
+          "responseStatus": "accepted"
+        },
+        {
+          "displayName": "Wendy Kurniawan Soesanto",
+          "email": "wendy.kurniawan@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "email": "fauzan.ahsan@gmail.com",
+          "responseStatus": "accepted"
+        },
+        {
+          "displayName": "Rafeequl Rahman",
+          "email": "rafeequl@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "displayName": "Pavel Evstigneev",
+          "email": "pavel.evstigneev@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "displayName": "Zidni Mubarock",
+          "email": "zidni.mubarock@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "organizer": true,
+          "displayName": "Ludwi Prakosa Samoen",
+          "email": "ludwi.samoen@gmail.com",
+          "responseStatus": "accepted"
+        }
+      ],
+      "organizer": {
+        "displayName": "Ludwi Prakosa Samoen",
+        "email": "ludwi.samoen@gmail.com"
+      },
+      "creator": {
+        "displayName": "Ludwi Prakosa Samoen",
+        "email": "ludwi.samoen@gmail.com"
+      },
+      "id": "7vqlgr61ahatdh45906v2kvego"
+    },
+    {
+      "status": "confirmed",
+      "kind": "calendar#event",
+      "end": {
+        "dateTime": "2015-09-16T14:30:00+07:00"
+      },
+      "created": "2015-09-16T03:33:17.000Z",
+      "iCalUID": "p4f6pfpc7liog2d2gffhpq58fk@google.com",
+      "reminders": {
+        "useDefault": true
+      },
+      "htmlLink": "https://www.google.com/calendar/event?eid=cDRmNnBmcGM3bGlvZzJkMmdmZmhwcTU4ZmsgYWRhbS5wYWhsZXZpQHZlcml0cmFucy5jby5pZA",
+      "sequence": 1,
+      "updated": "2015-09-16T04:30:42.592Z",
+      "summary": "Discuss Turbo Deployment v2.9.0",
+      "start": {
+        "dateTime": "2015-09-16T14:00:00+07:00"
+      },
+      "etag": "\"2884755685184000\"",
+      "attendees": [
+        {
+          "displayName": "Idris Khanafi",
+          "email": "idris.khanafi@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "organizer": true,
+          "displayName": "Ludwi Prakosa Samoen",
+          "email": "ludwi.samoen@gmail.com",
+          "responseStatus": "accepted"
+        },
+        {
+          "email": "alvin.aditya@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "displayName": "Zidni Mubarock",
+          "email": "zidni.mubarock@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "displayName": "Pavel Evstigneev",
+          "email": "pavel.evstigneev@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "displayName": "Wendy Kurniawan Soesanto",
+          "email": "wendy.kurniawan@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "self": true,
+          "email": "adam.pahlevi@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "displayName": "Brian Iswara",
+          "email": "brian.iswara@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "optional": true,
+          "email": "fauzan.ahsan@gmail.com",
+          "responseStatus": "needsAction"
+        }
+      ],
+      "organizer": {
+        "displayName": "Ludwi Prakosa Samoen",
+        "email": "ludwi.samoen@gmail.com"
+      },
+      "creator": {
+        "displayName": "Ludwi Prakosa Samoen",
+        "email": "ludwi.samoen@gmail.com"
+      },
+      "id": "p4f6pfpc7liog2d2gffhpq58fk"
+    },
+    {
+      "status": "confirmed",
+      "kind": "calendar#event",
+      "end": {
+        "dateTime": "2015-09-14T16:30:00+07:00"
+      },
+      "created": "2015-09-14T07:32:21.000Z",
+      "iCalUID": "qrv381g2l7av9lvgmfm99hiojc@google.com",
+      "reminders": {
+        "useDefault": true
+      },
+      "htmlLink": "https://www.google.com/calendar/event?eid=cXJ2MzgxZzJsN2F2OWx2Z21mbTk5aGlvamMgYWRhbS5wYWhsZXZpQHZlcml0cmFucy5jby5pZA",
+      "sequence": 0,
+      "updated": "2015-09-30T09:57:17.293Z",
+      "summary": "Turbo Sharing Session with Aananth",
+      "start": {
+        "dateTime": "2015-09-14T16:00:00+07:00"
+      },
+      "etag": "\"2887214074586000\"",
+      "attendees": [
+        {
+          "displayName": "Wendy Kurniawan Soesanto",
+          "email": "wendy.kurniawan@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "displayName": "Emil Soman",
+          "email": "emil@gmail.com",
+          "responseStatus": "accepted"
+        },
+        {
+          "email": "fauzan.ahsan@gmail.com",
+          "responseStatus": "accepted"
+        },
+        {
+          "displayName": "Yuva Kumar",
+          "email": "yuva@gmail.com",
+          "responseStatus": "accepted"
+        },
+        {
+          "displayName": "Kashyap Kondamudi",
+          "email": "kashyap@gmail.com",
+          "responseStatus": "declined"
+        },
+        {
+          "organizer": true,
+          "displayName": "Ludwi Prakosa Samoen",
+          "email": "ludwi.samoen@gmail.com",
+          "responseStatus": "accepted"
+        },
+        {
+          "optional": true,
+          "displayName": "Zidni Mubarock",
+          "email": "zidni.mubarock@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "self": true,
+          "email": "adam.pahlevi@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "displayName": "Rafeequl Rahman",
+          "email": "rafeequl@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "displayName": "Pavel Evstigneev",
+          "email": "pavel.evstigneev@gmail.com",
+          "responseStatus": "needsAction"
+        }
+      ],
+      "organizer": {
+        "displayName": "Ludwi Prakosa Samoen",
+        "email": "ludwi.samoen@gmail.com"
+      },
+      "creator": {
+        "displayName": "Ludwi Prakosa Samoen",
+        "email": "ludwi.samoen@gmail.com"
+      },
+      "id": "qrv381g2l7av9lvgmfm99hiojc"
+    },
+    {
+      "status": "confirmed",
+      "kind": "calendar#event",
+      "end": {
+        "dateTime": "2015-10-01T22:00:00+07:00"
+      },
+      "created": "2015-08-04T09:55:02.000Z",
+      "iCalUID": "cr5bmrir2q79enr5e76f7k0m7g@google.com",
+      "reminders": {
+        "useDefault": true
+      },
+      "htmlLink": "https://www.google.com/calendar/event?eid=Y3I1Ym1yaXIycTc5ZW5yNWU3NmY3azBtN2cgYWRhbS5wYWhsZXZpQHZlcml0cmFucy5jby5pZA",
+      "sequence": 2,
+      "updated": "2015-10-01T04:25:55.812Z",
+      "summary": "3rd Anniversary ",
+      "start": {
+        "dateTime": "2015-10-01T18:30:00+07:00"
+      },
+      "etag": "\"2887347111624000\"",
+      "location": "Vision",
+      "attendees": [
+        {
+          "self": true,
+          "email": "adam.pahlevi@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "displayName": "harris mu",
+          "email": "harriskmu@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "displayName": "Community Management",
+          "email": "community.management@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "displayName": "all",
+          "email": "all@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "organizer": true,
+          "displayName": "Nadia Arviana Djauhari",
+          "email": "nadia.djauhari@gmail.com",
+          "responseStatus": "accepted"
+        }
+      ],
+      "organizer": {
+        "displayName": "Nadia Arviana Djauhari",
+        "email": "nadia.djauhari@gmail.com"
+      },
+      "creator": {
+        "displayName": "Nadia Arviana Djauhari",
+        "email": "nadia.djauhari@gmail.com"
+      },
+      "id": "cr5bmrir2q79enr5e76f7k0m7g",
+      "hangoutLink": "https://plus.google.com/hangouts/_/gmail.com/3rd-anniversary?hceid=bmFkaWEuZGphdWhhcmlAdmVyaXRyYW5zLmNvLmlk.cr5bmrir2q79enr5e76f7k0m7g"
+    },
+    {
+      "status": "confirmed",
+      "kind": "calendar#event",
+      "end": {
+        "timeZone": "Asia/Jakarta",
+        "dateTime": "2015-08-21T17:00:00+07:00"
+      },
+      "created": "2015-08-20T03:51:00.000Z",
+      "iCalUID": "smc8l730ct45jst20ctl32195c@google.com",
+      "reminders": {
+        "useDefault": true
+      },
+      "htmlLink": "https://www.google.com/calendar/event?eid=c21jOGw3MzBjdDQ1anN0MjBjdGwzMjE5NWNfMjAxNTA4MjFUMDkwMDAwWiBhZGFtLnBhaGxldmlAdmVyaXRyYW5zLmNvLmlk",
+      "sequence": 0,
+      "updated": "2015-10-21T13:41:18.831Z",
+      "summary": "Clean up Your Own Desk & Your Surroundings",
+      "recurrence": [
+        "RRULE:FREQ=MONTHLY"
+      ],
+      "start": {
+        "timeZone": "Asia/Jakarta",
+        "dateTime": "2015-08-21T16:00:00+07:00"
+      },
+      "etag": "\"2890869757662000\"",
+      "location": "Vision",
+      "attendees": [
+        {
+          "self": true,
+          "email": "adam.pahlevi@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "displayName": "all",
+          "email": "all@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "organizer": true,
+          "email": "riana.agunawan@gmail.com",
+          "responseStatus": "accepted"
+        }
+      ],
+      "organizer": {
+        "email": "riana.agunawan@gmail.com"
+      },
+      "creator": {
+        "email": "riana.agunawan@gmail.com"
+      },
+      "id": "smc8l730ct45jst20ctl32195c",
+      "hangoutLink": "https://plus.google.com/hangouts/_/gmail.com/clean-up-your?hceid=cmlhbmEuYWd1bmF3YW5AdmVyaXRyYW5zLmNvLmlk.smc8l730ct45jst20ctl32195c"
+    },
+    {
+      "status": "confirmed",
+      "kind": "calendar#event",
+      "end": {
+        "dateTime": "2015-09-21T17:00:00+07:00"
+      },
+      "created": "2015-08-20T03:51:00.000Z",
+      "iCalUID": "smc8l730ct45jst20ctl32195c@google.com",
+      "reminders": {
+        "useDefault": true
+      },
+      "htmlLink": "https://www.google.com/calendar/event?eid=c21jOGw3MzBjdDQ1anN0MjBjdGwzMjE5NWNfMjAxNTA5MjFUMDkwMDAwWiBhZGFtLnBhaGxldmlAdmVyaXRyYW5zLmNvLmlk",
+      "sequence": 0,
+      "updated": "2015-10-21T13:41:18.831Z",
+      "summary": "Clean up Your Own Desk & Your Surroundings",
+      "start": {
+        "dateTime": "2015-09-21T16:00:00+07:00"
+      },
+      "etag": "\"2890869757662000\"",
+      "originalStartTime": {
+        "dateTime": "2015-09-21T16:00:00+07:00"
+      },
+      "location": "Vision",
+      "recurringEventId": "smc8l730ct45jst20ctl32195c",
+      "attendees": [
+        {
+          "self": true,
+          "email": "adam.pahlevi@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "displayName": "all",
+          "email": "all@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "organizer": true,
+          "email": "riana.agunawan@gmail.com",
+          "responseStatus": "accepted"
+        }
+      ],
+      "organizer": {
+        "email": "riana.agunawan@gmail.com"
+      },
+      "creator": {
+        "email": "riana.agunawan@gmail.com"
+      },
+      "id": "smc8l730ct45jst20ctl32195c_20150921T090000Z",
+      "hangoutLink": "https://plus.google.com/hangouts/_/gmail.com/clean-up-your?hceid=cmlhbmEuYWd1bmF3YW5AdmVyaXRyYW5zLmNvLmlk.smc8l730ct45jst20ctl32195c"
+    },
+    {
+      "status": "confirmed",
+      "kind": "calendar#event",
+      "end": {
+        "dateTime": "2015-10-21T17:00:00+07:00"
+      },
+      "created": "2015-08-20T03:51:00.000Z",
+      "iCalUID": "smc8l730ct45jst20ctl32195c@google.com",
+      "reminders": {
+        "useDefault": true
+      },
+      "htmlLink": "https://www.google.com/calendar/event?eid=c21jOGw3MzBjdDQ1anN0MjBjdGwzMjE5NWNfMjAxNTEwMjFUMDkwMDAwWiBhZGFtLnBhaGxldmlAdmVyaXRyYW5zLmNvLmlk",
+      "sequence": 0,
+      "updated": "2015-10-21T13:41:18.831Z",
+      "summary": "Clean up Your Own Desk & Your Surroundings",
+      "start": {
+        "dateTime": "2015-10-21T16:00:00+07:00"
+      },
+      "etag": "\"2890869757662000\"",
+      "originalStartTime": {
+        "dateTime": "2015-10-21T16:00:00+07:00"
+      },
+      "location": "Vision",
+      "recurringEventId": "smc8l730ct45jst20ctl32195c",
+      "attendees": [
+        {
+          "organizer": true,
+          "email": "riana.agunawan@gmail.com",
+          "responseStatus": "accepted"
+        },
+        {
+          "self": true,
+          "email": "adam.pahlevi@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "displayName": "all",
+          "email": "all@gmail.com",
+          "responseStatus": "needsAction"
+        }
+      ],
+      "organizer": {
+        "email": "riana.agunawan@gmail.com"
+      },
+      "creator": {
+        "email": "riana.agunawan@gmail.com"
+      },
+      "id": "smc8l730ct45jst20ctl32195c_20151021T090000Z",
+      "hangoutLink": "https://plus.google.com/hangouts/_/gmail.com/clean-up-your?hceid=cmlhbmEuYWd1bmF3YW5AdmVyaXRyYW5zLmNvLmlk.smc8l730ct45jst20ctl32195c"
+    },
+    {
+      "status": "confirmed",
+      "kind": "calendar#event",
+      "end": {
+        "dateTime": "2016-06-21T17:00:00+07:00"
+      },
+      "created": "2015-08-20T03:51:00.000Z",
+      "iCalUID": "smc8l730ct45jst20ctl32195c@google.com",
+      "reminders": {
+        "useDefault": true
+      },
+      "htmlLink": "https://www.google.com/calendar/event?eid=c21jOGw3MzBjdDQ1anN0MjBjdGwzMjE5NWNfMjAxNjA2MjFUMDkwMDAwWiBhZGFtLnBhaGxldmlAdmVyaXRyYW5zLmNvLmlk",
+      "sequence": 0,
+      "updated": "2015-10-21T13:41:18.831Z",
+      "summary": "Clean up Your Own Desk & Your Surroundings",
+      "start": {
+        "dateTime": "2016-06-21T16:00:00+07:00"
+      },
+      "etag": "\"2890869757662000\"",
+      "originalStartTime": {
+        "dateTime": "2016-06-21T16:00:00+07:00"
+      },
+      "location": "Vision",
+      "recurringEventId": "smc8l730ct45jst20ctl32195c",
+      "attendees": [
+        {
+          "self": true,
+          "email": "adam.pahlevi@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "organizer": true,
+          "email": "riana.agunawan@gmail.com",
+          "responseStatus": "accepted"
+        },
+        {
+          "displayName": "all",
+          "email": "all@gmail.com",
+          "responseStatus": "needsAction"
+        }
+      ],
+      "organizer": {
+        "email": "riana.agunawan@gmail.com"
+      },
+      "creator": {
+        "email": "riana.agunawan@gmail.com"
+      },
+      "id": "smc8l730ct45jst20ctl32195c_20160621T090000Z",
+      "hangoutLink": "https://plus.google.com/hangouts/_/gmail.com/clean-up-your?hceid=cmlhbmEuYWd1bmF3YW5AdmVyaXRyYW5zLmNvLmlk.smc8l730ct45jst20ctl32195c"
+    },
+    {
+      "status": "confirmed",
+      "kind": "calendar#event",
+      "end": {
+        "dateTime": "2017-02-21T17:00:00+07:00"
+      },
+      "created": "2015-08-20T03:51:00.000Z",
+      "iCalUID": "smc8l730ct45jst20ctl32195c@google.com",
+      "reminders": {
+        "useDefault": true
+      },
+      "htmlLink": "https://www.google.com/calendar/event?eid=c21jOGw3MzBjdDQ1anN0MjBjdGwzMjE5NWNfMjAxNzAyMjFUMDkwMDAwWiBhZGFtLnBhaGxldmlAdmVyaXRyYW5zLmNvLmlk",
+      "sequence": 0,
+      "updated": "2015-10-21T13:41:18.831Z",
+      "summary": "Clean up Your Own Desk & Your Surroundings",
+      "start": {
+        "dateTime": "2017-02-21T16:00:00+07:00"
+      },
+      "etag": "\"2890869757662000\"",
+      "originalStartTime": {
+        "dateTime": "2017-02-21T16:00:00+07:00"
+      },
+      "location": "Vision",
+      "recurringEventId": "smc8l730ct45jst20ctl32195c",
+      "attendees": [
+        {
+          "displayName": "all",
+          "email": "all@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "organizer": true,
+          "email": "riana.agunawan@gmail.com",
+          "responseStatus": "accepted"
+        },
+        {
+          "self": true,
+          "email": "adam.pahlevi@gmail.com",
+          "responseStatus": "needsAction"
+        }
+      ],
+      "organizer": {
+        "email": "riana.agunawan@gmail.com"
+      },
+      "creator": {
+        "email": "riana.agunawan@gmail.com"
+      },
+      "id": "smc8l730ct45jst20ctl32195c_20170221T090000Z",
+      "hangoutLink": "https://plus.google.com/hangouts/_/gmail.com/clean-up-your?hceid=cmlhbmEuYWd1bmF3YW5AdmVyaXRyYW5zLmNvLmlk.smc8l730ct45jst20ctl32195c"
+    },
+    {
+      "status": "confirmed",
+      "kind": "calendar#event",
+      "end": {
+        "dateTime": "2017-03-21T17:00:00+07:00"
+      },
+      "created": "2015-08-20T03:51:00.000Z",
+      "iCalUID": "smc8l730ct45jst20ctl32195c@google.com",
+      "reminders": {
+        "useDefault": true
+      },
+      "htmlLink": "https://www.google.com/calendar/event?eid=c21jOGw3MzBjdDQ1anN0MjBjdGwzMjE5NWNfMjAxNzAzMjFUMDkwMDAwWiBhZGFtLnBhaGxldmlAdmVyaXRyYW5zLmNvLmlk",
+      "sequence": 0,
+      "updated": "2015-10-21T13:41:18.831Z",
+      "summary": "Clean up Your Own Desk & Your Surroundings",
+      "start": {
+        "dateTime": "2017-03-21T16:00:00+07:00"
+      },
+      "etag": "\"2890869757662000\"",
+      "originalStartTime": {
+        "dateTime": "2017-03-21T16:00:00+07:00"
+      },
+      "location": "Vision",
+      "recurringEventId": "smc8l730ct45jst20ctl32195c",
+      "attendees": [
+        {
+          "self": true,
+          "email": "adam.pahlevi@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "displayName": "all",
+          "email": "all@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "organizer": true,
+          "email": "riana.agunawan@gmail.com",
+          "responseStatus": "accepted"
+        }
+      ],
+      "organizer": {
+        "email": "riana.agunawan@gmail.com"
+      },
+      "creator": {
+        "email": "riana.agunawan@gmail.com"
+      },
+      "id": "smc8l730ct45jst20ctl32195c_20170321T090000Z",
+      "hangoutLink": "https://plus.google.com/hangouts/_/gmail.com/clean-up-your?hceid=cmlhbmEuYWd1bmF3YW5AdmVyaXRyYW5zLmNvLmlk.smc8l730ct45jst20ctl32195c"
+    },
+    {
+      "status": "confirmed",
+      "kind": "calendar#event",
+      "end": {
+        "dateTime": "2015-10-23T15:00:00+07:00"
+      },
+      "description": "Hi All,\nOur friend Emil, would like to do a sharing session on Docker and the Docker ecosystem.",
+      "created": "2015-10-22T10:27:43.000Z",
+      "iCalUID": "pn4bavu2fopinfn34p6ij4i4k0@google.com",
+      "reminders": {
+        "useDefault": true
+      },
+      "htmlLink": "https://www.google.com/calendar/event?eid=cG40YmF2dTJmb3BpbmZuMzRwNmlqNGk0azAgYWRhbS5wYWhsZXZpQHZlcml0cmFucy5jby5pZA",
+      "sequence": 0,
+      "updated": "2015-10-23T03:27:38.686Z",
+      "summary": "Docker and the Docker Ecosystem",
+      "start": {
+        "dateTime": "2015-10-23T14:00:00+07:00"
+      },
+      "etag": "\"2891141717372000\"",
+      "location": "Vision",
+      "attendees": [
+        {
+          "displayName": "Emil Soman",
+          "email": "emil@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "displayName": "Rubicon",
+          "email": "rubicon@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "displayName": "Engineering Team",
+          "email": "engineering@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "displayName": "Jarvis",
+          "email": "jarvis@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "self": true,
+          "email": "adam.pahlevi@gmail.com",
+          "responseStatus": "accepted"
+        },
+        {
+          "displayName": "Turbo",
+          "email": "turbo@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "displayName": "Rafeequl Rahman",
+          "email": "rafeequl@gmail.com",
+          "responseStatus": "accepted"
+        },
+        {
+          "organizer": true,
+          "displayName": "Ludwi Prakosa Samoen",
+          "email": "ludwi.samoen@gmail.com",
+          "responseStatus": "accepted"
+        }
+      ],
+      "organizer": {
+        "displayName": "Ludwi Prakosa Samoen",
+        "email": "ludwi.samoen@gmail.com"
+      },
+      "creator": {
+        "displayName": "Ludwi Prakosa Samoen",
+        "email": "ludwi.samoen@gmail.com"
+      },
+      "id": "pn4bavu2fopinfn34p6ij4i4k0"
+    },
+    {
+      "status": "confirmed",
+      "kind": "calendar#event",
+      "end": {
+        "timeZone": "Asia/Jakarta",
+        "dateTime": "2015-10-23T16:30:00+07:00"
+      },
+      "created": "2015-09-21T02:47:20.000Z",
+      "iCalUID": "748ei1n6cccop0dm39s4lithpg@google.com",
+      "reminders": {
+        "useDefault": true
+      },
+      "htmlLink": "https://www.google.com/calendar/event?eid=NzQ4ZWkxbjZjY2NvcDBkbTM5czRsaXRocGdfMjAxNTEwMjNUMDgwMDAwWiBhZGFtLnBhaGxldmlAdmVyaXRyYW5zLmNvLmlk",
+      "sequence": 1,
+      "updated": "2015-10-23T14:15:32.888Z",
+      "summary": "Sprint Planning Turbo",
+      "recurrence": [
+        "RRULE:FREQ=WEEKLY;INTERVAL=2;BYDAY=FR"
+      ],
+      "start": {
+        "timeZone": "Asia/Jakarta",
+        "dateTime": "2015-10-23T15:00:00+07:00"
+      },
+      "etag": "\"2891219465776000\"",
+      "attendees": [
+        {
+          "displayName": "Turbo",
+          "email": "turbo@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "organizer": true,
+          "displayName": "Ludwi Prakosa Samoen",
+          "email": "ludwi.samoen@gmail.com",
+          "responseStatus": "accepted"
+        },
+        {
+          "self": true,
+          "email": "adam.pahlevi@gmail.com",
+          "responseStatus": "accepted"
+        }
+      ],
+      "organizer": {
+        "displayName": "Ludwi Prakosa Samoen",
+        "email": "ludwi.samoen@gmail.com"
+      },
+      "creator": {
+        "displayName": "Ludwi Prakosa Samoen",
+        "email": "ludwi.samoen@gmail.com"
+      },
+      "id": "748ei1n6cccop0dm39s4lithpg",
+      "hangoutLink": "https://plus.google.com/hangouts/_/gmail.com/ludwi-samoen?hceid=bHVkd2kuc2Ftb2VuQHZlcml0cmFucy5jby5pZA.748ei1n6cccop0dm39s4lithpg"
+    },
+    {
+      "status": "confirmed",
+      "kind": "calendar#event",
+      "end": {
+        "timeZone": "Asia/Jakarta",
+        "dateTime": "2015-10-27T16:43:21+07:00"
+      },
+      "created": "2015-10-27T08:46:00.000Z",
+      "iCalUID": "13387ck0g9e3o5u4a458hk0alg@google.com",
+      "reminders": {
+        "useDefault": true
+      },
+      "htmlLink": "https://www.google.com/calendar/event?eid=MTMzODdjazBnOWUzbzV1NGE0NThoazBhbGcgYWRhbS5wYWhsZXZpQHZlcml0cmFucy5jby5pZA",
+      "sequence": 0,
+      "updated": "2015-10-27T08:46:00.190Z",
+      "summary": "Change Summary",
+      "start": {
+        "timeZone": "Asia/Jakarta",
+        "dateTime": "2015-10-27T15:43:21+07:00"
+      },
+      "etag": "\"2891871120380000\"",
+      "location": "Vision",
+      "attendees": [
+        {
+          "displayName": "Adam Pahlevi",
+          "email": "adam.pahlevi@gmail.com",
+          "responseStatus": "needsAction"
+        },
+        {
+          "displayName": "Izumi Haneda",
+          "email": "izumi.haneda@gmail.com",
+          "responseStatus": "needsAction"
+        }
+      ],
+      "organizer": {
+        "self": true,
+        "email": "adam.pahlevi@gmail.com"
+      },
+      "creator": {
+        "self": true,
+        "email": "adam.pahlevi@gmail.com"
+      },
+      "id": "13387ck0g9e3o5u4a458hk0alg",
+      "hangoutLink": "https://plus.google.com/hangouts/_/gmail.com/adam-pahlevi-iz?hceid=YWRhbS5wYWhsZXZpQHZlcml0cmFucy5jby5pZA.13387ck0g9e3o5u4a458hk0alg"
+    }
+  ],
+  "updated": "2015-10-27T08:53:12.629Z",
+  "summary": "adam.pahlevi@gmail.com",
+  "etag": "\"1445935992629000\"",
+  "nextSyncToken": "CIjO1amj4sgCEIjO1amj4sgCGAU=",
+  "timeZone": "Asia/Jakarta",
+  "accessRole": "owner"
+}
