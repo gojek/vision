@@ -25,7 +25,12 @@ class IncidentReportsController < ApplicationController
     respond_to do |format|
       format.html
       format.csv do
-        self.stream('Incident Reports.csv', 'text/csv', CSVExporter.export_from_active_records(@incident_reports))
+        if params[:page].present?
+          # download current page only
+          render csv: @incident_reports, filename: 'incident_reports', force_quotes: true
+        else
+          self.stream('incident_reports_all.csv', 'text/csv', CSVExporter.export_from_active_records(@incident_reports))
+        end
       end
       format.xls { send_data(@incident_reports.to_xls) }
     end
@@ -320,6 +325,12 @@ class IncidentReportsController < ApplicationController
 
   def set_incident_report
     @incident_report = IncidentReport.find(params[:id])
+  end
+
+  def set_source_start_end_time
+    @source = params.fetch(:source, 'Internal')
+    @start_time = Time.zone.parse(params.fetch(:start_time, Time.current.beginning_of_month.to_s))
+    @end_time = Time.zone.parse(params.fetch(:end_time, Time.current.end_of_month.to_s))
   end
 
   def set_incident_report_log

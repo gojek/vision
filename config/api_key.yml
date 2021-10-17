@@ -1,0 +1,18 @@
+defaults: &defaults
+  google:
+    api_key: ENV['GOOGLE_API_KEY']
+    api_secret: ENV['GOOGLE_API_SECRET']
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+
+staging:
+  <<: *defaults
+
+production:
+  google:
+    api_key: ENV['GOOGLE_API_KEY']
+    api_secret: ENV['GOOGLE_API_SECRET']
