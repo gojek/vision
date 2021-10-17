@@ -611,7 +611,6 @@ DEPENDENCIES
   rails (= 5.2.6)
   rails-controller-testing
   rails_12factor
-  rake (= 10.0.0)
   ransack
   rspec-rails (= 3.7.2)
   rubocop
