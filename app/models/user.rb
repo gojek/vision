@@ -12,7 +12,7 @@ class User < ApplicationRecord
 
   ROLES = %w(requestor approver release_manager approver_ar approver_all)
   ADMIN = %w(Admin User)
-  LIST_EMAIL_DOMAIN = ENV['VALID_EMAIL']
+  LIST_EMAIL_DOMAIN = ENV['VALID_EMAIL'] || 'gmail.com'
   VALID_EMAIL = Regexp.new("\\b[A-Z0-9._%a-z\\-]+@("+LIST_EMAIL_DOMAIN.gsub(/\s+/, '').gsub(',','|').gsub('.','\\.')+")\\z")
 
   DEFAULT_ROLE = 'requestor'
