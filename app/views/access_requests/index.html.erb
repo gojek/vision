@@ -2,13 +2,14 @@
 <section class="content-header">
   <h1 class="access-request-title">
     Access Requests
-     <%= link_to access_requests_path(request.GET.merge({ format: :csv })), class: 'btn btn-flat btn-primary pull-right' do %>
-        <i class="fa fa-download"></i> <strong>Download Access Request</strong>
-    <%end %>
+    <%= link_to access_requests_path(request.GET.merge({ format: :csv }).except("page", "per_page")), class: 'btn btn-flat btn-primary pull-right' do %>
+      <i class="fa fa-download"></i> <strong>Download as csv</strong>
+    <% end %>
     <%= link_to  new_access_request_path, class: 'btn btn-flat btn-primary pull-right'  do %>
       <i class="fa fa-plus"></i> <strong>New Access Request</strong>
     <% end %>
-    
+    <button type="button" class="btn btn-flat btn-primary pull-right" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i><strong> Import from csv</strong></button>
+    <a href="#" data-toggle="control-sidebar" class="btn btn-flat btn-primary pull-right" id='filter-button'><i class="fa fa-filter"></i><span><strong> Filter</strong></span></a>
   </h1>
 </section>
 <section class="content">
@@ -275,8 +276,9 @@
         if (!clickedOn.parents().andSelf().is('#sidebar-pane') && !clickedOn.parents().andSelf().is('#filter-button')){
           sidebar.removeClass('control-sidebar-open');
         }
-    } 
-    return true;
-}
+      }
+    });
+  });
+
 </script>
 
