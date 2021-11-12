@@ -2,7 +2,7 @@ name: CodeQuality
 
 on:
   pull_request:
-    branches: [ development ]
+    branches: [ main ]
 
 jobs:
   code_quality:

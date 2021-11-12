@@ -2,7 +2,7 @@ name: CodeCoverage
 
 on:
   pull_request:
-    branches: [ development ]
+    branches: [ main ]
 
 env:
   CODE_COVERAGE: ${{ secrets.X_CODE_COVERAGE }}
