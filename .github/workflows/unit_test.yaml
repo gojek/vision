@@ -39,14 +39,14 @@ jobs:
         node-version: 12.x
     
     - name: Install dependencies
-      run: |
+      run: |-
         bundle install
         npm install
         ./node_modules/bower/bin/bower install
+
     - name: Rspec (Unit Test)
       run: |-
         mv config/database.test.yml config/database.yml
-        rails assets:precompile
         RAILS_ENV=test bundle exec rake db:create
         RAILS_ENV=test bundle exec rake db:migrate
         RAILS_ENV=test bundle exec rspec --tty
