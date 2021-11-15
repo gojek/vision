@@ -22,7 +22,7 @@ jobs:
       run: bundle install
 
     - name: Rubycritic (Static Analysis)
-      run: rubycritic -s 80.00 --no-browser app lib
+      run: rubycritic -s 75.00 --no-browser app lib
 
     - name: Rubocop (Code Quality)
       run: bundle exec rubocop
