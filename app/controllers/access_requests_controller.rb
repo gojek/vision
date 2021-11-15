@@ -31,6 +31,7 @@ class AccessRequestsController < ApplicationController
     respond_to do |format|
       format.html
       format.csv do
+        @access_requests = @q.result(distinct: true).order(id: :desc)
         self.stream("Access Requests.csv", 'text/csv', CSVExporter.export_from_active_records(@access_requests))
       end
     end
