@@ -29,6 +29,7 @@ class IncidentReportsController < ApplicationController
           # download current page only
           render csv: @incident_reports, filename: 'incident_reports', force_quotes: true
         else
+          @incident_reports = @q.result(distinct: true).order(id: :desc)
           self.stream('incident_reports_all.csv', 'text/csv', CSVExporter.export_from_active_records(@incident_reports))
         end
       end

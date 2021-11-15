@@ -8,6 +8,13 @@
  <section class="content-header">
   <h1>
     Incident Report
+    <%= button_tag class: 'btn btn-flat btn-primary pull-right dropdown-toggle', id: 'dropdownMenuDownload', data: { toggle: 'dropdown' }, aria: { hashpopup: true, expanded: true }  do %>
+        <i class="fa  fa-file-text"></i> <strong>Export to CSV</strong> <span class="caret"></span>
+    <%end %>
+    <ul class="dropdown-menu pull-right" aria-labelledby="dropdownMenuDownload">
+      <li><%= link_to 'Current page IR', incident_reports_path(request.GET.merge({format: :csv, page: params[:page] || 1, per_page: (params[:per_page] || 20) })) %></li>
+      <li><%= link_to 'All IR', incident_reports_path(request.GET.merge({ format: :csv }).except("page", "per_page")) %></li>
+    </ul>
     <%= link_to  new_incident_report_path, class: 'btn btn-flat btn-primary pull-right'  do %>
          <i class="fa fa-plus"></i> <strong>New Incident Report</strong>
     <% end %>
@@ -91,8 +98,6 @@
                       <td><%= incident_report.entity_source %></td>
                       <td><%= link_to incident_report.service_impact, incident_report, target: :_blank %></td>
                       <td><%= link_to (raw incident_report.problem_details), incident_report, class: 'black-color', target: :_blank %></td>
-                      <td><%= incident_report.how_detected %></td>
-                      <td><%= incident_report.current_status %></td>
                       <td><%= incident_report.occurrence_time.to_s(:long) %></td>
                       <td><%= incident_report.acknowledge_time.blank? ? "-" : incident_report.acknowledge_time.to_s(:long)  %></td>
                       <td><%= incident_report.time_to_acknowledge_duration.blank? ? "-" :

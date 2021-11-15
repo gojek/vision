@@ -2,7 +2,7 @@ name: UnitTest
 
 on:
   pull_request:
-    branches: [ development ]
+    branches: [ main ]
 
 env:
   CODE_COVERAGE: ${{ secrets.X_CODE_COVERAGE }}
@@ -39,9 +39,11 @@ jobs:
         node-version: 12.x
     
     - name: Install dependencies
-      run: |
+      run: |-
         bundle install
         npm install
+        ./node_modules/bower/bin/bower install
+
     - name: Rspec (Unit Test)
       run: |-
         mv config/database.test.yml config/database.yml
