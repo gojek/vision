@@ -31,7 +31,7 @@ jobs:
     - name: Set up Ruby
       uses: ruby/setup-ruby@477b21f02be01bcb8030d50f37cfec92bfa615b6
       with:
-        ruby-version: 2.7.2
+        ruby-version: 2.7.3
     
     - name: Setup node 12
       uses: actions/setup-node@v2
@@ -43,6 +43,7 @@ jobs:
         bundle install
         npm install
         ./node_modules/bower/bin/bower install
+        rails assets:precompile
     - name: Rspec (Unit Test)
       run: |-
         mv config/database.test.yml config/database.yml
