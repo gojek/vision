@@ -29,7 +29,7 @@
         <div class="box-body">
           <span><%= "Page #{params[:page]} of " if params[:page] %><%= @search.count %> results found</span>
           <ul class="products-list product-list-in-box">
-            <% @search.each do |access_request| %>
+            <% @search.with_pg_search_highlight.each do |access_request| %>
             <li class="item">
                 <%= link_to({controller: 'access_requests', action: 'show', id: access_request.id}) do %>
                   <h4>
@@ -38,7 +38,7 @@
                   </h4>
                 <% end %>
                 <span>
-                  <%= sanitize(@search.with_pg_search_highlight.first.pg_search_highlight, attributes: ['class']) %>
+                  <%= sanitize(access_request.pg_search_highlight, attributes: ['class']) %>
                 </span>
             </li>
             <% end %>
