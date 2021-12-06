@@ -4,7 +4,6 @@ class ChangeRequest < ApplicationRecord
   include PgSearch::Model
   pg_search_scope :search_full_text, against: [
     :change_summary,
-    :change_requirement,
     :business_justification,
     :note,
     :os,
@@ -26,7 +25,6 @@ class ChangeRequest < ApplicationRecord
   order_within_rank: "change_requests.updated_at DESC",
   using: {
     tsearch: {
-      any_word: true,
       highlight: {
         StartSel: '<b>',
         StopSel: '</b>',
