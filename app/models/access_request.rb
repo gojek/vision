@@ -16,14 +16,15 @@ class AccessRequest < ApplicationRecord
     :employee_phone,
     :created_at
   ],
+  order_within_rank: "access_requests.updated_at DESC",
   using: {
     tsearch: {
       any_word: true,
       highlight: {
         StartSel: '<b>',
         StopSel: '</b>',
-        MaxWords: 123,
-        MinWords: 456,
+        MaxWords: 200,
+        MinWords: 100,
         ShortWord: 3,
         HighlightAll: true,
         MaxFragments: 3,
