@@ -38,7 +38,7 @@
                   </h4>
                 <% end %>
                 <span>
-                  <%= sanitize(change_request.pg_search_highlight, attributes: ['class']) %>
+                  <%= sanitize(change_request.pg_search_highlight.truncate(70), attributes: ['class']) %>
                 </span>
             </li>
             <% end %>

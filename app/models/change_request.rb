@@ -3,6 +3,7 @@ class ChangeRequest < ApplicationRecord
   include EntitySourceModule
   include PgSearch::Model
   pg_search_scope :search_full_text, against: [
+    :change_requirement,
     :change_summary,
     :business_justification,
     :note,
