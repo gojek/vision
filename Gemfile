@@ -86,6 +86,9 @@ gem 'jira-ruby', require: 'jira-ruby'
 # sanitizer
 gem 'sanitize'
 
+# apm
+gem 'newrelic_rpm'
+
 group :production do
   gem 'rails_12factor'
 end

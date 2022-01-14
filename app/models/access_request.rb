@@ -10,10 +10,7 @@ class AccessRequest < ApplicationRecord
   include PgSearch::Model
   pg_search_scope :search_full_text, against: [
     :employee_name,
-    :employee_position,
     :employee_email_address,
-    :employee_department,
-    :employee_phone,
     :created_at
   ],
   order_within_rank: "access_requests.updated_at DESC",

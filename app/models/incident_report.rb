@@ -5,13 +5,6 @@ class IncidentReport < ApplicationRecord
   include PgSearch::Model
   pg_search_scope :search_full_text, against: [
     :service_impact,
-    :problem_details,
-    :how_detected,
-    :loss_related,
-    :occurred_reason,
-    :overlooked_reason,
-    :recovery_action,
-    :prevent_action,
     :created_at
   ],
   order_within_rank: "incident_reports.updated_at DESC",
