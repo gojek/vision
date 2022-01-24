@@ -3,34 +3,18 @@ class ChangeRequest < ApplicationRecord
   include EntitySourceModule
   include PgSearch::Model
   pg_search_scope :search_full_text, against: [
-    :change_summary,
     :change_requirement,
-    :business_justification,
-    :note,
-    :os,
-    :db,
-    :net,
-    :other_dependency,
-    :analysis,
-    :solution,
-    :impact,
-    :design,
-    :backup,
-    :definition_of_success,
-    :definition_of_failed,
-    :testing_procedure,
-    :implementation_notes,
-    :grace_period_notes,
+    :change_summary,
     :created_at
   ],
+  order_within_rank: "change_requests.updated_at DESC",
   using: {
     tsearch: {
-      any_word: true,
       highlight: {
         StartSel: '<b>',
         StopSel: '</b>',
-        MaxWords: 123,
-        MinWords: 456,
+        MaxWords: 200,
+        MinWords: 100,
         ShortWord: 3,
         HighlightAll: true,
         MaxFragments: 3,
